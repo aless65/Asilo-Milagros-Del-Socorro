@@ -347,6 +347,7 @@ CREATE TABLE asil.tbResidentes
 	resi_Sexo				CHAR NOT NULL,
 	diet_Id					INT NOT NULL,
 	resi_FechaIngreso		DATE NOT NULL,
+	empe_Id					INT,
 	
 	resi_UsuCreacion		INT NOT NULL,
 	resi_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_resi_FechaCreacion DEFAULT(GETDATE()),
@@ -358,6 +359,38 @@ CREATE TABLE asil.tbResidentes
 	CONSTRAINT FK_asil_tbResidentes_acce_tbUsuarios_resi_UsuModificacion_usua_Id  			FOREIGN KEY(resi_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
 	CONSTRAINT FK_asil_tbResidentes_gral_tbEstadosCiviles_estacivi_Id 						FOREIGN KEY(estacivi_Id) 				REFERENCES gral.tbEstadosCiviles(estacivi_Id),
 	CONSTRAINT FK_asil_tbResidentes_asil_tbDietas_diet_Id 									FOREIGN KEY(diet_Id) 					REFERENCES asil.tbDietas(diet_Id),
+	CONSTRAINT FK_asil_tbResidentes_asil_tbEmpleados_empe_Id 								FOREIGN KEY(empe_Id) 					REFERENCES asil.tbEmpleados(empe_Id),
+	CONSTRAINT UQ_asil_tbResidentes_resi_Identidad UNIQUE(resi_Identidad)
+);
+GO
+
+--********TABLA ENCARGADOS****************---
+CREATE TABLE asil.tbEncargados
+(
+	enca_Id					INT IDENTITY,
+	enca_Nombres			NVARCHAR(200) NOT NULL,
+	enca_Apellidos			NVARCHAR(200) NOT NULL,
+	enca_Identidad			VARCHAR(13) NOT NULL,
+	estacivi_Id				INT NOT NULL,
+	enca_Nacimiento			DATE NOT NULL,
+	enca_Sexo				CHAR NOT NULL,
+	muni_Id					INT NOT NULL,
+	enca_Direccion			NVARCHAR(500) NOT NULL,
+	enca_Telefono			NVARCHAR(20) NOT NULL,
+	resi_Id					INT NOT NULL,
+	enca_Parentesco			BIT NOT NULL,
+	
+	enca_UsuCreacion		INT NOT NULL,
+	enca_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_enca_FechaCreacion DEFAULT(GETDATE()),
+	enca_UsuModificacion	INT,
+	enca_FechaModificacion	DATETIME,
+	enca_Estado				BIT NOT NULL CONSTRAINT DF_enca_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbResidentes_carg_Id 												PRIMARY KEY(resi_Id),
+	CONSTRAINT FK_asil_tbResidentes_acce_tbUsuarios_resi_UsuCreacion_usua_Id  				FOREIGN KEY(resi_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbResidentes_acce_tbUsuarios_resi_UsuModificacion_usua_Id  			FOREIGN KEY(resi_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbResidentes_gral_tbEstadosCiviles_estacivi_Id 						FOREIGN KEY(estacivi_Id) 				REFERENCES gral.tbEstadosCiviles(estacivi_Id),
+	CONSTRAINT FK_asil_tbResidentes_asil_tbDietas_diet_Id 									FOREIGN KEY(diet_Id) 					REFERENCES asil.tbDietas(diet_Id),
+	CONSTRAINT FK_asil_tbResidentes_asil_tbEmpleados_empe_Id 								FOREIGN KEY(empe_Id) 					REFERENCES asil.tbEmpleados(empe_Id),
 	CONSTRAINT UQ_asil_tbResidentes_resi_Identidad UNIQUE(resi_Identidad)
 );
 GO
@@ -374,7 +407,7 @@ CREATE TABLE asil.tbEmpleados
 	empe_Nacimiento			DATE NOT NULL,
 	muni_Id					CHAR(4) NOT NULL,
 	empe_Direccion			DATE NOT NULL,
-	empe_Telefono			NVARCHAR(7) NOT NULL,
+	empe_Telefono			NVARCHAR(20) NOT NULL,
 	empe_Correo				NVARCHAR(200) NOT NULL,
 	carg_Id					INT NOT NULL,
 	cent_Id					INT NOT NULL,
@@ -557,9 +590,9 @@ GO
 --********TABLA DONACIONES X CENTRO****************---
 CREATE TABLE asil.tbDonacionesXCentro
 (
-	donacent_Id					INT IDENTITY,
-	dona_Id						INT NOT NULL,
-	cent_Id						INT NOT NULL,
+	donacent_Id						INT IDENTITY,
+	dona_Id							INT NOT NULL,
+	cent_Id							INT NOT NULL,
 	
 	donacent_UsuCreacion			INT NOT NULL,
 	donacent_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_donacent_FechaCreacion DEFAULT(GETDATE()),
