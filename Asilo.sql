@@ -525,6 +525,48 @@ CREATE TABLE asil.tbAreas
 );
 GO
 
+--********TABLA TALLERES****************---
+CREATE TABLE asil.tbTalleres
+(
+	tall_Id						INT IDENTITY,
+	tall_Nombre					NVARCHAR(200) NOT NULL,
+	area_Id						INT NOT NULL,
+	acti_Id						INT NOT NULL,
+	
+	tall_UsuCreacion			INT NOT NULL,
+	tall_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_tall_FechaCreacion DEFAULT(GETDATE()),
+	tall_UsuModificacion		INT,
+	tall_FechaModificacion		DATETIME,
+	tall_Estado					BIT NOT NULL CONSTRAINT DF_tall_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbTalleres_tall_Id												PRIMARY KEY(tall_Id),
+	CONSTRAINT FK_asil_tbTalleres_acce_tbUsuarios_tall_UsuCreacion_usua_Id  			FOREIGN KEY(tall_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbTalleres_acce_tbUsuarios_tall_UsuModificacion_usua_Id  		FOREIGN KEY(tall_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbTalleres_asil_tbAreas_area_Id  								FOREIGN KEY(area_Id) 					REFERENCES asil.tbAreas(area_Id),
+	CONSTRAINT FK_asil_tbTalleres_asil_tbActividades_acti_Id  							FOREIGN KEY(acti_Id) 					REFERENCES asil.tbActividades(acti_Id),
+);
+GO
+
+--********TABLA TALLERES****************---
+CREATE TABLE asil.tbVisitas
+(
+	visi_Id						INT IDENTITY,
+	enca_Id						INT NOT NULL,
+	resi_Id						INT NOT NULL,
+	visi_FechaInicio			DATE NOT NULL,
+	visi_FechaFinal				DATE,
+	
+	visi_UsuCreacion			INT NOT NULL,
+	visi_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_visi_FechaCreacion DEFAULT(GETDATE()),
+	visi_UsuModificacion		INT,
+	visi_FechaModificacion		DATETIME,
+	visi_Estado					BIT NOT NULL CONSTRAINT DF_visi_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbVisitas_visi_Id												PRIMARY KEY(visi_Id),
+	CONSTRAINT FK_asil_tbVisitas_acce_tbUsuarios_visi_UsuCreacion_usua_Id  				FOREIGN KEY(visi_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbVisitas_acce_tbUsuarios_visi_UsuModificacion_usua_Id  			FOREIGN KEY(visi_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbVisitas_asil_tbEncargados_enca_Id  							FOREIGN KEY(enca_Id) 					REFERENCES asil.tbEncargados(enca_Id),
+	CONSTRAINT FK_asil_tbVisitas_asil_tbResidentes_resi_Id  							FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id),
+);
+GO
 
 --********TABLA HABITACIONES****************---
 CREATE TABLE asil.tbHabitaciones
