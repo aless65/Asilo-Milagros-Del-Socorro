@@ -280,7 +280,7 @@ GO
 
 
 --***********CREACION TABLA INVENTARIO/CENTRO*****************---
-CREATE TABLE acce.tbInventarioPorCentro(
+CREATE TABLE asil.tbInventarioPorCentro(
 	invecent_Id					INT IDENTITY,
 	medi_Id						INT NOT NULL,
 	cent_Id						INT NOT NULL,

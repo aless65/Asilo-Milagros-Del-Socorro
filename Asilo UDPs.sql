@@ -148,7 +148,8 @@ GO
 /*Vista enfermedades*/
 CREATE OR ALTER VIEW asil.VW_tbEnfermedades
 AS
-	SELECT 
+	SELECT t1.enfe_Id,
+		   t1.enfe_Nombre,
 		   t1.enfe_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   t1.enfe_FechaCreacion, 
@@ -162,54 +163,44 @@ AS
 		   ON t1.enfe_UsuModificacion = t3.usua_Id
 GO
 
-/*Listar Usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_List
+/*Listar enfermedades*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_List
 AS
 BEGIN
-	SELECT * FROM acce.VW_tbUsuarios
-	WHERE usua_Estado = 1
+	SELECT * FROM asil.VW_tbEnfermedades
+	WHERE enfe_Estado = 1
 END
 GO
 
 /*Insertar Usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_Insert
-	@usua_NombreUsuario NVARCHAR(150),
-	@usua_Contrasena NVARCHAR(MAX),
-	@usua_EsAdmin BIT,
-	@role_Id INT, 
-	@empe_Id INT,
-	@usua_usuCreacion INT
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Insert
+	@enfe_Nombre		NVARCHAR(100),
+	@enfe_UsuCreacion	INT
 AS 
 BEGIN
 	
 	BEGIN TRY
-		
-		DECLARE @password NVARCHAR(MAX)=(SELECT HASHBYTES('Sha2_512', @usua_Contrasena));
 
-		IF NOT EXISTS (SELECT * FROM acce.tbUsuarios
-						WHERE @usua_NombreUsuario = usua_NombreUsuario)
+		IF NOT EXISTS (SELECT * FROM asil.tbEnfermedades
+						WHERE @enfe_Nombre = enfe_Nombre)
 		BEGIN
-			INSERT INTO acce.tbUsuarios
-			VALUES(@usua_NombreUsuario,@password,@usua_EsAdmin,@role_Id,@empe_Id,@usua_usuCreacion,GETDATE(),NULL,NULL,1)
+			INSERT INTO asil.tbEnfermedades(enfe_Nombre, enfe_UsuCreacion)
+			VALUES(@enfe_Nombre,@enfe_UsuCreacion)
 
-			SELECT 'El usuario se ha insertado'
+			SELECT 'La enfermedad ha sido insertada exitosamente'
 		END
-		ELSE IF EXISTS (SELECT * FROM acce.tbUsuarios
-						WHERE @usua_NombreUsuario = usua_NombreUsuario
-							  AND usua_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM asil.tbEnfermedades
+						WHERE @enfe_Nombre = enfe_Nombre
+							  AND enfe_Estado = 1)
 
-			SELECT 'Este usuario ya existe'
+			SELECT 'Esta enfermedad ya existe'
 		ELSE
 			BEGIN
-				UPDATE acce.tbUsuarios
-				SET usua_Estado = 1,
-					usua_Contrasena = @password,
-					usua_EsAdmin = @usua_EsAdmin,
-					role_Id = @role_Id,
-					empe_Id = @empe_Id
-				WHERE usua_NombreUsuario = @usua_NombreUsuario
+				UPDATE asil.tbEnfermedades
+				SET enfe_Estado = 1
+				WHERE enfe_Nombre = @enfe_Nombre
 
-				SELECT 'El usuario se ha insertado'
+				SELECT 'La enfermedad ha sido insertada exitosamente'
 			END
 	END TRY
 	BEGIN CATCH
@@ -219,36 +210,49 @@ END
 GO
 
 /*Find Usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_VW_tbUsuarios_Find 
-	@usua_Id	INT
+CREATE OR ALTER PROCEDURE asil.UDP_asil_VW_tbEnfermedades_Find 
+	@enfe_Id	INT
 AS
 BEGIN
-	SELECT * FROM acce.VW_tbUsuarios
-	WHERE usua_Estado = 1
-	AND usua_Id = @usua_Id
+	SELECT * FROM asil.VW_tbEnfermedades
+	WHERE enfe_Id = @enfe_Id
 END
 GO
 
 
 /*Editar usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_UPDATE
-	@usua_Id					INT,
-	@usua_EsAdmin				BIT,
-	@role_Id					INT,
-	@empe_Id					INT,
-	@usua_UsuModificacion		INT
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Update
+	@enfe_Id					INT,
+	@enfe_Nombre				NVARCHAR(100),
+	@enfe_UsuModificacion		INT
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE acce.tbUsuarios
-		SET usua_EsAdmin = @usua_EsAdmin,
-			role_Id = @role_Id,
-			empe_Id = @empe_Id,
-			usua_UsuModificacion = @usua_UsuModificacion,
-			usua_FechaModificacion = GETDATE()
-		WHERE usua_Id = @usua_Id
+	IF NOT EXISTS (SELECT * FROM asil.tbEnfermedades 
+						WHERE @enfe_Nombre = enfe_Nombre)
+		BEGIN			
+			UPDATE asil.tbEnfermedades
+			SET 	enfe_Nombre = @enfe_Nombre,
+					enfe_UsuModificacion = @enfe_UsuModificacion,
+					[enfe_FechaModificacion] = GETDATE()
+			WHERE 	enfe_Nombre = @enfe_Nombre
 
-		SELECT 'El usuario ha sido editado con éxito'
+			SELECT 'La enfermedad ha sido editada exitosamente'
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbEnfermedades
+						WHERE enfe_Nombre = @enfe_Nombre
+							  AND enfe_Estado = 1
+							  AND enfe_Id != @enfe_Id)
+
+			SELECT 'La enfermedad ya existe'
+		ELSE
+			UPDATE asil.tbEnfermedades
+			SET enfe_Estado = 1,
+			    [enfe_UsuModificacion] = @enfe_UsuModificacion,
+				[enfe_FechaModificacion] = GETDATE()
+			WHERE @enfe_Nombre = enfe_Nombre
+
+			SELECT 'La enfermedad ha sido editada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -258,16 +262,16 @@ GO
 
 
 /*Eliminar usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_DELETE
-	@usua_Id	INT
+CREATE OR ALTER PROCEDURE acce.UDP_asil_tbEnfermedades_Delete
+	@enfe_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE acce.tbUsuarios
-		SET usua_Estado = 0
-		WHERE usua_Id = @usua_Id
+		UPDATE asil.tbEnfermedades
+		SET enfe_Estado = 0
+		WHERE enfe_Id = @enfe_Id
 
-		SELECT 'El usuario ha sido eliminado'
+		SELECT 'La enfermedad ha sido eliminada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
