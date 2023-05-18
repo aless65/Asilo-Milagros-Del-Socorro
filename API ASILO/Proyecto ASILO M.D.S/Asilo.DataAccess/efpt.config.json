@@ -1,0 +1,173 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "AsilojacContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Context",
+   "OutputPath": null,
+   "ProjectRootNamespace": "Asilo.DataAccess",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 1,
+   "Tables": [
+      {
+         "Name": "[acce].[tbInventarioPorCentro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbPantallas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbPantallasPorRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbUsuarios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbActividades]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbAgendaDetalles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbAgendas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbCargos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbCategoriasHabitaciones]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbCentros]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbDietas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbDonaciones]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbDonacionesXCentro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbEmpleados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbEncargados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbEnfermedades]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbEnfermedadesXResidente]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbExpedientes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbHabitaciones]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbHabitacionesXResidente]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbHistorialExpedientes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbHistorialPagos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbMedicamentos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbMetodosPago]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbMuertos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbParentescos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbProveedores]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbResidentes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbTiposSangre]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[gral].[tbDepartamentos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[gral].[tbEstadosCiviles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[gral].[tbMunicipios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[VW_tbUsuarios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbEnfermedades]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": "VJ2100.AsiloJAC",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
