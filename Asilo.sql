@@ -235,6 +235,69 @@ CREATE TABLE asil.tbCentros
 );
 GO
 
+--********TABLA PROVEEDORES****************---
+CREATE TABLE asil.tbProveedores
+(
+	prov_Id						INT IDENTITY,
+	prov_Nombre					NVARCHAR(200) NOT NULL,
+	prov_CorreoElectronico      NVARCHAR(200) NOT NULL,
+	prov_Telefono				NVARCHAR(15)NOT NULL,
+	muni_Id						CHAR(4) NOT NULL,
+	prov_Direccion				NVARCHAR(500) NOT NULL,
+
+	prov_UsuCreacion			INT NOT NULL,
+	prov_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_prov_FechaCreacion DEFAULT(GETDATE()),
+	prov_UsuModificacion		INT,
+	prov_FechaModificacion		DATETIME,
+	prov_Estado					BIT NOT NULL CONSTRAINT DF_prov_Estado DEFAULT(1)
+
+	CONSTRAINT PK_asil_tbProveedores_prov_Id											PRIMARY KEY(prov_Id),
+	CONSTRAINT FK_asil_tbProveedores_acce_tbUsuarios_prov_UsuCreacion_usua_Id  			FOREIGN KEY(prov_UsuCreacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbProveedores_acce_tbUsuarios_prov_UsuModificacion_usua_Id 		FOREIGN KEY(prov_UsuModificacion) 	REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbProveedores_gral_tbMunicipios_muni_Id							FOREIGN KEY(muni_Id) 				REFERENCES gral.tbMunicipios(muni_Id)
+);
+GO
+
+--********TABLA MEDICAMENTOS****************---
+CREATE TABLE asil.tbMedicamentos
+(
+	medi_Id						INT IDENTITY,
+	medi_Nombre					NVARCHAR(300) NOT NULL,
+	prov_Id						INT NOT NULL,
+
+	medi_UsuCreacion			INT NOT NULL,
+	medi_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_medi_FechaCreacion DEFAULT(GETDATE()),
+	medi_UsuModificacion		INT,
+	medi_FechaModificacion		DATETIME,
+	medi_Estado					BIT NOT NULL CONSTRAINT DF_medi_Estado DEFAULT(1)
+
+	CONSTRAINT PK_asil_tbMedicamentos_medi_Id											PRIMARY KEY(medi_Id),
+	CONSTRAINT FK_asil_tbMedicamentos_acce_tbUsuarios_medi_UsuCreacion_usua_Id  		FOREIGN KEY(medi_UsuCreacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMedicamentos_acce_tbUsuarios_medi_UsuModificacion_usua_Id 		FOREIGN KEY(medi_UsuModificacion) 	REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMedicamentos_asil_tbProveedores_prov_Id						FOREIGN KEY(prov_Id) 				REFERENCES asil.tbProveedores(prov_Id)
+);
+GO
+
+
+--***********CREACION TABLA INVENTARIO/CENTRO*****************---
+CREATE TABLE acce.tbInventarioPorCentro(
+	invecent_Id					INT IDENTITY,
+	medi_Id						INT NOT NULL,
+	cent_Id						INT NOT NULL,
+	invecent_Stock				INT NOT NULL,
+
+	invecent_UsuCreacion		INT NOT NULL,
+	invecent_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_invecent_FechaCreacion DEFAULT(GETDATE()),
+	invecent_UsuModificacion	INT,
+	invecent_FechaModificacion	DATETIME,
+	invecent_Estado				BIT NOT NULL CONSTRAINT DF_invecent_Estado DEFAULT(1)
+
+	CONSTRAINT PK_acce_tbInventarioPorCentro_invecent_Id					PRIMARY KEY(invecent_Id),
+	CONSTRAINT FK_acce_tbInventarioPorCentro_asil_tbMedicamentos_medi_Id	FOREIGN KEY(medi_Id)	REFERENCES asil.tbMedicamentos(medi_Id),
+	CONSTRAINT FK_acce_tbInventarioPorCentro_asil_tbCentros_cent_Id			FOREIGN KEY(cent_Id)	REFERENCES asil.tbCentros(cent_Id),
+);
+GO
+
 --********TABLA ENFERMEDADES****************---
 CREATE TABLE asil.tbEnfermedades
 (
@@ -367,6 +430,47 @@ CREATE TABLE asil.tbEmpleados
 );
 GO
 
+--********TABLA AGENDAS****************---
+CREATE TABLE asil.tbAgendas
+(
+	agen_Id					INT IDENTITY,
+	agen_Nombre				NVARCHAR(300) NOT NULL,
+	
+	agen_UsuCreacion		INT NOT NULL,
+	agen_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_agen_FechaCreacion DEFAULT(GETDATE()),
+	agen_UsuModificacion	INT,
+	agen_FechaModificacion	DATETIME,
+	agen_Estado				BIT NOT NULL CONSTRAINT DF_agen_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbAgendas_agen_Id 												PRIMARY KEY(agen_Id),
+	CONSTRAINT FK_asil_tbAgendas_acce_tbUsuarios_agen_UsuCreacion_usua_Id  				FOREIGN KEY(agen_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbAgendas_acce_tbUsuarios_agen_UsuModificacion_usua_Id  			FOREIGN KEY(agen_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT UQ_asil_tbAgendas_agen_Nombre UNIQUE(agen_Nombre)
+);
+GO
+
+--********TABLA AGENDA DETALLES****************---
+CREATE TABLE asil.tbAgendaDetalles
+(
+	agendeta_Id					INT IDENTITY,
+	agen_Id						INT NOT NULL,
+	agendeta_Hora				TIME NOT NULL,
+	acti_Id						INT NOT NULL,
+	medi_Id						INT NOT NULL,
+	agendeta_Observaciones		NVARCHAR(500) NOT NULL,
+	
+	agendeta_UsuCreacion		INT NOT NULL,
+	agendeta_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_agendeta_FechaCreacion DEFAULT(GETDATE()),
+	agendeta_UsuModificacion	INT,
+	agendeta_FechaModificacion	DATETIME,
+	agendeta_Estado				BIT NOT NULL CONSTRAINT DF_agendeta_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbAgendaDetalles_agendeta_Id 												PRIMARY KEY(agendeta_Id),
+	CONSTRAINT FK_asil_tbAgendaDetalles_acce_tbUsuarios_agendeta_Id_UsuCreacion_usua_Id  			FOREIGN KEY(agendeta_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbAgendaDetalles_acce_tbUsuarios_agendeta_Id_UsuModificacion_usua_Id  		FOREIGN KEY(agendeta_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbAgendaDetalles_asil_tbActividades_acti_Id  								FOREIGN KEY(acti_Id) 						REFERENCES asil.tbActividades(acti_Id),
+	CONSTRAINT FK_asil_tbAgendaDetalles_asil_tbMedicamentos_medi_Id  								FOREIGN KEY(medi_Id) 						REFERENCES asil.tbMedicamentos(medi_Id),
+);
+GO
+
 --********TABLA RESIDENTES****************---
 CREATE TABLE asil.tbResidentes
 (
@@ -380,6 +484,7 @@ CREATE TABLE asil.tbResidentes
 	diet_Id					INT NOT NULL,
 	resi_FechaIngreso		DATE NOT NULL,
 	empe_Id					INT,
+	agen_Id					INT NOT NULL,
 	
 	resi_UsuCreacion		INT NOT NULL,
 	resi_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_resi_FechaCreacion DEFAULT(GETDATE()),
@@ -392,7 +497,49 @@ CREATE TABLE asil.tbResidentes
 	CONSTRAINT FK_asil_tbResidentes_gral_tbEstadosCiviles_estacivi_Id 						FOREIGN KEY(estacivi_Id) 				REFERENCES gral.tbEstadosCiviles(estacivi_Id),
 	CONSTRAINT FK_asil_tbResidentes_asil_tbDietas_diet_Id 									FOREIGN KEY(diet_Id) 					REFERENCES asil.tbDietas(diet_Id),
 	CONSTRAINT FK_asil_tbResidentes_asil_tbEmpleados_empe_Id 								FOREIGN KEY(empe_Id) 					REFERENCES asil.tbEmpleados(empe_Id),
+	CONSTRAINT FK_asil_tbResidentes_asil_tbAgendas_agen_Id 									FOREIGN KEY(agen_Id) 					REFERENCES asil.tbAgendas(agen_Id),
 	CONSTRAINT UQ_asil_tbResidentes_resi_Identidad UNIQUE(resi_Identidad)
+);
+GO
+
+CREATE TABLE asil.tbHistorialPagos
+(
+	pago_Id			INT IDENTITY,
+	resi_Id			INT NOT NULL,
+	meto_Id			INT NOT NULL,
+	pago_Fecha		DATE NOT NULL,
+
+	pago_UsuCreacion		INT NOT NULL,
+	pago_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_pago_FechaCreacion DEFAULT(GETDATE()),
+	pago_UsuModificacion	INT,
+	pago_FechaModificacion	DATETIME,
+	pago_Estado				BIT NOT NULL CONSTRAINT DF_pago_Estado DEFAULT(1)
+
+	CONSTRAINT PK_asil_tbHistorialPagos_pago_Id 												PRIMARY KEY(pago_Id),
+	CONSTRAINT FK_asil_tbHistorialPagos_acce_tbUsuarios_pago_UsuCreacion_usua_Id  				FOREIGN KEY(pago_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbHistorialPagos_acce_tbUsuarios_pago_UsuModificacion_usua_Id  			FOREIGN KEY(pago_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbHistorialPagos_asil_tbMetodosPago_meto_Id 								FOREIGN KEY(meto_Id) 					REFERENCES asil.tbMetodosPago(meto_Id),
+	CONSTRAINT FK_asil_tbHistorialPagos_asil_tbResidentes_resi_Id 								FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id),
+);
+GO
+
+
+--********TABLA PARENTESCOS****************---
+CREATE TABLE asil.tbParentescos
+(
+	pare_Id					INT IDENTITY,
+	pare_Nombre				NVARCHAR(100) NOT NULL,
+
+	pare_UsuCreacion		INT NOT NULL,
+	pare_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_pare_FechaCreacion DEFAULT(GETDATE()),
+	pare_UsuModificacion	INT,
+	pare_FechaModificacion	DATETIME,
+	pare_Estado				BIT NOT NULL CONSTRAINT DF_pare_Estado DEFAULT(1)
+
+	CONSTRAINT PK_asil_tbParentescos_pare_Id 												PRIMARY KEY(pare_Id),
+	CONSTRAINT FK_asil_tbParentescos_acce_tbUsuarios_pare_UsuCreacion_usua_Id  				FOREIGN KEY(pare_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbParentescos_acce_tbUsuarios_pare_UsuModificacion_usua_Id  			FOREIGN KEY(pare_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT UQ_asil_tbParentescos_pare_Nombre UNIQUE(pare_Nombre)
 );
 GO
 
@@ -410,7 +557,7 @@ CREATE TABLE asil.tbEncargados
 	enca_Direccion			NVARCHAR(500) NOT NULL,
 	enca_Telefono			NVARCHAR(20) NOT NULL,
 	resi_Id					INT NOT NULL,
-	enca_Parentesco			BIT NOT NULL,
+	pare_Id					INT NOT NULL,
 	
 	enca_UsuCreacion		INT NOT NULL,
 	enca_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_enca_FechaCreacion DEFAULT(GETDATE()),
@@ -423,7 +570,8 @@ CREATE TABLE asil.tbEncargados
 	CONSTRAINT FK_asil_tbEncargados_gral_tbEstadosCiviles_estacivi_Id 						FOREIGN KEY(estacivi_Id) 				REFERENCES gral.tbEstadosCiviles(estacivi_Id),
 	CONSTRAINT FK_asil_tbEncargados_gral_tbMunicipios_muni_Id 								FOREIGN KEY(muni_Id) 					REFERENCES gral.tbMunicipios(muni_Id),
 	CONSTRAINT FK_asil_tbEncargados_asil_tbResidentes_resi_Id 								FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id),
-	CONSTRAINT UQ_asil_tbEncargados_resi_Identidad UNIQUE(enca_Identidad)
+	CONSTRAINT FK_asil_tbEncargados_asil_tbParentescos_pare_Id 								FOREIGN KEY(pare_Id) 					REFERENCES asil.tbParentescos(pare_Id),
+	CONSTRAINT UQ_asil_tbEncargados_enca_Identidad UNIQUE(enca_Identidad)
 );
 GO
 
@@ -506,66 +654,6 @@ CREATE TABLE asil.tbHistorialExpedientes
 );
 GO
 
---********TABLA HISTORIAL EXPEDIENTES****************---
-CREATE TABLE asil.tbAreas
-(
-	area_Id						INT IDENTITY,
-	area_Nombre					NVARCHAR(200) NOT NULL,
-	
-	area_UsuCreacion			INT NOT NULL,
-	area_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_area_FechaCreacion DEFAULT(GETDATE()),
-	area_UsuModificacion		INT,
-	area_FechaModificacion		DATETIME,
-	area_Estado					BIT NOT NULL CONSTRAINT DF_area_Estado DEFAULT(1)
-	CONSTRAINT PK_asil_tbAreas_area_Id													PRIMARY KEY(area_Id),
-	CONSTRAINT FK_asil_tbAreas_acce_tbUsuarios_histexpe_UsuCreacion_usua_Id  			FOREIGN KEY(area_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbAreas_acce_tbUsuarios_histexpe_UsuModificacion_usua_Id  		FOREIGN KEY(area_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id)
-);
-GO
-
---********TABLA TALLERES****************---
-CREATE TABLE asil.tbTalleres
-(
-	tall_Id						INT IDENTITY,
-	tall_Nombre					NVARCHAR(200) NOT NULL,
-	area_Id						INT NOT NULL,
-	acti_Id						INT NOT NULL,
-	
-	tall_UsuCreacion			INT NOT NULL,
-	tall_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_tall_FechaCreacion DEFAULT(GETDATE()),
-	tall_UsuModificacion		INT,
-	tall_FechaModificacion		DATETIME,
-	tall_Estado					BIT NOT NULL CONSTRAINT DF_tall_Estado DEFAULT(1)
-	CONSTRAINT PK_asil_tbTalleres_tall_Id												PRIMARY KEY(tall_Id),
-	CONSTRAINT FK_asil_tbTalleres_acce_tbUsuarios_tall_UsuCreacion_usua_Id  			FOREIGN KEY(tall_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbTalleres_acce_tbUsuarios_tall_UsuModificacion_usua_Id  		FOREIGN KEY(tall_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbTalleres_asil_tbAreas_area_Id  								FOREIGN KEY(area_Id) 					REFERENCES asil.tbAreas(area_Id),
-	CONSTRAINT FK_asil_tbTalleres_asil_tbActividades_acti_Id  							FOREIGN KEY(acti_Id) 					REFERENCES asil.tbActividades(acti_Id),
-);
-GO
-
---********TABLA TALLERES****************---
-CREATE TABLE asil.tbVisitas
-(
-	visi_Id						INT IDENTITY,
-	enca_Id						INT NOT NULL,
-	resi_Id						INT NOT NULL,
-	visi_FechaInicio			DATE NOT NULL,
-	visi_FechaFinal				DATE,
-	
-	visi_UsuCreacion			INT NOT NULL,
-	visi_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_visi_FechaCreacion DEFAULT(GETDATE()),
-	visi_UsuModificacion		INT,
-	visi_FechaModificacion		DATETIME,
-	visi_Estado					BIT NOT NULL CONSTRAINT DF_visi_Estado DEFAULT(1)
-	CONSTRAINT PK_asil_tbVisitas_visi_Id												PRIMARY KEY(visi_Id),
-	CONSTRAINT FK_asil_tbVisitas_acce_tbUsuarios_visi_UsuCreacion_usua_Id  				FOREIGN KEY(visi_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbVisitas_acce_tbUsuarios_visi_UsuModificacion_usua_Id  			FOREIGN KEY(visi_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbVisitas_asil_tbEncargados_enca_Id  							FOREIGN KEY(enca_Id) 					REFERENCES asil.tbEncargados(enca_Id),
-	CONSTRAINT FK_asil_tbVisitas_asil_tbResidentes_resi_Id  							FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id),
-);
-GO
-
 --********TABLA HABITACIONES****************---
 CREATE TABLE asil.tbHabitaciones
 (
@@ -573,7 +661,6 @@ CREATE TABLE asil.tbHabitaciones
 	habi_Numero					INT NOT NULL,
 	cate_Id						INT NOT NULL,
 	cent_Id						INT NOT NULL,
-	area_Id						INT NOT NULL,
 	
 	habi_UsuCreacion			INT NOT NULL,
 	habi_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_habi_FechaCreacion DEFAULT(GETDATE()),
@@ -585,7 +672,6 @@ CREATE TABLE asil.tbHabitaciones
 	CONSTRAINT FK_asil_tbHabitaciones_acce_tbUsuarios_habi_UsuModificacion_usua_Id  		FOREIGN KEY(habi_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
 	CONSTRAINT FK_asil_tbHabitaciones_asil_tbCategoriasHabitaciones_cate_Id  				FOREIGN KEY(cate_Id) 					REFERENCES asil.tbCategoriasHabitaciones(cate_Id),
 	CONSTRAINT FK_asil_tbHabitaciones_asil_tbCentros_cent_Id  								FOREIGN KEY(cent_Id) 					REFERENCES asil.tbCentros(cent_Id),
-	CONSTRAINT FK_asil_tbHabitaciones_asil_tbAreas_area_Id  								FOREIGN KEY(area_Id) 					REFERENCES asil.tbAreas(area_Id),
 );
 GO
 
@@ -645,4 +731,23 @@ CREATE TABLE asil.tbDonacionesXCentro
 );
 GO
 
+--********TABLA MUERTOS****************---
+CREATE TABLE asil.tbMuertos
+(
+	muer_Id						INT IDENTITY,
+	resi_Id						INT NOT NULL,
+	muer_FechaYHora				DATETIME NOT NULL,
+	muer_Descripcion			NVARCHAR(500),					
+
+	muer_UsuCreacion			INT NOT NULL,
+	muer_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_muer_FechaCreacion DEFAULT(GETDATE()),
+	muer_UsuModificacion		INT,
+	muer_FechaModificacion		DATETIME,
+	muer_Estado					BIT NOT NULL CONSTRAINT DF_muer_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbMuertos_muer_Id												PRIMARY KEY(muer_Id),
+	CONSTRAINT FK_asil_tbMuertos_acce_tbUsuarios_muer_UsuCreacion_usua_Id  				FOREIGN KEY(muer_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMuertos_acce_tbUsuarios_muer_UsuModificacion_usua_Id  			FOREIGN KEY(muer_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMuertos_asil_tbResidentes_resi_Id 								FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id)
+);
+GO
 
