@@ -619,7 +619,6 @@ CREATE TABLE asil.tbExpedientes
 	tiposang_Id				INT NOT NULL,
 	expe_FechaApertura		DATE NOT NULL,
 	expe_Fotografia			NVARCHAR(500),
-	expe_Vive				BIT NOT NULL,
 	
 	expe_UsuCreacion		INT NOT NULL,
 	expe_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_expe_FechaCreacion DEFAULT(GETDATE()),
@@ -732,4 +731,23 @@ CREATE TABLE asil.tbDonacionesXCentro
 );
 GO
 
+--********TABLA MUERTOS****************---
+CREATE TABLE asil.tbMuertos
+(
+	muer_Id						INT IDENTITY,
+	resi_Id						INT NOT NULL,
+	muer_FechaYHora				DATETIME NOT NULL,
+	muer_Descripcion			NVARCHAR(500),					
+
+	muer_UsuCreacion			INT NOT NULL,
+	muer_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_muer_FechaCreacion DEFAULT(GETDATE()),
+	muer_UsuModificacion		INT,
+	muer_FechaModificacion		DATETIME,
+	muer_Estado					BIT NOT NULL CONSTRAINT DF_muer_Estado DEFAULT(1)
+	CONSTRAINT PK_asil_tbMuertos_muer_Id												PRIMARY KEY(muer_Id),
+	CONSTRAINT FK_asil_tbMuertos_acce_tbUsuarios_muer_UsuCreacion_usua_Id  				FOREIGN KEY(muer_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMuertos_acce_tbUsuarios_muer_UsuModificacion_usua_Id  			FOREIGN KEY(muer_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbMuertos_asil_tbResidentes_resi_Id 								FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id)
+);
+GO
 
