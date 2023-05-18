@@ -219,7 +219,7 @@ CREATE TABLE asil.tbCentros
 (
 	cent_Id					INT IDENTITY,
 	cent_Nombre				NVARCHAR(200) NOT NULL,
-	muni_Id					INT NOT NULL,
+	muni_Id					VARCHAR NOT NULL,
 	cent_Direccion			NVARCHAR(500) NOT NULL,
 
 	cent_UsuCreacion		INT NOT NULL,
@@ -750,4 +750,225 @@ CREATE TABLE asil.tbMuertos
 	CONSTRAINT FK_asil_tbMuertos_asil_tbResidentes_resi_Id 								FOREIGN KEY(resi_Id) 					REFERENCES asil.tbResidentes(resi_Id)
 );
 GO
+
+--INSERT DE LA BASE DE DATOS
+
+INSERT gral.tbDepartamentos(depa_Id, depa_Nombre, depa_UsuCreacion)
+VALUES('01','Atlantida', 1),
+      ('02','Colon', 1),
+	  ('03','Comayagua', 1),
+	  ('04','Copan', 1),
+	  ('05','Cortes', 1),
+	  ('06','Choluteca', 1),
+	  ('07','El Paraiso', 1),
+	  ('08','Francisco Morazan', 1),
+	  ('09','Gracias a Dios', 1),
+	  ('10','Intibuca', 1),
+	  ('11','Islas de La Bahia', 1),
+	  ('12','La Paz', 1),
+	  ('13','Lempira', 1),
+	  ('14','Ocotepeque', 1),
+	  ('15','Olancho', 1),
+	  ('16','Santa Barbara', 1),
+	  ('17','Valle', 1),
+	  ('18','Yoro', 1);
+GO
+
+INSERT gral.tbMunicipios(muni_id, muni_Nombre, depa_Id, muni_UsuCreacion)
+VALUES('0101','La Ceiba ','01', 1),
+      ('0102','El Porvenir','01', 1), 
+	  ('0103','Esparta','01', 1),
+	  ('0104','Jutiapa','01', 1),
+	  ('0105','La Masica','01', 1),
+	  ('0201','Trujillo','02', 1),
+	  ('0202','Balfate','02', 1),
+	  ('0203','Iriona','02', 1),
+	  ('0204','Limon','02', 1),
+	  ('0205','Saba','02', 1),
+	  ('0301','Comayagua','03', 1),
+	  ('0302','Ajuterique','03', 1),
+      ('0303','El Rosario','03', 1),
+	  ('0304','Esquias','03', 1),
+      ('0305','Humuya','03', 1),
+	  ('0401','Santa Rosa de Copan','04', 1),
+	  ('0402','Cabanas','04', 1),
+      ('0403','Concepcion','04', 1),
+	  ('0404','Copan Ruinas','04', 1),
+      ('0405','Corquin','04', 1),
+	  ('0501','San Pedro Sula ','05', 1),
+      ('0502','Choloma ','05', 1),
+      ('0503','Omoa','05', 1),
+      ('0504','Pimienta','05', 1),
+	  ('0505','Potrerillos','05', 1),
+	  ('0506','Puerto Cortes','05', 1),
+	  ('0601','Choluteca','06', 1),
+      ('0602','Apacilagua','06', 1),
+      ('0603','Concepcion de Maria','06', 1),
+      ('0604','Duyure','06', 1),
+	  ('0605','El Corpus','07', 1),
+	  ('0701','Yuscaran','07', 1),
+      ('0702','Alauca','07', 1),
+      ('0703','Danli','07', 1),
+	  ('0704','El Paraiso','07', 1),
+      ('0705','Ghinope','07', 1),
+	  ('0801','Distrito Central (Comayaguela y Tegucigalpa)','08', 1),
+      ('0802','Alubaran','08', 1),
+      ('0803','Cedros','08', 1),
+      ('0804','Curaron','08', 1),
+	  ('0805','El Porvenir','08', 1),
+	  ('0901','Puerto Lempira','09', 1),
+      ('0902','Brus Laguna','09', 1),
+      ('0903','Ahuas','09', 1),
+	  ('0904','Juan Francisco Bulnes','09', 1),
+      ('0905','Villeda Morales','09', 1),
+	  ('1001','La Esperanza','10', 1),
+      ('1002','Camasca','10', 1),
+      ('1003','Colomoncagua','10', 1),
+	  ('1004','Concepcion','10', 1),
+      ('1005','Dolores','10', 1),
+	  ('1101','Roatan','11', 1),
+      ('1102','Guanaja','11', 1),
+      ('1103','Jose Santos Guardiola','11', 1),
+	  ('1104','Utila','11', 1),
+	  ('1201','La Paz','12', 1),
+      ('1202','Aguanqueterique','12', 1),
+      ('1203','Cabanas','12', 1),
+	  ('1204','Cane','12', 1),
+      ('1205','Chinacla','12', 1),
+	  ('1301','Gracias','13', 1),
+      ('1302','Belen','13', 1),
+      ('1303','Candelaria','13', 1),
+	  ('1304','Cololaca','13', 1),
+      ('1305','Erandique','13', 1),
+	  ('1401','Ocotepeque','14', 1),
+      ('1402','Belen Gualcho','14', 1),
+      ('1403','Concepcion','14', 1),
+	  ('1404','Dolores Merendon','14', 1),
+      ('1405','Fraternidad','14', 1),
+	  ('1501','Juticalpa','15', 1),
+      ('1502','Campamento','15', 1),
+      ('1503','Catacamas','15', 1),
+	  ('1504','Concordia','15', 1),
+      ('1505','Dulce Nombre de Culmo','15', 1),
+	  ('1601','Santa Barbara','16', 1),
+      ('1602','Arada','16', 1),
+      ('1603','Atima','16', 1),
+	  ('1604','Azacualpa','16', 1),
+      ('1605','Ceguaca','16', 1),
+	  ('1701','Nacaome','17', 1),
+      ('1702','Alianza','17', 1),
+      ('1703','Amapala','17', 1),
+	  ('1704','Aramecina','17', 1),
+      ('1705','Caridad','17', 1),
+	  ('1801','Yoro','18', 1),
+      ('1802','Arenal','18', 1),
+      ('1803','El Negrito','18', 1),
+	  ('1804','El Progreso','18', 1),
+      ('1805','Jocon','18', 1)
+GO
+--********INSERT TABLA METODOS DE PAGOS****************---
+INSERT INTO asil.tbMetodosPago(meto_Nombre, meto_UsuCreacion)
+VALUES('Efectivo',1),
+      ('Tarjeta',1)
+GO
+
+--********INSERT TABLA Estados Civiles****************---
+INSERT INTO gral.tbEstadosCiviles(estacivi_Nombre,estacivi_UsuCreacion)
+VALUES('Soltero(a)',1),
+      ('Casado(a)',1),
+	  ('Divorciado(a)',1),
+	  ('Union Libre',1)
+GO
+
+--********INSERT TABLA CENTROS****************---
+INSERT INTO asil.tbCentros(cent_Nombre, muni_Id, cent_Direccion, cent_UsuCreacion)
+VALUES('Asilo de Ancianos Milagros del Socorro Roatan', '1101', 'Avenida La Paz',1 ),
+      ('Asilo de Ancianos Hilos de plata', '0101', 'Barrio La Granja',1 ),
+	  ('Asilo de Ancianos Milagros del Socorro Catacamas', '1503', 'Avenida el Porvenir',1 ),
+	  ('Asilo de Ancianos Madre Nazaria', '1804', 'Barrio Progreso',1 ),
+	  ('Asilo de Ancianos Socorro', '0503', '11 calle, 2 avenida',1 )
+GO
+
+
+--********INSERT TABLA ENFERMEDADES****************---
+INSERT INTO asil.tbEnfermedades(enfe_Nombre, enfe_UsuCreacion)
+VALUES('Mal de Alzheimer',1),
+      ('Artritis',1),
+	  ('Asma',1),
+	  ('Cáncer',1),
+	  ('EPOC',1),
+	  ('Enfermedad de Crohn',1),
+	  ('Fibrosis quística',1),
+	  ('Diabetes',1),
+	  ('Presión arterial alta (hipertensión)',1),
+	  ('VIH/sida',1),
+	  ('Migraña',1),
+	  ('Depresión',1),
+	  ('Bipolar',1),
+	  ('Mal de Parkinson',1)
+
+--********INSERT TABLA ACTIVIDADES****************---
+INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
+VALUES('Medicación',1),
+	  ('Desayuno',1),
+      ('Almuerzo',1),
+	  ('Cena',1),
+	  ('Yoga',1),
+	  ('Caminar',1),
+	  ('Terapia de baile',1),
+	  ('Juegos de mesa',1),
+	  ('Lectura',1),
+	  ('Natación',1)
+
+	  --********INSERT TABLA ACTIVIDADES****************---
+INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
+VALUES('Medicación',1),
+	  ('Desayuno',1),
+      ('Almuerzo',1),
+	  ('Cena',1),
+	  ('Yoga',1),
+	  ('Caminar',1),
+	  ('Terapia de baile',1),
+	  ('Juegos de mesa',1),
+	  ('Lectura',1),
+	  ('Natación',1)
+
+ --********INSERT TABLA CATEGORIAS HABITACIONES****************---
+INSERT INTO asil.tbCategoriasHabitaciones(cate_Nombre, cate_Capacidad, cate_Climatizacion, cate_UsuCreacion)
+VALUES('Habitaón Individual',1,1),
+	  ('Habitación Doble',2,1),
+	  ('Habitación Triple',3,1),
+	  ('Habitación cuádruple',4,1)
+
+--********INSERT TABLA CARGOS****************---
+INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
+VALUES('Gerente',1),
+      ('Cuidador',1),
+	  ('Psicólogo',1),
+	  ('Trabajador social',1),
+	  ('Enfermero con conocimientos en geriatría',1),
+	  ('Auxiliares de enfermería',1),
+	  ('Animador sociocultural',1),
+	  ('Educador Social.',1),
+	  ('Cocineros',1),
+	  ('Ayudantes de cocina',1),
+	  ('Doctor especializado en geriatría',1),
+	  ('Médico especializado en geriatría',1)
+
+	  --********INSERT TABLA DIETA ****************---
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES('Leche descremada,cereales integrales', 'Fruta,legumbre,Carne poco grasa','patata y verduras,queso','Yogurt poco azucarado',1),
+      ('Cafe con leche, Tostadas con aceite, pera', 'Crema de patatas, Albondigas con tomate y pan','Sopa de fideos, salchichas de pollo, pan','Vaso d leche con magdalenas',1),
+	  ('Galletas con mermelada, leche', 'Ensalada de tomate, Lentejas con chorizo','Calabacines rellenos, Pan y yogur','Cafe con leche pan con aceite y queso',1),
+	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1),
+	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marinera','Flan de pescado con salsa de tomate, kiwi','Yogur con galletas',1),
+	  ('Leche, Tostadas con jamón y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piña','Bizcochos de fresa',1)
+
+	  --********INSERT TABLA Residente ****************---
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id, resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,'2010-10-05',1),
+      ('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',2,'2010-02-25',1),
+	  ('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',1,'2012-02-25',1),
+	  ('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',1,'2012-02-25',1)
+
 
