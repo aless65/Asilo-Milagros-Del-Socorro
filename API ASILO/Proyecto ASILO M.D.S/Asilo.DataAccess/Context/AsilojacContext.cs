@@ -20,7 +20,13 @@ namespace Asilo.DataAccess.Context
         {
         }
 
+        public virtual DbSet<VW_tbActividades> VW_tbActividades { get; set; }
+        public virtual DbSet<VW_tbCategoriasHabitaciones> VW_tbCategoriasHabitaciones { get; set; }
+        public virtual DbSet<VW_tbDonaciones> VW_tbDonaciones { get; set; }
         public virtual DbSet<VW_tbEnfermedades> VW_tbEnfermedades { get; set; }
+        public virtual DbSet<VW_tbExpedientes> VW_tbExpedientes { get; set; }
+        public virtual DbSet<VW_tbHistorialExpedientes> VW_tbHistorialExpedientes { get; set; }
+        public virtual DbSet<VW_tbMedicamentos> VW_tbMedicamentos { get; set; }
         public virtual DbSet<VW_tbUsuarios> VW_tbUsuarios { get; set; }
         public virtual DbSet<tbActividades> tbActividades { get; set; }
         public virtual DbSet<tbAgendaDetalles> tbAgendaDetalles { get; set; }
@@ -60,6 +66,65 @@ namespace Asilo.DataAccess.Context
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
+            modelBuilder.Entity<VW_tbActividades>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbActividades", "asil");
+
+                entity.Property(e => e.acti_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.acti_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.acti_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbCategoriasHabitaciones>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbCategoriasHabitaciones", "asil");
+
+                entity.Property(e => e.cate_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cate_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cate_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbDonaciones>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbDonaciones", "asil");
+
+                entity.Property(e => e.dona_Cantidad).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.dona_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.dona_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.dona_NombreDonante)
+                    .IsRequired()
+                    .HasMaxLength(400);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
             modelBuilder.Entity<VW_tbEnfermedades>(entity =>
             {
                 entity.HasNoKey();
@@ -69,6 +134,74 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.enfe_FechaCreacion).HasColumnType("datetime");
 
                 entity.Property(e => e.enfe_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.enfe_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbExpedientes>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbExpedientes", "asil");
+
+                entity.Property(e => e.expe_FechaApertura).HasColumnType("date");
+
+                entity.Property(e => e.expe_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.expe_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.expe_Fotografia).HasMaxLength(500);
+
+                entity.Property(e => e.resi_NombreCompleto).HasMaxLength(401);
+
+                entity.Property(e => e.tiposang_Nombre)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbHistorialExpedientes>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbHistorialExpedientes", "asil");
+
+                entity.Property(e => e.empe_NombreCompleto)
+                    .IsRequired()
+                    .HasMaxLength(401);
+
+                entity.Property(e => e.histexpe_FechaActualizacion).HasColumnType("date");
+
+                entity.Property(e => e.histexpe_Observaciones)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+            });
+
+            modelBuilder.Entity<VW_tbMedicamentos>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbMedicamentos", "asil");
+
+                entity.Property(e => e.medi_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.medi_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.medi_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.prov_Nombre).HasMaxLength(200);
 
                 entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
 

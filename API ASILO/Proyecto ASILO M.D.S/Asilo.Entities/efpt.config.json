@@ -150,6 +150,14 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbActividades]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbCategoriasHabitaciones]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbDonaciones]",
          "ObjectType": 3
       },

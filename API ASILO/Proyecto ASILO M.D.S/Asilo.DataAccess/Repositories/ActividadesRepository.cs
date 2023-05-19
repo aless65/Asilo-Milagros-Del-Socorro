@@ -1,20 +1,23 @@
 ﻿using Asilo.Entities.Entities;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Asilo.DataAccess.Repositories
 {
-    public class ActividadesRepository : IRepository<tbActividades, tbActividades>
+    public class ActividadesRepository : IRepository<tbActividades, VW_tbActividades>
     {
         public RequestStatus Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public tbActividades Find(int? id)
+        public VW_tbActividades Find(int? id)
         {
             throw new NotImplementedException();
         }
@@ -24,9 +27,10 @@ namespace Asilo.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<tbActividades> List()
+        public IEnumerable<VW_tbActividades> List()
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            return db.Query<VW_tbActividades>(ScriptsDataBase.UDP_Lista_Actividades, null, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Update(tbActividades item)

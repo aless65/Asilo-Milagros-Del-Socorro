@@ -37,7 +37,7 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Actividades
-
+        public static string UDP_Lista_Actividades = "asil.UDP_asil_tbActividades_List";
         #endregion
 
         #region Agendas
@@ -49,7 +49,7 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Categorias Habitaciones
-
+        public static string UDP_Lista_CategoriasHabitaciones = "asil.UDP_asil_tbCategoriasHabitaciones_List";
         #endregion
 
         #region Centros

@@ -10,12 +10,12 @@ namespace Asilo.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActividadesController : ControllerBase
+    public class CategoriasHabitacionesController : ControllerBase
     {
         private readonly AsiloService _asiloServivce;
         private readonly IMapper _mapper;
 
-        public ActividadesController(AsiloService asiloService, IMapper mapper)
+        public CategoriasHabitacionesController(AsiloService asiloService, IMapper mapper)
         {
             _asiloServivce = asiloService;
             _mapper = mapper;
@@ -24,7 +24,7 @@ namespace Asilo.API.Controllers
         [HttpGet("Listado")]
         public IActionResult Index()
         {
-            var list = _asiloServivce.ListadoActividades();
+            var list = _asiloServivce.ListadoCategoriasHabitaciones();
             return Ok(list);
         }
     }

@@ -60,6 +60,19 @@ namespace Asilo.BusinessLogic.Services
         }
 
         #region Actividades
+        public ServiceResult ListadoActividades()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _actividadesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
@@ -72,6 +85,19 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Categorias Habitaciones
+        public ServiceResult ListadoCategoriasHabitaciones()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _categoriasHabitacionesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
