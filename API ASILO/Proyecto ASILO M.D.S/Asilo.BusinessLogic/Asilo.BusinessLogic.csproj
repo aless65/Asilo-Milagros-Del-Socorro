@@ -5,12 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asilo.DataAccess\Asilo.DataAccess.csproj" />
+    <Compile Remove="Services\AsiloService\**" />
+    <Compile Remove="Services\GeneralService\**" />
+    <EmbeddedResource Remove="Services\AsiloService\**" />
+    <EmbeddedResource Remove="Services\GeneralService\**" />
+    <None Remove="Services\AsiloService\**" />
+    <None Remove="Services\GeneralService\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\GeneralService\" />
-    <Folder Include="Services\AsiloService\" />
+    <ProjectReference Include="..\Asilo.DataAccess\Asilo.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
