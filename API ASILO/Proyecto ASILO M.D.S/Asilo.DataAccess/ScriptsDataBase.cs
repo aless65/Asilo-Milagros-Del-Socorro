@@ -8,44 +8,113 @@ namespace Asilo.DataAccess
 {
     public class ScriptsDataBase
     {
-        /* ir poniendo nombre a la region que vayan usando*/
         #region Usuarios
+
         #endregion
 
-        #region 
+        #region Pantallas
+
         #endregion
 
-        #region 
+        #region Roles
+
         #endregion
 
-        #region 
+        #region Departamentos
+
         #endregion
 
-        #region 
+        #region Municipios
+
         #endregion
 
-        #region 
+        #region Estados Civiles
+
         #endregion
 
-        #region 
+        #region Actividades
+
         #endregion
 
-        #region 
+        #region Agendas
+
         #endregion
 
-        #region 
+        #region Cargos
+
         #endregion
 
-        #region 
+        #region Categorias Habitaciones
+
         #endregion
 
-        #region 
+        #region Centros
+
         #endregion
 
-        #region 
+        #region Dietas
+
         #endregion
 
-        #region 
+        #region Donaciones
+
+        #endregion
+
+        #region Empleados
+
+        #endregion
+
+        #region Encargados
+
+        #endregion
+
+        #region Enfermedades
+        public static string UDP_Lista_Enfermedades = "asil.UDP_asil_tbEnfermedades_List";
+        public static string UDP_Inserta_Enfermedades = "asil.UDP_asil_tbEnfermedades_Insert";
+        public static string UDP_Find_Enfermedades = "asil.UDP_asil_VW_tbEnfermedades_Find";
+        public static string UDP_Edita_Enfermedades = "asil.UDP_asil_tbEnfermedades_Update";
+        public static string UDP_Elimina_Enfermedades = "asil.UDP_asil_tbEnfermedades_Delete";
+
+        #endregion
+
+        #region Expedientes
+
+        #endregion
+
+        #region Habitaciones
+
+        #endregion
+
+        #region Historial de pagos
+
+        #endregion
+
+        #region Medicamentos
+
+        #endregion
+
+        #region Métodos Pago
+
+        #endregion
+
+        #region Muertos
+
+        #endregion
+
+        #region Parentescos
+
+        #endregion
+
+        #region Proveedores
+
+        #endregion
+
+        #region Residentes
+
+        #endregion
+
+        #region Tipos de sangre
+
         #endregion
     }
 }

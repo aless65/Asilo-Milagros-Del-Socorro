@@ -20,5 +20,17 @@ namespace Asilo.BusinessLogic.Services
             _estadosCivilesRepository = estadosCivilesRepository;
         }
 
+        #region Departamentos
+
+        #endregion
+
+        #region Municipios
+
+        #endregion
+
+        #region Estados Civiles
+
+        #endregion
+
     }
 }

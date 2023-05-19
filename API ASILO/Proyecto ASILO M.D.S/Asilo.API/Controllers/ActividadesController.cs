@@ -1,7 +1,5 @@
-﻿
-using Asilo.BusinessLogic.Services;
+﻿using Asilo.BusinessLogic.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,18 +10,17 @@ namespace Asilo.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class ActividadesController : ControllerBase
     {
-        private readonly AccesoService _seguridadServivce;
+        private readonly AsiloService _asiloServivce;
         private readonly IMapper _mapper;
 
-        public UsuarioController(AccesoService seguridadService, IMapper mapper)
+        public ActividadesController(AsiloService asiloService, IMapper mapper)
         {
-            _seguridadServivce = seguridadService;
+            _asiloServivce = asiloService;
             _mapper = mapper;
         }
 
         /*metodos get, post and put*/
-
     }
 }

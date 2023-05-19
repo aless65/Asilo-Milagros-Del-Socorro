@@ -10,3 +10,15 @@ C:\Users\LAB01\Desktop\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S
 C:\Users\LAB01\Desktop\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.dll
 C:\Users\LAB01\Desktop\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\ref\Asilo.Entities.dll
 C:\Users\LAB01\Desktop\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.pdb
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\Asilo.Entities.deps.json
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\Asilo.Entities.dll
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\ref\Asilo.Entities.dll
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\Asilo.Entities.pdb
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.csproj.AssemblyReference.cache
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.AssemblyInfoInputs.cache
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.AssemblyInfo.cs
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.csproj.CoreCompileInputs.cache
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.dll
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\ref\Asilo.Entities.dll
+C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.pdb

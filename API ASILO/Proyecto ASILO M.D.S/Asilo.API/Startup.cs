@@ -33,7 +33,7 @@ namespace Asilo.API
             AddSwagger(services);
             services.DataAccess(Configuration.GetConnectionString("ConexionCons"));
             services.BusinessLogic();
-            services.AddAutoMapper(x => x.AddProfile<MappingProfileExntensions>(), AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(x => x.AddProfile<MappingProfileExtensions>(), AppDomain.CurrentDomain.GetAssemblies());
             services.AddSession();
 
             services.AddControllersWithViews();
