@@ -3215,11 +3215,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS( SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id )
 		UPDATE asil.tbHabitaciones
 		SET habi_Estado = 0
 		WHERE habi_Id   = @habi_Id
 
 		SELECT 'La habitación ha sido eliminada'
+		END
+		ELSE 
+		SELECT 'La habitación no puede ser eliminada ya que se esta usando en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
