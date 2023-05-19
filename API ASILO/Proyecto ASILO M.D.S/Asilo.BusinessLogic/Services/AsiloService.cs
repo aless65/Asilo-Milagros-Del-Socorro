@@ -1,4 +1,5 @@
 ﻿using Asilo.DataAccess.Repositories;
+using Asilo.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,7 +96,93 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Enfermedades
+        public ServiceResult ListadoEnfermedades()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _enfermedadesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindEnfermedades(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _enfermedadesRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertEnfermedades(tbEnfermedades item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _enfermedadesRepository.Insert(item);
+
+                if (insert.MessageStatus == "La enfermedad ha sido insertada exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Esta enfermedad ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateEnfermedades(tbEnfermedades item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _enfermedadesRepository.Update(item);
+
+                if (update.MessageStatus == "La enfermedad ha sido editada exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "La enfermedad ya existe")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteEnfermedades(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _enfermedadesRepository.Delete(id);
+
+                if (delete.MessageStatus == "La enfermedad ha sido eliminada")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "La enfermedad no puede ser eliminada ya que está siendo usada en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Expedientes

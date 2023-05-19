@@ -701,6 +701,7 @@ CREATE TABLE asil.tbDonaciones
 	dona_Id						INT IDENTITY,
 	dona_NombreDonante			NVARCHAR(400) NOT NULL,
 	dona_Cantidad				DECIMAL(18, 2) NOT NULL,
+	dona_Fecha					DATE NOT NULL,
 	
 	dona_UsuCreacion			INT NOT NULL,
 	dona_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_dona_FechaCreacion DEFAULT(GETDATE()),

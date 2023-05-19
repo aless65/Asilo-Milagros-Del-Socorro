@@ -74,7 +74,6 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Enfermedades = "asil.UDP_asil_VW_tbEnfermedades_Find";
         public static string UDP_Edita_Enfermedades = "asil.UDP_asil_tbEnfermedades_Update";
         public static string UDP_Elimina_Enfermedades = "asil.UDP_asil_tbEnfermedades_Delete";
-
         #endregion
 
         #region Expedientes

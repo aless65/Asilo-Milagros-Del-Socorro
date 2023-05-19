@@ -172,7 +172,7 @@ BEGIN
 END
 GO
 
-/*Insertar Usuarios*/
+/*Insertar enfermedades*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Insert
 	@enfe_Nombre		NVARCHAR(100),
 	@enfe_UsuCreacion	INT
@@ -209,7 +209,7 @@ BEGIN
 END
 GO
 
-/*Find Usuarios*/
+/*Find enfermedades*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_VW_tbEnfermedades_Find 
 	@enfe_Id	INT
 AS
@@ -220,7 +220,7 @@ END
 GO
 
 
-/*Editar usuarios*/
+/*Editar enfermedades*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Update
 	@enfe_Id					INT,
 	@enfe_Nombre				NVARCHAR(100),
@@ -261,17 +261,22 @@ END
 GO
 
 
-/*Eliminar usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_asil_tbEnfermedades_Delete
+/*Eliminar enfermedades*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Delete 
 	@enfe_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE asil.tbEnfermedades
-		SET enfe_Estado = 0
-		WHERE enfe_Id = @enfe_Id
+		IF NOT EXISTS (SELECT * FROM asil.tbEnfermedadesXPaciente WHERE enfe_Id = @enfe_Id)
+			BEGIN
+				UPDATE asil.tbEnfermedades
+				SET enfe_Estado = 0
+				WHERE enfe_Id = @enfe_Id
 
-		SELECT 'La enfermedad ha sido eliminada'
+				SELECT 'La enfermedad ha sido eliminada'
+			END
+		ELSE
+			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usada en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
