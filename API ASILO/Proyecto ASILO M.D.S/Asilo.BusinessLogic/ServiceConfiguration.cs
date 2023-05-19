@@ -35,6 +35,7 @@ namespace Asilo.BusinessLogic
             service.AddScoped<CategoriasHabitacionesRepository>();
             service.AddScoped<CentrosRepository>();
             service.AddScoped<DietasRepository>();
+            service.AddScoped<DonacionesRepository>();
             service.AddScoped<EmpleadosRepository>();
             service.AddScoped<EncargadosRepository>();
             service.AddScoped<EnfermedadesRepository>();
