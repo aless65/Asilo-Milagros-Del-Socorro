@@ -859,17 +859,22 @@ END
 GO
 
 
-/*ELIMINAR ACTIVIDADES*/
+/*ELIMINAR CATEGORÍAS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_Delete
 	 @cate_Id	INT
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbCategoriasHabitaciones WHERE cate_Id = @cate_Id AND cate_Estado = 1)
+		BEGIN
 		UPDATE asil.tbCategoriasHabitaciones
 		SET cate_Estado = 0
 		WHERE cate_Id = @cate_Id
 
 		SELECT 'La categoria ha sido eliminada'
+		END
+		ELSE
+			SELECT 'La categoria no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1013,11 +1018,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Delete
 AS
 BEGIN
 	BEGIN TRY
+	    IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos WHERE medi_Id = @medi_Id AND medi_Estado = 1)
+		BEGIN
 		UPDATE asil.tbMedicamentos
 		SET medi_Estado = 0
 		WHERE medi_Id = @medi_Id
 
 		SELECT 'El medicamento ha sido eliminada'
+		END
+		ELSE
+			SELECT 'El medicamento no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1153,11 +1163,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCargos_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbCargos WHERE carg_Id = @carg_Id AND carg_Estado = 1)
+	BEGIN
 		UPDATE asil.tbCargos
 		SET carg_Estado = 0
 		WHERE carg_Id = @carg_Id
 
 		SELECT 'El cargo ha sido eliminado'
+		END
+		ELSE
+			SELECT 'El cargo no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1358,11 +1373,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDietas_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.VW_tbExpedientes WHERE expe_Id = @expe_Id AND resi_Estado = 1)
+	 BEGIN
 		UPDATE asil.tbDietas
 		SET    diet_Estado = 0
 		WHERE diet_Id = @diet_Id
 
 		SELECT 'La dieta ha sido eliminada'
+		END
+		ELSE
+			SELECT 'La dieta no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1498,11 +1518,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendas_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbAgendas WHERE agen_Id = @agen_Id AND agen_Estado = 1)
+			BEGIN
 		UPDATE asil.tbAgendas
 		SET agen_Estado = 0
 		WHERE agen_Id = @agen_Id
 
 		SELECT 'La agenda ha sido eliminada'
+		ELSE
+			SELECT 'La agenda no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1740,11 +1764,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE empe_Id = @empe_Id AND empe_Estado = 1)
+			BEGIN
 		UPDATE asil.tbEmpleados
 		SET empe_Estado = 0
 		WHERE empe_Id = @empe_Id
 
 		SELECT 'El empleado ha sido eliminado'
+		END
+		ELSE
+			SELECT 'El empleado no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1889,11 +1918,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbAgendaDetalles WHERE agendeta_Id = @agendeta_Id AND agendeta_Estado = 1)
+			BEGIN
 		UPDATE asil.tbAgendaDetalles
 		SET agendeta_Estado = 0
 		WHERE agendeta_Id = @agendeta_Id
 
 		SELECT 'El detalle de la agenda ha sido eliminado'
+		ELSE
+			SELECT 'El detalle de la agenda no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2093,11 +2126,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbResidentes_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbResidentes WHERE resi_Id = @resi_Id AND resi_Estado = 1)
+			BEGIN
 		UPDATE asil.tbResidentes
 		SET resi_Estado = 0
 		WHERE resi_Id = @resi_Id
 
 		SELECT 'El residente ha sido eliminado'
+		END
+		ELSE
+			SELECT 'El residente no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2233,11 +2271,16 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbParentescos_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbParentescos WHERE pare_Id = @pare_Id AND pare_Estado = 1)
+			BEGIN
 		UPDATE asil.tbParentescos
 		SET pare_Estado = 0
 		WHERE pare_Id = @pare_Id
 
 		SELECT 'El parentesco ha sido eliminado'
+		ELSE
+			SELECT 'El parentesco no puede ser eliminado ya que está siendo usado en otro registro'
+
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2455,11 +2498,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEncargados_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbEncargados WHERE enca_Id = @enca_Id AND enca_Estado = 1)
+			BEGIN
 		UPDATE asil.tbEncargados
 		SET   enca_Estado = 0
 		WHERE enca_Id     = @enca_Id
 
 		SELECT 'El encargado ha sido eliminado'
+		ELSE
+			SELECT 'El encargado no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2552,7 +2599,7 @@ GO
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbTiposSangre_Update
   @tiposang_Id					INT,
   @tiposang_Nombre				CHAR(3),
-  @tiposang_UsuModificacion	INT
+  @tiposang_UsuModificacion	    INT
 AS
 BEGIN
 	BEGIN TRY
@@ -2595,11 +2642,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbTiposSangre_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbTiposSangre WHERE tiposang_Id = @tiposang_Id AND tiposang_Estado = 1)
+			BEGIN
 		UPDATE asil.tbTiposSangre
 		SET tiposang_Estado = 0
 		WHERE tiposang_Id   = @tiposang_Id
 
 		SELECT 'El tipo de sangre ha sido eliminado'
+		ELSE
+			SELECT 'El tipo de sangre no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2749,11 +2800,14 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedadesXResidente_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbEnfermedadesXResidente WHERE enferesi_Id = @enferesi_Id AND enferesi_Estado = 1)
 		UPDATE asil.tbEnfermedadesXResidente
 		SET enferesi_Estado = 0
 		WHERE enferesi_Id   = @enferesi_Id
 
 		SELECT 'La enfermedad por recidente ha sido eliminada'
+		ELSE
+			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2911,11 +2965,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbExpedientes WHERE expe_Id = @expe_Id AND resi_Estado = 1)
+			BEGIN
 		UPDATE asil.tbExpedientes
 		SET expe_Estado = 0
 		WHERE expe_Id   = @expe_Id
 
 		SELECT 'El expediente ha sido eliminado'
+		ELSE
+			SELECT 'El expediente no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3059,11 +3117,15 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Delete
 AS
 BEGIN
 	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbHistorialExpedientes WHERE histexpe_Id = @histexpe_Id AND histexpe_Estado = 1)
+			BEGIN
 		UPDATE asil.tbHistorialExpedientes
 		SET histexpe_Estado = 0
 		WHERE histexpe_Id   = @histexpe_Id
 
 		SELECT 'El historial expediente ha sido eliminado'
+		ELSE
+			SELECT 'El historial expediente no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3216,6 +3278,7 @@ AS
 BEGIN
 	BEGIN TRY
 	IF NOT EXISTS( SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id )
+	   BEGIN
 		UPDATE asil.tbHabitaciones
 		SET habi_Estado = 0
 		WHERE habi_Id   = @habi_Id
