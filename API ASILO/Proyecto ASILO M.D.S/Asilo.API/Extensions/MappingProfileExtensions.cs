@@ -14,7 +14,10 @@ namespace Asilo.API.Extensions
         {
            
            CreateMap<UsuarioViewModel, tbUsuarios>().ReverseMap();
-            CreateMap<EnfermedadesViewModel, tbEnfermedades>().ReverseMap();
+           CreateMap<EnfermedadesViewModel, tbEnfermedades>().ReverseMap();
+           CreateMap<MedicamentosViewModel, tbMedicamentos>().ReverseMap();
+           CreateMap<ExpedientesViewModel, tbExpedientes>().ReverseMap();
+           CreateMap<HistorialExpedientesViewModel, tbHistorialExpedientes>().ReverseMap();
         }
 
     }

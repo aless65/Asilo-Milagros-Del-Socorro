@@ -1,9 +1,7 @@
-﻿
-using Asilo.API.Models;
+﻿using Asilo.API.Models;
 using Asilo.BusinessLogic.Services;
 using Asilo.Entities.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,45 +12,45 @@ namespace Asilo.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class MedicamentosController : ControllerBase
     {
-        private readonly AccesoService _seguridadServivce;
+        private readonly AsiloService _asiloServivce;
         private readonly IMapper _mapper;
 
-        public UsuarioController(AccesoService seguridadService, IMapper mapper)
+        public MedicamentosController(AsiloService asiloService, IMapper mapper)
         {
-            _seguridadServivce = seguridadService;
+            _asiloServivce = asiloService;
             _mapper = mapper;
         }
 
         [HttpGet("Listado")]
         public IActionResult Index()
         {
-            var list = _seguridadServivce.ListadoUsuarios();
+            var list = _asiloServivce.ListadoMedicamentos();
             return Ok(list);
         }
 
         [HttpGet("Find")]
         public IActionResult Find(int id)
         {
-            var list = _seguridadServivce.FindUsuarios(id);
+            var list = _asiloServivce.FindMedicamentos(id);
             return Ok(list);
         }
 
         [HttpPost("Insertar")]
-        public IActionResult Insert(UsuarioViewModel usuario)
+        public IActionResult Insert(MedicamentosViewModel medicamento)
         {
-            var item = _mapper.Map<tbUsuarios>(usuario);
-            var insert = _seguridadServivce.InsertUsuarios(item);
+            var item = _mapper.Map<tbMedicamentos>(medicamento);
+            var insert = _asiloServivce.InsertMedicamentos(item);
 
             return Ok(insert);
         }
 
         [HttpPut("Editar")]
-        public IActionResult Update(UsuarioViewModel usuario)
+        public IActionResult Update(MedicamentosViewModel medicamento)
         {
-            var item = _mapper.Map<tbUsuarios>(usuario);
-            var update = _seguridadServivce.UpdateUsuarios(item);
+            var item = _mapper.Map<tbMedicamentos>(medicamento);
+            var update = _asiloServivce.UpdateMedicamentos(item);
 
             return Ok(update);
         }
@@ -60,10 +58,9 @@ namespace Asilo.API.Controllers
         [HttpPut("Eliminar")]
         public IActionResult Delete(int id)
         {
-            var delete = _seguridadServivce.DeleteUsuarios(id);
+            var delete = _asiloServivce.DeleteMedicamentos(id);
 
             return Ok(delete);
         }
-
     }
 }

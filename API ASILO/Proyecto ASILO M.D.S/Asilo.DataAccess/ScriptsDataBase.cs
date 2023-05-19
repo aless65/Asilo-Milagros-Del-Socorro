@@ -9,7 +9,11 @@ namespace Asilo.DataAccess
     public class ScriptsDataBase
     {
         #region Usuarios
-
+        public static string UDP_Lista_Usuarios = "acce.UDP_acce_tbUsuarios_List";
+        public static string UDP_Inserta_Usuarios = "acce.UDP_acce_tbUsuarios_Insert";
+        public static string UDP_Find_Usuarios = "acce.UDP_acce_VW_tbUsuarios_Find";
+        public static string UDP_Edita_Usuarios = "acce.UDP_acce_tbUsuarios_UPDATE";
+        public static string UDP_Elimina_Usuarios = "acce.UDP_acce_tbUsuarios_DELETE";
         #endregion
 
         #region Pantallas
@@ -77,7 +81,16 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Expedientes
+        public static string UDP_Lista_Expedientes = "asil.UDP_asil_tbExpedientes_List";
+        public static string UDP_Inserta_Expedientes = "asil.UDP_asil_tbExpedientes_Insert";
+        public static string UDP_Find_Expedientes = "asil.UDP_asil_tbExpedientes_Find";
+        public static string UDP_Edita_Expedientes = "asil.UDP_asil_tbExpedientes_Update";
+        public static string UDP_Elimina_Expedientes = "asil.UDP_asil_tbExpedientes_Delete";
 
+        public static string UDP_Lista_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_List";
+        public static string UDP_Inserta_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Insert";
+        public static string UDP_Edita_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Update";
+        public static string UDP_Elimina_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Delete";
         #endregion
 
         #region Habitaciones
@@ -89,7 +102,11 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Medicamentos
-
+        public static string UDP_Lista_Medicamentos = "asil.UDP_asil_tbMedicamentos_List";
+        public static string UDP_Inserta_Medicamentos = "asil.UDP_asil_tbMedicamentos_Insert";
+        public static string UDP_Find_Medicamentos = "asil.UDP_asil_tbMedicamentos_Find";
+        public static string UDP_Edita_Medicamentos = "asil.UDP_asil_tbMedicamentos_Update";
+        public static string UDP_Elimina_Medicamentos = "asil.UDP_asil_tbMedicamentos_Delete";
         #endregion
 
         #region Métodos Pago

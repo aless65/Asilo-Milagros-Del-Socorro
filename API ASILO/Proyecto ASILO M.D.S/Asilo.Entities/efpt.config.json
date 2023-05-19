@@ -150,7 +150,23 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbDonaciones]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbEnfermedades]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbExpedientes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbHistorialExpedientes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbMedicamentos]",
          "ObjectType": 3
       }
    ],

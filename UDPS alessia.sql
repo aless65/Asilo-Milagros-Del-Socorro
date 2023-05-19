@@ -5,6 +5,8 @@ CREATE OR ALTER VIEW asil.VW_tbMedicamentos
 AS
 	SELECT t1.medi_Id,
 		   t1.medi_Nombre,
+		   t1.prov_Id,
+		   t4.prov_Nombre,
 		   t1.medi_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   t1.medi_FechaCreacion, 
@@ -206,9 +208,8 @@ BEGIN
 			INSERT INTO asil.tbExpedientes(resi_Id, tiposang_Id, expe_FechaApertura, expe_Fotografia, expe_UsuCreacion)
 			VALUES(@resi_Id,@tiposang_Id,@expe_FechaApertura,@expe_Fotografia,@expe_UsuCreacion)
 
-			DECLARE @expe_Id INT = SCOPE_IDENTITY()
+			SELECT 'El expediente ha sido insertado exitosamente'
 
-			SELECT @expe_Id
 		END
 		ELSE IF EXISTS (SELECT * FROM asil.tbExpedientes
 						WHERE resi_Id = @resi_Id

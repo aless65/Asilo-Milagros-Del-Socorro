@@ -186,6 +186,160 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Expedientes
+        public ServiceResult ListadoExpedientes()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _expedientesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult ListadoHistorialExpedientesPorExpediente(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _expedientesRepository.ListHistorial(id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult FindExpedientes(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _expedientesRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertExpedientes(tbExpedientes item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _expedientesRepository.Insert(item);
+
+                if (insert.MessageStatus == "El expediente ha sido insertado exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este expediente ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertHistorialExpedientes(tbHistorialExpedientes item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _expedientesRepository.InsertHistorial(item);
+
+                if (insert.MessageStatus == "El historial ha sido insertado exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este historial ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateExpedientes(tbExpedientes item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _expedientesRepository.Update(item);
+
+                if (update.MessageStatus == "El expediente ha sido editado exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateHistorialExpedientes(tbHistorialExpedientes item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _expedientesRepository.UpdateHistorial(item);
+
+                if (update.MessageStatus == "El historial ha sido editado exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteExpedientes(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _expedientesRepository.Delete(id);
+
+                if (delete.MessageStatus == "El expediente ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "El expediente no puede ser eliminado ya que está siendo usado en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteHistorialExpedientes(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _expedientesRepository.Delete(id);
+
+                if (delete.MessageStatus == "El historial ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
@@ -198,7 +352,93 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Medicamentos
+        public ServiceResult ListadoMedicamentos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _medicamentosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindMedicamentos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _medicamentosRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertMedicamentos(tbMedicamentos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _medicamentosRepository.Insert(item);
+
+                if (insert.MessageStatus == "El medicamento ha sido insertado exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este medicamento ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateMedicamentos(tbMedicamentos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _medicamentosRepository.Update(item);
+
+                if (update.MessageStatus == "El medicamento ha sido editado exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "El medicamento ya existe")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteMedicamentos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _medicamentosRepository.Delete(id);
+
+                if (delete.MessageStatus == "El medicamento ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "El medicamento no puede ser eliminado ya que está siendo usado en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Métodos Pago
