@@ -5,7 +5,9 @@
 CREATE OR ALTER VIEW asil.VW_tbEmpleados
 AS
 	SELECT emp.[empe_Id], [empe_Nombres], [empe_Apellidos],emp.empe_Nombres +' '+ emp.empe_Apellidos empe_NombreCompleto ,[empe_Identidad], 
-	[empe_Sexo], emp.[estacivi_Id],est.estacivi_Nombre, [empe_Nacimiento],
+	[empe_Sexo], CASE WHEN empe_Sexo= 'F' THEN 'Femenino'
+				ELSE 'Masculino'
+			END AS SexoDes,emp.[estacivi_Id],est.estacivi_Nombre, [empe_Nacimiento],
 	emp.[muni_Id],muni.muni_Nombre, depa.depa_Id, depa.depa_Nombre [empe_Direccion],
 	[empe_Telefono], [empe_Correo], emp.[carg_Id], carg.carg_Nombre, emp.[cent_Id], cent.cent_Nombre,
 	[empe_UsuCreacion], usu1.usua_NombreUsuario usuarioCrea, [empe_FechaCreacion], [empe_UsuModificacion],
@@ -202,7 +204,9 @@ CREATE OR ALTER VIEW asil.VW_tbResidentes
 AS
 	SELECT [resi_Id], [resi_Nombres], [resi_Apellidos],
 	[resi_Identidad], res.[estacivi_Id],esci.estacivi_Nombre,  [resi_Nacimiento], 
-	[resi_Sexo], res.[diet_Id],dit.diet_Desayuno, dit.diet_Almuerzo, dit.diet_Cena, 
+	[resi_Sexo],CASE WHEN resi_Sexo = 'F' THEN 'Femenino'
+				ELSE 'Masculino'
+			END AS SexoDes ,res.[diet_Id],dit.diet_Desayuno, dit.diet_Almuerzo, dit.diet_Cena, 
 	empe.empe_Nombres, empe_Apellidos, empe.empe_Nombres + ' ' + empe_Apellidos AS empe_NombreCompleto,
 	dit.diet_Merienda, dit.diet_Observaciones, dit.diet_Restricciones,[resi_FechaIngreso],res.[empe_Id], 
 	res.[agen_Id], ag.agen_Nombre,[resi_UsuCreacion], usu1.usua_NombreUsuario usuCrea, [resi_FechaCreacion], 
@@ -213,7 +217,7 @@ AS
 	ON dit.diet_Id = res.diet_Id INNER JOIN ASIL.tbEmpleados empe
 	ON empe.empe_Id = res.empe_Id INNER JOIN asil.tbAgendas ag
 	ON ag.agen_Id = res.agen_Id INNER JOIN acce.tbUsuarios usu1
-	ON usu1.usua_Id = res.resi_UsuCreacion INNER JOIN acce.tbUsuarios usu2
+	ON usu1.usua_Id = res.resi_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
 	ON usu2.usua_Id = res.resi_UsuModificacion
 
 
@@ -404,7 +408,7 @@ AS
 	[agen_Id], [agen_Nombre], [agen_UsuCreacion],usu1.usua_NombreUsuario usuCrea, [agen_FechaCreacion], 
 	[agen_UsuModificacion], usu2.usua_NombreUsuario usuModif,[agen_FechaModificacion], [agen_Estado]
 	FROM [asil].[tbAgendas] age INNER JOIN [acce].[tbUsuarios] usu1
-	ON usu1.usua_Id = age.agen_UsuCreacion INNER JOIN acce.tbUsuarios usu2
+	ON usu1.usua_Id = age.agen_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
 	ON usu2.usua_Id = age.agen_UsuModificacion
 GO
 
@@ -544,7 +548,7 @@ AS
 	FROM [asil].[tbHistorialPagos] hip INNER JOIN [asil].[tbResidentes] resi
 	ON resi.resi_Id = hip.resi_Id INNER JOIN [asil].[tbMetodosPago] met
 	ON met.meto_Id = hip.meto_Id INNER JOIN [acce].[tbUsuarios] usu1
-	ON usu1.usua_Id = hip.pago_UsuCreacion INNER JOIN [acce].[tbUsuarios] usu2
+	ON usu1.usua_Id = hip.pago_UsuCreacion LEFT JOIN [acce].[tbUsuarios] usu2
 	ON usu2.usua_Id = hip.pago_UsuModificacion
 GO
 
@@ -664,7 +668,9 @@ AS
 		   cent_Id,
 		   cent_Nombre,
 		   t1.muni_Id, 
-		   t4.muni_Nombre
+		   t4.muni_Nombre,
+		   depa.depa_Id,
+		   depa.depa_Nombre,
 		   cent_Direccion, 
 		   cent_UsuCreacion, 
 		   cent_FechaCreacion,  
@@ -673,11 +679,12 @@ AS
 		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
 		   cent_FechaModificacion,
 	       cent_Estado
-		   FROM asil.tbCentros t1 LEFT JOIN acce.tbUsuarios t2
+		   FROM asil.tbCentros t1 INNER JOIN acce.tbUsuarios t2
 		   ON t1.cent_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.cent_UsuModificacion = t3.usua_Id INNER JOIN gral.tbMunicipios t4
-		   ON T1.muni_Id = t4.muni_id
+		   ON t1.cent_UsuModificacion = t3.usua_Id LEFT JOIN gral.tbMunicipios t4
+		   ON T1.muni_Id = t4.muni_id INNER JOIN [gral].[tbDepartamentos] depa
+		   ON depa.depa_Id = t4.depa_Id
 GO
 
 /*LISTAR CENTROS*/
@@ -794,17 +801,27 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCentros_Delete
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE asil.tbCentros
-		SET cent_Estado = 0
-		WHERE cent_Id = @cent_Id
 
-		SELECT 1 as proceso
+
+	IF NOT EXISTS (SELECT * FROM asil.tbCentros WHERE cent_Id = @cent_Id)
+			BEGIN
+			UPDATE asil.tbCentros
+			SET cent_Estado = 0
+			WHERE cent_Id = @cent_Id
+			SELECT 1 AS proceso
+			END
+		ELSE
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
 	END CATCH
 END
 GO
+
+
+
+
 
 --************PROVEEDORES******************--
 
@@ -817,6 +834,8 @@ AS
 	       prov_Telefono,
 	       t1.muni_Id,
 		   t4.muni_Nombre,
+		   depa.depa_Nombre,
+		   depa.depa_Id,
 	       prov_Direccion,
 		   prov_UsuCreacion,
 		   prov_FechaCreacion,
@@ -829,7 +848,8 @@ AS
 		   ON t1.prov_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
 		   ON t1.prov_UsuModificacion = t3.usua_Id INNER JOIN gral.tbMunicipios t4
-		   ON T1.muni_Id = t4.muni_id
+		   ON T1.muni_Id = t4.muni_id INNER JOIN [gral].[tbDepartamentos] depa
+		   ON depa.depa_Id = t4.depa_Id
 GO
 
 /*LISTAR PROVEEDORES*/
@@ -871,7 +891,7 @@ BEGIN
 			INSERT INTO asil.tbProveedores(prov_Nombre, prov_CorreoElectronico, prov_Telefono, muni_Id, prov_Direccion, prov_UsuCreacion)
 			VALUES(@prov_Nombre, @prov_CorreoElectronico, @prov_Telefono, @muni_Id, @prov_Direccion, @prov_UsuCreacion)
 			
-			SELECT 'El proveedor ha sido insertado'
+			SELECT 1 as proceso
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbProveedores  
 						WHERE prov_Nombre = @prov_Nombre
@@ -881,13 +901,13 @@ BEGIN
 				SET prov_Estado = 1
 				WHERE prov_Nombre = @prov_Nombre
 
-				SELECT 'El proveedor ha sido insertado'
+				SELECT 1 as proceso
 			END
 		ELSE
-			SELECT 'Este proveedor ya existe'
+			SELECT -2 as proceso
 	END TRY
 	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
+		SELECT 0
 	END CATCH
 END
 GO
@@ -920,14 +940,14 @@ BEGIN
 					prov_FechaModificacion = GETDATE()
 			WHERE 	prov_Id = @prov_Id
 
-			SELECT 'El proveedor ha sido editado'
+			SELECT 1 as proceso
 		END
 		ELSE IF EXISTS (SELECT * FROM asil.tbProveedores
 						WHERE prov_Nombre     = @prov_Nombre
 							  AND prov_Estado = 1
 							  AND prov_Id     != @prov_Id)
 
-			SELECT 'El proveedor ya existe'
+			SELECT -2 as proceso
 		ELSE
 			UPDATE  asil.tbProveedores
 			SET     prov_Estado          = 1,
@@ -939,10 +959,10 @@ BEGIN
 					prov_FechaModificacion = GETDATE()
 			WHERE  @prov_Nombre = prov_Nombre
 
-			SELECT 'El proveedor ha sido editado'
+			SELECT 1 as proceso
 	END TRY
 	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
+		SELECT 0
 	END CATCH
 END
 GO
@@ -954,15 +974,171 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbProveedores_Delete
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE asil.tbProveedores
-		SET prov_Estado = 0
-		WHERE prov_Id = @prov_Id
-
-		SELECT 'El proveedor ha sido eliminado'
+	IF NOT EXISTS (SELECT * FROM asil.tbProveedores WHERE prov_Id = @prov_Id)
+			BEGIN
+					UPDATE asil.tbProveedores
+					SET prov_Estado = 0
+					WHERE prov_Id = @prov_Id
+					SELECT 1 AS proceso
+			END
+		ELSE
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
+		SELECT 0
 	END CATCH
 END
 GO
+
 -------------------------------------------------------------------------------------------------------------------------
+
+/*VISTA HABITACIONES*/
+CREATE OR ALTER VIEW asil.VW_tbHabitaciones
+AS
+	SELECT [habi_Id], [habi_Numero],
+	hab.[cate_Id], cate.cate_Nombre,hab.[cent_Id],cent.cent_Nombre,
+	[habi_UsuCreacion],usu1.usua_NombreUsuario usuCrea,[habi_FechaCreacion],
+	[habi_UsuModificacion], usu2.usua_NombreUsuario usuModif,
+	[habi_Estado], [habi_FechaModificacion]
+	FROM [asil].[tbHabitaciones] hab INNER JOIN [asil].[tbCategoriasHabitaciones] cate
+	ON cate.cate_Id = hab.cate_Id INNER JOIN [asil].[tbCentros] cent 
+	ON cent.cent_Id = hab.cent_Id INNER JOIN [acce].[tbUsuarios] usu1
+	ON usu1.usua_Id = hab.habi_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
+	ON usu2.usua_Id = hab.habi_UsuModificacion
+GO
+
+/*LISTAR HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_List
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbHabitaciones
+	WHERE habi_Estado = 1
+END
+GO
+
+/*FIND HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Find 
+	@habi_Id	INT
+AS
+BEGIN
+	SELECT * FROM asil.VW_tbHabitaciones
+	WHERE habi_Estado = 1
+	AND habi_Id = @habi_Id
+END
+GO
+
+
+/* INSERTAR HABITACIONES */
+CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Agregar
+/*	@habi_Id			INT, */
+	@habi_Numero		INT,
+	@cate_Id			INT, 
+	@cent_Id			INT, 
+	@habi_UsuCreacion	INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE habi_Numero = @habi_Numero)
+			BEGIN
+			INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
+			VALUES(@habi_Numero, @cate_Id, @cent_Id, @habi_UsuCreacion)
+			
+			SELECT 1 as proceso
+			END
+		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE  habi_Numero = @habi_Numero
+						AND habi_Estado = 0)
+			BEGIN
+				UPDATE asil.tbHabitaciones 
+				SET habi_Estado = 1
+				WHERE habi_Numero = @habi_Numero
+
+				SELECT 1 as proceso
+			END
+		ELSE
+			SELECT -2 as proceso
+	END TRY
+	BEGIN CATCH
+		SELECT 0
+	END CATCH
+END
+GO
+
+/* ACTUALIZAR HABITACIONES */
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Actulaizar
+		@habi_Id				INT,
+		@habi_Numero			INT,
+		@cate_Id				INT,
+		@cent_Id				INT,
+		@habi_UsuModificacion	INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE habi_Numero = @habi_Numero)
+		BEGIN			
+			UPDATE  asil.tbHabitaciones 
+			SET 	
+			        habi_Numero				= @habi_Numero		,
+					cate_Id					= @cate_Id			,
+			        cent_Id					= @cent_Id			,
+					habi_UsuModificacion	= @habi_UsuModificacion,
+					habi_FechaModificacion	= GETDATE()
+			WHERE 	habi_Id = @habi_Id
+
+			SELECT 1 as proceso
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE habi_Numero     = @habi_Numero
+							  AND habi_Estado = 1
+							  AND habi_Id     != @habi_Id)
+
+			SELECT -2 as proceso
+		ELSE
+			UPDATE  asil.tbHabitaciones 
+			SET     habi_Estado             = 1,
+			        habi_Numero				= @habi_Numero		,
+					cate_Id					= @cate_Id			,
+			        cent_Id					= @cent_Id			,
+					habi_UsuModificacion	= @habi_UsuModificacion,
+					habi_FechaModificacion	= GETDATE()				
+			WHERE  @habi_Numero = @habi_Numero
+
+			SELECT 1 as proceso
+	END TRY
+	BEGIN CATCH
+		SELECT 0
+	END CATCH
+END
+GO
+
+
+/*ELIMINAR HABITACION*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+	 @habi_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id)
+			BEGIN
+					UPDATE asil.tbHabitaciones
+					SET habi_Estado = 0
+					WHERE habi_Id = @habi_Id
+					SELECT 1 AS proceso
+			END
+		ELSE
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
+	END TRY
+	BEGIN CATCH
+		SELECT 0
+	END CATCH
+END
+GO
+
+
+
+

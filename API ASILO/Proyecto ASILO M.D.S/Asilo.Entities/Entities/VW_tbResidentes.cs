@@ -16,6 +16,7 @@ namespace Asilo.Entities.Entities
         public string estacivi_Nombre { get; set; }
         public DateTime resi_Nacimiento { get; set; }
         public string resi_Sexo { get; set; }
+        public string SexoDes { get; set; }
         public int diet_Id { get; set; }
         public string diet_Desayuno { get; set; }
         public string diet_Almuerzo { get; set; }

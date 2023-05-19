@@ -28,7 +28,12 @@ namespace Asilo.DataAccess.Repositories
 
         public VW_tbHistorialPagos Find(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@pago_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.QueryFirst<VW_tbHistorialPagos>(ScriptsDataBase.HistorialPagosFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbHistorialPagos item)

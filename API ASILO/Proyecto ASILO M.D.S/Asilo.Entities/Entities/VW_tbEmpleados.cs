@@ -14,6 +14,7 @@ namespace Asilo.Entities.Entities
         public string empe_NombreCompleto { get; set; }
         public string empe_Identidad { get; set; }
         public string empe_Sexo { get; set; }
+        public string SexoDes { get; set; }
         public int estacivi_Id { get; set; }
         public string estacivi_Nombre { get; set; }
         public DateTime empe_Nacimiento { get; set; }

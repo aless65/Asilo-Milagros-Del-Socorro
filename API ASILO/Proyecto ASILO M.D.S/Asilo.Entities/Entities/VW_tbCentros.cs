@@ -11,6 +11,9 @@ namespace Asilo.Entities.Entities
         public int cent_Id { get; set; }
         public string cent_Nombre { get; set; }
         public string muni_Id { get; set; }
+        public string muni_Nombre { get; set; }
+        public string depa_Id { get; set; }
+        public string depa_Nombre { get; set; }
         public string cent_Direccion { get; set; }
         public int cent_UsuCreacion { get; set; }
         public DateTime cent_FechaCreacion { get; set; }

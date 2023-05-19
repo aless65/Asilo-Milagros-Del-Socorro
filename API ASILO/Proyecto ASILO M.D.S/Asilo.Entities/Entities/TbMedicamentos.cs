@@ -13,11 +13,10 @@ namespace Asilo.Entities.Entities
             tbAgendaDetalles = new HashSet<tbAgendaDetalles>();
             tbInventarioPorCentro = new HashSet<tbInventarioPorCentro>();
         }
+
         public int medi_Id { get; set; }
         public string medi_Nombre { get; set; }
         public int prov_Id { get; set; }
-        public int cent_Id { get; set; }
-        public int invecent_Stock { get; set; }
         public int medi_UsuCreacion { get; set; }
         public DateTime medi_FechaCreacion { get; set; }
         public int? medi_UsuModificacion { get; set; }

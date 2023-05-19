@@ -14,10 +14,6 @@
    "SelectedToBeGenerated": 1,
    "Tables": [
       {
-         "Name": "[acce].[tbInventarioPorCentro]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[acce].[tbPantallas]",
          "ObjectType": 0
       },
@@ -106,6 +102,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[asil].[tbInventarioPorCentro]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[asil].[tbMedicamentos]",
          "ObjectType": 0
       },
@@ -154,7 +154,27 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbAgendaDetalles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbAgendas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbCargos]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbCategoriasHabitaciones]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbCentros]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbDietas]",
          "ObjectType": 3
       },
       {
@@ -162,7 +182,19 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbEmpleados]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbEncargados]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbEnfermedades]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbEnfermedadesXResidente]",
          "ObjectType": 3
       },
       {
@@ -170,15 +202,43 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbHabitaciones]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbHistorialExpedientes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbHistorialPagos]",
          "ObjectType": 3
       },
       {
          "Name": "[asil].[VW_tbMedicamentos]",
          "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbMuertos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbParentescos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbProveedores]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbResidentes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_tbTiposSangre]",
+         "ObjectType": 3
       }
    ],
-   "UiHint": "VJ2100.AsiloJAC",
+   "UiHint": "LAPTOP-64AJM339.AsiloJAC",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

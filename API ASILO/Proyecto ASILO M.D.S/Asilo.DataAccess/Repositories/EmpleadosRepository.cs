@@ -29,7 +29,13 @@ namespace Asilo.DataAccess.Repositories
 
         public VW_tbEmpleados Find(int? id)
         {
-            throw new NotImplementedException();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@empe_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.QueryFirst<VW_tbEmpleados>(ScriptsDataBase.EmpleadosFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbEmpleados item)

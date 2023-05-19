@@ -26,9 +26,16 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
+
+
         public VW_tbAgendas Find(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@agen_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.QueryFirst<VW_tbAgendas>(ScriptsDataBase.AgendaFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbAgendas item)

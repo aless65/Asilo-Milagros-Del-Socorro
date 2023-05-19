@@ -110,7 +110,11 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Habitaciones
-
+        public static string HabitacionesList = "asil.UDP_asil_tbHabitaciones_List";
+        public static string HabitacionesFind = "asil.UDP_asil_tbHabitaciones_Find";
+        public static string AgregarHabitacion = "asil.UDP_tbHabitaciones_Agregar";
+        public static string ActualizarHabitaciones = "asil.UDP_tbHabitaciones_Actulaizar";
+        public static string EliminarHabitaciones = "asil.UDP_asil_tbHabitaciones_Delete";
         #endregion
 
         #region Historial de pagos

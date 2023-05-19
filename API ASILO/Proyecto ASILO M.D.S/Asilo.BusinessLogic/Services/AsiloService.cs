@@ -77,7 +77,120 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Agendas
+        public ServiceResult ListadoAgendas()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _agendasRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult FindAgendas(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _agendasRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult InsertarAgendas(tbAgendas item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _agendasRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
 
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarAgendas(tbAgendas item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var edit = _agendasRepository.Update(item);
+                if (edit.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (edit.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (edit.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EliminarAgendas(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var delete = _agendasRepository.Delete(id);
+
+                if (delete.CodeStatus == 1)
+                {
+                    return result.SetMessage("Registro eliminado", ServiceResultType.Success);
+                }
+                else if (delete.MessageStatus == "La agenda no puede ser eliminada porque está siendo usada")
+                {
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
+                else if (delete.CodeStatus == 0)
+                {
+                    return result.SetMessage("Error Inesperado", ServiceResultType.Error);
+                }
+                else
+                { return result.SetMessage("Conexión perdida", ServiceResultType.Error); }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Cargos
@@ -116,6 +229,19 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult FindCentros(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _centrosRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         public ServiceResult InsertarCentros(tbCentros item)
         {
             ServiceResult result = new ServiceResult();
@@ -188,10 +314,10 @@ namespace Asilo.BusinessLogic.Services
                 {
                     return result.SetMessage("Registro eliminado", ServiceResultType.Success);
                 }
-                /*else if (delete.CodeStatus == -2)
+                else if (delete.MessageStatus == "El registro no puede ser eliminado porque está siendo usado")
                 {
-                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
-                }*/  /* aqui lo de que está en uso*/
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
                 else if (delete.CodeStatus == 0)
                 {
                     return result.SetMessage("Error Inesperado", ServiceResultType.Error);
@@ -223,6 +349,19 @@ namespace Asilo.BusinessLogic.Services
             {
                 var list = _empleadosRepository.List();
                 return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult FindEmpleados(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _empleadosRepository.Find(id);
+                return result.Ok(enfermedad);
             }
             catch (Exception e)
             {
@@ -302,10 +441,10 @@ namespace Asilo.BusinessLogic.Services
                 {
                     return result.SetMessage("Registro eliminado", ServiceResultType.Success);
                 }
-                /*else if (delete.CodeStatus == -2)
+                else if (delete.MessageStatus == "El registro del empleado no se puede eliminar porque está siendo usado")
                 {
-                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
-                }*/  /* aqui lo de que está en uso*/
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
                 else if (delete.CodeStatus == 0)
                 {
                     return result.SetMessage("Error Inesperado", ServiceResultType.Error);
@@ -574,11 +713,233 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Habitaciones
+        public ServiceResult ListadoHabitaciones()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _habitacionesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindHabitaciones(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _habitacionesRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+
+        public ServiceResult InsertarHabitaciones(tbHabitaciones item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _habitacionesRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarHabitaciones(tbHabitaciones item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var edit = _habitacionesRepository.Update(item);
+                if (edit.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (edit.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (edit.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EliminarHabitaciones(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var delete = _habitacionesRepository.Delete(id);
+
+                if (delete.CodeStatus == 1)
+                {
+                    return result.SetMessage("Registro eliminado", ServiceResultType.Success);
+                }
+                else if (delete.MessageStatus == "El registro no puede ser eliminado porque está siendo usado")
+                {
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
+                else if (delete.CodeStatus == 0)
+                {
+                    return result.SetMessage("Error Inesperado", ServiceResultType.Error);
+                }
+                else
+                { return result.SetMessage("Conexión perdida", ServiceResultType.Error); }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Historial de pagos
+        public ServiceResult ListadoHistorialPago()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _historialPagosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult FindHistorialPago(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _historialPagosRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult InsertarHistorialPago(tbHistorialPagos item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _historialPagosRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
 
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarHistorialPago(tbHistorialPagos item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var edit = _historialPagosRepository.Update(item);
+                if (edit.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+             
+                else if (edit.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EliminarHistorialPago(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var delete = _historialPagosRepository.Delete(id);
+
+                if (delete.CodeStatus == 1)
+                {
+                    return result.SetMessage("Registro eliminado", ServiceResultType.Success);
+                }
+                else if (delete.MessageStatus == "El registro no puede ser eliminado porque está siendo usado")
+                {
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
+                else if (delete.CodeStatus == 0)
+                {
+                    return result.SetMessage("Error Inesperado", ServiceResultType.Error);
+                }
+                else
+                { return result.SetMessage("Conexión perdida", ServiceResultType.Error); }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Medicamentos
@@ -684,7 +1045,121 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Proveedores
+        public ServiceResult ListadoProveedores()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _proveedoresRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindProveedores(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _proveedoresRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult InsertarProveedores(tbProveedores item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _proveedoresRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarProveedores(tbProveedores item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var edit = _proveedoresRepository.Update(item);
+                if (edit.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (edit.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (edit.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EliminarProveedores(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var delete = _proveedoresRepository.Delete(id);
+
+                if (delete.CodeStatus == 1)
+                {
+                    return result.SetMessage("Registro eliminado", ServiceResultType.Success);
+                }
+                else if (delete.MessageStatus == "El registro no puede ser eliminado porque está siendo usado")
+                {
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
+                else if (delete.CodeStatus == 0)
+                {
+                    return result.SetMessage("Error Inesperado", ServiceResultType.Error);
+                }
+                else
+                { return result.SetMessage("Conexión perdida", ServiceResultType.Error); }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Residentes
@@ -695,6 +1170,19 @@ namespace Asilo.BusinessLogic.Services
             {
                 var list = _empleadosRepository.List();
                 return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+        public ServiceResult FindResidentes(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _residentesRepository.Find(id);
+                return result.Ok(enfermedad);
             }
             catch (Exception e)
             {
@@ -732,12 +1220,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult EditarResidentes(tbEmpleados item)
+        public ServiceResult EditarResidentes(tbResidentes item)
         {
             ServiceResult result = new ServiceResult();
             try
             {
-                var edit = _empleadosRepository.Update(item);
+                var edit = _residentesRepository.Update(item);
                 if (edit.CodeStatus > 0)
                 {
                     return result.SetMessage("Exitoso", ServiceResultType.Success);
@@ -774,10 +1262,10 @@ namespace Asilo.BusinessLogic.Services
                 {
                     return result.SetMessage("Registro eliminado", ServiceResultType.Success);
                 }
-                /*else if (delete.CodeStatus == -2)
+                else if (delete.MessageStatus == "El registro del Residente no puede ser eliminado porque está siendo usado")
                 {
-                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
-                }*/  /* aqui lo de que está en uso*/
+                    return result.SetMessage("no se pudo", ServiceResultType.Warning);
+                }
                 else if (delete.CodeStatus == 0)
                 {
                     return result.SetMessage("Error Inesperado", ServiceResultType.Error);
