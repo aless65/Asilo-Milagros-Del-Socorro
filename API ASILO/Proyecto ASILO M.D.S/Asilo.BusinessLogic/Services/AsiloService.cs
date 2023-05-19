@@ -81,6 +81,19 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Cargos
+        public ServiceResult ListadoCargos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _cargosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
@@ -211,7 +224,87 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Donaciones
+        public ServiceResult ListadoDonaciones()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _donacionesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindDonaciones(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _donacionesRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertDonaciones(tbDonaciones item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _donacionesRepository.Insert(item);
+
+                if (insert.MessageStatus == "Ha ocurrido un error")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateDonaciones(tbDonaciones item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _donacionesRepository.Update(item);
+
+                if (update.MessageStatus == "La donación ha sido editada exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteDonaciones(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _donacionesRepository.Delete(id);
+
+                if (delete.MessageStatus == "La donación ha sido eliminada")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Empleados
@@ -322,7 +415,91 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Encargados
+        public ServiceResult ListadoEncargados()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _encargadosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindEncargados(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var encargado = _encargadosRepository.Find(id);
+                return result.Ok(encargado);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertEncargados(tbEncargados item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _encargadosRepository.Insert(item);
+
+                if (insert.MessageStatus == "El encargado ha sido insertado exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Ya existe un encargado con este número de identidad")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateEncargados(tbEncargados item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _encargadosRepository.Update(item);
+
+                if (update.MessageStatus == "El encargado ha sido editado exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "Ya existe un encargado con este número de identidad")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteEncargados(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _encargadosRepository.Delete(id);
+
+                if (delete.MessageStatus == "El encargado ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Enfermedades
@@ -672,14 +849,120 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Métodos Pago
+        public ServiceResult ListadoMetodosPago()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _metodosPagoRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
         #region Muertos
+        public ServiceResult ListadoMuertos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _muertosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
+        public ServiceResult FindMuertos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _muertosRepository.Find(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertMuertos(tbMuertos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _muertosRepository.Insert(item);
+
+                if (insert.MessageStatus == "La muerte ha sido insertada")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateMuertos(tbMuertos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _muertosRepository.Update(item);
+
+                if (update.MessageStatus == "ha sido editado")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteMuertos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _muertosRepository.Delete(id);
+
+                if (delete.MessageStatus == "ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Parentescos
+        public ServiceResult ListadoParentescos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _parentescosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 

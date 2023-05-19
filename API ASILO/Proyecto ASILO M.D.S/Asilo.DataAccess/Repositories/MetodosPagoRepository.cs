@@ -1,6 +1,9 @@
 ﻿using Asilo.Entities.Entities;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +29,8 @@ namespace Asilo.DataAccess.Repositories
 
         public IEnumerable<tbMetodosPago> List()
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            return db.Query<tbMetodosPago>(ScriptsDataBase.UDP_Lista_MetodosPago, null, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Update(tbMetodosPago item)

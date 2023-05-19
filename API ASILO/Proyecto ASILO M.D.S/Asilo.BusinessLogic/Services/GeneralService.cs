@@ -21,15 +21,53 @@ namespace Asilo.BusinessLogic.Services
         }
 
         #region Departamentos
+        public ServiceResult ListadoDepartamentos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _departamentosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
         #region Municipios
+        public ServiceResult ListadoMunicipios(string depa)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _municipiosRepository.List(depa);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
 
         #region Estados Civiles
-
+        public ServiceResult ListadoEstadosCiviles()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _estadosCivilesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
     }

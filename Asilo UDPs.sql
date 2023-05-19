@@ -2008,6 +2008,8 @@ AS
 		   enca_Telefono,
 		   t1.resi_Id,
 		   t8.resi_Nombres,
+		   t8.resi_Apellidos,
+		   t8.resi_Estado,
 		   t1.pare_Id,
 		   t9.pare_Nombre,
 		   enca_UsuCreacion,
@@ -2105,7 +2107,7 @@ BEGIN
 					   enca_UsuCreacion = @enca_UsuCreacion
 				WHERE enca_Identidad = @enca_Identidad
 
-				SELECT 'El encargado ha sido insertado'
+				SELECT 'El encargado ha sido insertado exitosamente'
 			END
 		ELSE
 			SELECT 'Ya existe un encargado con este número de identidad'
@@ -2121,7 +2123,7 @@ GO
 
 /*EDITAR ENCARGADOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEncargados_Update
-    @enca_Id					INT,
+   @enca_Id					INT,
    @enca_Nombres			NVARCHAR(200),
    @enca_Apellidos			NVARCHAR(200),
    @enca_Identidad			VARCHAR(13),
@@ -2156,7 +2158,7 @@ BEGIN
 					enca_FechaModificacion = GETDATE()
 			WHERE 	enca_Id                = @enca_Id
 
-			SELECT 'El encargado ha sido editado'
+			SELECT 'El encargado ha sido editado exitosamente'
 		END
 		ELSE IF EXISTS (SELECT * FROM asil.tbEncargados
 						WHERE enca_Identidad  = @enca_Identidad
@@ -2181,7 +2183,7 @@ BEGIN
 					enca_FechaModificacion = GETDATE()
 			WHERE   enca_Identidad         = @enca_Identidad
 
-			SELECT 'El encargado ha sido editado'
+			SELECT 'El encargado ha sido editado exitosamente'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2196,16 +2198,11 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEncargados_Delete
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbEncargados WHERE enca_Id = @enca_Id AND enca_Estado = 1)
-			BEGIN
 		UPDATE asil.tbEncargados
 		SET   enca_Estado = 0
 		WHERE enca_Id     = @enca_Id
 
 		SELECT 'El encargado ha sido eliminado'
-		END
-		ELSE
-			SELECT 'El encargado no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3045,7 +3042,6 @@ GO
 /*EDITAR MUERTOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Update
     @muer_Id                        INT,
-	@resi_Id						INT,
 	@muer_FechaYHora				DATETIME,
 	@muer_Descripcion				NVARCHAR(500),
 	@muer_UsuModificacion			INT
@@ -3095,16 +3091,11 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Delete
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS( SELECT * FROM asil.tbMuertos WHERE muer_Id = @muer_Id )
-	   BEGIN
 		UPDATE asil.tbMuertos
 		SET muer_Estado = 0
 		WHERE muer_Id   = @muer_Id
 
 		SELECT 'ha sido eliminado'
-		END
-		ELSE 
-		SELECT 'no puede ser eliminado ya que se esta usando en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3217,5 +3208,76 @@ BEGIN
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
 	END CATCH
+END
+GO
+
+
+--************ESTADOS CIVILES******************--
+
+/*Listar estados*/
+GO
+CREATE OR ALTER PROCEDURE gral.UDP_gral_tbEstadosCiviles_List
+AS
+BEGIN
+	SELECT estacivi_Id, estacivi_Nombre
+	FROM [gral].[tbEstadosCiviles]
+	WHERE estacivi_Estado = 1
+END
+
+
+
+--************MUNICIPIOS******************--
+/*Listar municipios*/
+GO
+CREATE OR ALTER PROCEDURE gral.UDP_gral_tbMunicipios_List 
+	@depa_Id	INT
+AS
+BEGIN
+	SELECT muni_Id, muni_Nombre
+	FROM [gral].tbMunicipios
+	WHERE muni_Estado = 1
+	AND depa_Id = @depa_Id
+END
+
+
+--************DEPARTAMENTOS******************--
+
+/*Listar departamentos*/
+GO
+CREATE OR ALTER PROCEDURE gral.UDP_gral_tbDepartamentos_List
+AS
+BEGIN
+	SELECT depa_Id, depa_Nombre
+	FROM [gral].tbDepartamentos
+	WHERE depa_Estado = 1
+END
+GO
+
+
+--************METODO DE PAGO******************--
+CREATE OR ALTER VIEW asil.VW_tbMetodosPagos
+AS
+	SELECT meto_Id, 
+	       meto_Nombre, 
+		   meto_UsuCreacion, 
+		   T2.usua_NombreUsuario AS meto_NombreUsuarioCreacion,
+		   meto_FechaCreacion, 
+		   meto_UsuModificacion, 
+		   t3.usua_NombreUsuario AS meto_NombreUsuarioModificacion,
+		   meto_FechaModificacion, 
+		   meto_Estado
+	FROM asil.tbMetodosPago t1 INNER JOIN acce.tbUsuarios T2
+	ON T1.meto_UsuCreacion = T2.usua_Id LEFT JOIN acce.tbUsuarios T3
+	ON T1.meto_UsuModificacion = T3.usua_Id
+	WHERE T1.meto_Estado = 1
+GO
+
+
+/*Listado de metodos de pago*/
+CREATE OR ALTER PROCEDURE gral.UDP_asil_tbMetodosPagos_List
+AS
+BEGIN
+	SELECT * 
+	FROM asil.VW_tbMetodosPagos
 END
 GO

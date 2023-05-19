@@ -121,8 +121,8 @@ ADD CONSTRAINT FK_acce_tbRoles_acce_tbUsuarios_role_UsuCreacion_usua_Id 	FOREIGN
 GO
 
 INSERT INTO acce.tbRoles(role_Nombre, role_UsuCreacion)
-VALUES ('Administraci�n', 1),
-	   ('Recepci�n', 1),
+VALUES ('Administración', 1),
+	   ('Recepción', 1),
 	   ('Medicina', 1)
 GO
 
@@ -195,7 +195,7 @@ CREATE TABLE gral.tbEstadosCiviles
 );
 GO
 
---********TABLA M�TODOS DE PAGO****************---
+--********TABLA MÉTODOS DE PAGO****************---
 CREATE TABLE asil.tbMetodosPago
 (
 	meto_Id					INT IDENTITY,
@@ -336,7 +336,7 @@ CREATE TABLE asil.tbActividades
 );
 GO
 
---********TABLA CATEGOR�AS HABITACIONES****************---
+--********TABLA CATEGORÍAS HABITACIONES****************---
 CREATE TABLE asil.tbCategoriasHabitaciones
 (
 	cate_Id						INT IDENTITY,
@@ -896,21 +896,21 @@ INSERT INTO asil.tbEnfermedades(enfe_Nombre, enfe_UsuCreacion)
 VALUES('Mal de Alzheimer',1),
       ('Artritis',1),
 	  ('Asma',1),
-	  ('C�ncer',1),
+	  ('Cáncer',1),
 	  ('EPOC',1),
 	  ('Enfermedad de Crohn',1),
-	  ('Fibrosis qu�stica',1),
+	  ('Fibrosis quística',1),
 	  ('Diabetes',1),
-	  ('Presi�n arterial alta (hipertensi�n)',1),
+	  ('Presión arterial alta (hipertensión)',1),
 	  ('VIH/sida',1),
-	  ('Migra�a',1),
-	  ('Depresi�n',1),
+	  ('Migraña',1),
+	  ('Depresión',1),
 	  ('Bipolar',1),
 	  ('Mal de Parkinson',1)
 GO
 --********INSERT TABLA ACTIVIDADES****************---
 INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
-VALUES('Medicaci�n',1),
+VALUES('Medicación',1),
 	  ('Desayuno',1),
       ('Almuerzo',1),
 	  ('Cena',1),
@@ -919,31 +919,31 @@ VALUES('Medicaci�n',1),
 	  ('Terapia de baile',1),
 	  ('Juegos de mesa',1),
 	  ('Lectura',1),
-	  ('Nataci�n',1)
+	  ('Natación',1)
 
 
 GO
  --********INSERT TABLA CATEGORIAS HABITACIONES****************---
 INSERT INTO asil.tbCategoriasHabitaciones(cate_Nombre, cate_Capacidad, cate_Climatizacion, cate_UsuCreacion)
-VALUES('Habita�n Individual',1,1,1),
-	  ('Habitaci�n Doble',2,0,1),
-	  ('Habitaci�n Triple',3,0,1),
-	  ('Habitaci�n cu�druple',1,4,1)
+VALUES('Habitaón Individual',1,1,1),
+	  ('Habitación Doble',2,0,1),
+	  ('Habitación Triple',3,0,1),
+	  ('Habitación cuádruple',1,4,1)
 GO
 --********INSERT TABLA CARGOS****************---
 INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
 VALUES('Gerente',1),
       ('Cuidador',1),
-	  ('Psic�logo',1),
+	  ('Psicólogo',1),
 	  ('Trabajador social',1),
-	  ('Enfermero con conocimientos en geriatr�a',1),
-	  ('Auxiliares de enfermer�a',1),
+	  ('Enfermero con conocimientos en geriatría',1),
+	  ('Auxiliares de enfermería',1),
 	  ('Animador sociocultural',1),
 	  ('Educador Social.',1),
 	  ('Cocineros',1),
 	  ('Ayudantes de cocina',1),
-	  ('Doctor especializado en geriatr�a',1),
-	  ('M�dico especializado en geriatr�a',1)
+	  ('Doctor especializado en geriatría',1),
+	  ('Médico especializado en geriatría',1)
 GO
 	  --********INSERT TABLA DIETA ****************---
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
@@ -957,7 +957,7 @@ VALUES	  ('Galletas con mermelada, leche', 'Ensalada de tomate, Lentejas con cho
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES	  ('Jugo de naranja, sandwich de jam�n y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1);
+VALUES	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1);
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
@@ -965,14 +965,14 @@ VALUES	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marin
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES	  ('Leche, Tostadas con jam�n y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de pi�a','Bizcochos de fresa',1);
+VALUES	  ('Leche, Tostadas con jamón y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piña','Bizcochos de fresa',1);
 
 
 GO
 	  --********INSERT TABLA agendas ****************---
 
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
-VALUES('Est�ndar',1);
+VALUES('Estándar',1);
 GO
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
 VALUES('De pago',1);
