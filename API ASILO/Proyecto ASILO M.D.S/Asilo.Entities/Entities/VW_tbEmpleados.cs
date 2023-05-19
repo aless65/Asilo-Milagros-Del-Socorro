@@ -6,40 +6,33 @@ using System.Collections.Generic;
 
 namespace Asilo.Entities.Entities
 {
-    public partial class tbEmpleados
+    public partial class VW_tbEmpleados
     {
-        public tbEmpleados()
-        {
-            tbHistorialExpedientes = new HashSet<tbHistorialExpedientes>();
-            tbResidentes = new HashSet<tbResidentes>();
-        }
-
         public int empe_Id { get; set; }
         public string empe_Nombres { get; set; }
         public string empe_Apellidos { get; set; }
+        public string empe_NombreCompleto { get; set; }
         public string empe_Identidad { get; set; }
         public string empe_Sexo { get; set; }
         public int estacivi_Id { get; set; }
+        public string estacivi_Nombre { get; set; }
         public DateTime empe_Nacimiento { get; set; }
         public string muni_Id { get; set; }
+        public string muni_Nombre { get; set; }
+        public string depa_Id { get; set; }
         public string empe_Direccion { get; set; }
         public string empe_Telefono { get; set; }
         public string empe_Correo { get; set; }
         public int carg_Id { get; set; }
+        public string carg_Nombre { get; set; }
         public int cent_Id { get; set; }
+        public string cent_Nombre { get; set; }
         public int empe_UsuCreacion { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime empe_FechaCreacion { get; set; }
         public int? empe_UsuModificacion { get; set; }
+        public string usuarioModif { get; set; }
         public DateTime? empe_FechaModificacion { get; set; }
-        public bool? empe_Estado { get; set; }
-
-        public virtual tbCargos carg { get; set; }
-        public virtual tbCentros cent { get; set; }
-        public virtual tbUsuarios empe_UsuCreacionNavigation { get; set; }
-        public virtual tbUsuarios empe_UsuModificacionNavigation { get; set; }
-        public virtual tbEstadosCiviles estacivi { get; set; }
-        public virtual tbMunicipios muni { get; set; }
-        public virtual ICollection<tbHistorialExpedientes> tbHistorialExpedientes { get; set; }
-        public virtual ICollection<tbResidentes> tbResidentes { get; set; }
+        public bool empe_Estado { get; set; }
     }
 }

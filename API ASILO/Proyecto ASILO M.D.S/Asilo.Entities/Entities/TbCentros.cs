@@ -17,7 +17,7 @@ namespace Asilo.Entities.Entities
 
         public int cent_Id { get; set; }
         public string cent_Nombre { get; set; }
-        public int muni_Id { get; set; }
+        public string muni_Id { get; set; }
         public string cent_Direccion { get; set; }
         public int cent_UsuCreacion { get; set; }
         public DateTime cent_FechaCreacion { get; set; }
@@ -27,7 +27,7 @@ namespace Asilo.Entities.Entities
 
         public virtual tbUsuarios cent_UsuCreacionNavigation { get; set; }
         public virtual tbUsuarios cent_UsuModificacionNavigation { get; set; }
-        public virtual tbUsuarios muni { get; set; }
+        public virtual tbMunicipios muni { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
         public virtual ICollection<tbHabitaciones> tbHabitaciones { get; set; }
         public virtual ICollection<tbInventarioPorCentro> tbInventarioPorCentro { get; set; }

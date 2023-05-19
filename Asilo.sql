@@ -219,7 +219,7 @@ CREATE TABLE asil.tbCentros
 (
 	cent_Id					INT IDENTITY,
 	cent_Nombre				NVARCHAR(200) NOT NULL,
-	muni_Id					VARCHAR NOT NULL,
+	muni_Id					CHAR(4) NOT NULL,
 	cent_Direccion			NVARCHAR(500) NOT NULL,
 
 	cent_UsuCreacion		INT NOT NULL,
@@ -230,7 +230,7 @@ CREATE TABLE asil.tbCentros
 	CONSTRAINT PK_asil_tbCentros_cent_Id 												PRIMARY KEY(cent_Id),
 	CONSTRAINT FK_asil_tbCentros_acce_tbUsuarios_cent_UsuCreacion_usua_Id  				FOREIGN KEY(cent_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
 	CONSTRAINT FK_asil_tbCentros_acce_tbUsuarios_cent_UsuModificacion_usua_Id  			FOREIGN KEY(cent_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbCentros_gral_tbMunicipios_muni_Id 								FOREIGN KEY(muni_Id) 					REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbCentros_gral_tbMunicipios_muni_Id 								FOREIGN KEY(muni_Id) 					REFERENCES [gral].[tbMunicipios] (muni_Id),
 	CONSTRAINT UQ_asil_tbCentros_carg_Nombre UNIQUE(cent_Nombre)
 );
 GO
@@ -292,9 +292,9 @@ CREATE TABLE asil.tbInventarioPorCentro(
 	invecent_FechaModificacion	DATETIME,
 	invecent_Estado				BIT NOT NULL CONSTRAINT DF_invecent_Estado DEFAULT(1)
 
-	CONSTRAINT PK_acce_tbInventarioPorCentro_invecent_Id					PRIMARY KEY(invecent_Id),
-	CONSTRAINT FK_acce_tbInventarioPorCentro_asil_tbMedicamentos_medi_Id	FOREIGN KEY(medi_Id)	REFERENCES asil.tbMedicamentos(medi_Id),
-	CONSTRAINT FK_acce_tbInventarioPorCentro_asil_tbCentros_cent_Id			FOREIGN KEY(cent_Id)	REFERENCES asil.tbCentros(cent_Id),
+	CONSTRAINT PK_asil_tbInventarioPorCentro_invecent_Id					PRIMARY KEY(invecent_Id),
+	CONSTRAINT FK_asil_tbInventarioPorCentro_asil_tbMedicamentos_medi_Id	FOREIGN KEY(medi_Id)	REFERENCES asil.tbMedicamentos(medi_Id),
+	CONSTRAINT FK_asil_tbInventarioPorCentro_asil_tbCentros_cent_Id			FOREIGN KEY(cent_Id)	REFERENCES asil.tbCentros(cent_Id),
 );
 GO
 
@@ -383,8 +383,8 @@ CREATE TABLE asil.tbDietas
 	diet_Almuerzo			NVARCHAR(500) NOT NULL,
 	diet_Cena				NVARCHAR(500) NOT NULL,
 	diet_Merienda			NVARCHAR(500) NOT NULL,
-	diet_Restricciones		NVARCHAR(500) NOT NULL,
-	diet_Observaciones		NVARCHAR(500) NOT NULL,
+	diet_Restricciones		NVARCHAR(500)  NULL,
+	diet_Observaciones		NVARCHAR(500)  NULL,
 	
 	diet_UsuCreacion		INT NOT NULL,
 	diet_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_diet_FechaCreacion DEFAULT(GETDATE()),
@@ -408,7 +408,7 @@ CREATE TABLE asil.tbEmpleados
 	estacivi_Id				INT NOT NULL,
 	empe_Nacimiento			DATE NOT NULL,
 	muni_Id					CHAR(4) NOT NULL,
-	empe_Direccion			DATE NOT NULL,
+	empe_Direccion			NVARCHAR(500) NOT NULL,
 	empe_Telefono			NVARCHAR(20) NOT NULL,
 	empe_Correo				NVARCHAR(200) NOT NULL,
 	carg_Id					INT NOT NULL,
@@ -907,7 +907,7 @@ VALUES('Mal de Alzheimer',1),
 	  ('Depresión',1),
 	  ('Bipolar',1),
 	  ('Mal de Parkinson',1)
-
+GO
 --********INSERT TABLA ACTIVIDADES****************---
 INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
 VALUES('Medicación',1),
@@ -921,26 +921,15 @@ VALUES('Medicación',1),
 	  ('Lectura',1),
 	  ('Natación',1)
 
-	  --********INSERT TABLA ACTIVIDADES****************---
-INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
-VALUES('Medicación',1),
-	  ('Desayuno',1),
-      ('Almuerzo',1),
-	  ('Cena',1),
-	  ('Yoga',1),
-	  ('Caminar',1),
-	  ('Terapia de baile',1),
-	  ('Juegos de mesa',1),
-	  ('Lectura',1),
-	  ('Natación',1)
 
+GO
  --********INSERT TABLA CATEGORIAS HABITACIONES****************---
 INSERT INTO asil.tbCategoriasHabitaciones(cate_Nombre, cate_Capacidad, cate_Climatizacion, cate_UsuCreacion)
-VALUES('Habitaón Individual',1,1),
-	  ('Habitación Doble',2,1),
-	  ('Habitación Triple',3,1),
-	  ('Habitación cuádruple',4,1)
-
+VALUES('Habitaón Individual',1,1,1),
+	  ('Habitación Doble',2,0,1),
+	  ('Habitación Triple',3,0,1),
+	  ('Habitación cuádruple',1,4,1)
+GO
 --********INSERT TABLA CARGOS****************---
 INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
 VALUES('Gerente',1),
@@ -955,21 +944,53 @@ VALUES('Gerente',1),
 	  ('Ayudantes de cocina',1),
 	  ('Doctor especializado en geriatría',1),
 	  ('Médico especializado en geriatría',1)
-
+GO
 	  --********INSERT TABLA DIETA ****************---
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES('Leche descremada,cereales integrales', 'Fruta,legumbre,Carne poco grasa','patata y verduras,queso','Yogurt poco azucarado',1),
-      ('Cafe con leche, Tostadas con aceite, pera', 'Crema de patatas, Albondigas con tomate y pan','Sopa de fideos, salchichas de pollo, pan','Vaso d leche con magdalenas',1),
-	  ('Galletas con mermelada, leche', 'Ensalada de tomate, Lentejas con chorizo','Calabacines rellenos, Pan y yogur','Cafe con leche pan con aceite y queso',1),
-	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1),
-	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marinera','Flan de pescado con salsa de tomate, kiwi','Yogur con galletas',1),
-	  ('Leche, Tostadas con jamón y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piña','Bizcochos de fresa',1)
+VALUES('Leche descremada,cereales integrales', 'Fruta,legumbre,Carne poco grasa','patata y verduras,queso','Yogurt poco azucarado',1);
+
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES('Cafe con leche, Tostadas con aceite, pera', 'Crema de patatas, Albondigas con tomate y pan','Sopa de fideos, salchichas de pollo, pan','Vaso d leche con magdalenas',1);
+GO
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES	  ('Galletas con mermelada, leche', 'Ensalada de tomate, Lentejas con chorizo','Calabacines rellenos, Pan y yogur','Cafe con leche pan con aceite y queso',1);
+
+GO
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1);
+
+GO
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marinera','Flan de pescado con salsa de tomate, kiwi','Yogur con galletas',1);
+
+GO
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES	  ('Leche, Tostadas con jamón y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piña','Bizcochos de fresa',1);
+
+
+GO
+	  --********INSERT TABLA agendas ****************---
+
+INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
+VALUES('Estándar',1);
+GO
+INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
+VALUES('De pago',1);
 
 	  --********INSERT TABLA Residente ****************---
-INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id, resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,'2010-10-05',1),
-      ('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',2,'2010-02-25',1),
-	  ('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',1,'2012-02-25',1),
-	  ('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',1,'2012-02-25',1)
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,'2010-10-05',1);
+GO
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',2,2,'2010-02-25',1);
+GO
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',1,1,'2012-02-25',1);
+GO
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',1,2,'2012-02-25',1);
+
+
+
 
 

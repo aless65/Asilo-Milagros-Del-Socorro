@@ -21,12 +21,18 @@ namespace Asilo.DataAccess.Context
         }
 
         public virtual DbSet<VW_tbActividades> VW_tbActividades { get; set; }
-        public virtual DbSet<VW_tbCategoriasHabitaciones> VW_tbCategoriasHabitaciones { get; set; }
         public virtual DbSet<VW_tbDonaciones> VW_tbDonaciones { get; set; }
         public virtual DbSet<VW_tbEnfermedades> VW_tbEnfermedades { get; set; }
         public virtual DbSet<VW_tbExpedientes> VW_tbExpedientes { get; set; }
         public virtual DbSet<VW_tbHistorialExpedientes> VW_tbHistorialExpedientes { get; set; }
         public virtual DbSet<VW_tbMedicamentos> VW_tbMedicamentos { get; set; }
+        public virtual DbSet<VW_tbAgendas> VW_tbAgendas { get; set; }
+        public virtual DbSet<VW_tbCategoriasHabitaciones> VW_tbCategoriasHabitaciones { get; set; }
+        public virtual DbSet<VW_tbCentros> VW_tbCentros { get; set; }
+        public virtual DbSet<VW_tbEmpleados> VW_tbEmpleados { get; set; }
+        public virtual DbSet<VW_tbHistorialPagos> VW_tbHistorialPagos { get; set; }
+        public virtual DbSet<VW_tbProveedores> VW_tbProveedores { get; set; }
+        public virtual DbSet<VW_tbResidentes> VW_tbResidentes { get; set; }
         public virtual DbSet<VW_tbUsuarios> VW_tbUsuarios { get; set; }
         public virtual DbSet<tbActividades> tbActividades { get; set; }
         public virtual DbSet<tbAgendaDetalles> tbAgendaDetalles { get; set; }
@@ -64,7 +70,175 @@ namespace Asilo.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<VW_tbActividades>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbActividades", "asil");
+
+                entity.Property(e => e.acti_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.acti_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.acti_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbAgendas>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbAgendas", "asil");
+
+                entity.Property(e => e.agen_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.agen_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.agen_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.usuCrea)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usuModif)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbCategoriasHabitaciones>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbCategoriasHabitaciones", "asil");
+
+                entity.Property(e => e.cate_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cate_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cate_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbCentros>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbCentros", "asil");
+
+                entity.Property(e => e.cent_Direccion)
+                    .IsRequired()
+                    .HasMaxLength(80);
+
+                entity.Property(e => e.cent_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cent_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.cent_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.muni_Id)
+                    .IsRequired()
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbEmpleados>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbEmpleados", "asil");
+
+                entity.Property(e => e.carg_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.cent_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.depa_Id)
+                    .IsRequired()
+                    .HasMaxLength(2)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.empe_Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.empe_Correo)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.empe_Direccion)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.empe_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.empe_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.empe_Identidad)
+                    .IsRequired()
+                    .HasMaxLength(13)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.empe_Nacimiento).HasColumnType("date");
+
+                entity.Property(e => e.empe_NombreCompleto)
+                    .IsRequired()
+                    .HasMaxLength(401);
+
+                entity.Property(e => e.empe_Nombres)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.empe_Sexo)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.empe_Telefono)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.estacivi_Nombre).HasMaxLength(50);
+
+                entity.Property(e => e.muni_Id)
+                    .IsRequired()
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.muni_Nombre).HasMaxLength(80);
+
+                entity.Property(e => e.usuarioCrea)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usuarioModif).HasMaxLength(100);
+            });
 
             modelBuilder.Entity<VW_tbActividades>(entity =>
             {
@@ -206,6 +380,156 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
 
                 entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbHistorialPagos>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbHistorialPagos", "asil");
+
+                entity.Property(e => e.meto_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.pago_Fecha).HasColumnType("date");
+
+                entity.Property(e => e.pago_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.pago_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.resi_NombreCompleto)
+                    .IsRequired()
+                    .HasMaxLength(401);
+
+                entity.Property(e => e.usuCrea)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usuModif)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbProveedores>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbProveedores", "asil");
+
+                entity.Property(e => e.muni_Id)
+                    .IsRequired()
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.muni_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(80);
+
+                entity.Property(e => e.prov_CorreoElectronico)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.prov_Direccion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.prov_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.prov_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.prov_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.prov_Telefono)
+                    .IsRequired()
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbResidentes>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbResidentes", "asil");
+
+                entity.Property(e => e.agen_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.diet_Almuerzo)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.diet_Cena)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.diet_Desayuno)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.diet_Merienda)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Restricciones).HasMaxLength(500);
+
+                entity.Property(e => e.empe_Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.empe_NombreCompleto)
+                    .IsRequired()
+                    .HasMaxLength(401);
+
+                entity.Property(e => e.empe_Nombres)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.estacivi_Nombre).HasMaxLength(50);
+
+                entity.Property(e => e.resi_Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.resi_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.resi_FechaIngreso).HasColumnType("date");
+
+                entity.Property(e => e.resi_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.resi_Identidad)
+                    .IsRequired()
+                    .HasMaxLength(13)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.resi_Nacimiento).HasColumnType("date");
+
+                entity.Property(e => e.resi_Nombres)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.resi_Sexo)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.usuCrea)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usuModif)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<VW_tbUsuarios>(entity =>
@@ -452,6 +776,12 @@ namespace Asilo.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(200);
 
+                entity.Property(e => e.muni_Id)
+                    .IsRequired()
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
                 entity.HasOne(d => d.cent_UsuCreacionNavigation)
                     .WithMany(p => p.tbCentroscent_UsuCreacionNavigation)
                     .HasForeignKey(d => d.cent_UsuCreacion)
@@ -464,7 +794,7 @@ namespace Asilo.DataAccess.Context
                     .HasConstraintName("FK_asil_tbCentros_acce_tbUsuarios_cent_UsuModificacion_usua_Id");
 
                 entity.HasOne(d => d.muni)
-                    .WithMany(p => p.tbCentrosmuni)
+                    .WithMany(p => p.tbCentros)
                     .HasForeignKey(d => d.muni_Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_asil_tbCentros_gral_tbMunicipios_muni_Id");
@@ -541,13 +871,9 @@ namespace Asilo.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(500);
 
-                entity.Property(e => e.diet_Observaciones)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Restricciones)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Restricciones).HasMaxLength(500);
 
                 entity.HasOne(d => d.diet_UsuCreacionNavigation)
                     .WithMany(p => p.tbDietasdiet_UsuCreacionNavigation)
@@ -647,7 +973,9 @@ namespace Asilo.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(200);
 
-                entity.Property(e => e.empe_Direccion).HasColumnType("date");
+                entity.Property(e => e.empe_Direccion)
+                    .IsRequired()
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.empe_Estado)
                     .IsRequired()
@@ -1128,9 +1456,9 @@ namespace Asilo.DataAccess.Context
             modelBuilder.Entity<tbInventarioPorCentro>(entity =>
             {
                 entity.HasKey(e => e.invecent_Id)
-                    .HasName("PK_acce_tbInventarioPorCentro_invecent_Id");
+                    .HasName("PK_asil_tbInventarioPorCentro_invecent_Id");
 
-                entity.ToTable("tbInventarioPorCentro", "acce");
+                entity.ToTable("tbInventarioPorCentro", "asil");
 
                 entity.Property(e => e.invecent_Estado)
                     .IsRequired()
@@ -1146,13 +1474,13 @@ namespace Asilo.DataAccess.Context
                     .WithMany(p => p.tbInventarioPorCentro)
                     .HasForeignKey(d => d.cent_Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_acce_tbInventarioPorCentro_asil_tbCentros_cent_Id");
+                    .HasConstraintName("FK_asil_tbInventarioPorCentro_asil_tbCentros_cent_Id");
 
                 entity.HasOne(d => d.medi)
                     .WithMany(p => p.tbInventarioPorCentro)
                     .HasForeignKey(d => d.medi_Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_acce_tbInventarioPorCentro_asil_tbMedicamentos_medi_Id");
+                    .HasConstraintName("FK_asil_tbInventarioPorCentro_asil_tbMedicamentos_medi_Id");
             });
 
             modelBuilder.Entity<tbMedicamentos>(entity =>
