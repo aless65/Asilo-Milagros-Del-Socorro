@@ -3292,5 +3292,163 @@ BEGIN
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
+
+--************MUERTOS******************--
+
+/*VISTA MUERTOS*/
+CREATE OR ALTER VIEW asil.VW_tbMuertos
+AS
+	SELECT muer_Id,
+	       resi_Id,
+		   (resi_Nombres + ' ' + resi_Apellidos) AS resi_NombreCompleto,
+		   muer_FechaYHora,
+		   muer_Descripcion,
+		   muer_UsuCreacion,
+		   muer_FechaCreacion,
+		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+		   muer_UsuModificacion,
+		   muer_FechaModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
+		   muer_Estado
+		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   LEFT JOIN acce.tbUsuarios t3
+		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN asil.tbResidentes t4
+		   ON t1.resi_Id = t4.resi_Id 
+GO
+
+/*LISTAR MUERTOS*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_List
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbMuertos
+	WHERE muer_Estado = 1
+END
+GO
+
+/*FIND MUERTOS*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Find 
+	@muer_Id	INT
+AS
+BEGIN
+	SELECT * FROM  asil.VW_tbMuertos
+	WHERE muer_Estado = 1
+	AND muer_Id = @muer_Id
+END
+GO
+
+
+/*INSERTAR MUERTOS*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Insert
+	@resi_Id						INT,
+	@muer_FechaYHora				DATETIME,
+	@muer_Descripcion			NVARCHAR(500),
+	@muer_UsuCreacion			INT
+	
+AS 
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM asil.tbMuertos
+						WHERE resi_Id = @resi_Id)
+			BEGIN
+			INSERT INTO asil.tbMuertos(resi_Id, muer_FechaYHora, muer_Descripcion, muer_UsuCreacion)
+			VALUES(@resi_Id, @muer_FechaYHora, @muer_Descripcion, @muer_UsuCreacion)
+			
+			SELECT 'La muerte ha sido insertada'
+			END
+		ELSE IF EXISTS (SELECT * FROM asil.tbMuertos 
+						WHERE resi_Id = @resi_Id
+						AND muer_Estado = 0)
+			BEGIN
+				UPDATE asil.tbMuertos 
+				SET    muer_Estado      = 1,
+					   muer_FechaYHora = @muer_FechaYHora,
+					   muer_Descripcion = @muer_Descripcion,
+					   muer_UsuCreacion = @muer_UsuCreacion
+				WHERE resi_Id = @resi_Id
+
+				SELECT 'La muerte ha sido insertada'
+			END
+		ELSE
+			SELECT 'ya existe'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+
+
+/*EDITAR MUERTOS*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Update
+    @muer_Id                        INT,
+	@resi_Id						INT,
+	@muer_FechaYHora				DATETIME,
+	@muer_Descripcion			NVARCHAR(500),
+	@muer_UsuCreacion			INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbMuertos 
+						WHERE resi_Id = @resi_Id)
+		BEGIN			
+			UPDATE  asil.tbMuertos
+			SET 	resi_Id = @resi_Id,
+			        muer_FechaYHora = @muer_FechaYHora,
+					muer_Descripcion = @muer_Descripcion,
+					muer_UsuModificacion = @muer_UsuModificacion,
+					muer_FechaModificacion = GETDATE()
+			WHERE 	muer_Id              = @muer_Id
+
+			SELECT 'ha sido editado'
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbMuertos
+						WHERE resi_Id      = @resi_Id
+							  AND muer_Estado  = 1
+							  AND muer_Id     != @muer_Id)
+
+			SELECT 'ya existe'
+		ELSE
+			UPDATE  asil.tbMuertos
+			SET     muer_Estado	          = 1,
+			        muer_FechaYHora = @muer_FechaYHora,
+					muer_Descripcion = @muer_Descripcion,
+					muer_UsuModificacion  = @muer_UsuModificacion,
+					muer_FechaModificacion = GETDATE()
+			WHERE   muer_Id = @muer_Id
+
+			SELECT 'ha sido editado'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*ELIMINAR MUERTOS*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Delete
+	 @muer_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS( SELECT * FROM asil.tbMuertos WHERE muer_Id = @muer_Id )
+	   BEGIN
+		UPDATE asil.tbMuertos
+		SET muer_Estado = 0
+		WHERE muer_Id   = @muer_Id
+
+		SELECT 'ha sido eliminado'
+		END
+		ELSE 
+		SELECT 'no puede ser eliminado ya que se esta usando en otro registro'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
 GO
 
