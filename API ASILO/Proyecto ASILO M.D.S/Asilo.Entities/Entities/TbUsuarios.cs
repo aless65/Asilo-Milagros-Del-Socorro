@@ -24,7 +24,6 @@ namespace Asilo.Entities.Entities
             tbCategoriasHabitacionescate_UsuModificacionNavigation = new HashSet<tbCategoriasHabitaciones>();
             tbCentroscent_UsuCreacionNavigation = new HashSet<tbCentros>();
             tbCentroscent_UsuModificacionNavigation = new HashSet<tbCentros>();
-            tbCentrosmuni = new HashSet<tbCentros>();
             tbDepartamentosdepa_UsuCreacionNavigation = new HashSet<tbDepartamentos>();
             tbDepartamentosdepa_UsuModificacionNavigation = new HashSet<tbDepartamentos>();
             tbDietasdiet_UsuCreacionNavigation = new HashSet<tbDietas>();
@@ -102,7 +101,6 @@ namespace Asilo.Entities.Entities
         public virtual ICollection<tbCategoriasHabitaciones> tbCategoriasHabitacionescate_UsuModificacionNavigation { get; set; }
         public virtual ICollection<tbCentros> tbCentroscent_UsuCreacionNavigation { get; set; }
         public virtual ICollection<tbCentros> tbCentroscent_UsuModificacionNavigation { get; set; }
-        public virtual ICollection<tbCentros> tbCentrosmuni { get; set; }
         public virtual ICollection<tbDepartamentos> tbDepartamentosdepa_UsuCreacionNavigation { get; set; }
         public virtual ICollection<tbDepartamentos> tbDepartamentosdepa_UsuModificacionNavigation { get; set; }
         public virtual ICollection<tbDietas> tbDietasdiet_UsuCreacionNavigation { get; set; }
