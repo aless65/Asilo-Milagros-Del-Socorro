@@ -3071,3 +3071,159 @@ BEGIN
 END
 GO
 
+--************HABITACIONES******************--
+
+/*VISTA HABITACIONES*/
+CREATE OR ALTER VIEW asil.VW_tbHabitaciones
+AS
+	SELECT habi_Id,
+	       habi_Numero,
+		   cate_Id,
+		   t4.cate_Nombre,
+		   cent_Id,
+		   t5.cent_Nombre
+		   habi_UsuCreacion,
+		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+		   habi_FechaCreacion,
+		   habi_UsuModificacion,
+		   habi_FechaModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
+		   habi_Estado
+		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   LEFT JOIN acce.tbUsuarios t3
+		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN tbCategoriasHabitaciones T4
+		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
+		   ON t1.cent_Id = t5.cent_Id
+GO
+
+/*LISTAR HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_List
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbHabitaciones
+	WHERE habi_Estado = 1
+END
+GO
+
+/*FIND HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Find 
+	@habi_Id	INT
+AS
+BEGIN
+	SELECT * FROM  asil.VW_tbHabitaciones
+	WHERE habi_Estado = 1
+	AND habi_Id = @habi_Id
+END
+GO
+
+
+/*INSERTAR HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Insert
+	@habi_Numero					INT,
+	@cate_Id						INT,
+	@cent_Id						INT,
+	@habi_UsuCreacion			    INT
+	
+AS 
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones
+						WHERE @habi_Numero = @habi_Numero)
+			BEGIN
+			INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
+			VALUES(@habi_Numero, @cate_Id, @cent_Id, @habi_UsuCreacion)
+			
+			SELECT 'La habitación ha sido insertada'
+			END
+		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE @habi_Numero = @habi_Numero
+						AND habi_Estado = 0)
+			BEGIN
+				UPDATE asil.tbHabitaciones 
+				SET    habi_Estado      = 1,
+					   habi_UsuCreacion = @habi_UsuCreacion,
+					   cate_Id = @cate_Id,
+					   cent_Id = @cent_Id
+				WHERE habi_Numero = @habi_Numero
+
+				SELECT 'La habitación ha sido insertada'
+			END
+		ELSE
+			SELECT 'Esta habitación ya existe'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+
+
+/*EDITAR HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Update
+    @habi_Id                        INT,
+	@habi_Numero					INT,
+	@cate_Id						INT,
+	@cent_Id						INT,
+	@habi_UsuModificacion			    INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones 
+						WHERE habi_Numero = @habi_Numero)
+		BEGIN			
+			UPDATE  asil.tbHabitaciones
+			SET 	habi_Numero          = @habi_Numero,
+					cate_Id              = @cate_Id,
+					cent_Id              = @cent_Id,
+					habi_UsuModificacion = @habi_UsuModificacion,
+					habi_UsuModificacion = GETDATE()
+			WHERE 	habi_Id              = @habi_Id
+
+			SELECT 'La habitación ha sido editada'
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones
+						WHERE habi_Numero      = @habi_Numero
+							  AND habi_Estado  = 1
+							  AND habi_Id     != @habi_Id)
+
+			SELECT 'La habitación ya existe'
+		ELSE
+			UPDATE  asil.tbHabitaciones
+			SET     habi_Estado	          = 1,
+			        cate_Id = @cate_Id,
+					cent_Id = @cent_Id,
+					habi_UsuModificacion  = @habi_UsuModificacion,
+					habi_FechaModificacion = GETDATE()
+			WHERE   habi_Numero = @habi_Numero
+
+			SELECT 'La habitación ha sido editada'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*ELIMINAR HABITACIONES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+	 @habi_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE asil.tbHabitaciones
+		SET habi_Estado = 0
+		WHERE habi_Id   = @habi_Id
+
+		SELECT 'La habitación ha sido eliminada'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
