@@ -577,128 +577,130 @@ BEGIN
 END
 GO
 
---************MEDICAMENTO******************--
+--************MEDICAMENTOS******************--
 
-/*VISTA MEDICAMENTO*/
+/*Vista medicamentos*/
 CREATE OR ALTER VIEW asil.VW_tbMedicamentos
 AS
-	SELECT medi_Id,
-	       medi_Nombre,
-		   prov_Id,
+	SELECT t1.medi_Id,
+		   t1.medi_Nombre,
+		   t1.prov_Id,
 		   t4.prov_Nombre,
-		   medi_UsuCreacion,
+		   t1.medi_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   medi_FechaCreacion,
-		   medi_UsuModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
-		   medi_FechaModificacion,
-		   medi_Estado
+		   t1.medi_FechaCreacion, 
+	       t1.medi_UsuModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+		   t1.medi_FechaModificacion,
+		   t1.medi_Estado
 		   FROM asil.tbMedicamentos t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.cate_UsuCreacion = T2.usua_Id
+		   ON t1.medi_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.cate_UsuModificacion = t3.usua_Id INNER JOIN asil.tbProveedores t4
-		   ON t1.prov_Id = t4.prov_Id 
+		   ON t1.medi_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbProveedores t4
+		   ON t1.prov_Id = t4.prov_Id
 GO
 
-/*LISTAR MEDICAMENTO*/
+/*Listar medicamentos*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_List
 AS
 BEGIN
-	SELECT *
-	FROM asil.VW_tbMedicamentos
+	SELECT * FROM asil.VW_tbMedicamentos
 	WHERE medi_Estado = 1
 END
 GO
 
-/*FIND MEDICAMENTO*/
+/*Insertar medicamentos*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Insert
+	@medi_Nombre		NVARCHAR(300),
+	@prov_Id			INT,
+	@cent_Id			INT,
+	@invecent_Stock		INT,
+	@medi_UsuCreacion	INT
+AS 
+BEGIN
+	
+	BEGIN TRY
+
+		IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos
+						WHERE medi_Nombre = @medi_Nombre)
+		BEGIN
+			INSERT INTO asil.tbMedicamentos(medi_Nombre, prov_Id, medi_UsuCreacion)
+			VALUES(@medi_Nombre,@prov_Id,@medi_UsuCreacion)
+
+			DECLARE @medi_Id INT = SCOPE_IDENTITY()
+
+			SELECT 'El medicamento ha sido insertado exitosamente'
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbMedicamentos
+						WHERE medi_Nombre = @medi_Nombre
+							  AND medi_Estado = 1)
+
+			SELECT 'Este medicamento ya existe'
+		ELSE
+			BEGIN
+				UPDATE asil.tbMedicamentos
+				SET medi_Estado = 1,
+					prov_Id = @prov_Id
+				WHERE medi_Nombre = @medi_Nombre
+
+				SELECT 'El medicamento ha sido insertado exitosamente'
+			END
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH 
+END
+GO
+
+/*Find medicamentos*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Find 
 	@medi_Id	INT
 AS
 BEGIN
 	SELECT * FROM asil.VW_tbMedicamentos
-	WHERE medi_Estado = 1
-	AND cate_Id = @medi_Id
+	WHERE medi_Id = @medi_Id
 END
 GO
 
 
-/*INSERTAR MEDICAMENTO*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Insert
-	@medi_Nombre					NVARCHAR(300) ,
-	@prov_Id						INT ,
-	@medi_UsuCreacion			    INT
-	
-AS 
-BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos
-						WHERE medi_Nombre = @medi_Nombre)
-			BEGIN
-			INSERT INTO asil.tbMedicamentos(medi_Nombre, prov_Id, medi_UsuCreacion)
-			VALUES(@medi_Nombre, @prov_Id, @medi_UsuCreacion)
-			
-			SELECT 'El medicamento ha sido insertado'
-			END
-		ELSE IF EXISTS (SELECT * FROM asil.tbMedicamentos 
-						WHERE medi_Nombre = @medi_Nombre
-						AND medi_Estado = 0)
-			BEGIN
-				UPDATE asil.tbMedicamentos 
-				SET    medi_Estado      = 1,
-				       prov_Id          = @prov_Id,
-					   medi_UsuCreacion = @medi_UsuCreacion
-				WHERE medi_Nombre = @medi_Nombre
-
-				SELECT 'El medicamento ha sido insertado'
-			END
-		ELSE
-			SELECT 'Este medicamento ya existe'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
-END
-GO
-
-
-
-
-/*EDITAR MEDICAMENTO*/
+/*Editar medicamentos*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Update
-    @medi_Id              INT,
-	@medi_Nombre          NVARCHAR(100),
-	@prov_Id              INT,
-	@medi_UsuModificacion INT
+	@medi_Id					INT,
+	@medi_Nombre				NVARCHAR(300),
+	@prov_Id					INT,
+	@cent_Id					INT,
+	@invecent_Stock				INT,
+	@medi_UsuModificacion		INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos 
+	IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos	 
 						WHERE medi_Nombre = @medi_Nombre)
 		BEGIN			
-			UPDATE  asil.tbMedicamentos
-			SET 	medi_Nombre           = @medi_Nombre,
-			        prov_Id               = @prov_Id,
-					medi_UsuModificacion  = @medi_UsuModificacion,
-					medi_FechaModificacion = GETDATE()
-			WHERE 	medi_Id                = @medi_Id
+			UPDATE asil.tbMedicamentos
+			SET 	medi_Nombre = @medi_Nombre,
+					prov_Id = @prov_Id,
+					medi_UsuModificacion = @medi_UsuModificacion,
+					[medi_FechaModificacion] = GETDATE()
+			WHERE 	medi_Nombre = @medi_Nombre
 
-			SELECT 'El medicamento ha sido editado'
+			SELECT 'El medicamento ha sido editado exitosamente'
 		END
-		ELSE IF EXISTS (SELECT * FROM asil.tbMedicamentos 
-						WHERE medi_Nombre     = @medi_Nombre
+		ELSE IF EXISTS (SELECT * FROM asil.tbMedicamentos
+						WHERE medi_Nombre = @medi_Nombre
 							  AND medi_Estado = 1
-							  AND medi_Id     != @medi_Id)
+							  AND medi_Id != @medi_Id)
 
 			SELECT 'El medicamento ya existe'
 		ELSE
-			UPDATE  asil.tbMedicamentos 
-			SET     medi_Estado          = 1,
-					medi_UsuModificacion = @medi_UsuModificacion,
-					medi_FechaModificacion = GETDATE(),
-					prov_Id                = @prov_Id
-			WHERE   medi_Nombre = @medi_Nombre
+			UPDATE asil.tbMedicamentos
+			SET medi_Estado = 1,
+				prov_Id = @prov_Id,
+			    [medi_UsuModificacion] = @medi_UsuModificacion,
+				[medi_FechaModificacion] = GETDATE()
+			WHERE medi_Nombre = @medi_Nombre
 
-			SELECT 'El medicamento ha sido editado'
+			SELECT 'El medicamento ha sido editado exitosamente'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -707,20 +709,20 @@ END
 GO
 
 
-/*ELIMINAR MEDICAMENTO*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Delete
-	 @medi_Id	INT
+/*Eliminar medicamentos*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMedicamentos_Delete 
+	@medi_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	    IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos WHERE medi_Id = @medi_Id AND medi_Estado = 1)
-		BEGIN
-		UPDATE asil.tbMedicamentos
-		SET medi_Estado = 0
-		WHERE medi_Id = @medi_Id
+		IF NOT EXISTS (SELECT * FROM asil.tbInventarioPorCentro WHERE medi_Id = @medi_Id AND invecent_Stock > 0)
+			BEGIN
+				UPDATE asil.tbMedicamentos
+				SET medi_Estado = 0
+				WHERE medi_Id = @medi_Id
 
-		SELECT 'El medicamento ha sido eliminada'
-		END
+				SELECT 'El medicamento ha sido eliminado'
+			END
 		ELSE
 			SELECT 'El medicamento no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
@@ -923,7 +925,7 @@ GO
 
 
 /*INSERTAR DIETAS*/
-CREATE PROCEDURE asil.UDP_asil_tbDiestas_Insert
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDietas_Insert
 (
     @diet_Desayuno         NVARCHAR(500),
     @diet_Almuerzo         NVARCHAR(500),
@@ -989,8 +991,6 @@ BEGIN
 END
 
 GO
-
-
 
 
 /*EDITAR DIETAS*/
@@ -1068,7 +1068,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDietas_Delete
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.VW_tbExpedientes WHERE expe_Id = @expe_Id AND resi_Estado = 1)
+	IF NOT EXISTS (SELECT * FROM asil.tbResidentes WHERE diet_Id = @diet_Id AND resi_Estado = 1)
 	 BEGIN
 		UPDATE asil.tbDietas
 		SET    diet_Estado = 0
@@ -1100,9 +1100,9 @@ AS
 		   agen_FechaModificacion,
 		   agen_Estado
 		   FROM asil.tbAgendas t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.agen_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id
+		   ON t1.agen_UsuModificacion = t3.usua_Id
 GO
 
 /*LISTAR AGENDAS*/
@@ -1220,6 +1220,7 @@ BEGIN
 		WHERE agen_Id = @agen_Id
 
 		SELECT 'La agenda ha sido eliminada'
+		END
 		ELSE
 			SELECT 'La agenda no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
@@ -1239,16 +1240,16 @@ AS
 		   empe_Apellidos, 
 		   ([empe_Nombres] + ' ' + [empe_Apellidos]) AS empe_NombreCompleto,
 		   empe_Identidad, 
-		   empe_FechaNacimiento, 
+		   empe_Nacimiento, 
 		   CASE WHEN  empe_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
 		   END AS  empe_Sexo,
 		   T1.estacivi_Id, 
 		   T4.estacivi_Nombre AS Empe_EstadoCivilNombre,
 		   empe_Telefono, 
-		   empe_CorreoElectronico, 
+		   empe_Correo, 
 		   empe_Direccion,
-		   t6.muni_Id,
+		   t1.muni_Id,
 		   T7.muni_Nombre, 
 		   T7.depa_Id,
 		   T1.carg_Id,
@@ -1267,7 +1268,7 @@ AS
 	ON T1.empe_UsuModificacion = T3.usua_Id INNER JOIN gral.tbEstadosCiviles T4
 	ON T1.estacivi_Id = T4.estacivi_Id INNER JOIN asil.tbCentros T5
 	ON T1.cent_Id = T5.cent_Id INNER JOIN gral.tbMunicipios T7
-	ON T6.muni_Id = T7.muni_id INNER JOIN asil.tbCargos T8
+	ON T1.muni_Id = T7.muni_id INNER JOIN asil.tbCargos T8
 	ON T1.carg_Id = T8.carg_Id
 GO
 
@@ -1482,10 +1483,10 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbAgendaDetalles
 AS
 	SELECT agendeta_Id,
-	       agen_Id,
+	       t1.agen_Id,
 		   agendeta_Hora,
-		   acti_Id,
-		   medi_Id,
+		   t1.acti_Id,
+		   t1.medi_Id,
 		   agendeta_Observaciones,
 		   agendeta_UsuCreacion,
 		   agendeta_FechaCreacion,
@@ -1495,9 +1496,9 @@ AS
 		   agendeta_FechaModificacion,
 		   agendeta_Estado
 		   FROM asil.tbAgendaDetalles t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.agendeta_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN asil.tbAgendas t4
+		   ON t1.agendeta_UsuModificacion = t3.usua_Id INNER JOIN asil.tbAgendas t4
 		   ON t1.agen_Id = t4.agen_Id INNER JOIN asil.tbActividades t5
 		   ON t1.acti_Id = t5.acti_Id INNER JOIN asil.tbMedicamentos t6
 		   ON t1.medi_Id = t6.medi_Id
@@ -1555,7 +1556,7 @@ BEGIN
 				       acti_Id = @acti_Id,
 					   medi_Id = @medi_Id,
 					   agendeta_Observaciones = @agendeta_Observaciones,
-					   agen_UsuCreacion = @agen_UsuCreacion
+					   agendeta_UsuCreacion = @agendeta_UsuCreacion
 				WHERE agen_Id = @agen_Id AND
 					  agendeta_Hora = @agendeta_Hora
 
@@ -1620,6 +1621,7 @@ BEGIN
 		WHERE agendeta_Id = @agendeta_Id
 
 		SELECT 'El detalle de la agenda ha sido eliminado'
+		END
 		ELSE
 			SELECT 'El detalle de la agenda no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
@@ -1639,7 +1641,7 @@ AS
 	       resi_Nombres,
 		   resi_Apellidos,
 		   resi_Identidad,
-		   estacivi_Id,
+		   t1.estacivi_Id,
 		   t4.estacivi_Nombre,
 		   resi_Nacimiento,
 		   CASE WHEN  resi_Sexo = 'F' THEN 'Femenino'
@@ -1648,9 +1650,9 @@ AS
 		   
 		   diet_Id,
 		   resi_FechaIngreso,
-		   empe_Id,
+		   t1.empe_Id,
 		   t5.empe_Nombres,
-		   agen_Id,
+		   t1.agen_Id,
 		   t6.agen_Nombre,
 		   resi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
@@ -1659,13 +1661,13 @@ AS
 		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
 		   resi_FechaModificacion,
 		   resi_Estado
-		   FROM asil.tbAgendaDetalles t1 LEFT JOIN acce.tbUsuarios t2
+		   FROM asil.tbResidentes t1 LEFT JOIN acce.tbUsuarios t2
 		   ON t1.resi_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
 		   ON t1.resi_UsuModificacion = t3.usua_Id INNER JOIN gral.tbEstadosCiviles t4
 		   ON t1.estacivi_Id = t4.estacivi_Id INNER JOIN asil.tbEmpleados t5
 		   ON t1.empe_Id = t5.empe_Id INNER JOIN asil.tbAgendas t6
-		   ON t1.agen_Id = t6,agen_Id 
+		   ON t1.agen_Id = t6.agen_Id 
 GO
 
 /*LISTAR RESIDENTES*/
@@ -1778,7 +1780,7 @@ BEGIN
 					resi_FechaIngreso      = @resi_FechaIngreso,
 					empe_Id                = @empe_Id,
 					agen_Id                = @agen_Id,
-					resi_UsuModificacion   = @agen_UsuModificacion,
+					resi_UsuModificacion   = @resi_UsuModificacion,
 					resi_FechaModificacion = GETDATE()
 			WHERE 	resi_Id                = @resi_Id
 
@@ -1853,9 +1855,9 @@ AS
 		   pare_FechaModificacion,
 		   pare_Estado
 		   FROM asil.tbParentescos t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.pare_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id
+		   ON t1.pare_UsuModificacion = t3.usua_Id
 GO
 
 /*LISTAR PARENTESCOS*/
@@ -1973,6 +1975,7 @@ BEGIN
 		WHERE pare_Id = @pare_Id
 
 		SELECT 'El parentesco ha sido eliminado'
+		END
 		ELSE
 			SELECT 'El parentesco no puede ser eliminado ya que está siendo usado en otro registro'
 
@@ -1992,20 +1995,20 @@ AS
 	       enca_Nombres,
 		   enca_Apellidos,
 		   enca_Identidad,
-		   estacivi_Id,
+		   t1.estacivi_Id,
 		   t4.estacivi_Nombre,
 		   enca_Nacimiento,
 		   
 		   CASE WHEN  enca_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
 		   END AS  enca_Sexo,
-		   muni_Id,
+		   t1.muni_Id,
 		   t7.muni_Nombre,
 		   enca_Direccion,
 		   enca_Telefono,
-		   resi_Id,
+		   t1.resi_Id,
 		   t8.resi_Nombres,
-		   pare_Id,
+		   t1.pare_Id,
 		   t9.pare_Nombre,
 		   enca_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
@@ -2015,9 +2018,9 @@ AS
 		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
 		   enca_Estado
 		   FROM asil.tbEncargados t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.enca_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN gral.tbEstadosCiviles t4
+		   ON t1.enca_UsuModificacion = t3.usua_Id INNER JOIN gral.tbEstadosCiviles t4
 		   ON t1.estacivi_Id = t4.estacivi_Id INNER JOIN gral.tbMunicipios T7
 	       ON T1.muni_Id = T7.muni_id INNER JOIN asil.tbResidentes T8
 		   ON t1.resi_Id = t8.resi_Id INNER JOIN asil.tbParentescos t9
@@ -2200,6 +2203,7 @@ BEGIN
 		WHERE enca_Id     = @enca_Id
 
 		SELECT 'El encargado ha sido eliminado'
+		END
 		ELSE
 			SELECT 'El encargado no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
@@ -2224,9 +2228,9 @@ AS
 		   tiposang_FechaModificacion,
 		   tiposang_Estado
 		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.tiposang_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id
+		   ON t1.tiposang_UsuModificacion = t3.usua_Id
 GO
 
 /*LISTAR TIPOS DE SANGRE*/
@@ -2344,6 +2348,7 @@ BEGIN
 		WHERE tiposang_Id   = @tiposang_Id
 
 		SELECT 'El tipo de sangre ha sido eliminado'
+		END
 		ELSE
 			SELECT 'El tipo de sangre no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
@@ -2359,9 +2364,9 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbEnfermedadesXResidente
 AS
 	SELECT enferesi_Id,
-	       enfe_Id,
+	       t1.enfe_Id,
 		   t4.enfe_Nombre,
-		   resi_Id,
+		   t1.resi_Id,
 		   t5.resi_Nombres,
 		   enferesi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
@@ -2371,9 +2376,9 @@ AS
 		   enferesi_FechaModificacion,
 		   enferesi_Estado
 		   FROM asil.tbEnfermedadesXResidente t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   ON t1.enferesi_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN asil.tbEnfermedades t4
+		   ON t1.enferesi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbEnfermedades t4
 		   ON t1.enfe_Id = t4.enfe_Id  INNER JOIN asil.tbResidentes T5
 		   ON t1.resi_Id = t5.resi_Id
 GO
@@ -2414,7 +2419,7 @@ BEGIN
 						    AND resi_Id = @resi_Id)
 			BEGIN
 			INSERT INTO asil.tbEnfermedadesXResidente(enfe_Id, resi_Id, enferesi_UsuCreacion)
-			VALUES(@tiposang_Nombre, @tiposang_UsuCreacion)
+			VALUES(@enfe_Id, @resi_Id, @enferesi_UsuCreacion)
 			
 			SELECT 'La enfermedad por recidente ha sido insertada'
 			END
@@ -2496,11 +2501,13 @@ AS
 BEGIN
 	BEGIN TRY
 	IF NOT EXISTS (SELECT * FROM asil.tbEnfermedadesXResidente WHERE enferesi_Id = @enferesi_Id AND enferesi_Estado = 1)
+		BEGIN
 		UPDATE asil.tbEnfermedadesXResidente
 		SET enferesi_Estado = 0
 		WHERE enferesi_Id   = @enferesi_Id
 
 		SELECT 'La enfermedad por recidente ha sido eliminada'
+		END
 		ELSE
 			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
@@ -2512,140 +2519,118 @@ GO
 
 --************EXPEDIENTES******************--
 
-/*VISTA EXPEDIENTES*/
+/*Vista expedientes*/
 CREATE OR ALTER VIEW asil.VW_tbExpedientes
 AS
-	SELECT expe_Id,
-	       resi_Id,
-		   t4.resi_Nombres,
-		   tiposang_Id,
-		   t5.tiposang_Nombre,
-		   expe_FechaApertura,
-		   expe_Fotografia,
-		   expe_UsuCreacion,
-		   expe_FechaCreacion,
+	SELECT t1.expe_Id,
+		   t1.resi_Id,
+		   (t5.[resi_Nombres] + ' ' + t5.[resi_Apellidos]) AS resi_NombreCompleto,
+		   t5.resi_Estado,
+		   t1.tiposang_Id,
+		   t6.tiposang_Nombre,
+		   t1.expe_FechaApertura,
+		   t1.expe_Fotografia,
+		   t1.expe_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   expe_UsuModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
-            expe_FechaModificacion,
-			expe_Estado
-		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   t1.expe_FechaCreacion, 
+	       t1.expe_UsuModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+		   t1.expe_FechaModificacion,
+		   t1.expe_Estado
+		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.expe_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN tbResidentes t4
-		   ON t1.resi_Id = t4.resi_Id INNER JOIN asil.tbTiposSangre t5
-		   ON t1.tiposang_Id = t5.tiposang_Id
+		   ON t1.expe_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbResidentes t5
+		   ON t1.resi_Id = t5.resi_Id LEFT JOIN asil.tbTiposSangre t6
+		   ON t1.tiposang_Id = t6.tiposang_Id
 GO
 
-/*LISTAR EXPEDIENTES*/
+/*Listar expedientes*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_List
 AS
 BEGIN
-	SELECT *
-	FROM asil.VW_tbExpedientes
+	SELECT * FROM asil.VW_tbExpedientes
 	WHERE expe_Estado = 1
 END
 GO
 
-/*FIND EXPEDIENTES*/
+/*Insertar expedientes*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Insert
+	@resi_Id				INT,
+	@tiposang_Id			INT,
+	@expe_FechaApertura		DATE,
+	@expe_Fotografia		NVARCHAR(500),
+	@expe_UsuCreacion		INT
+AS 
+BEGIN
+	
+	BEGIN TRY
+
+		IF NOT EXISTS (SELECT * FROM asil.tbExpedientes
+						WHERE resi_Id = @resi_Id)
+		BEGIN
+			INSERT INTO asil.tbExpedientes(resi_Id, tiposang_Id, expe_FechaApertura, expe_Fotografia, expe_UsuCreacion)
+			VALUES(@resi_Id,@tiposang_Id,@expe_FechaApertura,@expe_Fotografia,@expe_UsuCreacion)
+
+			SELECT 'El expediente ha sido insertado exitosamente'
+
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbExpedientes
+						WHERE resi_Id = @resi_Id
+							  AND expe_Estado = 1)
+
+			SELECT 'Este expediente ya existe'
+		ELSE
+			BEGIN
+				UPDATE asil.tbExpedientes
+				SET expe_Estado = 1,
+					resi_Id = @resi_Id,
+					tiposang_Id = @tiposang_Id,
+					expe_FechaApertura = @expe_FechaApertura,
+					expe_Fotografia = @expe_Fotografia,
+					expe_UsuModificacion = @expe_UsuCreacion,
+					expe_FechaModificacion = GETDATE()
+				WHERE resi_Id = @resi_Id
+
+				SELECT 'El expediente ha sido insertado exitosamente'
+			END
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH 
+END
+GO
+
+/*Find expedientes*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Find 
 	@expe_Id	INT
 AS
 BEGIN
-	SELECT * FROM  asil.VW_tbExpedientes
-	WHERE expe_Estado = 1
-	AND expe_Id = @expe_Id
+	SELECT * FROM asil.VW_tbExpedientes
+	WHERE expe_Id = @expe_Id
 END
 GO
 
 
-/*INSERTAR EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Insert
-	@resi_Id					INT,
-	@tiposang_Id				INT,
-	@expe_FechaApertura		    DATE,
-	@expe_Fotografia			NVARCHAR(500),
-	@expe_UsuCreacion		    INT  
-	
-AS 
-BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbExpedientes
-						WHERE resi_Id = @resi_Id)
-			BEGIN
-			INSERT INTO asil.tbExpedientes(resi_Id, tiposang_Id, expe_FechaApertura, expe_Fotografia, expe_UsuCreacion)
-			VALUES(@resi_Id, @tiposang_Id, @expe_FechaApertura, @expe_Fotografia, @expe_UsuCreacion)
-			
-			SELECT 'El expediente ha sido insertado'
-			END
-		ELSE IF EXISTS (SELECT * FROM asil.tbExpedientes 
-						WHERE resi_Id = @resi_Id
-						AND expe_Estado = 0)
-			BEGIN
-				UPDATE asil.tbExpedientes 
-				SET    expe_Estado      = 1,
-				       tiposang_Id      = @tiposang_Id,
-					   expe_FechaApertura = @expe_FechaApertura,
-					   expe_Fotografia   = @expe_Fotografia,
-					   expe_UsuCreacion = @expe_UsuCreacion
-				WHERE resi_Id = @resi_Id
-
-				SELECT 'El expediente ha sido insertado'
-			END
-		ELSE
-			SELECT 'Este expediente ya existe'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
-END
-GO
-
-
-
-
-/*EDITAR EXPEDIENTES*/
+/*Editar expediente*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Update
-  @expe_Id					INT,
-  @resi_Id					INT,
-  @tiposang_Id				INT,
-  @expe_FechaApertura		DATE,
-  @expe_Fotografia			NVARCHAR(500),
-  @expe_UsuModificacion	    INT
+	@expe_Id					INT,
+	@tiposang_Id				INT,
+	@expe_FechaApertura			DATE,
+	@expe_Fotografia			NVARCHAR(500),
+	@expe_UsuModificacion		INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbExpedientes 
-						WHERE resi_Id = @resi_Id)
-		BEGIN			
-			UPDATE  asil.tbExpedientes
-			SET 	resi_Id            = @resi_Id,
-					tiposang_Id   = @tiposang_Id,
+			UPDATE asil.tbExpedientes
+			SET 	tiposang_Id = @tiposang_Id,
 					expe_FechaApertura = @expe_FechaApertura,
-					expe_Fotografia    = @expe_Fotografia,
+					expe_Fotografia = @expe_Fotografia,
 					expe_UsuModificacion = @expe_UsuModificacion,
-					expe_FechaModificacion = GETDATE()
-			WHERE 	expe_Id                = @expe_Id
+					[expe_FechaModificacion] = GETDATE()
+			WHERE 	expe_Id = @expe_Id
 
-			SELECT 'El expediente ha sido editado'
-		END
-		ELSE IF EXISTS (SELECT * FROM asil.tbExpedientes
-						WHERE resi_Id      = @resi_Id
-							  AND expe_Estado  = 1
-							  AND expe_Id     != @expe_Id)
-
-			SELECT 'El expediente ya existe'
-		ELSE
-			UPDATE  asil.tbExpedientes
-			SET     expe_Estado	          = 1,
-			        tiposang_Id = @tiposang_Id,
-					expe_FechaApertura = @expe_FechaApertura,
-					expe_Fotografia  = @expe_Fotografia,
-					expe_UsuModificacion  = @tiposang_UsuModificacion,
-					expe_FechaModificacion = GETDATE()
-			WHERE   resi_Id = @resi_Id
-
-			SELECT 'El expediente ha sido editado'
+			SELECT 'El expediente ha sido editado exitosamente'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2654,19 +2639,20 @@ END
 GO
 
 
-/*ELIMINAR EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Delete
-	 @expe_Id	INT
+/*Eliminar expedientes*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Delete 
+	@expe_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbExpedientes WHERE expe_Id = @expe_Id AND resi_Estado = 1)
+		IF NOT EXISTS (SELECT * FROM asil.VW_tbExpedientes WHERE expe_Id = @expe_Id AND resi_Estado = 1)
 			BEGIN
-		UPDATE asil.tbExpedientes
-		SET expe_Estado = 0
-		WHERE expe_Id   = @expe_Id
+				UPDATE asil.tbExpedientes
+				SET expe_Estado = 0
+				WHERE expe_Id = @expe_Id
 
-		SELECT 'El expediente ha sido eliminado'
+				SELECT 'El expediente ha sido eliminado'
+			END
 		ELSE
 			SELECT 'El expediente no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
@@ -2676,151 +2662,131 @@ BEGIN
 END
 GO
 
---************HISTORIAL EXPEDIENTES******************--
+--************HISTORIAL EXPEDIENTES ******************--
 
-/*VISTA HISTORIAL EXPEDIENTES*/
+/*Vista historial expedientes*/
 CREATE OR ALTER VIEW asil.VW_tbHistorialExpedientes
 AS
-	SELECT histexpe_Id,
-	       expe_Id,
-
-		   histexpe_Observaciones,
-		   empe_Id,
-		   t4.empe_Nombres,
-		   histexpe_FechaActualizacion,
-		   histexpe_UsuCreacion,
-		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   histexpe_FechaCreacion,
-		   histexpe_UsuModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
-           histexpe_FechaModificacion,
-		   histexpe_Estado
-		   FROM asil.tbHistorialExpedientes t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
-		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN asil.tbEmpleados t4
-		   ON t1.empe_Id = t4.empe_Id
+	SELECT t1.histexpe_Id,
+		   t1.expe_Id,
+		   t1.histexpe_Observaciones,
+		   t1.empe_Id,
+		   (t2.[empe_Nombres] + ' ' + t2.[empe_Apellidos]) AS empe_NombreCompleto,
+		   t1.histexpe_FechaActualizacion
+		   FROM asil.tbHistorialExpedientes t1 INNER JOIN asil.tbEmpleados t2
+		   ON t1.empe_Id = t2.empe_Id
 GO
 
-/*LISTAR HISTORIAL EXPEDIENTES*/
+/*Listar historial expedientes según expediente*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_List
+	@expe_Id		INT
 AS
 BEGIN
-	SELECT *
-	FROM asil.VW_tbHistorialExpedientes
-	WHERE histexpe_Estado = 1
+	SELECT * FROM asil.VW_tbHistorialExpedientes
+	WHERE expe_Id = @expe_Id
 END
 GO
 
-/*FIND HISTORIAL EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Find 
+/*Insertar historial expedientes*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Insert
+	@expe_Id							INT,
+	@histexpe_Observaciones				NVARCHAR(100),
+	@empe_Id							INT,
+	@histexpe_FechaActualizacion		NVARCHAR(500),
+	@histexpe_UsuCreacion				INT
+AS 
+BEGIN
+	
+	BEGIN TRY
+
+		IF NOT EXISTS (SELECT * FROM asil.tbHistorialExpedientes
+						WHERE expe_Id = @expe_Id
+						AND histexpe_Observaciones = @histexpe_Observaciones
+						AND empe_Id = @empe_Id
+						AND histexpe_FechaActualizacion = @histexpe_FechaActualizacion)
+		BEGIN
+			INSERT INTO asil.tbHistorialExpedientes(expe_Id, histexpe_Observaciones, empe_Id, histexpe_FechaActualizacion, histexpe_UsuCreacion)
+			VALUES(@expe_Id,@histexpe_Observaciones,@empe_Id,@histexpe_FechaActualizacion,@histexpe_UsuCreacion)
+
+
+			SELECT 'El historial ha sido insertado exitosamente'
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbHistorialExpedientes
+						WHERE expe_Id = @expe_Id
+						AND histexpe_Observaciones = @histexpe_Observaciones
+						AND empe_Id = @empe_Id
+						AND histexpe_FechaActualizacion = @histexpe_FechaActualizacion
+						AND histexpe_Estado = 1)
+
+			SELECT 'Este historial ya existe'
+		ELSE
+			BEGIN
+				UPDATE asil.tbHistorialExpedientes
+				SET histexpe_Estado = 1
+				WHERE expe_Id = @expe_Id
+				AND histexpe_Observaciones = @histexpe_Observaciones
+				AND empe_Id = @empe_Id
+				AND histexpe_FechaActualizacion = @histexpe_FechaActualizacion
+				AND histexpe_Estado = 1
+
+				SELECT 'El historial ha sido insertado exitosamente'
+			END
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH 
+END
+GO
+
+--/*Find expedientes*/
+--CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Find 
+--	@expe_Id	INT
+--AS
+--BEGIN
+--	SELECT * FROM asil.VW_tbExpedientes
+--	WHERE expe_Id = @expe_Id
+--END
+--GO
+
+
+/*Editar historial expediente*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Update
+	@histexpe_Id						INT,
+	@histexpe_Observaciones				NVARCHAR(100),
+	@empe_Id							INT,
+	@histexpe_FechaActualizacion		NVARCHAR(500),
+	@histexpe_UsuModificacion			INT
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE asil.tbHistorialExpedientes
+			SET 	histexpe_Observaciones = @histexpe_Observaciones,
+					empe_Id = @empe_Id,
+					histexpe_FechaActualizacion = @histexpe_FechaActualizacion,
+					histexpe_UsuModificacion = @histexpe_UsuModificacion,
+					[histexpe_FechaModificacion] = GETDATE()
+			WHERE 	histexpe_Id = @histexpe_Id
+
+			SELECT 'El historial ha sido editado exitosamente'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*Eliminar historial expedientes*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Delete 
 	@histexpe_Id	INT
 AS
 BEGIN
-	SELECT * FROM  asil.VW_tbHistorialExpedientes
-	WHERE histexpe_Estado = 1
-	AND histexpe_Id = @histexpe_Id
-END
-GO
-
-
-/*INSERTAR HISTORIAL EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Insert
-	@expe_Id							INT,
-	@histexpe_Observaciones			    NVARCHAR(1000),
-	@empe_Id							INT,
-	@histexpe_FechaActualizacion		DATE,
-	@histexpe_UsuCreacion			    INT
-	
-AS 
-BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbHistorialExpedientes
-						WHERE histexpe_Observaciones = @histexpe_Observaciones
-						  AND expe_Id = @expe_Id )
-			BEGIN
-			INSERT INTO asil.tbHistorialExpedientes(expe_Id, histexpe_Observaciones, empe_Id, histexpe_FechaActualizacion,histexpe_UsuCreacion)
-			VALUES(@expe_Id, @histexpe_Observaciones, @empe_Id, @histexpe_FechaActualizacion,@histexpe_UsuCreacion)
-			
-			SELECT 'El historial expediente ha sido insertado'
-			END
-		ELSE IF EXISTS (SELECT * FROM asil.tbHistorialExpedientes
-						WHERE histexpe_Observaciones = @histexpe_Observaciones
-						  AND expe_Id = @expe_Id
-						  AND histexpe_Estado = 0)
-			BEGIN
-				UPDATE asil.tbHistorialExpedientes 
-				SET    histexpe_Estado      = 1,
-				       empe_Id               = @empe_Id,
-					   histexpe_FechaActualizacion = @histexpe_FechaActualizacion,
-					   histexpe_UsuCreacion   = @histexpe_UsuCreacion
-				WHERE resi_Id = @resi_Id
-				      AND histexpe_Observaciones = @histexpe_Observaciones
-					  AND expe_Id = @expe_Id
-
-				SELECT 'El historial expediente ha sido insertado'
-			END
-		ELSE
-			SELECT 'Este historial expediente ya existe'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
-END
-GO
-
-
-
-
-/*EDITAR HISTORIAL EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Update
-    @histexpe_Id                        INT,
-	@expe_Id							INT,
-	@histexpe_Observaciones			    NVARCHAR(1000),
-	@empe_Id							INT,
-	@histexpe_FechaActualizacion		DATE,
-	@histexpe_UsuCreacion			    INT
-	
-AS
-BEGIN
-	BEGIN TRY
-	
-		BEGIN			
-			UPDATE  asil.tbHistorialExpedientes
-			SET 	expe_Id            = @expe_Id,
-					histexpe_Observaciones   = @histexpe_Observaciones,
-					empe_Id = @empe_Id,
-					histexpe_FechaActualizacion    = @histexpe_FechaActualizacion,
-					histexpe_UsuModificacion = @histexpe_UsuModificacion,
-					histexpe_FechaModificacion = GETDATE()
-			WHERE 	histexpe_Id                = @histexpe_Id
-
-			SELECT 'El historial expediente ha sido editado'
-		END
-		
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
-END
-GO
-
-
-/*ELIMINAR HISTORIAL EXPEDIENTES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_Delete
-	 @histexpe_Id	INT
-AS
-BEGIN
-	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbHistorialExpedientes WHERE histexpe_Id = @histexpe_Id AND histexpe_Estado = 1)
-			BEGIN
 		UPDATE asil.tbHistorialExpedientes
-		SET histexpe_Estado = 0
-		WHERE histexpe_Id   = @histexpe_Id
+				SET histexpe_Estado = 0
+				WHERE histexpe_Id = @histexpe_Id
 
-		SELECT 'El historial expediente ha sido eliminado'
-		ELSE
-			SELECT 'El historial expediente no puede ser eliminado ya que está siendo usado en otro registro'
+				SELECT 'El historial ha sido eliminado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2835,9 +2801,9 @@ CREATE OR ALTER VIEW asil.VW_tbHabitaciones
 AS
 	SELECT habi_Id,
 	       habi_Numero,
-		   cate_Id,
+		   t1.cate_Id,
 		   t4.cate_Nombre,
-		   cent_Id,
+		   t1.cent_Id,
 		   t5.cent_Nombre
 		   habi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
@@ -2846,10 +2812,10 @@ AS
 		   habi_FechaModificacion,
 		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
 		   habi_Estado
-		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   FROM asil.tbHabitaciones t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.habi_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN tbCategoriasHabitaciones T4
+		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
 		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
 		   ON t1.cent_Id = t5.cent_Id
 GO
@@ -2937,7 +2903,7 @@ BEGIN
 					cate_Id              = @cate_Id,
 					cent_Id              = @cent_Id,
 					habi_UsuModificacion = @habi_UsuModificacion,
-					habi_UsuModificacion = GETDATE()
+					habi_FechaModificacion = GETDATE()
 			WHERE 	habi_Id              = @habi_Id
 
 			SELECT 'La habitación ha sido editada'
@@ -2987,6 +2953,7 @@ BEGIN
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
+GO
 
 --************MUERTOS******************--
 
@@ -2994,7 +2961,7 @@ END
 CREATE OR ALTER VIEW asil.VW_tbMuertos
 AS
 	SELECT muer_Id,
-	       resi_Id,
+	       t1.resi_Id,
 		   (resi_Nombres + ' ' + resi_Apellidos) AS resi_NombreCompleto,
 		   muer_FechaYHora,
 		   muer_Descripcion,
@@ -3005,10 +2972,10 @@ AS
 		   muer_FechaModificacion,
 		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
 		   muer_Estado
-		   FROM asil.tbTiposSangre t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.carg_UsuCreacion = T2.usua_Id
+		   FROM asil.tbMuertos t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.muer_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.carg_UsuModificacion = t3.usua_Id INNER JOIN asil.tbResidentes t4
+		   ON t1.muer_UsuModificacion = t3.usua_Id INNER JOIN asil.tbResidentes t4
 		   ON t1.resi_Id = t4.resi_Id 
 GO
 
@@ -3075,15 +3042,13 @@ END
 GO
 
 
-
-
 /*EDITAR MUERTOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Update
     @muer_Id                        INT,
 	@resi_Id						INT,
 	@muer_FechaYHora				DATETIME,
-	@muer_Descripcion			NVARCHAR(500),
-	@muer_UsuCreacion			INT
+	@muer_Descripcion				NVARCHAR(500),
+	@muer_UsuModificacion			INT
 AS
 BEGIN
 	BEGIN TRY
@@ -3147,3 +3112,110 @@ BEGIN
 END
 GO
 
+--************DONACIONES******************--
+
+/*Vista donaciones*/
+CREATE OR ALTER VIEW asil.VW_tbDonaciones
+AS
+	SELECT t1.dona_Id,
+		   t1.dona_NombreDonante,
+		   t1.dona_Cantidad, 
+		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+		   t1.dona_FechaCreacion, 
+	       t1.dona_UsuModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+		   t1.dona_FechaModificacion,
+		   t1.dona_Estado
+		   FROM asil.tbDonaciones t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.dona_UsuCreacion = T2.usua_Id
+		   LEFT JOIN acce.tbUsuarios t3
+		   ON t1.dona_UsuModificacion = t3.usua_Id 
+GO
+
+/*Listar donaciones*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_List
+AS
+BEGIN
+	SELECT * FROM asil.VW_tbDonaciones
+	WHERE dona_Estado = 1
+END
+GO
+
+/*Insertar donaciones*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Insert
+	@dona_NombreDonante		NVARCHAR(400),
+	@dona_Cantidad			DECIMAL(18,2),
+	@dona_Fecha				DATE,
+	@dona_UsuCreacion		INT
+AS 
+BEGIN
+	
+	BEGIN TRY
+
+		INSERT INTO asil.tbDonaciones(dona_NombreDonante, dona_Cantidad, dona_Fecha, dona_UsuCreacion)
+			VALUES(@dona_NombreDonante,@dona_Cantidad,@dona_Fecha,@dona_UsuCreacion)
+
+			SELECT SCOPE_IDENTITY()
+
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH 
+END
+GO
+
+/*Find donaciones*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Find 
+	@dona_Id	INT
+AS
+BEGIN
+	SELECT * FROM asil.VW_tbDonaciones
+	WHERE dona_Id = @dona_Id
+END
+GO
+
+
+/*Editar donaciones*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Update
+	@dona_Id					INT,
+	@dona_NombreDonante			NVARCHAR(300),
+	@dona_Cantidad				DECIMAL(18,2),
+	@dona_Fecha					DATE,
+	@dona_UsuModificacion		INT
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE asil.tbDonaciones
+			SET 	dona_NombreDonante = @dona_NombreDonante,
+					dona_Cantidad = @dona_Cantidad,
+					dona_Fecha = @dona_Fecha,
+					dona_UsuModificacion = @dona_UsuModificacion,
+					[dona_FechaModificacion] = GETDATE()
+			WHERE 	dona_Id = @dona_Id
+
+			SELECT 'La donación ha sido editada exitosamente'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*Eliminar donaciones*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Delete 
+	@dona_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE asil.tbDonaciones
+				SET dona_Estado = 0
+				WHERE dona_Id = @dona_Id
+
+				SELECT 'La donación ha sido eliminada'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
