@@ -44,18 +44,18 @@ INSERT INTO acce.tbPantallas(pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_U
 VALUES ('usuarios', '/acceso/usuarios', 'acceso', 'ic_user', 1),
        ('roles', '/acceso/roles', 'acceso', 'ic_kanban', 1),
 	   ('reporte citas', '/reportes/citas', 'reportes', 'ic_analytics', 1),
-       ('empleados', '/asilca/empleados', 'óptica', 'ic_user', 1),
-	   ('clientes', '/asilca/clientes', 'óptica', 'ic_user', 1),
-	   ('citas', '/asilca/citas', 'óptica', 'ic_calendar', 1),
-	   ('proveedores', '/asilca/proveedores', 'óptica', 'ic_banking', 1),
-	   ('ordenes', '/asilca/ordenes', 'óptica', 'ic_booking', 1),
-	   ('marcas', '/asilca/marcas', 'óptica', 'ic_ecommerce', 1),
-	   ('categorias', '/asilca/categorias','óptica', 'ic_blog', 1),
-	   ('sucursales', '/asilca/sucursales', 'óptica', 'ic_banking', 1),
-	   ('consultorios', '/asilca/consultorios', 'óptica', 'ic_chat', 1),
-	   ('envios', '/asilca/envios', 'óptica', 'ic_mail', 1),
-	   ('ventas', '/asilca/ventas', 'óptica', 'ic_cart', 1),
-	   ('facturas', '/asilca/facturas', 'óptica', 'ic_invoice', 1)
+       ('empleados', '/asilca/empleados', 'ï¿½ptica', 'ic_user', 1),
+	   ('clientes', '/asilca/clientes', 'ï¿½ptica', 'ic_user', 1),
+	   ('citas', '/asilca/citas', 'ï¿½ptica', 'ic_calendar', 1),
+	   ('proveedores', '/asilca/proveedores', 'ï¿½ptica', 'ic_banking', 1),
+	   ('ordenes', '/asilca/ordenes', 'ï¿½ptica', 'ic_booking', 1),
+	   ('marcas', '/asilca/marcas', 'ï¿½ptica', 'ic_ecommerce', 1),
+	   ('categorias', '/asilca/categorias','ï¿½ptica', 'ic_blog', 1),
+	   ('sucursales', '/asilca/sucursales', 'ï¿½ptica', 'ic_banking', 1),
+	   ('consultorios', '/asilca/consultorios', 'ï¿½ptica', 'ic_chat', 1),
+	   ('envios', '/asilca/envios', 'ï¿½ptica', 'ic_mail', 1),
+	   ('ventas', '/asilca/ventas', 'ï¿½ptica', 'ic_cart', 1),
+	   ('facturas', '/asilca/facturas', 'ï¿½ptica', 'ic_invoice', 1)
        --('Marca', '/Marca/Listado', 'asilca', 'marcasItem', 1)
 GO
 
@@ -121,8 +121,8 @@ ADD CONSTRAINT FK_acce_tbRoles_acce_tbUsuarios_role_UsuCreacion_usua_Id 	FOREIGN
 GO
 
 INSERT INTO acce.tbRoles(role_Nombre, role_UsuCreacion)
-VALUES ('Administración', 1),
-	   ('Recepción', 1),
+VALUES ('Administraciï¿½n', 1),
+	   ('Recepciï¿½n', 1),
 	   ('Medicina', 1)
 GO
 
@@ -195,7 +195,7 @@ CREATE TABLE gral.tbEstadosCiviles
 );
 GO
 
---********TABLA MÉTODOS DE PAGO****************---
+--********TABLA Mï¿½TODOS DE PAGO****************---
 CREATE TABLE asil.tbMetodosPago
 (
 	meto_Id					INT IDENTITY,
@@ -336,7 +336,7 @@ CREATE TABLE asil.tbActividades
 );
 GO
 
---********TABLA CATEGORÍAS HABITACIONES****************---
+--********TABLA CATEGORï¿½AS HABITACIONES****************---
 CREATE TABLE asil.tbCategoriasHabitaciones
 (
 	cate_Id						INT IDENTITY,
@@ -383,8 +383,8 @@ CREATE TABLE asil.tbDietas
 	diet_Almuerzo			NVARCHAR(500) NOT NULL,
 	diet_Cena				NVARCHAR(500) NOT NULL,
 	diet_Merienda			NVARCHAR(500) NOT NULL,
-	diet_Restricciones		NVARCHAR(500)  NULL,
-	diet_Observaciones		NVARCHAR(500)  NULL,
+	diet_Restricciones		NVARCHAR(500),
+	diet_Observaciones		NVARCHAR(500),
 	
 	diet_UsuCreacion		INT NOT NULL,
 	diet_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_diet_FechaCreacion DEFAULT(GETDATE()),
@@ -454,9 +454,9 @@ CREATE TABLE asil.tbAgendaDetalles
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
 	agendeta_Hora				TIME NOT NULL,
-	acti_Id						INT NOT NULL,
-	medi_Id						INT NOT NULL,
-	agendeta_Observaciones		NVARCHAR(500) NOT NULL,
+	acti_Id						INT,
+	medi_Id						INT,
+	agendeta_Observaciones		NVARCHAR(500),
 	
 	agendeta_UsuCreacion		INT NOT NULL,
 	agendeta_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_agendeta_FechaCreacion DEFAULT(GETDATE()),
@@ -553,7 +553,7 @@ CREATE TABLE asil.tbEncargados
 	estacivi_Id				INT NOT NULL,
 	enca_Nacimiento			DATE NOT NULL,
 	enca_Sexo				CHAR NOT NULL,
-	muni_Id					CHAR(4) NOT NULL,
+	muni_Id					CHAR(4) NOT  NULL,
 	enca_Direccion			NVARCHAR(500) NOT NULL,
 	enca_Telefono			NVARCHAR(20) NOT NULL,
 	resi_Id					INT NOT NULL,
@@ -896,21 +896,21 @@ INSERT INTO asil.tbEnfermedades(enfe_Nombre, enfe_UsuCreacion)
 VALUES('Mal de Alzheimer',1),
       ('Artritis',1),
 	  ('Asma',1),
-	  ('Cáncer',1),
+	  ('Cï¿½ncer',1),
 	  ('EPOC',1),
 	  ('Enfermedad de Crohn',1),
-	  ('Fibrosis quística',1),
+	  ('Fibrosis quï¿½stica',1),
 	  ('Diabetes',1),
-	  ('Presión arterial alta (hipertensión)',1),
+	  ('Presiï¿½n arterial alta (hipertensiï¿½n)',1),
 	  ('VIH/sida',1),
-	  ('Migraña',1),
-	  ('Depresión',1),
+	  ('Migraï¿½a',1),
+	  ('Depresiï¿½n',1),
 	  ('Bipolar',1),
 	  ('Mal de Parkinson',1)
 GO
 --********INSERT TABLA ACTIVIDADES****************---
 INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
-VALUES('Medicación',1),
+VALUES('Medicaciï¿½n',1),
 	  ('Desayuno',1),
       ('Almuerzo',1),
 	  ('Cena',1),
@@ -919,31 +919,31 @@ VALUES('Medicación',1),
 	  ('Terapia de baile',1),
 	  ('Juegos de mesa',1),
 	  ('Lectura',1),
-	  ('Natación',1)
+	  ('Nataciï¿½n',1)
 
 
 GO
  --********INSERT TABLA CATEGORIAS HABITACIONES****************---
 INSERT INTO asil.tbCategoriasHabitaciones(cate_Nombre, cate_Capacidad, cate_Climatizacion, cate_UsuCreacion)
-VALUES('Habitaón Individual',1,1,1),
-	  ('Habitación Doble',2,0,1),
-	  ('Habitación Triple',3,0,1),
-	  ('Habitación cuádruple',1,4,1)
+VALUES('Habitaï¿½n Individual',1,1,1),
+	  ('Habitaciï¿½n Doble',2,0,1),
+	  ('Habitaciï¿½n Triple',3,0,1),
+	  ('Habitaciï¿½n cuï¿½druple',1,4,1)
 GO
 --********INSERT TABLA CARGOS****************---
 INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
 VALUES('Gerente',1),
       ('Cuidador',1),
-	  ('Psicólogo',1),
+	  ('Psicï¿½logo',1),
 	  ('Trabajador social',1),
-	  ('Enfermero con conocimientos en geriatría',1),
-	  ('Auxiliares de enfermería',1),
+	  ('Enfermero con conocimientos en geriatrï¿½a',1),
+	  ('Auxiliares de enfermerï¿½a',1),
 	  ('Animador sociocultural',1),
 	  ('Educador Social.',1),
 	  ('Cocineros',1),
 	  ('Ayudantes de cocina',1),
-	  ('Doctor especializado en geriatría',1),
-	  ('Médico especializado en geriatría',1)
+	  ('Doctor especializado en geriatrï¿½a',1),
+	  ('Mï¿½dico especializado en geriatrï¿½a',1)
 GO
 	  --********INSERT TABLA DIETA ****************---
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
@@ -957,7 +957,7 @@ VALUES	  ('Galletas con mermelada, leche', 'Ensalada de tomate, Lentejas con cho
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1);
+VALUES	  ('Jugo de naranja, sandwich de jamï¿½n y queso', 'Patatas estofadas, ensalada verde, pan, cuajada','Acelgas rehogadas con ajo, jamon de pollo al horno y Manzana','Yogur con miel y nueces',1);
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
@@ -965,14 +965,14 @@ VALUES	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marin
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES	  ('Leche, Tostadas con jamón y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piña','Bizcochos de fresa',1);
+VALUES	  ('Leche, Tostadas con jamï¿½n y frutos secos', 'Potaje de espinacas y garbanzos, Pescado Frito','Crema de puerros, tortillas de patatas, jugo de piï¿½a','Bizcochos de fresa',1);
 
 
 GO
 	  --********INSERT TABLA agendas ****************---
 
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
-VALUES('Estándar',1);
+VALUES('Estï¿½ndar',1);
 GO
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
 VALUES('De pago',1);
