@@ -218,6 +218,10 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbMetodosPagos]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbMuertos]",
          "ObjectType": 3
       },
@@ -238,7 +242,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "LAPTOP-64AJM339.AsiloJAC",
+   "UiHint": "VJ2100.AsiloJAC",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

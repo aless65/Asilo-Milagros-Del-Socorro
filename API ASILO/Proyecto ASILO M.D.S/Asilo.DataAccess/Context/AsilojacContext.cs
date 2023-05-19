@@ -37,6 +37,7 @@ namespace Asilo.DataAccess.Context
         public virtual DbSet<VW_tbHistorialExpedientes> VW_tbHistorialExpedientes { get; set; }
         public virtual DbSet<VW_tbHistorialPagos> VW_tbHistorialPagos { get; set; }
         public virtual DbSet<VW_tbMedicamentos> VW_tbMedicamentos { get; set; }
+        public virtual DbSet<VW_tbMetodosPagos> VW_tbMetodosPagos { get; set; }
         public virtual DbSet<VW_tbMuertos> VW_tbMuertos { get; set; }
         public virtual DbSet<VW_tbParentescos> VW_tbParentescos { get; set; }
         public virtual DbSet<VW_tbProveedores> VW_tbProveedores { get; set; }
@@ -79,7 +80,7 @@ namespace Asilo.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
             modelBuilder.Entity<VW_tbActividades>(entity =>
             {
@@ -412,6 +413,10 @@ namespace Asilo.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(100);
 
+                entity.Property(e => e.resi_Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
                 entity.Property(e => e.resi_Nombres)
                     .IsRequired()
                     .HasMaxLength(200);
@@ -577,6 +582,27 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
 
                 entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbMetodosPagos>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbMetodosPagos", "asil");
+
+                entity.Property(e => e.meto_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.meto_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.meto_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.meto_NombreUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.meto_NombreUsuarioModificacion).HasMaxLength(100);
             });
 
             modelBuilder.Entity<VW_tbMuertos>(entity =>

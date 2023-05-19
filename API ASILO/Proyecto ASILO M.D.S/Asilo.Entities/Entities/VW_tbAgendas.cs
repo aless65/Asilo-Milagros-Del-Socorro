@@ -11,10 +11,10 @@ namespace Asilo.Entities.Entities
         public int agen_Id { get; set; }
         public string agen_Nombre { get; set; }
         public int agen_UsuCreacion { get; set; }
-        public string usua_UsuCreacion_Nombre { get; set; }
+        public string usuCrea { get; set; }
         public DateTime agen_FechaCreacion { get; set; }
         public int? agen_UsuModificacion { get; set; }
-        public string usua_UsuModificacion_Nombre { get; set; }
+        public string usuModif { get; set; }
         public DateTime? agen_FechaModificacion { get; set; }
         public bool agen_Estado { get; set; }
     }
