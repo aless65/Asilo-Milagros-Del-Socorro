@@ -25,15 +25,15 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Departamentos
-
+        public static string UDP_Lista_Departamentos = "gral.UDP_gral_tbDepartamentos_List";
         #endregion
 
         #region Municipios
-
+        public static string UDP_Lista_Municipios = "gral.UDP_gral_tbMunicipios_List";
         #endregion
 
         #region Estados Civiles
-
+        public static string UDP_Lista_EstadosCiviles = "gral.UDP_gral_tbEstadosCiviles_List";
         #endregion
 
         #region Actividades
@@ -50,7 +50,7 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Cargos
-
+        public static string UDP_Lista_Cargos = "asil.UDP_asil_tbCargos_List";
         #endregion
 
         #region Categorias Habitaciones
@@ -63,8 +63,6 @@ namespace Asilo.DataAccess
         public static string AgregarCentro= "asil.UDP_asil_tbCentros_Insert";
         public static string ActualizarCentro = "asil.UDP_asil_tbCentros_Update";
         public static string EliminarCentro = "asil.UDP_asil_tbCentros_Delete";
-
-
         #endregion
 
         #region Dietas
@@ -72,7 +70,11 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Donaciones
-
+        public static string UDP_Lista_Donaciones = "asil.UDP_asil_tbDonaciones_List";
+        public static string UDP_Inserta_Donaciones = "asil.UDP_asil_tbDonaciones_Insert";
+        public static string UDP_Find_Donaciones = "asil.UDP_asil_VW_tbDonaciones_Find";
+        public static string UDP_Edita_Donaciones = "asil.UDP_asil_tbDonaciones_Update";
+        public static string UDP_Elimina_Donaciones = "asil.UDP_asil_tbDonaciones_Delete";
         #endregion
 
         #region Empleados
@@ -85,7 +87,11 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Encargados
-
+        public static string UDP_Lista_Encargados = "asil.UDP_asil_tbEncargados_List";
+        public static string UDP_Inserta_Encargados = "asil.UDP_asil_tbEncargados_Insert";
+        public static string UDP_Find_Encargados = "asil.UDP_asil_tbEncargados_Find";
+        public static string UDP_Edita_Encargados = "asil.UDP_asil_tbEncargados_Update";
+        public static string UDP_Elimina_Encargados = "asil.UDP_asil_tbEncargados_Delete";
         #endregion
 
         #region Enfermedades
@@ -135,15 +141,19 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Métodos Pago
-
+        public static string UDP_Lista_MetodosPago = "gral.UDP_asil_tbMetodosPagos_List";
         #endregion
 
         #region Muertos
-
+        public static string UDP_Lista_Muertos = "asil.UDP_asil_tbMuertos_List";
+        public static string UDP_Inserta_Muertos = "asil.UDP_asil_tbMuertos_Insert";
+        public static string UDP_Find_Muertos = "asil.UDP_asil_tbMuertos_Find";
+        public static string UDP_Edita_Muertos = "asil.UDP_asil_tbMuertos_Update";
+        public static string UDP_Elimina_Muertos = "asil.UDP_asil_tbMuertos_Delete";
         #endregion
 
         #region Parentescos
-
+        public static string UDP_Lista_Parentescos = "asil.UDP_asil_tbParentescos_List";
         #endregion
 
         #region Proveedores

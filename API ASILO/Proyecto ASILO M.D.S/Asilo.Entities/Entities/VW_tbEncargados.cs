@@ -22,6 +22,8 @@ namespace Asilo.Entities.Entities
         public string enca_Telefono { get; set; }
         public int resi_Id { get; set; }
         public string resi_Nombres { get; set; }
+        public string resi_Apellidos { get; set; }
+        public bool resi_Estado { get; set; }
         public int pare_Id { get; set; }
         public string pare_Nombre { get; set; }
         public int enca_UsuCreacion { get; set; }

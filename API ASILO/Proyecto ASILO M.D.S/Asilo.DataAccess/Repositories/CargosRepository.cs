@@ -1,20 +1,23 @@
 ﻿using Asilo.Entities.Entities;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Asilo.DataAccess.Repositories
 {
-    public class CargosRepository : IRepository<tbCargos, tbCargos>
+    public class CargosRepository : IRepository<tbCargos, VW_tbCargos>
     {
         public RequestStatus Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public tbCargos Find(int? id)
+        public VW_tbCargos Find(int? id)
         {
             throw new NotImplementedException();
         }
@@ -24,9 +27,11 @@ namespace Asilo.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<tbCargos> List()
+        public IEnumerable<VW_tbCargos> List()
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            return db.Query<VW_tbCargos>(ScriptsDataBase.UDP_Lista_Cargos, null, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Update(tbCargos item)

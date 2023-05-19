@@ -10,6 +10,7 @@ namespace Asilo.API.Models
         public int dona_Id { get; set; }
         public string dona_NombreDonante { get; set; }
         public decimal dona_Cantidad { get; set; }
+        public DateTime dona_Fecha { get; set; }
         public string usua_UsuCreacion_Nombre { get; set; }
         public DateTime dona_FechaCreacion { get; set; }
         public int? dona_UsuModificacion { get; set; }

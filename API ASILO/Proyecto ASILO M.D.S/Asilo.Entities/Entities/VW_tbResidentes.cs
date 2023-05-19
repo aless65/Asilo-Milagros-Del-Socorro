@@ -18,24 +18,16 @@ namespace Asilo.Entities.Entities
         public string resi_Sexo { get; set; }
         public string SexoDes { get; set; }
         public int diet_Id { get; set; }
-        public string diet_Desayuno { get; set; }
-        public string diet_Almuerzo { get; set; }
-        public string diet_Cena { get; set; }
-        public string empe_Nombres { get; set; }
-        public string empe_Apellidos { get; set; }
-        public string empe_NombreCompleto { get; set; }
-        public string diet_Merienda { get; set; }
-        public string diet_Observaciones { get; set; }
-        public string diet_Restricciones { get; set; }
         public DateTime resi_FechaIngreso { get; set; }
         public int? empe_Id { get; set; }
+        public string empe_Nombres { get; set; }
         public int agen_Id { get; set; }
         public string agen_Nombre { get; set; }
         public int resi_UsuCreacion { get; set; }
-        public string usuCrea { get; set; }
+        public string usua_UsuCreacion_Nombre { get; set; }
         public DateTime resi_FechaCreacion { get; set; }
         public int? resi_UsuModificacion { get; set; }
-        public string usuModif { get; set; }
+        public string usua_UsuModificacion_Nombre { get; set; }
         public DateTime? resi_FechaModificacion { get; set; }
         public bool resi_Estado { get; set; }
     }

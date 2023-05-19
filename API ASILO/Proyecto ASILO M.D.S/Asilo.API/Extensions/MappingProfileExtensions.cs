@@ -27,6 +27,9 @@ namespace Asilo.API.Extensions
            CreateMap<ProveedorViewModel, tbProveedores>().ReverseMap();
             CreateMap<HabitacionesViewModel, tbHabitaciones>().ReverseMap();
 
+           CreateMap<DonacionesViewModel, tbDonaciones>().ReverseMap();
+           CreateMap<EncargadosViewModel, tbEncargados>().ReverseMap();
+           CreateMap<MuertosViewModel, tbMuertos>().ReverseMap();
         }
 
     }

@@ -70,7 +70,6 @@ namespace Asilo.DataAccess.Repositories
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Enfermedades, parametros, commandType: CommandType.StoredProcedure);
 
-
             return result;
         }
     }
