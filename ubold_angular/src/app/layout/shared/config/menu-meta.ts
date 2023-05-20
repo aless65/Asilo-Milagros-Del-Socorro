@@ -13,28 +13,12 @@ const MENU_ITEMS: MenuItem[] = [
         children: [
             {
                 key: 'ds-dashboard-1',
-                label: 'Dashboard 1',
+                icon: 'chart pie',
+                label: 'Home',
                 link: '/dashboard-1',
                 parentKey: 'dashboards',
             },
-            {
-                key: 'ds-dashboard-2',
-                label: 'Dashboard 2',
-                link: '/dashboard-2',
-                parentKey: 'dashboards',
-            },
-            {
-                key: 'ds-dashboard-3',
-                label: 'Dashboard 3',
-                link: '/dashboard-3',
-                parentKey: 'dashboards',
-            },
-            {
-                key: 'ds-dashboard-4',
-                label: 'Dashboard 4',
-                link: '/dashboard-4',
-                parentKey: 'dashboards',
-            },
+           
         ],
     },
 
