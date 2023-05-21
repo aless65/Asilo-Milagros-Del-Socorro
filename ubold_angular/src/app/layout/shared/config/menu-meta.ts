@@ -40,6 +40,13 @@ const MENU_ITEMS: MenuItem[] = [
 
     { key: 'apps', label: 'Apps', isTitle: true },
     {
+        key: 'apps-enfermedades',
+        label: 'Enfermedades',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/enfermedades/list',
+    },
+    {
         key: 'apps-calendar',
         label: 'Calendar',
         isTitle: false,

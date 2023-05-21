@@ -173,7 +173,7 @@ END
 GO
 
 /*Insertar enfermedades*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Insert
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Insert 
 	@enfe_Nombre		NVARCHAR(100),
 	@enfe_UsuCreacion	INT
 AS 
