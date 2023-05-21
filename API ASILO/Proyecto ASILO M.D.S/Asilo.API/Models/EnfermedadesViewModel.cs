@@ -7,6 +7,8 @@ namespace Asilo.API.Models
 {
     public class EnfermedadesViewModel
     {
+        public int enfe_Id { get; set; }
+        public string enfe_Nombre { get; set; }
         public int enfe_UsuCreacion { get; set; }
         public string usua_UsuCreacion_Nombre { get; set; }
         public DateTime enfe_FechaCreacion { get; set; }
