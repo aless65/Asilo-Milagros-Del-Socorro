@@ -1451,7 +1451,7 @@ namespace Asilo.BusinessLogic.Services
             var result = new ServiceResult();
             try
             {
-                var list = _empleadosRepository.List();
+                var list = _residentesRepository.List();
                 return result.Ok(list);
             }
             catch (Exception e)

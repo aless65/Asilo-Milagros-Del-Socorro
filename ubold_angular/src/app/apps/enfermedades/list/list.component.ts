@@ -138,11 +138,6 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   // openSuccess(){
   //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
   // }
-
-  /**
-   * fetch contact list
-   */
-  
   _fetchData(): void {
     this.service.getEnfermedades()
   .subscribe((response: any)=>{
@@ -154,7 +149,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log('initAdvancedTableData');
+    console.log(this.enfermedades);
     this.columns = [
       // {
       //   name: 'name',
@@ -173,7 +168,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
       },
       {
         name: 'Action',
-        label: 'Action',
+        label: 'Acciones',
         width: 82,
         formatter: this.enfermedadActionFormatter.bind(this),
       }]
@@ -220,6 +215,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
       `
       <div class="table-user">
       <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${enfermedad.enfe_Id}">${enfermedad.enfe_Nombre}</a>
+      </div>
       `
     );
   }
@@ -231,16 +227,6 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
         <a href="javascript:void(0);" class="delete action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
-  
-  // editEnfermedad(id: string): void {
-  //   // Handle edit action
-  //   console.log('Edit button clicked for ID:', id);
-  // }
-  
-  // deleteEnfermedad(id: string): void {
-  //   // Handle delete action
-  //   console.log('Delete button clicked for ID:', id);
-  // }
 
   /**
 * Match table data with search input
@@ -269,7 +255,4 @@ matches(row: Enfermedad, term: string) {
   }
 
 }
-// function showSuccess() {
-//   throw new Error('Function not implemented.');
-// }
 

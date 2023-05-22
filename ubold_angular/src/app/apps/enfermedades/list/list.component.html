@@ -29,7 +29,7 @@
 <!-- Modal -->
 <ng-template #content let-modal>
     <div class="modal-header bg-light">
-        <h4 class="modal-title" id="myCenterModalLabel">Agregar enfermedad</h4>
+        <h4 class="modal-title" id="myCenterModalLabel">{{ esEditar ? 'Editar enfermedad' : 'Agregar enfermedad' }}</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
     </div>
     <div class="modal-body p-4">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-success waves-effect waves-light me-1">Agregar</button>
+                <button type="submit" class="btn btn-success waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
                 <button type="button" class="btn btn-danger waves-effect waves-light"
                     (click)="modal.close('')">Cancelar</button>
             </div>

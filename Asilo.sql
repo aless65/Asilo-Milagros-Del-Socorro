@@ -1006,6 +1006,19 @@ VALUES
   ('HealthCare', 'sales@healthcare.com', '555-789-0123', '1703', '987 Maple Street', 1);
 
 
+	  --********INSERT TABLA Tipo de Sangre ****************---
+INSERT INTO [asil].tbTiposSangre([tiposang_Nombre], [tiposang_UsuCreacion])
+VALUES
+  ('A+', 1),
+  ('A-', 1),
+  ('B+', 1),
+  ('B-', 1),
+  ('AB+', 1),
+  ('AB-', 1),
+  ('O+', 1),
+  ('O-', 1);
+
+
 
 
 

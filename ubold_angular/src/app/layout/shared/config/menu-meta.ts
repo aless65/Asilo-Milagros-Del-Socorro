@@ -54,6 +54,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/proveedores/list',
     },
     {
+        key: 'apps-residentes',
+        label: 'Residentes',
+        isTitle: false,
+        icon: 'users',
+        link: '/apps/residentes/list',
+    },
+    {
         key: 'apps-calendar',
         label: 'Calendar',
         isTitle: false,
