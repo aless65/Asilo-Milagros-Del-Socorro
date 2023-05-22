@@ -397,7 +397,7 @@ CREATE TABLE asil.tbDietas
 );
 GO
 
---********TABLA RESIDENTES****************---
+--********TABLA EMPLEADOS****************---
 CREATE TABLE asil.tbEmpleados
 (
 	empe_Id					INT IDENTITY,
@@ -481,7 +481,7 @@ CREATE TABLE asil.tbResidentes
 	estacivi_Id				INT NOT NULL,
 	resi_Nacimiento			DATE NOT NULL,
 	resi_Sexo				CHAR NOT NULL,
-	diet_Id					INT NOT NULL,
+	diet_Id					INT,
 	resi_FechaIngreso		DATE NOT NULL,
 	empe_Id					INT,
 	agen_Id					INT NOT NULL,
@@ -989,6 +989,21 @@ VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',1,1,'2012-02-
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
 VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',1,2,'2012-02-25',1);
+
+
+	  --********INSERT TABLA Proveedores ****************---
+INSERT INTO [asil].[tbProveedores](prov_Nombre, prov_CorreoElectronico, prov_Telefono, muni_Id, prov_Direccion, prov_UsuCreacion)
+VALUES
+  ('PharmaCorp', 'info@pharmacorp.com', '555-123-4567', '0501', '123 Main Street', 1),
+  ('MediSupplies', 'sales@medisupplies.com', '555-987-6543', '1805', '456 Elm Street', 1),
+  ('HealthPlus', 'info@healthplus.com', '555-789-0123', '1705', '789 Oak Avenue', 1),
+  ('MediWorld', 'sales@mediworld.com', '555-456-7890', '1605', '987 Pine Road', 1),
+  ('PharmaLink', 'info@pharmalink.com', '555-234-5678', '0201', '654 Cedar Lane', 1),
+  ('MediCare', 'sales@medicare.com', '555-876-5432', '1503', '321 Maple Avenue', 1),
+  ('HealthLine', 'info@healthline.com', '555-345-6789', '1802', '789 Oak Street', 1),
+  ('PharmaDirect', 'sales@pharmadirect.com', '555-678-9012', '1802', '456 Elm Road', 1),
+  ('MediPharm', 'info@medipharm.com', '555-901-2345', '0505', '123 Pine Lane', 1),
+  ('HealthCare', 'sales@healthcare.com', '555-789-0123', '1703', '987 Maple Street', 1);
 
 
 

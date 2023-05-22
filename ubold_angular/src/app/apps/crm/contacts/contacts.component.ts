@@ -106,15 +106,22 @@ export class ContactsComponent implements OnInit {
   /**
  *  handles operations that need to be performed after loading table
  */
-  handleTableLoad(event: any): void {
-    // product cell
-    document.querySelectorAll('.customer').forEach((e) => {
-      e.addEventListener("click", () => {
-        this.selectedContact = this.contacts[Number(e.id) - 1]
+    handleTableLoad(event: any): void {
+      // product cell
+      document.querySelectorAll('.customer').forEach((e) => {
+        e.addEventListener("click", () => {
+          this.selectedContact = this.contacts[Number(e.id) - 1]
+          console.log(this.selectedContact);     
+        });
+      })
 
-      });
-    })
-  }
+      document.querySelectorAll('.action-icon').forEach((e) => {
+        e.addEventListener("click", () => {
+          console.log('le dio');    
+          console.log(this.contacts);      
+        });
+      })
+    }
 
   // formats name cell
   customerNameFormatter(customer: CRMCustomer): any {

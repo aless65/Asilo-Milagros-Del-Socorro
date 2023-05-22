@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,7 @@ import { Enfermedad } from '../Models';
 import { ServiceService } from 'src/app/apps/enfermedades/Service/service.service';
 // import { ToastModule } from 'primeng/toast';
 // import { MessageService } from 'primeng/api';
+// import { NgToastService } from 'ng-angular-popup';
 
 @Component({
     selector: 'app-enfermedades-list',
@@ -20,16 +21,20 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   pageTitle: BreadcrumbItem[] = [];
   enfermedades: Enfermedad[] = [];
   columns: Column[] = [];
+  selectedEnfermedad!: Enfermedad;
+  esEditar!: boolean;
   newEnfermedad!: FormGroup;
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
+  @ViewChild('deleteEnfermedadModal', { static: true }) deleteEnfermedadModal: any;
 
   constructor (
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
+    // private toast: NgToastService,
     // private messageService: MessageService,
   ) { }
 
@@ -52,8 +57,34 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
  * @param title title of modal 
  * @param data data to be used in modal
  */
-  openModal(): void {
+  openModal(isEditOrNew: string): void {
+    
+    if(isEditOrNew === "new"){
+      this.newEnfermedad.reset();
+      this.esEditar = false;
+    } else{
+      this.esEditar = true;
+    }
+
     this.activeModal.open(this.content, { centered: true });
+  }
+
+  openModalDelete(): void {
+    this.activeModal.open(this.deleteEnfermedadModal, { centered: true, windowClass: 'delete-modal' });
+  }  
+
+  deleteEnfermedad(): void{
+    this.service.deleteEnfermedades(this.selectedEnfermedad.enfe_Id || 0).subscribe(
+        (response: any) => {
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+    this._fetchData();
+    this.activeModal.dismissAll('');
   }
 
   submitForm(): void {
@@ -63,27 +94,49 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
     }
 
     const enfermedad: Enfermedad = {
+      enfe_Id: this.selectedEnfermedad?.enfe_Id || 0,
       enfe_Nombre: this.newEnfermedad.value.name,
       enfe_UsuCreacion: 1,
+      enfe_UsuModificacion: 1,
     }
 
+    if(this.esEditar){
 
-    this.service.addEnfermedades(enfermedad).subscribe(
-      (response: any) => {
-        // this.showSuccess();
-        console.log("se pudo:", response);
-        this._fetchData();
-      },
-      (error) => {
-        console.log("no se pudo:", error);
-      }
-    )
+      this.service.editEnfermedades(enfermedad).subscribe(
+        (response: any) => {
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+      
+    } else{
+      
+      this.service.addEnfermedades(enfermedad).subscribe(
+        (response: any) => {
+          // this.openSuccess();
+          // this.showSuccess();
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+      
+    }
 
     this.activeModal.dismissAll('');
   }
 
-  // showSuccess(): void {
+  // showSuccess(){
   //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+  // }
+
+  // openSuccess(){
+  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
   // }
 
   /**
@@ -101,6 +154,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
+    console.log('initAdvancedTableData');
     this.columns = [
       // {
       //   name: 'name',
@@ -122,22 +176,43 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
         label: 'Action',
         width: 82,
         formatter: this.enfermedadActionFormatter.bind(this),
-        sort: false
       }]
   }
 
   /**
  *  handles operations that need to be performed after loading table
  */
+
+
   handleTableLoad(event: any): void {
     // product cell
-    document.querySelectorAll('.enfermedad').forEach((e) => {
-      // e.addEventListener("click", () => {
-      //   this.selectedContact = this.contacts[Number(e.id) - 1]
-
-      // });
+    document.querySelectorAll('.edit').forEach((e) => {
+      e.addEventListener("click", () => {   
+        const selectedId = Number(e.id);
+        this.selectedEnfermedad = this.enfermedades.find(enfermedad => enfermedad.enfe_Id === selectedId) || this.selectedEnfermedad;
+        if (this.selectedEnfermedad) {
+          this.newEnfermedad = this.fb.group({
+            name: [this.selectedEnfermedad.enfe_Nombre || '', Validators.required],
+          });
+          this.openModal("edit");
+        }
+      });
+    });
+    
+    document.querySelectorAll('.delete').forEach((e) => {
+      e.addEventListener("click", () => {  
+        const selectedId = Number(e.id);
+        this.selectedEnfermedad = this.enfermedades.find(enfermedad => enfermedad.enfe_Id === selectedId) || this.selectedEnfermedad;
+        if (this.selectedEnfermedad) {
+          this.newEnfermedad = this.fb.group({
+            name: [this.selectedEnfermedad.enfe_Nombre || '', Validators.required],
+          });
+          this.openModalDelete();
+        }
+      });
     })
   }
+
 
   // formats name cell
   enfermedadNameFormatter(enfermedad: Enfermedad): any {
@@ -150,12 +225,22 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   }
 
   // action cell formatter
-  enfermedadActionFormatter(): any {
+  enfermedadActionFormatter(enfermedad: Enfermedad): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
+  
+  // editEnfermedad(id: string): void {
+  //   // Handle edit action
+  //   console.log('Edit button clicked for ID:', id);
+  // }
+  
+  // deleteEnfermedad(id: string): void {
+  //   // Handle delete action
+  //   console.log('Delete button clicked for ID:', id);
+  // }
 
   /**
 * Match table data with search input

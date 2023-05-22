@@ -47,6 +47,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/enfermedades/list',
     },
     {
+        key: 'apps-proveedores',
+        label: 'Proveedores',
+        isTitle: false,
+        icon: 'book',
+        link: '/apps/proveedores/list',
+    },
+    {
         key: 'apps-calendar',
         label: 'Calendar',
         isTitle: false,

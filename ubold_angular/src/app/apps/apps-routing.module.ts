@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'enfermedades', loadChildren: () => import('./enfermedades/enfermedades.module').then(m => m.EnfermedadesModule) },
+  { path: 'proveedores', loadChildren: () => import('./proveedores/proveedores.module').then(m => m.ProveedoresModule) },
   { path: 'calendar', loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
   { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },
   { path: 'ecommerce', loadChildren: () => import('./ecommerce/ecommerce.module').then(m => m.EcommerceModule) },

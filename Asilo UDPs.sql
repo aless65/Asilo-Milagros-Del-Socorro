@@ -221,7 +221,7 @@ GO
 
 
 /*Editar enfermedades*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Update
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Update 
 	@enfe_Id					INT,
 	@enfe_Nombre				NVARCHAR(100),
 	@enfe_UsuModificacion		INT
@@ -229,30 +229,30 @@ AS
 BEGIN
 	BEGIN TRY
 	IF NOT EXISTS (SELECT * FROM asil.tbEnfermedades 
-						WHERE @enfe_Nombre = enfe_Nombre)
+						WHERE @enfe_Nombre = [enfe_Nombre])
 		BEGIN			
 			UPDATE asil.tbEnfermedades
-			SET 	enfe_Nombre = @enfe_Nombre,
-					enfe_UsuModificacion = @enfe_UsuModificacion,
+			SET 	[enfe_Nombre] = @enfe_Nombre,
+					[enfe_UsuModificacion] = @enfe_UsuModificacion,
 					[enfe_FechaModificacion] = GETDATE()
-			WHERE 	enfe_Nombre = @enfe_Nombre
+			WHERE 	[enfe_Id] = @enfe_Id
 
 			SELECT 'La enfermedad ha sido editada exitosamente'
 		END
-		ELSE IF EXISTS (SELECT * FROM asil.tbEnfermedades
-						WHERE enfe_Nombre = @enfe_Nombre
+		ELSE IF EXISTS (SELECT * FROM asil.tbEnfermedades 
+						WHERE @enfe_Nombre = [enfe_Nombre]
 							  AND enfe_Estado = 1
-							  AND enfe_Id != @enfe_Id)
+							  AND [enfe_Id] != @enfe_Id)
 
 			SELECT 'La enfermedad ya existe'
 		ELSE
-			UPDATE asil.tbEnfermedades
-			SET enfe_Estado = 1,
+			UPDATE asil.tbEnfermedades 
+			SET enfe_Estado = 1,	
 			    [enfe_UsuModificacion] = @enfe_UsuModificacion,
 				[enfe_FechaModificacion] = GETDATE()
-			WHERE @enfe_Nombre = enfe_Nombre
+			WHERE @enfe_Nombre = [enfe_Nombre]
 
-			SELECT 'La enfermedad ha sido editada'
+			SELECT 'La enfermedad ha sido editada exitosamente'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -267,7 +267,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEnfermedades_Delete
 AS
 BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbEnfermedadesXPaciente WHERE enfe_Id = @enfe_Id)
+		IF NOT EXISTS (SELECT * FROM asil.tbEnfermedadesXResidente WHERE enfe_Id = @enfe_Id)
 			BEGIN
 				UPDATE asil.tbEnfermedades
 				SET enfe_Estado = 0

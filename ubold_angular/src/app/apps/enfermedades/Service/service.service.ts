@@ -17,4 +17,12 @@ export class ServiceService {
   addEnfermedades(newEnfermedad: Enfermedad){
     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
   }
+  
+  editEnfermedades(editEnfermedad: Enfermedad){
+    return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
+  }
+
+  deleteEnfermedades(id: number){
+    return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
+  }
 }
