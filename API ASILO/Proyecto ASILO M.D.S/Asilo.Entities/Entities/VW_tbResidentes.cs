@@ -11,13 +11,17 @@ namespace Asilo.Entities.Entities
         public int resi_Id { get; set; }
         public string resi_Nombres { get; set; }
         public string resi_Apellidos { get; set; }
+        public string cent_Nombre { get; set; }
+        public int cent_Id { get; set; }
+        public int? tiposang_Id { get; set; }
+        public string tiposang_Nombre { get; set; }
         public string resi_Identidad { get; set; }
         public int estacivi_Id { get; set; }
         public string estacivi_Nombre { get; set; }
         public DateTime resi_Nacimiento { get; set; }
         public string resi_Sexo { get; set; }
         public string SexoDes { get; set; }
-        public int diet_Id { get; set; }
+        public int? diet_Id { get; set; }
         public string diet_Desayuno { get; set; }
         public string diet_Almuerzo { get; set; }
         public string diet_Cena { get; set; }
@@ -39,5 +43,6 @@ namespace Asilo.Entities.Entities
         public DateTime? resi_FechaModificacion { get; set; }
         public bool resi_Estado { get; set; }
         public string expe_Fotografia { get; set; }
+        public DateTime? expe_FechaApertura { get; set; }
     }
 }

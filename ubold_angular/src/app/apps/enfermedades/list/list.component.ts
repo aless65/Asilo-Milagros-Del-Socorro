@@ -40,6 +40,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Enfermedades', path: '/', active: true }];
+
     this._fetchData();
     // initialize advance table 
     this.initAdvancedTableData();
@@ -142,6 +143,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
     this.service.getEnfermedades()
   .subscribe((response: any)=>{
     this.enfermedades = response.data;
+    console.log(this.enfermedades);
   });
   }
 

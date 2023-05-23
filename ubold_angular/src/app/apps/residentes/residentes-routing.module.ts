@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListComponent } from './list/list.component';
 // import { CustomersComponent } from './customers/customers.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 // import { LeadsComponent } from './leads/leads.component';
@@ -8,7 +7,7 @@ import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
   { path: 'list', loadChildren: () => import('./list/list.module').then(m => m.ListModule) },
-//   { path: 'customers', loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule) },
+  { path: 'create', loadChildren: () => import('./create/create.module').then(m => m.CreateModule) },
 //   { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
 //   { path: 'leads', loadChildren: () => import('./leads/leads.module').then(m => m.LeadsModule) },
 //   { path: 'opportunities', loadChildren: () => import('./opportunities/opportunities.module').then(m => m.OpportunitiesModule) }

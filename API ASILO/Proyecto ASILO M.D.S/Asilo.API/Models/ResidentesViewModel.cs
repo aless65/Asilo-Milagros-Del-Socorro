@@ -15,6 +15,7 @@ namespace Asilo.API.Models
         public DateTime resi_Nacimiento { get; set; }
         public string resi_Sexo { get; set; }
         public int diet_Id { get; set; }
+        public int cent_Id { get; set; }
         public DateTime resi_FechaIngreso { get; set; }
         public int? empe_Id { get; set; }
         public int agen_Id { get; set; }

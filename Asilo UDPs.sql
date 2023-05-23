@@ -1581,6 +1581,8 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbResidentes
 AS
 	SELECT res.[resi_Id], [resi_Nombres], [resi_Apellidos],
+		   cent.cent_Nombre, res.cent_Id, tipos.tiposang_Id,
+		   tipos.tiposang_Nombre,
 	[resi_Identidad], res.[estacivi_Id],esci.estacivi_Nombre,  [resi_Nacimiento], 
 	[resi_Sexo],CASE WHEN resi_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
@@ -1590,7 +1592,7 @@ AS
 	res.[agen_Id], ag.agen_Nombre,[resi_UsuCreacion], usu1.usua_NombreUsuario usuCrea, [resi_FechaCreacion], 
 	[resi_UsuModificacion], usu2.usua_NombreUsuario usuModif, [resi_FechaModificacion],
 	[resi_Estado],
-	expe.expe_Fotografia
+	expe.expe_Fotografia, expe_FechaApertura
 	FROM [asil].[tbResidentes] res INNER JOIN gral.tbEstadosCiviles esci
 	ON esci.estacivi_Id = res.estacivi_Id LEFT JOIN asil.tbDietas dit
 	ON dit.diet_Id = res.diet_Id LEFT JOIN ASIL.tbEmpleados empe
@@ -1598,7 +1600,9 @@ AS
 	ON ag.agen_Id = res.agen_Id LEFT JOIN acce.tbUsuarios usu1
 	ON usu1.usua_Id = res.resi_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
 	ON usu2.usua_Id = res.resi_UsuModificacion LEFT JOIN asil.tbExpedientes expe
-	ON res.resi_Id = expe.resi_Id
+	ON res.resi_Id = expe.resi_Id LEFT JOIN asil.tbCentros cent 
+	ON res.cent_Id = cent.cent_Id LEFT JOIN asil.tbTiposSangre tipos
+	ON expe.tiposang_Id = tipos.tiposang_Id
 GO
 
 
@@ -1632,6 +1636,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Agregar
 	@estacivi_Id			INT, 
 	@resi_Nacimiento		DATE,
 	@resi_Sexo				CHAR(1), 
+	@cent_Id				INT,
 	@diet_Id				INT,
 	@resi_FechaIngreso		DATE, 
 	@empe_Id				INT,
@@ -1647,7 +1652,7 @@ BEGIN TRY
 		IF NOT EXISTS (SELECT * FROM asil.tbResidentes 
 						WHERE resi_Identidad = @resi_Identidad)
 			BEGIN
-			INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[diet_Id],[resi_FechaIngreso],[empe_Id],	[agen_Id],[resi_UsuCreacion])
+			INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[resi_FechaIngreso],[empe_Id],	[agen_Id],[resi_UsuCreacion])
 		     VALUES(
 			 @resi_Nombres		,
 			 @resi_Apellidos	,	
@@ -1655,6 +1660,7 @@ BEGIN TRY
 			 @estacivi_Id		,
 			 @resi_Nacimiento	,
 			 @resi_Sexo			,
+			 @cent_Id			,
 			 @diet_Id			,
 			 @resi_FechaIngreso	,
 			 @empe_Id			,
@@ -1691,6 +1697,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Actualizar
 	@estacivi_Id			INT, 
 	@resi_Nacimiento		DATE,
 	@resi_Sexo				CHAR(1), 
+	@cent_Id				INT,
 	@diet_Id				INT,
 	@resi_FechaIngreso		DATE, 
 	@empe_Id				INT,
@@ -1709,6 +1716,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Actualizar
 			        estacivi_Id			= @estacivi_Id		,
 					resi_Nacimiento		= @resi_Nacimiento	,
 					resi_Sexo			= @resi_Sexo		,	
+					cent_Id				= @cent_Id			,
 					diet_Id				= @diet_Id			,
 					resi_FechaIngreso	= @resi_FechaIngreso,	
 					empe_Id				= @empe_Id			,
@@ -1733,6 +1741,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Actualizar
 			        estacivi_Id			= @estacivi_Id		,
 					resi_Nacimiento		= @resi_Nacimiento	,
 					resi_Sexo			= @resi_Sexo		,	
+					cent_Id				= @cent_Id			,
 					diet_Id				= @diet_Id			,
 					resi_FechaIngreso	= @resi_FechaIngreso,	
 					empe_Id				= @empe_Id			,

@@ -711,6 +711,8 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.agen_Nombre).HasMaxLength(300);
 
+                entity.Property(e => e.cent_Nombre).HasMaxLength(200);
+
                 entity.Property(e => e.diet_Almuerzo).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Cena).HasMaxLength(500);
@@ -730,6 +732,8 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.empe_Nombres).HasMaxLength(200);
 
                 entity.Property(e => e.estacivi_Nombre).HasMaxLength(50);
+
+                entity.Property(e => e.expe_FechaApertura).HasColumnType("date");
 
                 entity.Property(e => e.expe_Fotografia).HasMaxLength(500);
 
@@ -757,6 +761,11 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.resi_Sexo)
                     .IsRequired()
                     .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.tiposang_Nombre)
+                    .HasMaxLength(3)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
@@ -2115,10 +2124,15 @@ namespace Asilo.DataAccess.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_asil_tbResidentes_asil_tbAgendas_agen_Id");
 
+                entity.HasOne(d => d.cent)
+                    .WithMany(p => p.tbResidentes)
+                    .HasForeignKey(d => d.cent_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbResidentes_asil_tbCentros_cent_Id");
+
                 entity.HasOne(d => d.diet)
                     .WithMany(p => p.tbResidentes)
                     .HasForeignKey(d => d.diet_Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_asil_tbResidentes_asil_tbDietas_diet_Id");
 
                 entity.HasOne(d => d.empe)

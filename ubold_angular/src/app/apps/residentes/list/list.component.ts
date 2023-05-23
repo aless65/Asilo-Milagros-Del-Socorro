@@ -20,6 +20,7 @@ export class ListComponent implements OnInit {
   columns: Column[] = [];
   selectedResidente!: Residente;
   newContact!: FormGroup;
+  age!: number | null;
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
@@ -65,12 +66,25 @@ export class ListComponent implements OnInit {
    */
   _fetchData(): void {
     this.service.getResidentes()
-  .subscribe((response: any)=>{
-    // console.log(response.data);
+  .subscribe((response: any)=>{ 
     this.residentes = response.data;
     console.log(this.residentes);
-    
+
+    this.selectedResidente = this.residentes[0];
+    this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
   });
+  }
+
+  calculateAge(dateOfBirth: string): number | null {
+    if (!dateOfBirth) {
+      return null;
+    }
+    
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    const age = today.getFullYear() - birthDate.getFullYear();
+  
+    return age;
   }
 
   /**
@@ -117,7 +131,8 @@ export class ListComponent implements OnInit {
       document.querySelectorAll('.residente').forEach((e) => {
         e.addEventListener("click", () => {
           this.selectedResidente = this.residentes[Number(e.id) - 1]
-          console.log(this.selectedResidente);     
+
+          this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
         });
       })
 
@@ -131,12 +146,12 @@ export class ListComponent implements OnInit {
 
   // formats name cell
   residenteNameFormatter(residente: Residente): any {
-    console.log(residente);
+    // console.log(residente);
     return this.sanitizer.bypassSecurityTrustHtml(
       `
       <div class="table-user">
       <img src="${residente.expe_Fotografia}" alt="table-user" class="me-2 rounded-circle">
-       <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${residente.resi_Id}">${residente.resi_Nombres} ${residente.resi_Apellidos}</a>
+       <a href="javascript:void(0);" class="residente text-body fw-semibold" id="${residente.resi_Id}">${residente.resi_Nombres} ${residente.resi_Apellidos}</a>
        </div>
       `
     );
@@ -144,6 +159,7 @@ export class ListComponent implements OnInit {
 
   // action cell formatter
   residenteActionFormatter(): any {
+    console.log(this.residentes);
     return this.sanitizer.bypassSecurityTrustHtml(
       ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
         <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`

@@ -481,6 +481,7 @@ CREATE TABLE asil.tbResidentes
 	estacivi_Id				INT NOT NULL,
 	resi_Nacimiento			DATE NOT NULL,
 	resi_Sexo				CHAR NOT NULL,
+	cent_Id					INT NOT NULL,
 	diet_Id					INT,
 	resi_FechaIngreso		DATE NOT NULL,
 	empe_Id					INT,
@@ -498,6 +499,7 @@ CREATE TABLE asil.tbResidentes
 	CONSTRAINT FK_asil_tbResidentes_asil_tbDietas_diet_Id 									FOREIGN KEY(diet_Id) 					REFERENCES asil.tbDietas(diet_Id),
 	CONSTRAINT FK_asil_tbResidentes_asil_tbEmpleados_empe_Id 								FOREIGN KEY(empe_Id) 					REFERENCES asil.tbEmpleados(empe_Id),
 	CONSTRAINT FK_asil_tbResidentes_asil_tbAgendas_agen_Id 									FOREIGN KEY(agen_Id) 					REFERENCES asil.tbAgendas(agen_Id),
+	CONSTRAINT FK_asil_tbResidentes_asil_tbCentros_cent_Id 									FOREIGN KEY(cent_Id) 					REFERENCES asil.tbCentros(cent_Id),
 	CONSTRAINT UQ_asil_tbResidentes_resi_Identidad UNIQUE(resi_Identidad)
 );
 GO
@@ -883,11 +885,11 @@ GO
 
 --********INSERT TABLA CENTROS****************---
 INSERT INTO asil.tbCentros(cent_Nombre, muni_Id, cent_Direccion, cent_UsuCreacion)
-VALUES('Asilo de Ancianos Milagros del Socorro Roatan', '1101', 'Avenida La Paz',1 ),
-      ('Asilo de Ancianos Hilos de plata', '0101', 'Barrio La Granja',1 ),
+VALUES('Asilo de Ancianos Milagros del Socorro Roatán', '1101', 'Avenida La Paz',1 ),
+      ('Asilo de Ancianos Milagros del Socorro La Ceiba', '0101', 'Barrio La Granja',1 ),
 	  ('Asilo de Ancianos Milagros del Socorro Catacamas', '1503', 'Avenida el Porvenir',1 ),
-	  ('Asilo de Ancianos Madre Nazaria', '1804', 'Barrio Progreso',1 ),
-	  ('Asilo de Ancianos Socorro', '0503', '11 calle, 2 avenida',1 )
+	  ('Asilo de Ancianos Milagros del Socorro El Progreso', '1804', 'Barrio Progreso',1 ),
+	  ('Asilo de Ancianos Milagros del Socorro Omoa', '0503', '11 calle, 2 avenida',1 )
 GO
 
 
@@ -961,7 +963,7 @@ VALUES	  ('Jugo de naranja, sandwich de jamón y queso', 'Patatas estofadas, ens
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
-VALUES	  ('Brioche, Zumo d naranja y mandarina', 'Ensalada variada, Paella marinera','Flan de pescado con salsa de tomate, kiwi','Yogur con galletas',1);
+VALUES	  ('Brioche, Zumo de naranja y mandarina', 'Ensalada variada, Paella marinera','Flan de pescado con salsa de tomate, kiwi','Yogur con galletas',1);
 
 GO
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
@@ -978,17 +980,17 @@ INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
 VALUES('De pago',1);
 
 	  --********INSERT TABLA Residente ****************---
-INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,'2010-10-05',1);
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,1,'2010-10-05',1);
 GO
-INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',2,2,'2010-02-25',1);
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,2,'2010-02-25',1);
 GO
-INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',1,1,'2012-02-25',1);
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',3,1,1,'2012-02-25',1);
 GO
-INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',1,2,'2012-02-25',1);
+INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
+VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,2,'2012-02-25',1);
 
 
 	  --********INSERT TABLA Proveedores ****************---
@@ -1018,6 +1020,12 @@ VALUES
   ('O+', 1),
   ('O-', 1);
 
+  
+INSERT INTO [asil].[tbExpedientes]([resi_Id], [tiposang_Id], [expe_FechaApertura], [expe_Fotografia], [expe_UsuCreacion])
+VALUES (1,1,'2019-02-28','https://i.ibb.co/gwPvK1D/lourdes.jpg',1),
+	   (2,1,'2019-12-28','https://i.ibb.co/bmkYXSJ/foto-042-486x734.jpg',1),
+	   (3,4,'2021-05-06','https://i.ibb.co/YcS5wZk/s-old-woman-portrait.jpg',1),
+	   (4,2,'2021-05-06','https://i.ibb.co/PNrM316/113179532-h-720.jpg',1)
 
 
 
