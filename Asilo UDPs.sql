@@ -1225,7 +1225,7 @@ GO
 --************EMPLEADOS******************--
 
 /*VISTA EMPLEADOS*/
-CREATE OR ALTER VIEW asil.VW_tbEmpleados
+CREATE OR ALTER   VIEW [asil].[VW_tbEmpleados]
 AS
 	SELECT emp.[empe_Id], [empe_Nombres], [empe_Apellidos],emp.empe_Nombres +' '+ emp.empe_Apellidos empe_NombreCompleto ,[empe_Identidad], 
 	[empe_Sexo], CASE WHEN empe_Sexo= 'F' THEN 'Femenino'
@@ -1237,14 +1237,15 @@ AS
 	usu2.usua_NombreUsuario usuarioModif, [empe_FechaModificacion], [empe_Estado]
 	FROM [asil].[tbEmpleados] emp INNER JOIN [acce].[tbUsuarios] usu1
 	ON usu1.usua_Id = emp.empe_UsuCreacion LEFT JOIN [acce].[tbUsuarios] usu2
-	ON usu2.usua_Id = emp.empe_UsuModificacion LEFT JOIN gral.tbMunicipios muni
+	ON usu2.usua_Id = emp.empe_UsuModificacion INNER JOIN gral.tbMunicipios muni
 	ON muni.muni_id = emp.muni_Id INNER JOIN GRAL.tbDepartamentos depa
-	ON depa.depa_Id = muni.muni_id INNER JOIN gral.tbEstadosCiviles est
+	ON depa.depa_Id = muni.depa_Id INNER JOIN gral.tbEstadosCiviles est
 	ON est.estacivi_Id = emp.estacivi_Id INNER JOIN asil.tbCargos carg
 	ON carg.carg_Id = emp.carg_Id INNER JOIN asil.tbCentros cent
 	ON cent.cent_Id = emp.cent_Id 
 
 GO
+
 
 --select*from asil.VW_tbEmpleados
 
