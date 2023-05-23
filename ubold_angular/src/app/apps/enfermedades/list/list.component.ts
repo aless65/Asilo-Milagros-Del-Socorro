@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Enfermedad } from '../Models';
+import { Enfermedad } from '../../Models';
 import { ServiceService } from 'src/app/apps/enfermedades/Service/service.service';
 // import { ToastModule } from 'primeng/toast';
 // import { MessageService } from 'primeng/api';

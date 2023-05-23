@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Residente } from '../Models';
+import { Residente } from '../../Models';
 // import { CRMCUSTOMERS } from '../../crm/shared/data';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
 import { Router } from '@angular/router';
