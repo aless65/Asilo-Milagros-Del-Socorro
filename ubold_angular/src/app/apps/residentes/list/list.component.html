@@ -1,0 +1,61 @@
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title="Residentes"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="row justify-content-between mb-2">
+                    <div class="col-12">
+                        <div>
+                            <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
+                                    class="mdi mdi-cog"></i></button>
+                            <button type="button" class="btn btn-danger waves-effect waves-light mb-2"
+                                (click)="openCreate()">Agregar</button>
+                        </div>
+                    </div><!-- end col-->
+                </div>
+                <!-- customer table -->
+                <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="residentes"
+                    [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                    (search)="searchData($event)" [isSortable]="false"
+                    tableClasses="table-centered table-nowrap table-hover">
+                </app-advanced-table>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-start mb-3">
+                    <img class="d-flex me-3 rounded-circle avatar-lg" [src]="selectedResidente.expe_Fotografia"
+                        alt="Generic placeholder image">
+                    <div class="w-100">
+                        <h4 class="mt-0 mb-1">{{selectedResidente.resi_Nombres}} {{selectedResidente.resi_Apellidos}}</h4>
+                        <p class="text-muted">{{selectedResidente.sexoDes}}</p>
+                        <p class="text-muted"><i class="mdi mdi-office-building"></i>{{selectedResidente.cent_Nombre}}</p>
+
+                        <a href="javascript: void(0);" class="btn btn-xs btn-info me-1">Ver Historial</a>
+                    </div>
+                </div>
+
+                <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i> Información
+                    Del Expediente</h5>
+                <div class="">
+                    <h4 class="font-13 text-muted text-uppercase">Tipo de Sangre :</h4>
+                    <p class="mb-3">{{selectedResidente.tiposang_Nombre}}</p>
+
+                    <h4 class="font-13 text-muted text-uppercase mb-1">Edad :</h4>
+                    <p class="mb-3">{{ age }}</p>
+
+                    <h4 class="font-13 text-muted text-uppercase mb-1">Enfermedades :</h4>
+
+                    <h4 class="font-13 text-muted text-uppercase mb-1">Apertura del expediente :</h4>
+                    <p class="mb-3">{{selectedResidente.expe_FechaApertura | date: 'dd/MM/yyyy'}}</p>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div>
+</div>

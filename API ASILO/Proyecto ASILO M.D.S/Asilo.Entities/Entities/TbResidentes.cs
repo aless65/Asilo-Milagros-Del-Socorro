@@ -24,7 +24,8 @@ namespace Asilo.Entities.Entities
         public int estacivi_Id { get; set; }
         public DateTime resi_Nacimiento { get; set; }
         public string resi_Sexo { get; set; }
-        public int diet_Id { get; set; }
+        public int cent_Id { get; set; }
+        public int? diet_Id { get; set; }
         public DateTime resi_FechaIngreso { get; set; }
         public int? empe_Id { get; set; }
         public int agen_Id { get; set; }
@@ -35,6 +36,7 @@ namespace Asilo.Entities.Entities
         public bool? resi_Estado { get; set; }
 
         public virtual tbAgendas agen { get; set; }
+        public virtual tbCentros cent { get; set; }
         public virtual tbDietas diet { get; set; }
         public virtual tbEmpleados empe { get; set; }
         public virtual tbEstadosCiviles estacivi { get; set; }

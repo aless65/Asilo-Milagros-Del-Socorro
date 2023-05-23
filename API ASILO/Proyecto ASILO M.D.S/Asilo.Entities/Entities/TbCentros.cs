@@ -13,6 +13,7 @@ namespace Asilo.Entities.Entities
             tbEmpleados = new HashSet<tbEmpleados>();
             tbHabitaciones = new HashSet<tbHabitaciones>();
             tbInventarioPorCentro = new HashSet<tbInventarioPorCentro>();
+            tbResidentes = new HashSet<tbResidentes>();
         }
 
         public int cent_Id { get; set; }
@@ -31,5 +32,6 @@ namespace Asilo.Entities.Entities
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
         public virtual ICollection<tbHabitaciones> tbHabitaciones { get; set; }
         public virtual ICollection<tbInventarioPorCentro> tbInventarioPorCentro { get; set; }
+        public virtual ICollection<tbResidentes> tbResidentes { get; set; }
     }
 }

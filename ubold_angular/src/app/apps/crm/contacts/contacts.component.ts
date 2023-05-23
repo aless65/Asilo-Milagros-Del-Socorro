@@ -125,6 +125,7 @@ export class ContactsComponent implements OnInit {
 
   // formats name cell
   customerNameFormatter(customer: CRMCustomer): any {
+    console.log(customer);
     return this.sanitizer.bypassSecurityTrustHtml(
       `
       <div class="table-user">

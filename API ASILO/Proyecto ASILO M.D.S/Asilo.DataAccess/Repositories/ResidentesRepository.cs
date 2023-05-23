@@ -46,6 +46,7 @@ namespace Asilo.DataAccess.Repositories
             parameters.Add("@estacivi_Id", item.estacivi_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@resi_Nacimiento", item.resi_Nacimiento, DbType.Date, ParameterDirection.Input);
             parameters.Add("@resi_Sexo", item.resi_Sexo, DbType.String, ParameterDirection.Input);
+            parameters.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@diet_Id", item.diet_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@resi_FechaIngreso", item.resi_FechaIngreso, DbType.Date, ParameterDirection.Input);
             parameters.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);
@@ -83,6 +84,7 @@ namespace Asilo.DataAccess.Repositories
             parameters.Add("@estacivi_Id", item.estacivi_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@resi_Nacimiento", item.resi_Nacimiento, DbType.Date, ParameterDirection.Input);
             parameters.Add("@resi_Sexo", item.resi_Sexo, DbType.String, ParameterDirection.Input);
+            parameters.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@diet_Id", item.diet_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@resi_FechaIngreso", item.resi_FechaIngreso, DbType.Date, ParameterDirection.Input);
             parameters.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);

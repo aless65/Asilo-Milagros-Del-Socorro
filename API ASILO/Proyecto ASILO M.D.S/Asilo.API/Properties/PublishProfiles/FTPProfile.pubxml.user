@@ -8,7 +8,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
     <_PublishTargetUrl>ftp://155.254.244.28/www.asilomilagrosdelsocorro.somee.com</_PublishTargetUrl>
-    <History>True|2023-05-21T01:24:43.1263891Z;True|2023-05-19T15:09:09.6458598-06:00;False|2023-05-19T10:49:30.4348598-06:00;True|2023-05-19T10:30:23.3718925-06:00;</History>
+    <History>True|2023-05-23T02:33:31.8443744Z;True|2023-05-22T20:14:05.6046946-06:00;True|2023-05-22T13:56:08.2238391-06:00;True|2023-05-22T11:53:53.6280681-06:00;True|2023-05-20T19:24:43.1263891-06:00;True|2023-05-19T15:09:09.6458598-06:00;False|2023-05-19T10:49:30.4348598-06:00;True|2023-05-19T10:30:23.3718925-06:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -18,37 +18,37 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/19/2023 18:42:57</publishTime>
     </File>
     <File Include="Asilo.API.deps.json">
-      <publishTime>05/20/2023 19:22:42</publishTime>
+      <publishTime>05/22/2023 20:31:31</publishTime>
     </File>
     <File Include="Asilo.API.dll">
-      <publishTime>05/20/2023 19:21:44</publishTime>
+      <publishTime>05/22/2023 20:25:16</publishTime>
     </File>
     <File Include="Asilo.API.exe">
-      <publishTime>05/20/2023 19:21:44</publishTime>
+      <publishTime>05/22/2023 20:25:16</publishTime>
     </File>
     <File Include="Asilo.API.pdb">
-      <publishTime>05/20/2023 19:21:43</publishTime>
+      <publishTime>05/22/2023 20:25:16</publishTime>
     </File>
     <File Include="Asilo.API.runtimeconfig.json">
-      <publishTime>05/20/2023 19:21:46</publishTime>
+      <publishTime>05/22/2023 20:11:41</publishTime>
     </File>
     <File Include="Asilo.BusinessLogic.dll">
-      <publishTime>05/20/2023 19:21:32</publishTime>
+      <publishTime>05/22/2023 20:25:15</publishTime>
     </File>
     <File Include="Asilo.BusinessLogic.pdb">
-      <publishTime>05/20/2023 19:21:32</publishTime>
+      <publishTime>05/22/2023 20:25:15</publishTime>
     </File>
     <File Include="Asilo.DataAccess.dll">
-      <publishTime>05/20/2023 19:21:26</publishTime>
+      <publishTime>05/22/2023 20:25:14</publishTime>
     </File>
     <File Include="Asilo.DataAccess.pdb">
-      <publishTime>05/20/2023 19:21:26</publishTime>
+      <publishTime>05/22/2023 20:25:14</publishTime>
     </File>
     <File Include="Asilo.Entities.dll">
-      <publishTime>05/20/2023 19:21:12</publishTime>
+      <publishTime>05/22/2023 20:25:13</publishTime>
     </File>
     <File Include="Asilo.Entities.pdb">
-      <publishTime>05/20/2023 19:21:11</publishTime>
+      <publishTime>05/22/2023 20:25:13</publishTime>
     </File>
     <File Include="AutoMapper.dll">
       <publishTime>01/16/2023 09:41:56</publishTime>
@@ -372,7 +372,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>11/11/2020 18:16:28</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>05/20/2023 19:22:44</publishTime>
+      <publishTime>05/22/2023 20:31:31</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll">
       <publishTime>11/11/2020 18:15:14</publishTime>

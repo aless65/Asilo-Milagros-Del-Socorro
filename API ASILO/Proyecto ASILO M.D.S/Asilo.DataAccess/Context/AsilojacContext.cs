@@ -709,43 +709,33 @@ namespace Asilo.DataAccess.Context
                     .HasMaxLength(9)
                     .IsUnicode(false);
 
-                entity.Property(e => e.agen_Nombre)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.agen_Nombre).HasMaxLength(300);
 
-                entity.Property(e => e.diet_Almuerzo)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.cent_Nombre).HasMaxLength(200);
 
-                entity.Property(e => e.diet_Cena)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Almuerzo).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Desayuno)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Cena).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Merienda)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Desayuno).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Merienda).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Restricciones).HasMaxLength(500);
 
-                entity.Property(e => e.empe_Apellidos)
-                    .IsRequired()
-                    .HasMaxLength(200);
+                entity.Property(e => e.empe_Apellidos).HasMaxLength(200);
 
-                entity.Property(e => e.empe_NombreCompleto)
-                    .IsRequired()
-                    .HasMaxLength(401);
+                entity.Property(e => e.empe_NombreCompleto).HasMaxLength(401);
 
-                entity.Property(e => e.empe_Nombres)
-                    .IsRequired()
-                    .HasMaxLength(200);
+                entity.Property(e => e.empe_Nombres).HasMaxLength(200);
 
                 entity.Property(e => e.estacivi_Nombre).HasMaxLength(50);
+
+                entity.Property(e => e.expe_FechaApertura).HasColumnType("date");
+
+                entity.Property(e => e.expe_Fotografia).HasMaxLength(500);
 
                 entity.Property(e => e.resi_Apellidos)
                     .IsRequired()
@@ -774,9 +764,12 @@ namespace Asilo.DataAccess.Context
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.usuCrea)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.tiposang_Nombre)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.usuCrea).HasMaxLength(100);
 
                 entity.Property(e => e.usuModif).HasMaxLength(100);
             });
@@ -2131,10 +2124,15 @@ namespace Asilo.DataAccess.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_asil_tbResidentes_asil_tbAgendas_agen_Id");
 
+                entity.HasOne(d => d.cent)
+                    .WithMany(p => p.tbResidentes)
+                    .HasForeignKey(d => d.cent_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbResidentes_asil_tbCentros_cent_Id");
+
                 entity.HasOne(d => d.diet)
                     .WithMany(p => p.tbResidentes)
                     .HasForeignKey(d => d.diet_Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_asil_tbResidentes_asil_tbDietas_diet_Id");
 
                 entity.HasOne(d => d.empe)
