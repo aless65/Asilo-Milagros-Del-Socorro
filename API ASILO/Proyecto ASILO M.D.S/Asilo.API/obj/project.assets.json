@@ -8341,23 +8341,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PC\\.nuget\\packages\\": {},
+    "C:\\Users\\karla\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Documents\\GitHub\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\Asilo.API.csproj",
+      "projectUniqueName": "C:\\Users\\karla\\OneDrive\\Documents\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\Asilo.API.csproj",
       "projectName": "Asilo.API",
-      "projectPath": "C:\\Users\\PC\\Documents\\GitHub\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\Asilo.API.csproj",
-      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Documents\\GitHub\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\obj\\",
+      "projectPath": "C:\\Users\\karla\\OneDrive\\Documents\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\Asilo.API.csproj",
+      "packagesPath": "C:\\Users\\karla\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\karla\\OneDrive\\Documents\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\karla\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -8372,8 +8372,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\PC\\Documents\\GitHub\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.BusinessLogic\\Asilo.BusinessLogic.csproj": {
-              "projectPath": "C:\\Users\\PC\\Documents\\GitHub\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.BusinessLogic\\Asilo.BusinessLogic.csproj"
+            "C:\\Users\\karla\\OneDrive\\Documents\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.BusinessLogic\\Asilo.BusinessLogic.csproj": {
+              "projectPath": "C:\\Users\\karla\\OneDrive\\Documents\\Asilo-Milagros-Del-Socorro\\API ASILO\\Proyecto ASILO M.D.S\\Asilo.BusinessLogic\\Asilo.BusinessLogic.csproj"
             }
           }
         }

@@ -9,10 +9,12 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { FakeBackendProvider } from './core/helpers/fake-backend';
 import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { LayoutModule } from './layout/layout.module';
+/*import { ListComponent } from './empleados/list/';*/
 
 @NgModule({
   declarations: [
     AppComponent,
+    /*ListComponent,*/
   ],
   imports: [
     BrowserModule,

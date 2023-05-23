@@ -31,6 +31,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/enfermedades/list',
     },
     {
+        key: 'apps-empleados',
+        label: 'Empleados',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/empleados/list',
+    },
+    {
         key: 'apps-calendar',
         label: 'Calendar',
         isTitle: false,
