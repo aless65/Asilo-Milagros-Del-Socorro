@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-body">
 
-        <h4 class="header-title mb-3"> Wizard With Form Validation</h4>
+        <h4 class="header-title mb-3"> Ingrese los datos </h4>
 
 
         <div id="validationWizard">
@@ -14,21 +14,48 @@
                 <li [ngbNavItem]="1">   
                     <a ngbNavLink class="rounded-0 pt-2 pb-2">
                         <i class="mdi mdi-account-circle me-1"></i>
-                        <span class="d-none d-sm-inline">Account</span>
+                        <span class="d-none d-sm-inline">Datos Personales</span>
                     </a>
                     <ng-template ngbNavContent>
                         <form class="form-horizontal" [formGroup]="accountForm" #accountWizard="ngForm"
                             (ngSubmit)="gotoNext()">
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="row mb-3">
-                                        <label class="col-md-3 col-form-label" for="userName4">User
-                                            name</label>
-                                        <div class="col-md-9">
+                                <div class="col-6" style="margin-left: 5%;">
+                                    <div class="row mb-12">
+                                        <label class="col-md-3 col-form-label" for="userName4">Nombres</label>
                                             <input type="text" class="form-control" id="userName4" value="hyper"
                                                 formControlName="userName" required
                                                 [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-md-3 col-form-label" for="password4">
+                                            Password</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="password4" name="password"
+                                                class="form-control" value="123456789"
+                                                formControlName="password"
+                                                [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.password.invalid }">
+
                                         </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-3 col-form-label" for="confirm4">Re
+                                            Password</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="confirm4" name="confirm"
+                                                class="form-control" value="123456789"
+                                                formControlName="rePassword"
+                                                [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.rePassword.invalid }">
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                                <div class="col-6" style="margin-left: 5%;">
+                                    <div class="row mb-12">
+                                        <label class="col-md-3 col-form-label" for="userName4">Apellidos</label>
+                                            <input type="text" class="form-control" id="userName4" value="hyper"
+                                                formControlName="userName" required
+                                                [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-md-3 col-form-label" for="password4">

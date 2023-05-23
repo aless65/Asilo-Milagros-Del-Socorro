@@ -7,6 +7,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Residente } from '../Models';
 // import { CRMCUSTOMERS } from '../../crm/shared/data';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-residentes-list',
@@ -25,16 +26,17 @@ export class ListComponent implements OnInit {
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
 
-  constructor (
+  constructor(
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
+    private route: Router
   ) { }
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Listado', path: '/', active: true }];
-    
+
     this._fetchData();
     // initialize advance table 
     this.initAdvancedTableData();
@@ -57,8 +59,8 @@ export class ListComponent implements OnInit {
  * @param title title of modal 
  * @param data data to be used in modal
  */
-  openModal(): void {
-    this.activeModal.open(this.content, { centered: true });
+  openCreate(): void {
+    this.route.navigate(['apps/residentes/create']);
   }
 
   /**
@@ -66,24 +68,24 @@ export class ListComponent implements OnInit {
    */
   _fetchData(): void {
     this.service.getResidentes()
-  .subscribe((response: any)=>{ 
-    this.residentes = response.data;
-    console.log(this.residentes);
+      .subscribe((response: any) => {
+        this.residentes = response.data;
+        console.log(this.residentes);
 
-    this.selectedResidente = this.residentes[0];
-    this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
-  });
+        this.selectedResidente = this.residentes[0];
+        this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+      });
   }
 
   calculateAge(dateOfBirth: string): number | null {
     if (!dateOfBirth) {
       return null;
     }
-    
+
     const today = new Date();
     const birthDate = new Date(dateOfBirth);
     const age = today.getFullYear() - birthDate.getFullYear();
-  
+
     return age;
   }
 
@@ -91,7 +93,6 @@ export class ListComponent implements OnInit {
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log(this.residentes);
 
     this.columns = [
       {
@@ -107,7 +108,10 @@ export class ListComponent implements OnInit {
       {
         name: 'resi_Nacimiento',
         label: 'Nacimiento',
-        formatter: (residente: Residente) => residente.resi_Nacimiento
+        formatter: (residente: Residente) => {
+          const nacimiento = new Date(residente.resi_Nacimiento || '');
+          return nacimiento.toLocaleDateString();
+        }
       },
       {
         name: 'sexoDes',
@@ -126,23 +130,23 @@ export class ListComponent implements OnInit {
   /**
  *  handles operations that need to be performed after loading table
  */
-    handleTableLoad(event: any): void {
-      // product cell
-      document.querySelectorAll('.residente').forEach((e) => {
-        e.addEventListener("click", () => {
-          this.selectedResidente = this.residentes[Number(e.id) - 1]
+  handleTableLoad(event: any): void {
+    // product cell
+    document.querySelectorAll('.residente').forEach((e) => {
+      e.addEventListener("click", () => {
+        this.selectedResidente = this.residentes[Number(e.id) - 1]
 
-          this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
-        });
-      })
+        this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+      });
+    })
 
-      document.querySelectorAll('.action-icon').forEach((e) => {
-        e.addEventListener("click", () => {
-          console.log('le dio');    
-          console.log(this.residentes);      
-        });
-      })
-    }
+    document.querySelectorAll('.action-icon').forEach((e) => {
+      e.addEventListener("click", () => {
+        console.log('le dio');
+        console.log(this.residentes);
+      });
+    })
+  }
 
   // formats name cell
   residenteNameFormatter(residente: Residente): any {
@@ -159,7 +163,6 @@ export class ListComponent implements OnInit {
 
   // action cell formatter
   residenteActionFormatter(): any {
-    console.log(this.residentes);
     return this.sanitizer.bypassSecurityTrustHtml(
       ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
         <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`

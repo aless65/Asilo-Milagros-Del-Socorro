@@ -33,49 +33,6 @@ export class CreateComponent implements OnInit {
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
 
-    // initialize forms
-    this.basicWizardForm = this.fb.group({
-      account: this.fb.group({
-        userName: ['hyper'],
-        password: ['123456'],
-        rePassword: ['123456']
-      }),
-      profile: this.fb.group({
-        firstName: ['Francis'],
-        lastName: ['Brinkman'],
-        email: ['cory1979@hotmail.com', Validators.email]
-      }),
-      acceptTerms: [false, Validators.requiredTrue]
-    });
-
-    this.btnWizardForm = this.fb.group({
-      account: this.fb.group({
-        userName: ['hyper'],
-        password: ['123456'],
-        rePassword: ['123456']
-      }),
-      profile: this.fb.group({
-        firstName: ['Francis'],
-        lastName: ['Brinkman'],
-        email: ['cory1979@hotmail.com', Validators.email]
-      }),
-      acceptTerms: [false, Validators.requiredTrue]
-    });
-
-    this.progressWizardForm = this.fb.group({
-      account: this.fb.group({
-        userName: ['hyper'],
-        password: ['123456'],
-        rePassword: ['123456']
-      }),
-      profile: this.fb.group({
-        firstName: ['Francis'],
-        lastName: ['Brinkman'],
-        email: ['cory1979@hotmail.com', Validators.email]
-      }),
-      acceptTerms: [false, Validators.requiredTrue]
-    });
-
     this.accountForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],

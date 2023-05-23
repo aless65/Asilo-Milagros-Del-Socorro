@@ -1,0 +1,1 @@
+{"ast":null,"code":"const PERSONLIST = [{\n  id: 1,\n  firstName: 'Mark',\n  lastName: 'Otto',\n  userName: '@mdo'\n}, {\n  id: 2,\n  firstName: 'Jacob',\n  lastName: 'Thornton',\n  userName: '@fat'\n}, {\n  id: 3,\n  firstName: 'Larry',\n  lastName: 'the Bird',\n  userName: '@twitter'\n}];\nexport { PERSONLIST };","map":null,"metadata":{},"sourceType":"module"}

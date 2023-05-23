@@ -11,7 +11,7 @@
                             <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
                                     class="mdi mdi-cog"></i></button>
                             <button type="button" class="btn btn-danger waves-effect waves-light mb-2"
-                                (click)="openModal()">Agregar</button>
+                                (click)="openCreate()">Agregar</button>
                         </div>
                     </div><!-- end col-->
                 </div>
@@ -46,9 +46,6 @@
                 <div class="">
                     <h4 class="font-13 text-muted text-uppercase">Tipo de Sangre :</h4>
                     <p class="mb-3">{{selectedResidente.tiposang_Nombre}}</p>
-
-                    <h4 class="font-13 text-muted text-uppercase mb-1">Fecha de Nacimiento :</h4>
-                    <p class="mb-3">{{selectedResidente.resi_Nacimiento | date: 'dd/MM/yyyy'}}</p>
 
                     <h4 class="font-13 text-muted text-uppercase mb-1">Edad :</h4>
                     <p class="mb-3">{{ age }}</p>

@@ -1652,7 +1652,7 @@ BEGIN TRY
 		IF NOT EXISTS (SELECT * FROM asil.tbResidentes 
 						WHERE resi_Identidad = @resi_Identidad)
 			BEGIN
-			INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[resi_FechaIngreso],[empe_Id],	[agen_Id],[resi_UsuCreacion])
+			INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[diet_Id],[resi_FechaIngreso],[empe_Id], agen_Id ,[resi_UsuCreacion])
 		     VALUES(
 			 @resi_Nombres		,
 			 @resi_Apellidos	,	
