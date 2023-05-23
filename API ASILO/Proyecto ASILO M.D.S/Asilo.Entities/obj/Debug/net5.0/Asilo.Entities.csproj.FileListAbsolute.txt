@@ -25,7 +25,6 @@ C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto 
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\Asilo.Entities.dll
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\ref\Asilo.Entities.dll
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\bin\Debug\net5.0\Asilo.Entities.pdb
-C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.csproj.AssemblyReference.cache
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.AssemblyInfoInputs.cache
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.Entities\obj\Debug\net5.0\Asilo.Entities.AssemblyInfo.cs

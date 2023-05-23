@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import { Usuario } from '../Models';
+import { environment } from 'src/environments/environment'; //importar la variable global
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   constructor(private http:HttpClient) { }
-
-  Url="https://localhost:44371/api/";
+  variableGlobal: string = environment.variableGlobal;
 
   getUsuarios(){
-    return this.http.get<Usuario[]>(`${this.Url}Usuario/Listado`);
+    return this.http.get<Usuario[]>(`${this.variableGlobal}Usuario/Listado`);
   }
   
 }

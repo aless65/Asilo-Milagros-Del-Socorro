@@ -13,23 +13,15 @@ const MENU_ITEMS: MenuItem[] = [
         children: [
             {
                 key: 'ds-dashboard-1',
-                icon: 'chart pie',
-                label: 'Home',
+                label: 'Dashboard 1',
                 link: '/dashboard-1',
                 parentKey: 'dashboards',
             },
-           
+          
         ],
     },
 
     { key: 'apps', label: 'Apps', isTitle: true },
-    {
-        key: 'apps-usuarios',
-        label: 'Usuarios',
-        isTitle: false,
-        icon: 'user',
-        link: '/apps/usuarios/list',
-    },
     {
         key: 'apps-enfermedades',
         label: 'Enfermedades',
@@ -38,11 +30,11 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/enfermedades/list',
     },
     {
-        key: 'apps-proveedores',
-        label: 'Proveedores',
+        key: 'apps-usuarios',
+        label: 'Usuarios',
         isTitle: false,
-        icon: 'book',
-        link: '/apps/proveedores/list',
+        icon: 'user',
+        link: '/apps/usuarios/list',
     },
     {
         key: 'apps-centros',
@@ -55,14 +47,15 @@ const MENU_ITEMS: MenuItem[] = [
         key: 'apps-cargos',
         label: 'Cargos',
         isTitle: false,
-        icon: 'mdi-briefcase',
+        icon: 'aperture',
         link: '/apps/cargos/list',
     },
+      
     {
         key: 'apps-habitaciones',
         label: 'Habitaciones',
         isTitle: false,
-        icon: 'mdi-bed',
+        icon: 'briefcase',
         link: '/apps/habitaciones/list',
     },
     {
@@ -71,6 +64,13 @@ const MENU_ITEMS: MenuItem[] = [
         isTitle: false,
         icon: 'activity',
         link: '/apps/empleados/list',
+    },
+    {
+        key: 'apps-proveedores',
+        label: 'Proveedores',
+        isTitle: false,
+        icon: 'book',
+        link: '/apps/proveedores/list',
     },
     {
         key: 'apps-residentes',
