@@ -1009,3 +1009,19 @@ VALUES
 
 
 
+INSERT INTO  asil.tbEmpleados(empe_Nombres,empe_Apellidos,empe_Identidad,empe_Sexo,estacivi_Id,empe_Nacimiento,muni_Id,empe_Direccion,empe_Telefono,empe_Correo,carg_Id,cent_Id,empe_UsuCreacion)
+VALUES('Catalina','Diaz','0502198001425','F',1,'1990-12-05','0502','Barrio el Centro','89526301','diaz12@gmail.com',1,1,1),
+      ('Karla','Hernadez','0502198005263','F',1,'2000-12-09','0502','3 calle 1 avenida ','99526301','hernadez2@gmail.com',2,1,1),
+	  ('Valentin','Andrades','0502200005263','M',1,'2000-03-09','0502','1 calle 1 avenida ','99876301','Andradess@gmail.com',3,1,1),
+	  ('Juan','Perez','0102200005263','M',1,'2000-03-12','0502','1 calle 3 avenida ','99874401','juan34@gmail.com',4,1,1),
+	  ('Kevin','Manzano','0102200002263','M',1,'2000-04-13','0502','1 calle 3 avenida ','39874401','kevin@gmail.com',5,1,1),
+	  ('Keneth','Menjivar','0103200002263','M',1,'2000-05-23','0502','2 calle 3 avenida ','39858401','keneth23@gmail.com',6,1,1),
+	  ('Sebastian','Alvares','0103200302263','M',1,'2000-05-23','0502','2 calle 2 avenida ','39858401','sebastian23@gmail.com',2,1,1),
+	  ('Manuel','Almendradez','0203200202263','M',1,'2000-01-03','0502','1 calle 3 avenida ','90858401','manuel23@gmail.com',2,1,1),
+	  ('Mario','Jimenez','0501200202263','M',1,'2000-10-03','0502','3 calle 3 avenida ','91858401','mmario@gmail.com',2,1,1);
+
+
+--SELECT*FROM [asil].[VW_tbEmpleados]
+--[asil].[UDP_asil_tbEmpleados_List]
+--SELECT*FROM [asil].[tbEmpleados]
+

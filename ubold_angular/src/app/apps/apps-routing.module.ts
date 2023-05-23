@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: 'centros', loadChildren: () => import('./centros/centros.module').then(m => m.CentrosModule) },
   { path: 'cargos', loadChildren: () => import('./cargos/cargos.module').then(m => m.CargosModule) },
   { path: 'habitaciones', loadChildren: () => import('./habitaciones/habitaciones.module').then(m => m.HabitacionesModule) },
+  { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
   { path: 'calendar', loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
   { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },
   { path: 'ecommerce', loadChildren: () => import('./ecommerce/ecommerce.module').then(m => m.EcommerceModule) },
