@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Opcional: para agregar espacio entre los botones */
+  }
+  
+  .btn {
+    flex: 1;
+  }
+  
+  .radio-group input[type="radio"]:first-child {
+    margin-right: 10px; /* Ajusta el valor del margen según tu preferencia */
+  }
+  
+  .radio-group input[type="radio"]:last-child {
+    margin-left: 10px; /* Ajusta el valor del margen según tu preferencia */
+  }
+  

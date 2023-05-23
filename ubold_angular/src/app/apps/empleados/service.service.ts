@@ -18,7 +18,7 @@ export class ServiceService {
     return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/Listado`); //la usamos aqui
   }
   
-  addEnfermedades(newEnfermedad: Empleados){
-    return this.http.post<Empleados[]>(`${this.variableGlobal}Enfermedades/Insertar`, newEnfermedad);
+  createEmpleado(newEmpleado: Empleados){
+    return this.http.post<Empleados[]>(`${this.variableGlobal}Empleados/Insertar`, newEmpleado);
   }
 }
