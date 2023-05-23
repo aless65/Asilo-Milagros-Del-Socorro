@@ -40,6 +40,13 @@ const MENU_ITEMS: MenuItem[] = [
 
     { key: 'apps', label: 'Apps', isTitle: true },
     {
+        key: 'apps-usuarios',
+        label: 'Usuarios',
+        isTitle: false,
+        icon: 'user',
+        link: '/apps/usuarios/list',
+    },
+    {
         key: 'apps-enfermedades',
         label: 'Enfermedades',
         isTitle: false,
@@ -52,6 +59,27 @@ const MENU_ITEMS: MenuItem[] = [
         isTitle: false,
         icon: 'book',
         link: '/apps/proveedores/list',
+    },
+    {
+        key: 'apps-centros',
+        label: 'Centros',
+        isTitle: false,
+        icon: 'trello',
+        link: '/apps/centros/list',
+    },
+    {
+        key: 'apps-cargos',
+        label: 'Cargos',
+        isTitle: false,
+        icon: 'mdi-briefcase',
+        link: '/apps/cargos/list',
+    },
+    {
+        key: 'apps-habitaciones',
+        label: 'Habitaciones',
+        isTitle: false,
+        icon: 'mdi-bed',
+        link: '/apps/habitaciones/list',
     },
     {
         key: 'apps-calendar',
