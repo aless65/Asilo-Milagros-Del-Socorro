@@ -1,6 +1,42 @@
 <!-- page title -->
 <app-page-title [breadcrumbItems]="pageTitle" title="Nuevo Residente"></app-page-title>
 
+<style>
+    .file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
+
 <div class="card">
     <div class="card-body">
 
@@ -11,7 +47,7 @@
 
             <ul ngbNav #validationWizard="ngbNav" [(activeId)]="activeWizard4"
                 class="nav-pills nav-justified bg-light form-wizard-header mb-4">
-                <li [ngbNavItem]="1">   
+                <li [ngbNavItem]="1">
                     <a ngbNavLink class="rounded-0 pt-2">
                         <i class="mdi mdi-account-circle me-1"></i>
                         <span class="d-none d-sm-inline">Datos Personales</span>
@@ -23,58 +59,72 @@
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="row mb-3">
                                         <label class="col-form-label" for="userName4">Nombres</label>
-                                            <input type="text" class="form-control" id="userName4" value="hyper"
-                                                formControlName="userName" required
-                                                [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
+                                        <input type="text" class="form-control" id="userName4" value="hyper"
+                                            formControlName="userName" required
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-form-label" for="password4">
                                             Identidad</label>
-                                            <input type="text" id="password4" name="password"
-                                            class="form-control" value="123456789"
-                                            formControlName="password"
+                                        <input type="text" id="password4" name="password" class="form-control"
+                                            value="123456789" formControlName="password"
                                             [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.password.invalid }">
                                     </div>
 
                                     <div class="row mb-3">
                                         <label class="col-form-label" for="confirm4">
                                             Fecha de Nacimiento</label>
-                                            <input type="password" id="confirm4" name="confirm"
-                                            class="form-control" value="123456789"
-                                            formControlName="rePassword"
+                                        <input type="date" id="confirm4" name="confirm" class="form-control"
+                                            value="123456789" formControlName="rePassword"
                                             [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.rePassword.invalid }">
                                     </div>
                                 </div> <!-- end col -->
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="row mb-3">
                                         <label class="col-form-label" for="userName4">Apellidos</label>
-                                            <input type="text" class="form-control" id="userName4" value="hyper"
-                                                formControlName="userName" required
-                                                [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
+                                        <input type="text" class="form-control" id="userName4" value="hyper"
+                                            formControlName="userName" required
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.userName.invalid}">
                                     </div>
 
                                     <div class="row mb-3">
                                         <label class="col-form-label" for="password4">
                                             Estado Civil</label>
-                                            <select2 id="product-category" [data]="estadoCivil" formControlName="password"
-                                            placeholder="Escoger">
-                                            </select2>
+                                        <select2 id="estado-civil" [data]="estadoCivil" formControlName="password"
+                                            [minCountForSearch]="0">
+                                        </select2>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-form-label" for="confirm4">
-                                            Sexo</label>
-                                            <input type="password" id="confirm4" name="confirm"
-                                            class="form-control" value="123456789"
-                                            formControlName="rePassword"
-                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.rePassword.invalid }">
+                                        <label class="col-form-label mb-1" for="confirm4">Sexo</label>
+
+                                        <div class="col-6">
+
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" id="customRadio1" name="customRadio"
+                                                    class="form-check-input">
+                                                <label class="form-check-label" for="customRadio1">Femenino</label>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-6">
+
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" id="customRadio2" name="customRadio"
+                                                    class="form-check-input">
+                                                <label class="form-check-label" for="customRadio2">Masculino</label>
+                                            </div>
+
+                                        </div>
                                     </div>
+
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
                             <ul class="list-inline mb-0 wizard mt-3">
 
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Next</button>
+                                    <button type="submit" class="btn btn-secondary">Siguiente</button>
                                 </li>
                             </ul>
 
@@ -85,48 +135,57 @@
                 <li [ngbNavItem]="2">
                     <a ngbNavLink class="rounded-0 pt-2 pb-2">
                         <i class="mdi mdi-face-profile me-1"></i>
-                        <span class="d-none d-sm-inline">Profile</span>
+                        <span class="d-none d-sm-inline">Expediente</span>
                     </a>
                     <ng-template ngbNavContent>
-                        <form class="form-horizontal needs-validation" [formGroup]="profileForm"
-                            #profileWizard="ngForm" (ngSubmit)="gotoNext()">
+                        <form class="form-horizontal needs-validation" [formGroup]="profileForm" #profileWizard="ngForm"
+                            (ngSubmit)="gotoNext()">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-6">
                                     <div class="row mb-3">
-                                        <label class="col-md-3 col-form-label" for="name"> First name</label>
+                                        <label class="col-md-3 col-form-label" for="name">Tipo de Sangre</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="name" name="name" class="form-control"
-                                                formControlName="firstName"
-                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form2.firstName.invalid }">
+                                            <select2 id="estado-civil" [data]="estadoCivil" formControlName="firstName"
+                                                [minCountForSearch]="0">
+                                            </select2>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-md-3 col-form-label" for="surname"> Last name</label>
+                                        <label class="col-md-3 col-form-label" for="surname">Apertura</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="surname" name="surname" class="form-control"
+                                            <input type="date" id="surname" name="surname" class="form-control"
                                                 formControlName="lastName"
                                                 [ngClass]="{ 'is-invalid': profileWizard.submitted && form2.lastName.invalid }">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-md-3 col-form-label" for="email">Email</label>
+                                        <label class="col-md-3 col-form-label" for="email">Enfermedades</label>
                                         <div class="col-md-9">
-                                            <input type="email" id="email" name="email" class="form-control"
-                                                formControlName="email"
-                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form2.email.invalid }">
+                                            <select2 [data]="estadoCivil" id="selec2-2" multiple="true" #country2
+                                                [minCountForSearch]="0">
+                                            </select2>
                                         </div>
                                     </div>
                                 </div> <!-- end col -->
+                                <div class="col-6">
+                                    <div class="file-upload">
+                                      <input type="file" id="image" name="image" class="form-control-file" (change)="handleImageUpload($event)">
+                                      <label class="btn btn-blue rounded-pill" for="image">Agregar archivo</label>
+                                    </div>
+                                    <div class="image-preview" *ngIf="selectedImage">
+                                      <img [src]="selectedImage" alt="Preview">
+                                    </div>
+                                </div>
                             </div> <!-- end row -->
 
                             <ul class="list-inline mb-0 wizard">
                                 <li class="previous list-inline-item">
                                     <button class="btn btn-secondary"
-                                        (click)="activeWizard4=activeWizard4-1">Previous</button>
+                                        (click)="activeWizard4=activeWizard4-1">Anterior</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Next</button>
+                                    <button type="submit" class="btn btn-secondary">Siguiente</button>
                                 </li>
                             </ul>
 
@@ -139,8 +198,7 @@
                         <span class="d-none d-sm-inline">Finish</span>
                     </a>
                     <ng-template ngbNavContent>
-                        <form class="form-horizontal" [formGroup]="validationWizardForm"
-                            #validationWizard="ngForm">
+                        <form class="form-horizontal" [formGroup]="validationWizardForm" #validationWizard="ngForm">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="text-center">
@@ -154,8 +212,8 @@
 
                                         <div class="mb-3">
                                             <div class="form-check d-inline-block">
-                                                <input type="checkbox" class="form-check-input"
-                                                    id="customCheck1" formControlName="acceptTerms"
+                                                <input type="checkbox" class="form-check-input" id="customCheck1"
+                                                    formControlName="acceptTerms"
                                                     [ngClass]="{ 'is-invalid': validationWizard.submitted && form3.acceptTerms.invalid }">
                                                 <label class="form-check-label" for="customCheck1">I agree with
                                                     the Terms and Conditions</label>
@@ -168,10 +226,10 @@
                             <ul class="list-inline mb-0 wizard">
                                 <li class="previous list-inline-item">
                                     <button class="btn btn-secondary"
-                                        (click)="activeWizard4=activeWizard4-1">Previous</button>
+                                        (click)="activeWizard4=activeWizard4-1">Anterior</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Submit</button>
+                                    <button type="submit" class="btn btn-secondary">Guardar</button>
                                 </li>
                             </ul>
 

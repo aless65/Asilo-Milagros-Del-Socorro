@@ -34,6 +34,8 @@ export class CreateComponent implements OnInit {
   constructor (private fb: FormBuilder, 
     private service: ServiceService,) { }
 
+    selectedImage: string | ArrayBuffer | null = null;
+
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
 
@@ -53,45 +55,33 @@ export class CreateComponent implements OnInit {
       acceptTerms: [false, Validators.requiredTrue]
     });
 
-    this.service.getEstadosCiviles()
-      .subscribe((response: any) => {
-        this.estadoCivil = response.data;
-        console.log(this.estadoCivil);
+    this.service.getEstadosCiviles().subscribe((response: any) => {
+      let optionsEstados = response.data.map((item: any) => ({
+        value: item.estacivi_Id,
+        label: item.estacivi_Nombre
+      }));
 
-        // this.selectedResidente = this.residentes[0];
-        // this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
-      });
+      this.estadoCivil = [{
+        label: 'Escoja un estado',
+        options: optionsEstados
+        },
+      ];
+      console.log(this.estadoCivil);
+    });
+    
+  
 
-    // product categories
-  this.estadoCivil = [
-    {
-      label: 'Shopping',
-      options: [
-        { value: 'SH1', label: 'Shopping 1' },
-        { value: 'SH2', label: 'Shopping 2' },
-        { value: 'SH3', label: 'Shopping 3' },
-      ],
-    },
-    {
-      label: 'CRM',
-      options: [
-        { value: 'CRM1', label: 'Crm 1' },
-        { value: 'CRM2', label: 'Crm 2' },
-        { value: 'CRM3', label: 'Crm 3' },
-        { value: 'CRM4', label: 'Crm 4' },
-      ],
-    },
-    {
-      label: 'eCommerce',
-      options: [
-        { value: 'E1', label: 'eCommerce 1' },
-        { value: 'E2', label: 'eCommerce 2' },
-        { value: 'E3', label: 'eCommerce 3' },
-        { value: 'E4', label: 'eCommerce 4' },
-      ],
-    },
-  ];
+  }
 
+  handleImageUpload(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // convenience getter for easy access to form fields
