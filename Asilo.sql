@@ -453,7 +453,8 @@ CREATE TABLE asil.tbAgendaDetalles
 (
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
-	agendeta_Hora				TIME NOT NULL,
+	agendeta_HoraStart			TIME NOT NULL,
+	agendeta_HoraEnd			TIME,
 	acti_Id						INT,
 	medi_Id						INT,
 	agendeta_Observaciones		NVARCHAR(500),
@@ -1042,7 +1043,14 @@ VALUES('Catalina','Diaz','0502198001425','F',1,'1990-12-05','0502','Barrio el Ce
 	  ('Mario','Jimenez','0501200202263','M',1,'2000-10-03','0502','3 calle 3 avenida ','91858401','mmario@gmail.com',2,1,1);
 
 
---SELECT*FROM [asil].[VW_tbEmpleados]
---[asil].[UDP_asil_tbEmpleados_List]
---SELECT*FROM [asil].[tbEmpleados]
+	  --********INSERT TABLA Parentescos ****************---
+INSERT INTO [asil].tbParentescos(pare_Nombre, pare_UsuCreacion)
+VALUES
+  ('Padre/Madre', 1),
+  ('Tío(a)', 1),
+  ('Primo(a)', 1),
+  ('Hijo(a)', 1),
+  ('Sobrino(a)', 1),
+  ('Hermano(a)', 1),
+  ('Otro', 1);
 

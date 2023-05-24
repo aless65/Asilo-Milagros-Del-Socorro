@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { EstadoCivil, TipoSangre, Enfermedad, Municipio, Parentesco } from '../Models';
+import { EstadoCivil, TipoSangre, 
+         Enfermedad, Municipio,
+         Parentesco, Centro } from '../Models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -30,15 +32,8 @@ export class ServiceService {
   getParentescos(){
     return this.http.get<Parentesco[]>(`${this.variableGlobal}Parentescos/Listado`);
   }
-//   addEnfermedades(newEnfermedad: Enfermedad){
-//     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-//   }
-  
-//   editEnfermedades(editEnfermedad: Enfermedad){
-//     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
-//   }
 
-//   deleteEnfermedades(id: number){
-//     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
-//   }
+  getCentros(){
+    return this.http.get<Centro[]>(`${this.variableGlobal}Centros/Listado`);
+  }
 }

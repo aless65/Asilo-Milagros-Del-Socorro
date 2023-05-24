@@ -97,3 +97,10 @@ export interface Parentesco {
 
     [key: string]: number | string | undefined;
 }
+
+export interface Centro {
+    cent_Id?: number;
+    cent_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
