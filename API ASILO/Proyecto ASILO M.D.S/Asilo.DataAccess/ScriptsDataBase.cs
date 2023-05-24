@@ -175,6 +175,7 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Tipos de sangre
+        public static string UDP_Lista_TiposSangre = "asil.UDP_asil_tbTiposSangre_List";
 
         #endregion
     }
