@@ -255,33 +255,25 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+       
+
         public ServiceResult InsertarCentros(tbCentros item)
         {
-            ServiceResult result = new ServiceResult();
+            var result = new ServiceResult();
             try
             {
-                var list = _centrosRepository.Insert(item);
-                if (list.CodeStatus > 0)
-                {
-                    return result.SetMessage("Exitoso", ServiceResultType.Success);
-                }
-                else if (list.CodeStatus == -2)
-                {
-                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
-                }
-                else if (list.CodeStatus == 0)
-                {
-                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
-                }
-                else
-                {
-                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
-                }
-            }
-            catch (Exception xe)
-            {
+                var insert = _centrosRepository.Insert(item);
 
-                return result.Error(xe.Message);
+                if (insert.MessageStatus == "El centro ha sido insertado con éxito")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "El centro ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
             }
         }
 

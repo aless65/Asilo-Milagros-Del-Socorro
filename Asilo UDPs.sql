@@ -143,6 +143,147 @@ BEGIN
 END
 GO
 
+--************ROLES******************--
+
+/*Vista Roles*/
+CREATE OR ALTER VIEW acce.VW_tbRoles
+AS
+	SELECT  t1.role_Id,
+	        role_Nombre,
+			role_UsuCreacion,
+		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+		   role_FechaCreacion,
+		   role_UsuModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+		   role_FechaModificacion,
+		   role_Estado
+		   FROM acce.tbRoles t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.role_UsuCreacion = T2.usua_Id
+		   LEFT JOIN acce.tbUsuarios t3
+		   ON t1.role_UsuModificacion = t3.usua_Id
+GO
+
+/*Listar Roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_List
+AS
+BEGIN
+	SELECT * FROM acce.VW_tbRoles
+	WHERE role_Estado = 1
+END
+GO
+
+/*Insertar Roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Insert 
+	@role_Nombre		NVARCHAR(100),
+	@role_UsuCreacion	INT
+AS 
+BEGIN
+	
+	BEGIN TRY
+
+		IF NOT EXISTS (SELECT * FROM acce.tbRoles
+						WHERE role_Nombre = @role_Nombre)
+		BEGIN
+			INSERT INTO acce.tbRoles(role_Nombre, role_UsuCreacion)
+			VALUES(@role_Nombre, @role_UsuCreacion)
+
+			SELECT 'El rol ha sido insertado exitosamente'
+		END
+		ELSE IF EXISTS (SELECT * FROM acce.tbRoles
+						WHERE role_Nombre = @role_Nombre
+							  AND role_Estado = 1)
+
+			SELECT 'Este rol ya existe'
+		ELSE
+			BEGIN
+				UPDATE acce.tbRoles
+				SET role_Estado = 1
+				WHERE role_Nombre = @role_Nombre
+
+				SELECT 'El rol ha sido insertado exitosamente'
+			END
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH 
+END
+GO
+
+/*Find Roles*/
+CREATE OR ALTER PROCEDURE asil.UDP_acce_VW_tbRoles_Find 
+	@role_Id	INT
+AS
+BEGIN
+	SELECT * FROM acce.VW_tbRoles
+	WHERE role_Id = @role_Id
+END
+GO
+
+
+/*Editar Roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Update 
+	@role_Id					INT,
+	@role_Nombre				NVARCHAR(100),
+	@role_UsuModificacion		INT
+AS
+BEGIN
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM acce.tbRoles 
+						WHERE role_Nombre = @role_Nombre)
+		BEGIN			
+			UPDATE acce.tbRoles
+			SET 	role_Nombre = @role_Nombre,
+					role_UsuModificacion = @role_UsuModificacion,
+					role_FechaModificacion = GETDATE()
+			WHERE 	role_Id = @role_Id
+
+			SELECT 'El rol ha sido editado exitosamente'
+		END
+		ELSE IF EXISTS (SELECT * FROM acce.tbRoles 
+						WHERE role_Nombre = @role_Nombre
+							  AND role_Estado = 1
+							  AND role_Id != @role_Id)
+
+			SELECT 'El rol ya existe'
+		ELSE
+			UPDATE acce.tbRoles 
+			SET role_Estado = 1,	
+			    role_UsuModificacion = @role_UsuModificacion,
+				role_FechaModificacion = GETDATE()
+			WHERE role_Nombre = @role_Nombre
+
+			SELECT 'El rol ha sido editado exitosamente'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*Eliminar Roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Delete 
+	@role_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles WHERE role_Id = @role_Id)
+			BEGIN
+				UPDATE acce.tbRoles
+				SET role_Estado = 0
+				WHERE role_Id = @role_Id
+
+				SELECT 'El rol ha sido eliminado'
+			END
+		ELSE
+			SELECT 'El rol no puede ser eliminado ya que está siendo usado en otro registro'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
 --************ENFERMEDADES******************--
 
 /*Vista enfermedades*/
@@ -3378,43 +3519,42 @@ GO
 
 
 /*INSERTAR CENTROS*/
+
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCentros_Insert
 	@cent_Nombre				NVARCHAR(200),
 	@muni_Id					CHAR(4),
 	@cent_Direccion			    NVARCHAR(500),
     @cent_UsuCreacion		    INT 
-AS 
+AS
 BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbCentros 
-						WHERE cent_Nombre = @cent_Nombre)
+		IF NOT EXISTS (SELECT * FROM asil.tbCentros
+						WHERE cent_Nombre = @cent_Nombre )
 			BEGIN
 			INSERT INTO asil.tbCentros(cent_Nombre, muni_Id, cent_Direccion, cent_UsuCreacion)
 			VALUES(@cent_Nombre, @muni_Id, @cent_Direccion, @cent_UsuCreacion)
 			
-			SELECT 1 as proceso
+			SELECT 'El centro ha sido insertado con éxito'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbCentros 
 						WHERE cent_Nombre = @cent_Nombre
 						AND cent_Estado = 0)
 			BEGIN
-				UPDATE asil.tbCentros 
+				UPDATE asil.tbCentros
 				SET cent_Estado = 1
 				WHERE cent_Nombre = @cent_Nombre
 
-				SELECT 1 as proceso
+				SELECT 'El centro ha sido insertado con éxito'
 			END
 		ELSE
-			SELECT -2 as proceso
+			SELECT 'El centro ya existe'
 	END TRY
 	BEGIN CATCH
-		SELECT 0
+		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
-GO
 
-
-
+go
 
 /*EDITAR CENTROS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCentros_Update
@@ -3463,15 +3603,17 @@ END
 GO
 
 
+
+
 /*ELIMINAR CENTROS*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCentros_Delete
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCentros_Delete 
 	 @cent_Id	INT
 AS
 BEGIN
 	BEGIN TRY
 
 
-	IF NOT EXISTS (SELECT * FROM asil.tbCentros WHERE cent_Id = @cent_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbInventarioPorCentro WHERE cent_Id = @cent_Id)
 			BEGIN
 			UPDATE asil.tbCentros
 			SET cent_Estado = 0
@@ -3486,6 +3628,9 @@ BEGIN
 	END CATCH
 END
 GO
+
+
+
 
 --************PROVEEDORES******************--
 

@@ -146,6 +146,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[acce].[VW_tbRoles]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[acce].[VW_tbUsuarios]",
          "ObjectType": 3
       },
@@ -242,7 +246,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "VJ2100.AsiloJAC",
+   "UiHint": "DESKTOP-IMCPDKE\\SQLEXPRESS.AsiloJAC",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

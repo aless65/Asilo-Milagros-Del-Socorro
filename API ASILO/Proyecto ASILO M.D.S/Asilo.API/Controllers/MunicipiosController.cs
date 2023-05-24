@@ -22,9 +22,9 @@ namespace Asilo.API.Controllers
         }
 
         [HttpGet("Listado")]
-        public IActionResult Index()
+        public IActionResult Index(string depa)
         {
-            var list = _generalService.ListadoMunicipios();
+            var list = _generalService.ListadoMunicipios(depa);
             return Ok(list);
         }
     }

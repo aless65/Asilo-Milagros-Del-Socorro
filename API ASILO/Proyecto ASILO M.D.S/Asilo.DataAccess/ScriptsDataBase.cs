@@ -21,7 +21,11 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Roles
-
+        public static string RolList = "acce.UDP_acce_tbRoles_List";
+        public static string RolFind = "asil.UDP_acce_VW_tbRoles_Find";
+        public static string AgregarRol = "acce.UDP_acce_tbRoles_Insert";
+        public static string ActualizarRol = "acce.UDP_acce_tbRoles_Update";
+        public static string EliminarRol = "acce.UDP_acce_tbRoles_Delete";
         #endregion
 
         #region Departamentos

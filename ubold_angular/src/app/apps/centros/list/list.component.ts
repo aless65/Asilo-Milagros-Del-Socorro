@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup,FormControl, Validators,ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Centro } from '../Models';
-import { ServiceService } from 'src/app/apps/centros/Service/service.service';
 import { Select2Data } from 'ng-select2-component';
-import { NgbCalendar, NgbDate, NgbDateStruct, NgbTimeStruct, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { merge, Observable, OperatorFunction, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { ServiceService } from 'src/app/apps/centros/Service/service.service';
+
 @Component({
     selector: 'app-centros-list',
     templateUrl: './list.component.html',
@@ -24,120 +22,68 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
   selectedCentro!: Centro;
   esEditar!: boolean;
   newCentro!: FormGroup;
-
-  // select2 config
-  estadoCivil: Select2Data = [];
-
-
-  // date picker config configuración del selector de fecha
-  model1!: NgbDateStruct;
-  model2!: NgbDateStruct;
-  hidden: boolean = true;
-
-  // timepicker config
-  time1!: NgbTimeStruct;
-  time2!: NgbTimeStruct;
-  time3!: NgbTimeStruct;
-  time4!: NgbTimeStruct;
-  show: boolean = true;
-  meridian: boolean = true;
-  spinners = true;
-
-  // typeahead config
-  statesList: string[] = [];
-  typeaheadModel: any;
+  municipio: Select2Data = [];
+  
+  
   formatter = (result: string) => result.toUpperCase();
 
-  focus$ = new Subject<string>();
-  click$ = new Subject<string>();
+  validationWizardForm!: FormGroup;
 
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
   @ViewChild('deleteCentroModal', { static: true }) deleteCentroModal: any;
-  @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
-
 
   constructor (
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
-    private calendar: NgbCalendar,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private service: ServiceService,
-    // private toast: NgToastService,
-    // private messageService: MessageService,
+    
   ) { }
-
+ 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Centro', path: '/', active: true }];
     this._fetchData();
     // initialize advance table 
     this.initAdvancedTableData();
-
-    this.newCentro = this.fb.group({
+    this.newCentro = this.formBuilder.group({
       name: ['', Validators.required],
+      direccion: ['', Validators.required],
+      muni_Id: new FormControl('', Validators.required),
+      
     });
    
-    this.service.getDepartamentos().subscribe((response: any) => {
-      let optionsEstados = response.data.map((item: any) => ({
-        value: item.depa_Id,
-        label: item.depa_Nombre
-      }));
+   
 
-      this.estadoCivil = [{
-        label: 'Escoja un estado',
-        options: optionsEstados
-        },
-      ];
-      console.log(this.estadoCivil);
+    this.service.getMunicipios().subscribe((response: any) => {
+      let depaLabels: string[] = [];
+      let options: { [key: string]: any[] } = {};
+    
+      response.data.forEach((item: any) => {
+        const depaNombre: string = item.depa_Nombre;
+        const muniId: string = item.muni_id;
+        const muniNombre: string = item.muni_Nombre;
+    
+        if (!depaLabels.includes(depaNombre)) {
+          depaLabels.push(depaNombre);
+          options[depaNombre] = [];
+        }
+    
+        options[depaNombre].push({
+          value: muniId,
+          label: muniNombre
+        });
+      });
+    
+      this.municipio = depaLabels.map((depaNombre: string) => ({
+        label: depaNombre,
+        options: options[depaNombre]
+      }));
     });
+
     
   }
-
-  /**
-   * fetches country list
-   */
-
-
-
-  /**
-   * toggles meridian
-   */
-  toggleMeridian() {
-    this.meridian = !this.meridian;
-  }
-
-  /**
-   * toggles spinner visibility
-   */
-  toggleSpinners() {
-    this.spinners = !this.spinners;
-  }
-
-   /**
- * search function of typeahead 1
- */
-   search1: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-   text$.pipe(
-     debounceTime(200),
-     distinctUntilChanged(),
-     map(term => term.length < 2 ? []
-       : this.statesList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-   )
-
- /**
-  * search function of typeahead 2
-  */
- search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
-   const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
-   const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
-   const inputFocus$ = this.focus$;
-
-   return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-     map(term => (term === '' ? this.statesList
-       : this.statesList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
-   );
- }
 
   // convenience getter for easy access to form fields
   get form1() { return this.newCentro.controls; }
@@ -166,11 +112,11 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
   deleteCentro(): void{
     this.service.deleteCentros(this.selectedCentro.cent_Id || 0).subscribe(
         (response: any) => {
-          console.log("se pudo:", response);
+          console.log("si si si:", response);
           this._fetchData();
         },
         (error) => {
-          console.log("no se pudo:", error);
+          console.log("error noo:", error);
         }
       )
     this._fetchData();
@@ -180,25 +126,15 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
   submitForm(): void {
     if(this.newCentro.invalid){
       console.log("pipi");
-     // const selectedMunicipio = this.countries.find((municipio: any) => municipio.id === this.newCentro.value.muni_Id);
-      const departamentoNombre = this.selectedCentro.depa_Nombre;
-    
-      console.log('Nombre del departamento:', departamentoNombre);
+     
       return;
     }
-
-   
-    
-
-   
-    
-
 
     const centro: Centro = {
       cent_Id: this.selectedCentro?.cent_Id || 0,
       cent_Nombre: this.newCentro.value.name,
-      muni_Id: this.newCentro.value.name,
-      cent_Direccion: this.newCentro.value.name,
+      muni_Id: this.newCentro.value.muni_Id,
+      cent_Direccion: this.newCentro.value.direccion,
       cent_UsuCreacion: 1,
       cent_UsuModificacion: 1,
     }
@@ -222,10 +158,12 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
           // this.openSuccess();
           // this.showSuccess();
           console.log("se pudo:", response);
+          console.log("se pudo:", centro);
           this._fetchData();
         },
         (error) => {
           console.log("no se pudo:", error);
+          console.log("no pudo:", centro);
         }
       )
       
@@ -234,13 +172,7 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
     this.activeModal.dismissAll('');
   }
 
-  // showSuccess(){
-  //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  // }
-
-  // openSuccess(){
-  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
-  // }
+  
   _fetchData(): void {
     this.service.getCentros()
     
@@ -251,22 +183,11 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 
   });
   }
- 
   
-
- 
-
-  /**
-   * initialize advance table columns
-   */
   initAdvancedTableData(): void {
     console.log(this.centros);
     this.columns = [
-      // {
-      //   name: 'name',
-      //   label: 'Basic Info',
-      //   formatter: this.enfermedadNameFormatter.bind(this)
-      // },
+ 
       {
         name: 'cent_Id',
         label: 'ID',
@@ -278,6 +199,16 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
         formatter: (centro: Centro) => centro.cent_Nombre
       },
       {
+        name: 'muni_Nombre',
+        label: 'Municipio',
+        formatter: (centro: Centro) => centro.muni_Nombre
+      },
+      {
+        name: 'cent_Direccion',
+        label: 'Dirección',
+        formatter: (centro: Centro) => centro.cent_Direccion
+      },
+      {
         name: 'Action',
         label: 'Acciones',
         width: 82,
@@ -285,10 +216,7 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
       }]
   }
 
-  /**
- *  handles operations that need to be performed after loading table
- */
-
+ 
 
   handleTableLoad(event: any): void {
     // product cell
@@ -297,8 +225,10 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
         const selectedId = Number(e.id);
         this.selectedCentro = this.centros.find(centro => centro.cent_Id === selectedId) || this.selectedCentro;
         if (this.selectedCentro) {
-          this.newCentro = this.fb.group({
+          this.newCentro = this.formBuilder.group({
             name: [this.selectedCentro.cent_Nombre || '', Validators.required],
+            muni_Id: [this.selectedCentro.muni_Id || '', Validators.required],
+            direccion: [this.selectedCentro.cent_Direccion || '', Validators.required],
           });
           this.openModal("edit");
         }
@@ -310,7 +240,7 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
         const selectedId = Number(e.id);
         this.selectedCentro = this.centros.find(centro => centro.cent_Id === selectedId) || this.selectedCentro;
         if (this.selectedCentro) {
-          this.newCentro = this.fb.group({
+          this.newCentro = this.formBuilder.group({
             name: [this.selectedCentro.cent_Nombre || '', Validators.required],
           });
           this.openModalDelete();

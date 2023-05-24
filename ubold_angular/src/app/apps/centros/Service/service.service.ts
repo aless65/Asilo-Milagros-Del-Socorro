@@ -1,34 +1,30 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
-import { Centro } from '../Models';
+import { Centro, Municipio } from '../Models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   constructor(private http:HttpClient) { }
-
-  Url="https://localhost:44371/api/";
+  variableGlobal: string = environment.variableGlobal;
 
   getCentros(){
-    return this.http.get<Centro[]>(`${this.Url}Centros/Listado`);
+    return this.http.get<Centro[]>(`${this.variableGlobal}Centros/Listado`);
   }
   deleteCentros(id: number){
-    return this.http.put(`${this.Url}Centros/Eliminar?id=${id}`, null);
+    return this.http.put(`${this.variableGlobal}Centros/Eliminar?id=${id}`, null);
   }
   editCentros(editCentros: Centro){
-    return this.http.put<Centro[]>(`${this.Url}Centros/Editar`, editCentros);
+    return this.http.put<Centro[]>(`${this.variableGlobal}Centros/Editar`, editCentros);
   }
 
   addCentros(newCentro: Centro){
-    return this.http.post<Centro[]>(`${this.Url}Centros/Insertar`, newCentro);
+    return this.http.post<Centro[]>(`${this.variableGlobal}Centros/Insertar`, newCentro);
   }
- 
-  getMunicipio(){
-    return this.http.get<Centro[]>(`${this.Url}Municipios/Listado`);
-  }
-  getDepartamentos(){
-    return this.http.get<Centro[]>(`${this.Url}Deparatmentos/Listado`);
+  getMunicipios(){
+    return this.http.get<Municipio[]>(`${this.variableGlobal}Municipios/Listado?depa=0`);
   }
   
 }

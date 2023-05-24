@@ -68,3 +68,46 @@ export interface Enfermedad {
 
     [key: string]: number | string | undefined;
 }
+
+export interface Rol {
+    role_Id?: number;
+    role_Nombre?: string;
+    role_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    role_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    role_FechaCreacion?: string;
+    role_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+
+export interface TipoSangre {
+    tiposang_Id?: number;
+    tiposang_Nombre?: string;
+    tiposang_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    tiposang_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    tiposang_FechaCreacion?: string;
+    tiposang_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Municipio {
+    muni_Id?: string;
+    muni_Nombre?: string;
+    depa_Id?: string;
+    depa_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Parentesco {
+    pare_Id?: number;
+    pare_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}

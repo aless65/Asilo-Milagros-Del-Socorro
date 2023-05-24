@@ -34,8 +34,11 @@
     </div>
     <div class="modal-body p-4">
         <form [formGroup]="newCentro" #addCentro="ngForm" (ngSubmit)="submitForm()">
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre centroo</label>
+            <div class="row">
+                <div class="container">
+            <div class="col-sm-8">
+            <div class="row mb-3">
+                <label for="name" class="form-label">Nombre centro</label>
                 <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
                     [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
                 <div *ngIf="addCentro.submitted && form1.name.invalid " class="invalid-feedback">
@@ -43,20 +46,42 @@
                 </div>
             </div>
 
-            <div class="col-sm-6">
-
-                <div class="col-md-9">
-                    <select2 id="estado-civil" [data]="estadoCivil" formControlName="firstName"
-                        [minCountForSearch]="0">
-                    </select2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row mb-3">
+                <label class="col-form-label" for="muni_Id">Municipio</label>
+                <div class="col">
+                    <select2 id="muni_Id" [data]="municipio" formControlName="muni_Id" [minCountForSearch]="0"></select2>
                 </div>
-         </div>
+            </div>
+            <div *ngIf="newCentro?.get('muni_Id')?.invalid && newCentro?.get('muni_Id')?.touched" class="text-danger">
+                 Municipio requerido.
+            </div>
+        </div>
+        
+    
+        <div class="col-sm-6">
+            <div class="row mb-3">
+                <label for="direccion" class="col-form-label">Dirección centro</label>
+                <div class="col">
+                    <input type="text" class="form-control" id="direccion" placeholder="Dirección" required formControlName="direccion" [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
+                    <div *ngIf="addCentro.submitted && form1.name.invalid" class="invalid-feedback">
+                        Dirección requerido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
             <div class="text-end">
                 <button type="submit" class="btn btn-success waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
                 <button type="button" class="btn btn-danger waves-effect waves-light"
                     (click)="modal.close('')">Cancelar</button>
             </div>
+        </div>
         </form>
     </div>
 </ng-template>

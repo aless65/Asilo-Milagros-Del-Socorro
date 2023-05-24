@@ -112,6 +112,94 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Roles
+        public ServiceResult ListadoRol()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _rolesRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult FindRol(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var roles = _rolesRepository.Find(id);
+                return result.Ok(roles);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertRol(tbRoles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _rolesRepository.Insert(item);
+
+                if (insert.MessageStatus == "El rol ha sido insertado exitosamente")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este rol ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateRol(tbRoles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _rolesRepository.Update(item);
+
+                if (update.MessageStatus == "El rol ha sido editado exitosamente")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "El rol ya existe")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteRol(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _rolesRepository.Delete(id);
+
+                if (delete.MessageStatus == "El rol ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "El rol no puede ser eliminado ya que está siendo usado en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
 
         #endregion
     }

@@ -42,6 +42,7 @@ namespace Asilo.DataAccess.Context
         public virtual DbSet<VW_tbParentescos> VW_tbParentescos { get; set; }
         public virtual DbSet<VW_tbProveedores> VW_tbProveedores { get; set; }
         public virtual DbSet<VW_tbResidentes> VW_tbResidentes { get; set; }
+        public virtual DbSet<VW_tbRoles> VW_tbRoles { get; set; }
         public virtual DbSet<VW_tbTiposSangre> VW_tbTiposSangre { get; set; }
         public virtual DbSet<VW_tbUsuarios> VW_tbUsuarios { get; set; }
         public virtual DbSet<tbActividades> tbActividades { get; set; }
@@ -772,6 +773,25 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usuCrea).HasMaxLength(100);
 
                 entity.Property(e => e.usuModif).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbRoles>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbRoles", "acce");
+
+                entity.Property(e => e.role_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.role_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.role_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
             });
 
             modelBuilder.Entity<VW_tbTiposSangre>(entity =>
