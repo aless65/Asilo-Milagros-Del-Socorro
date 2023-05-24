@@ -3153,13 +3153,17 @@ END
 /*Listar municipios*/
 GO
 CREATE OR ALTER PROCEDURE gral.UDP_gral_tbMunicipios_List 
-	@depa_Id	INT
+	
 AS
 BEGIN
-	SELECT muni_Id, muni_Nombre
-	FROM [gral].tbMunicipios
+	SELECT muni_Id,
+	       muni_Nombre,
+		   T1.depa_Id, 
+		   T2.depa_Nombre
+	FROM [gral].tbMunicipios T1 INNER JOIN [gral].tbDepartamentos T2
+	ON T1.depa_Id = T2.depa_Id
 	WHERE muni_Estado = 1
-	AND depa_Id = @depa_Id
+	
 END
 
 

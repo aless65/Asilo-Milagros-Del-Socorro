@@ -13,5 +13,22 @@ export class ServiceService {
   getCentros(){
     return this.http.get<Centro[]>(`${this.Url}Centros/Listado`);
   }
+  deleteCentros(id: number){
+    return this.http.put(`${this.Url}Centros/Eliminar?id=${id}`, null);
+  }
+  editCentros(editCentros: Centro){
+    return this.http.put<Centro[]>(`${this.Url}Centros/Editar`, editCentros);
+  }
+
+  addCentros(newCentro: Centro){
+    return this.http.post<Centro[]>(`${this.Url}Centros/Insertar`, newCentro);
+  }
+ 
+  getMunicipio(){
+    return this.http.get<Centro[]>(`${this.Url}Municipios/Listado`);
+  }
+  getDepartamentos(){
+    return this.http.get<Centro[]>(`${this.Url}Deparatmentos/Listado`);
+  }
   
 }

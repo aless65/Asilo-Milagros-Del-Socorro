@@ -38,12 +38,12 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Municipios
-        public ServiceResult ListadoMunicipios(string depa)
+        public ServiceResult ListadoMunicipios()
         {
             var result = new ServiceResult();
             try
             {
-                var list = _municipiosRepository.List(depa);
+                var list = _municipiosRepository.List();
                 return result.Ok(list);
             }
             catch (Exception e)

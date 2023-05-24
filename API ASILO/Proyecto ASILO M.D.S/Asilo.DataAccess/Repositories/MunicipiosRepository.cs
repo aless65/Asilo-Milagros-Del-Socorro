@@ -32,15 +32,15 @@ namespace Asilo.DataAccess.Repositories
             using var db = new SqlConnection(AsiloContext.ConnectionString);
             return db.Query<tbMunicipios>(ScriptsDataBase.UDP_Lista_Municipios, null, commandType: CommandType.StoredProcedure);
         }
-        public IEnumerable<tbMunicipios> List(string depa)
-        {
-            using var db = new SqlConnection(AsiloContext.ConnectionString);
+        //public IEnumerable<tbMunicipios> List(string depa)
+        //{
+        //    using var db = new SqlConnection(AsiloContext.ConnectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@depa_Id", depa, DbType.String, ParameterDirection.Input);
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@depa_Id", depa, DbType.String, ParameterDirection.Input);
 
-            return db.Query<tbMunicipios>(ScriptsDataBase.UDP_Lista_Municipios, parameters, commandType: CommandType.StoredProcedure);
-        }
+        //    return db.Query<tbMunicipios>(ScriptsDataBase.UDP_Lista_Municipios, parameters, commandType: CommandType.StoredProcedure);
+        //}
 
 
         public RequestStatus Update(tbMunicipios item)
