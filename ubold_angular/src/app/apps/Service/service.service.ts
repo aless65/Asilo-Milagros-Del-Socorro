@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { EstadoCivil } from '../Models';
+import {Cargos} from '../Models';
+import {Centros} from '../Models';
+import { Municipio } from '../Models';
+import { environment } from 'src/environments/environment'; //importar la variable global
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
+  variableGlobal: string = environment.variableGlobal;
+
   constructor(private http:HttpClient) { }
 
-  Url="http://asilomilagrosdelsocorro.somee.com/api/";
-
   getEstadosCiviles(){
-    return this.http.get<EstadoCivil[]>(`${this.Url}EstadosCiviles/Listado`);
+    return this.http.get<EstadoCivil[]>(`${this.variableGlobal}EstadosCiviles/Listado`);
   }
   
-//   addEnfermedades(newEnfermedad: Enfermedad){
-//     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-//   }
-  
-//   editEnfermedades(editEnfermedad: Enfermedad){
-//     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
-//   }
+  getCargos(){
+    return this.http.get<Cargos[]>(`${this.variableGlobal}Cargos/Listado`);
+  }
 
-//   deleteEnfermedades(id: number){
-//     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
-//   }
+  getCentros(){
+    return this.http.get<Centros[]>(`${this.variableGlobal}Centros/Listado`);
+  }
+  
+  getMunicipios(){
+    return this.http.get<Municipio[]>(`${this.variableGlobal}Municipios/Listado?depa=0`);
+  }
 }

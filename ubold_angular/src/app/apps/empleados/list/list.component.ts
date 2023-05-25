@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Empleados } from '../Model';
-import { ServiceService } from 'src/app/apps/empleados/service.service';
+import { ServiceServiceE } from 'src/app/apps/empleados/service.service';
 import { Router } from '@angular/router';
 
 // import { ToastModule } from 'primeng/toast';
@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
-    private service: ServiceService,
+    private service: ServiceServiceE,
     private router:Router
     // private messageService: MessageService,
   ) { }

@@ -1,19 +1,18 @@
 
-<app-page-title [breadcrumbItems]="pageTitle" title="Crear Registro de empleados"></app-page-title>
+<app-page-title [breadcrumbItems]="pageTitle" ></app-page-title>
 
-<div class="row">
-    <div class="col-12">
+<br>
+<div class="custom-card">
         <div class="card">
             <div class="card-body">  
-               
-
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Crear Registro de empleados</h5>
                     <form class="needs-validation" [formGroup]="validationGroup1" #validate1="ngForm">
                         <div class="row">
                             <div class="col-sm-6">
                       <div class="mb-3">
                         <label for="validationCustom01" class="form-label">Nombres</label>
                         <input type="text" class="form-control" id="validationCustom01" placeholder="nombre"
-                        [(ngModel)] = "empleado.empe_Nombres"  required formControlName="Nombre"
+                        [(ngModel)] = "empleado.empe_Nombres"  required  formControlName="Nombre"
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Nombre.valid , 'is-invalid': validate1.submitted && form1.Nombre.invalid }">
                         <div *ngIf="validate1.submitted && form1.Nombre.valid" class="valid-feedback">
                             completo!
@@ -63,11 +62,11 @@
                         <div class="mb-3">
                           <label for="validationCustom03" class="form-label">Sexo</label>
                           <div class="radio-group">
-                            <input type="radio" class="form-check-input" id="F" name="fm" placeholder="Sexo" required value="F" [(ngModel)]="empleado.empe_Sexo"
+                            <input type="radio" class="form-check-input" id="Sexo" placeholder="sexo" required value="F" [(ngModel)]="empleado.empe_Sexo"
                               formControlName="Sexo"
                               [ngClass]="{ 'is-valid': validate1.submitted && form1.Sexo.valid , 'is-invalid': validate1.submitted && form1.Sexo.invalid }"> Femenino
                       
-                            <input type="radio" class="form-check-input" id="M" name="fm" placeholder="Sexo" value="M" required [(ngModel)]="empleado.empe_Sexo"
+                            <input type="radio" class="form-check-input" id="Sexo" placeholder="Sexo" value="M" required [(ngModel)]="empleado.empe_Sexo"
                               formControlName="Sexo"
                               [ngClass]="{ 'is-valid': validate1.submitted && form1.Sexo.valid , 'is-invalid': validate1.submitted && form1.Sexo.invalid }"> Masculino
                           </div>
@@ -84,7 +83,7 @@
                       <div class="col-sm-6">
                         <div class="mb-3">
                           <label for="validationCustom04" class="form-label">Fecha de Nacimiento</label>
-                          <input type="date" class="form-control" id="validationCustom04" placeholder="Fecha" required [(ngModel)]="empleado.empe_Nacimiento"
+                          <input type="date" class="form-control" id="validationCustom04" placeholder="fecha" required [(ngModel)]="empleado.empe_Nacimiento"
                             formControlName="Fecha"
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Fecha.valid , 'is-invalid': validate1.submitted && form1.Fecha.invalid }"
                             max="2004-12-31"> <!-- Establece la fecha máxima como "2004-12-31" -->
@@ -101,7 +100,7 @@
                     <div class="col-sm-6">
                     <div class="mb-3">
                         <label for="validationCustom05" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" id="validationCustom05" placeholder="Direccion" required [(ngModel)] = "empleado.empe_Direccion"
+                        <input type="text" class="form-control" id="validationCustom05" placeholder="dirección" required [(ngModel)] = "empleado.empe_Direccion"
                             formControlName="Direccion"
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Direccion.valid , 'is-invalid': validate1.submitted && form1.Direccion.invalid }">
                         <div *ngIf="validate1.submitted && form1.Direccion.valid" class="valid-feedback">
@@ -117,7 +116,7 @@
                     <div class="col-sm-6">
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Telefono</label>
-                            <input type="text" class="form-control" id="validationCustom05" placeholder="Telefono" required [(ngModel)] = "empleado.empe_Telefono"
+                            <input type="text" class="form-control" id="validationCustom05" placeholder="teléfono" required [(ngModel)] = "empleado.empe_Telefono"
                                 formControlName="Telefono"
                                 [ngClass]="{ 'is-valid': validate1.submitted && form1.Telefono.valid , 'is-invalid': validate1.submitted && form1.Telefono.invalid }">
                             <div *ngIf="validate1.submitted && form1.Telefono.valid" class="valid-feedback">
@@ -133,7 +132,7 @@
                      <div class="col-sm-6">
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="validationCustom05" placeholder="Correo" required [(ngModel)] = "empleado.empe_Correo"
+                            <input type="email" class="form-control" id="validationCustom05" placeholder="correo" required [(ngModel)] = "empleado.empe_Correo"
                                 formControlName="Correo"
                                 [ngClass]="{ 'is-valid': validate1.submitted && form1.Correo.valid , 'is-invalid': validate1.submitted && form1.Correo.invalid }">
                             <div *ngIf="validate1.submitted && form1.Correo.valid" class="valid-feedback">
@@ -145,21 +144,91 @@
                             </div>
                         </div>
                      </div>
+
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="validationCustom05" class="form-label">Estado Civil:</label>
+                          
+                            <select2 id="estacivi_Id" required [(ngModel)] = "empleado.estacivi_Id" placeholder="estado civil..." 
+                            formControlName="estacivi_Id"  [minCountForSearch]="0" [data]="estadoCivil" 
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.estacivi_Id.valid , 'is-invalid': validate1.submitted && form1.estacivi_Id.invalid }">
+                            </select2>
+
+                            <div *ngIf="validate1.submitted && form1.estacivi_Id.valid" class="valid-feedback">
+                                 Completo!
+                            </div>
+    
+                            <div *ngIf="validate1.submitted && form1.estacivi_Id.invalid" class="invalid-feedback">
+                                El estado civil es requerido.
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="validationCustom05" class="form-label">Cargo:</label>
+                          
+                            <select2 id="Cargo" required [(ngModel)] = "empleado.carg_Id" placeholder="cargo..." 
+                            formControlName="Cargo"  [minCountForSearch]="0" [data]="cargos" 
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Cargo.valid , 'is-invalid': validate1.submitted && form1.Cargo.invalid }">
+                            </select2>
+
+                            <div *ngIf="validate1.submitted && form1.Cargo.valid" class="valid-feedback">
+                                 Completo!
+                            </div>
+    
+                            <div *ngIf="validate1.submitted && form1.Cargo.invalid" class="invalid-feedback">
+                                El cargo es requerido.
+                            </div>
+                        </div>
+                     </div>
                     
-                    
-                     <div class="container">
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="validationCustom05" class="form-label">Centro:</label>
+                          
+                            <select2 id="Centro" required [(ngModel)] = "empleado.cent_Id" placeholder="centro..." 
+                            formControlName="Centro"  [minCountForSearch]="0" [data]="centros" 
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Centro.valid , 'is-invalid': validate1.submitted && form1.Centro.invalid }">
+                            </select2>
+
+                            <div *ngIf="validate1.submitted && form1.Centro.valid" class="valid-feedback">
+                                 Completo!
+                            </div>
+    
+                            <div *ngIf="validate1.submitted && form1.Centro.invalid" class="invalid-feedback">
+                                El centro es requerido.
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="validationCustom05" class="form-label">Municipio:</label>
+                          <select2 id="municipio-values" required [(ngModel)]="empleado.muni_Id" placeholder="municipio..." 
+                            formControlName="Muni" [minCountForSearch]="0" [data]="municipio"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Muni.valid , 'is-invalid': validate1.submitted && form1.Muni.invalid }">
+                          </select2>
+                          <div *ngIf="validate1.submitted && form1.Muni.valid" class="valid-feedback">
+                            Completo!
+                          </div>
+                          <div *ngIf="validate1.submitted && form1.Muni.invalid" class="invalid-feedback">
+                            El Municipio es requerido.
+                          </div>
+                        </div>
+                      </div>
+                            
+                      <div class="container">
                         <div class="button-container">
-                          <button class="btn btn-primary" type="submit">Guardar</button>
-                          <button class="btn btn-outline-secondary waves-effect waves-light" type="button">Volver</button>
+                          <button class="btn btn-primary" type="submit" (click)="validarYGuardar()">Guardar</button>
+                          <button class="btn btn-outline-secondary waves-effect waves-light" type="button" (click)="Volver()">Volver</button>
                         </div>
                       </div>
                       
-                    
-                  
+
                 </div>
                 </form>
      
             </div> <!-- end card-body-->
         </div> <!-- end card-->
-    </div> <!-- end col-->
-</div>
+    </div>

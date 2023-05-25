@@ -4,21 +4,30 @@
   }
   
   .button-container {
+    
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Opcional: para agregar espacio entre los botones */
+    gap: 10px; /* para agregar espacio entre los botones */
+    margin-top: 70px;
   }
-  
+  .mb-3 {
+    margin-bottom: 70px; /* Ajusta el valor del margen inferior del select */
+  }
+
   .btn {
     flex: 1;
   }
   
   .radio-group input[type="radio"]:first-child {
-    margin-right: 10px; /* Ajusta el valor del margen según tu preferencia */
+    margin-right: 5px; /* Ajusta el valor del margen */
   }
   
   .radio-group input[type="radio"]:last-child {
-    margin-left: 10px; /* Ajusta el valor del margen según tu preferencia */
+    margin-left: 70px; /* Ajusta el valor del margen */
   }
+  
+
+
+
   
