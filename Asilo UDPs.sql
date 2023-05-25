@@ -146,113 +146,252 @@ GO
 --************ROLES******************--
 
 /*Vista Roles*/
-CREATE OR ALTER VIEW acce.VW_tbRoles
-AS
-	SELECT  t1.role_Id,
-	        role_Nombre,
-			role_UsuCreacion,
-		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   role_FechaCreacion,
-		   role_UsuModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
-		   role_FechaModificacion,
-		   role_Estado
-		   FROM acce.tbRoles t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.role_UsuCreacion = T2.usua_Id
-		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.role_UsuModificacion = t3.usua_Id
-GO
+--CREATE OR ALTER VIEW acce.VW_tbRoles
+--AS
+--	SELECT  t1.role_Id,
+--	        role_Nombre,
+--			role_UsuCreacion,
+--		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+--		   role_FechaCreacion,
+--		   role_UsuModificacion,
+--		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+--		   role_FechaModificacion,
+--		   role_Estado
+--		   FROM acce.tbRoles t1 LEFT JOIN acce.tbUsuarios t2
+--		   ON t1.role_UsuCreacion = T2.usua_Id
+--		   LEFT JOIN acce.tbUsuarios t3
+--		   ON t1.role_UsuModificacion = t3.usua_Id
+--GO
 
-/*Listar Roles*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_List
-AS
-BEGIN
-	SELECT * FROM acce.VW_tbRoles
-	WHERE role_Estado = 1
-END
-GO
+--/*Listar Roles*/
+--CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_List
+--AS
+--BEGIN
+--	SELECT * FROM acce.VW_tbRoles
+--	WHERE role_Estado = 1
+--END
+--GO
 
-/*Insertar Roles*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Insert 
-	@role_Nombre		NVARCHAR(100),
-	@role_UsuCreacion	INT
-AS 
-BEGIN
+--/*Insertar Roles*/
+--CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Insert 
+--	@role_Nombre		NVARCHAR(100),
+--	@role_UsuCreacion	INT
+--AS 
+--BEGIN
 	
+--	BEGIN TRY
+
+--		IF NOT EXISTS (SELECT * FROM acce.tbRoles
+--						WHERE role_Nombre = @role_Nombre)
+--		BEGIN
+--			INSERT INTO acce.tbRoles(role_Nombre, role_UsuCreacion)
+--			VALUES(@role_Nombre, @role_UsuCreacion)
+
+--			SELECT 'El rol ha sido insertado exitosamente'
+--		END
+--		ELSE IF EXISTS (SELECT * FROM acce.tbRoles
+--						WHERE role_Nombre = @role_Nombre
+--							  AND role_Estado = 1)
+
+--			SELECT 'Este rol ya existe'
+--		ELSE
+--			BEGIN
+--				UPDATE acce.tbRoles
+--				SET role_Estado = 1
+--				WHERE role_Nombre = @role_Nombre
+
+--				SELECT 'El rol ha sido insertado exitosamente'
+--			END
+--	END TRY
+--	BEGIN CATCH
+--		SELECT 'Ha ocurrido un error'
+--	END CATCH 
+--END
+--GO
+
+--/*Find Roles*/
+--CREATE OR ALTER PROCEDURE asil.UDP_acce_VW_tbRoles_Find 
+--	@role_Id	INT
+--AS
+--BEGIN
+--	SELECT * FROM acce.VW_tbRoles
+--	WHERE role_Id = @role_Id
+--END
+--GO
+
+
+--/*Editar Roles*/
+--CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Update 
+--	@role_Id					INT,
+--	@role_Nombre				NVARCHAR(100),
+--	@role_UsuModificacion		INT
+--AS
+--BEGIN
+--	BEGIN TRY
+--	IF NOT EXISTS (SELECT * FROM acce.tbRoles 
+--						WHERE role_Nombre = @role_Nombre)
+--		BEGIN			
+--			UPDATE acce.tbRoles
+--			SET 	role_Nombre = @role_Nombre,
+--					role_UsuModificacion = @role_UsuModificacion,
+--					role_FechaModificacion = GETDATE()
+--			WHERE 	role_Id = @role_Id
+
+--			SELECT 'El rol ha sido editado exitosamente'
+--		END
+--		ELSE IF EXISTS (SELECT * FROM acce.tbRoles 
+--						WHERE role_Nombre = @role_Nombre
+--							  AND role_Estado = 1
+--							  AND role_Id != @role_Id)
+
+--			SELECT 'El rol ya existe'
+--		ELSE
+--			UPDATE acce.tbRoles 
+--			SET role_Estado = 1,	
+--			    role_UsuModificacion = @role_UsuModificacion,
+--				role_FechaModificacion = GETDATE()
+--			WHERE role_Nombre = @role_Nombre
+
+--			SELECT 'El rol ha sido editado exitosamente'
+--	END TRY
+--	BEGIN CATCH
+--		SELECT 'Ha ocurrido un error'
+--	END CATCH
+--END
+--GO
+
+
+--/*Eliminar Roles*/
+--CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Delete 
+--	@role_Id	INT
+--AS
+--BEGIN
+--	BEGIN TRY
+--		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles WHERE role_Id = @role_Id)
+--			BEGIN
+--				UPDATE acce.tbRoles
+--				SET role_Estado = 0
+--				WHERE role_Id = @role_Id
+
+--				SELECT 'El rol ha sido eliminado'
+--			END
+--		ELSE
+--			SELECT 'El rol no puede ser eliminado ya que está siendo usado en otro registro'
+--	END TRY
+--	BEGIN CATCH
+--		SELECT 'Ha ocurrido un error'
+--	END CATCH
+--END
+GO
+
+---------- Pantallas Por Roles -----------
+CREATE OR ALTER VIEW  acce.VW_tbPantallasPorRoles
+AS
+	SELECT pantrole_Id,
+	       T1.role_Id, 
+		   T4.role_Nombre AS pantrole_NombreRol,
+		   T1.pant_Id,
+		   t5.pant_Nombre AS pantrole_NombrePantalla, 
+		   T5.pant_Menu AS pantrole_NombreMenu,
+		   pantrole_UsuCreacion, 
+		   pantrole_FechaCreacion, 
+		   pantrole_UsuModificacion, 
+		   pantrole_FechaModificacion, 
+		   pantrole_Estado
+FROM [acce].[tbPantallasPorRoles] T1 INNER JOIN acce.tbUsuarios T2
+ON T1.pantrole_UsuCreacion = T2.usua_Id LEFT JOIN acce.tbUsuarios T3
+ON T1.pantrole_UsuModificacion = t3.usua_Id INNER JOIN [acce].[tbRoles] T4
+ON T1.role_Id = T4.role_Id INNER JOIN [acce].[tbPantallas] T5
+ON T1.pant_Id = T5.pant_Id
+WHERE T1.pantrole_Estado = 1
+GO
+
+
+/*Acceso a pantallas*/
+GO
+CREATE OR ALTER PROCEDURE acce.UDP_tbRolesPorPantalla_Accesos
+	@role_Id		INT,
+	@esAdmin		BIT,
+	@pant_Nombre	NVARCHAR(100)
+AS
+BEGIN
+	IF @esAdmin = 1
+		SELECT 1
+	ELSE IF EXISTS (SELECT * 
+					FROM [acce].[tbPantallasPorRoles] T1 INNER JOIN acce.tbPantallas T2
+					ON T1.pant_Id = T2.pant_Id
+					WHERE T1.[role_Id] = @role_Id 
+					AND T2.pant_Nombre = @pant_Nombre)
+		SELECT 1
+	ELSE
+		SELECT 0
+END
+
+GO
+
+---------- Pantallas -----------
+CREATE OR ALTER VIEW acce.VW_tbPantallas
+AS
+	SELECT  pant_Id,
+	        pant_Nombre, 
+			pant_Url, 
+			pant_Menu, 
+			pant_Icon, 
+			pant_UsuCreacion, 
+			T2.usua_NombreUsuario AS pant_NombreUsuarioCreacion,
+			pant_FechaCreacion, 
+			pant_UsuModificacion,
+			T3.usua_NombreUsuario AS pant_NombreUsuarioModificacio, 
+			pant_FechaModificacion, 
+			pant_Estado
+FROM [acce].[tbPantallas] t1 INNER JOIN acce.tbUsuarios T2
+ON T1.[pant_UsuCreacion] = T2.usua_Id LEFT JOIN acce.tbUsuarios T3
+ON T1.[pant_UsuModificacion] = T3.usua_Id 
+WHERE [pant_Estado] = 1
+GO
+
+
+/*Listado de Pantallas*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallas_List
+AS
+BEGIN
+	SELECT * 
+	FROM acce.VW_tbPantallas
+END
+GO
+
+
+/*Insertar Pantallas*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallas_Insert
+	@pant_Nombre          NVARCHAR(100), 
+	@pant_Url             NVARCHAR(300), 
+	@pant_Menu            NVARCHAR(300), 
+	@pant_Icon          NVARCHAR(80), 
+	@pant_UsuCreacion     INT 
+
+AS
+BEGIN
 	BEGIN TRY
-
-		IF NOT EXISTS (SELECT * FROM acce.tbRoles
-						WHERE role_Nombre = @role_Nombre)
-		BEGIN
-			INSERT INTO acce.tbRoles(role_Nombre, role_UsuCreacion)
-			VALUES(@role_Nombre, @role_UsuCreacion)
-
-			SELECT 'El rol ha sido insertado exitosamente'
-		END
-		ELSE IF EXISTS (SELECT * FROM acce.tbRoles
-						WHERE role_Nombre = @role_Nombre
-							  AND role_Estado = 1)
-
-			SELECT 'Este rol ya existe'
-		ELSE
+		IF NOT EXISTS (SELECT * FROM acce.tbPantallas
+						WHERE pant_Nombre = @pant_Nombre)
 			BEGIN
-				UPDATE acce.tbRoles
-				SET role_Estado = 1
-				WHERE role_Nombre = @role_Nombre
-
-				SELECT 'El rol ha sido insertado exitosamente'
+			INSERT INTO [acce].[tbPantallas](pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
+			VALUES(@pant_Nombre, @pant_Url, @pant_Menu, @pant_Icon, @pant_UsuCreacion)
+			
+			SELECT 'La pantalla ha sido insertada con éxito'
 			END
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH 
-END
-GO
+		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
+						WHERE [pant_Nombre] = @pant_Nombre AND
+						[pant_Estado]  = 0)
+			BEGIN
+				UPDATE [acce].[tbPantallas]
+				SET [pant_Estado] = 1
+				WHERE  [pant_Nombre] = @pant_Nombre
 
-/*Find Roles*/
-CREATE OR ALTER PROCEDURE asil.UDP_acce_VW_tbRoles_Find 
-	@role_Id	INT
-AS
-BEGIN
-	SELECT * FROM acce.VW_tbRoles
-	WHERE role_Id = @role_Id
-END
-GO
-
-
-/*Editar Roles*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Update 
-	@role_Id					INT,
-	@role_Nombre				NVARCHAR(100),
-	@role_UsuModificacion		INT
-AS
-BEGIN
-	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM acce.tbRoles 
-						WHERE role_Nombre = @role_Nombre)
-		BEGIN			
-			UPDATE acce.tbRoles
-			SET 	role_Nombre = @role_Nombre,
-					role_UsuModificacion = @role_UsuModificacion,
-					role_FechaModificacion = GETDATE()
-			WHERE 	role_Id = @role_Id
-
-			SELECT 'El rol ha sido editado exitosamente'
-		END
-		ELSE IF EXISTS (SELECT * FROM acce.tbRoles 
-						WHERE role_Nombre = @role_Nombre
-							  AND role_Estado = 1
-							  AND role_Id != @role_Id)
-
-			SELECT 'El rol ya existe'
+				SELECT 'La pantalla ha sido insertada con éxito'
+			END
 		ELSE
-			UPDATE acce.tbRoles 
-			SET role_Estado = 1,	
-			    role_UsuModificacion = @role_UsuModificacion,
-				role_FechaModificacion = GETDATE()
-			WHERE role_Nombre = @role_Nombre
-
-			SELECT 'El rol ha sido editado exitosamente'
+			SELECT 'La pantalla ya existe'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -261,28 +400,329 @@ END
 GO
 
 
-/*Eliminar Roles*/
+/*Editar Pantallas*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallas_Update
+	@pant_Id               INT,
+	@pant_Nombre           NVARCHAR(100), 
+	@pant_Url              NVARCHAR(300), 
+	@pant_Menu             NVARCHAR(300), 
+	@pant_Icon           NVARCHAR(80), 
+	@pant_UsuModificacion   INT
+AS
+BEGIN 
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM [acce].[tbPantallas]
+						WHERE @pant_Nombre = [pant_Nombre])
+		BEGIN			
+			UPDATE  [acce].[tbPantallas]
+			SET 	[pant_Nombre] = @pant_Nombre,
+			        [pant_Url] = @pant_Url,
+                    [pant_Menu] = @pant_Menu,
+					[pant_Icon] = @pant_Icon,
+					[pant_UsuModificacion]= @pant_UsuModificacion,
+					[pant_FechaModificacion] = GETDATE()
+			WHERE 	[pant_Id] = @pant_Id
+			SELECT 'La pantalla ha sido editada con éxito'
+		END
+		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
+						WHERE @pant_Nombre = [pant_Nombre]
+							  AND [pant_Estado] = 1
+							  AND [pant_Id] != @pant_Id)
+			SELECT 'La pantalla ya existe'
+		ELSE
+			UPDATE [acce].[tbPantallas]
+			SET [pant_Estado] = 1,
+			    [pant_UsuModificacion]  = @pant_UsuModificacion,
+			    [pant_Url] = @pant_Url,
+                [pant_Menu] = @pant_Menu,
+				[pant_Icon] = @pant_Icon,
+				[pant_FechaModificacion] = GETDATE()
+			WHERE  [pant_Nombre] = @pant_Nombre
+
+			SELECT 'La pantalla ha sido editada con éxito'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*Eliminar pantalla*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallas_Delete 
+	@pant_Id     INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM [acce].[tbPantallasPorRoles] WHERE [pant_Id] = @pant_Id)
+			BEGIN
+				UPDATE [acce].[tbPantallas]
+				SET [pant_Estado] = 0
+				WHERE  [pant_Id]= @pant_Id
+
+				SELECT 'La pantalla ha sido eliminada'
+			END
+		ELSE
+			SELECT 'La pantalla no puede ser eliminada ya que está siendo usada'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+
+
+
+/*Listado de Pantallas*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallas_List
+AS
+BEGIN
+	SELECT pant_Id, pant_Nombre, pant_Menu
+	FROM [acce].[tbPantallas]
+	WHERE [pant_Estado] = 1
+	GROUP BY pant_Menu, pant_Nombre, pant_Id
+END
+GO
+
+---------- PANTALLAS -----------
+/*UDP para pantallas*/
+CREATE OR ALTER PROCEDURE acce.UDP_opti_tbPantallas_ListMenu
+	@usua_EsAdmin	BIT,
+	@role_Id		INT
+AS
+BEGIN
+	IF @usua_EsAdmin > 0
+		BEGIN
+			SELECT * 
+			FROM acce.tbPantallas 
+			WHERE pant_Estado = 1
+		END
+	ELSE
+		BEGIN
+			SELECT * 
+			FROM acce.tbPantallas T1 INNER JOIN acce.tbPantallasPorRoles T2
+			ON T1.pant_Id = T2.pant_Id
+			AND t2.role_Id = @role_Id
+		END
+	
+END
+
+go
+/*Listado de Pantallas por rol*/
+
+
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallasPorRoles_List 
+	@role_Id	INT
+AS
+BEGIN
+	SELECT * 
+	FROM acce.VW_tbPantallasPorRoles
+	WHERE role_Id = @role_Id
+END
+GO
+
+
+/*Insertar pantallas por roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallasPorRoles_Insert 
+	@role_Id               INT, 
+	@pant_Id               INT, 
+	@pantrole_UsuCreacion  INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
+						WHERE pant_Id = @pant_Id AND role_Id = @role_Id)
+			BEGIN
+			INSERT INTO acce.tbPantallasPorRoles(role_Id,pant_Id,pantrole_UsuCreacion)
+			VALUES(@role_Id,@pant_Id,@pantrole_UsuCreacion)
+			
+			SELECT 'Operación realizada con éxito'
+			END
+		ELSE IF EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
+						WHERE pant_Id = @pant_Id AND role_Id = @role_Id
+						AND pantrole_Estado = 0)
+			BEGIN
+				UPDATE [acce].[tbPantallasPorRoles]
+				SET [pantrole_Estado] = 1
+				WHERE pant_Id = @pant_Id AND role_Id = @role_Id
+
+				SELECT 'Operación realizada con éxito'
+			END
+		ELSE
+			SELECT 'La pantalla x rol ya existe'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+/*Eliminar pantalla por rol*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallaPorRoles_Delete 
+	@role_Id	INT
+AS
+BEGIN
+	BEGIN TRY
+			BEGIN
+				DELETE
+				FROM [acce].[tbPantallasPorRoles]
+				WHERE role_Id = @role_Id 
+
+				SELECT 'La pantalla ha sido eliminada'
+			END
+		
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+---------- ROLES -----------
+CREATE OR ALTER VIEW acce.VW_tbRoles
+AS
+	SELECT t1.role_Id,
+	       role_Nombre, 
+		   role_UsuCreacion,
+		   t2.usua_NombreUsuario AS role_NombreUsuarioCreacion, 
+		   role_FechaCreacion, 
+		   role_UsuModificacion,
+		   t3.usua_NombreUsuario AS role_NombreUsuarioModificacion, 
+		   role_FechaModificacion, 
+		   role_Estado
+FROM acce.tbRoles t1  INNER JOIN acce.tbUsuarios t2
+ON t1.role_UsuCreacion = t2.usua_Id LEFT JOIN acce.tbUsuarios t3
+ON t1.role_UsuModificacion = t3.usua_Id 
+WHERE t1.role_Estado = 1
+GO
+
+
+/*Listado de roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_List
+AS
+BEGIN
+	SELECT *
+	FROM acce.VW_tbRoles
+END
+GO
+
+/*Listado de roles find*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Find
+	@role_Id	INT
+AS
+BEGIN
+	SELECT *
+	FROM acce.VW_tbRoles
+	WHERE role_Id = @role_Id
+END
+GO
+
+/*Insertar roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Insert 
+	@role_Nombre         NVARCHAR(100),
+	@role_UsuCreacion    INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM [acce].[tbRoles]
+						WHERE [role_Nombre] = @role_Nombre)
+			BEGIN
+			INSERT INTO [acce].[tbRoles](role_Nombre, role_UsuCreacion)
+			VALUES(@role_Nombre, @role_UsuCreacion)
+			
+			SELECT SCOPE_IDENTITY() AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
+			END
+		ELSE IF EXISTS (SELECT * FROM  [acce].[tbRoles]
+						WHERE role_Nombre = @role_Nombre
+						AND role_Estado = 0)
+			BEGIN
+				UPDATE [acce].[tbRoles]
+				SET [role_Estado] = 1
+				WHERE [role_Nombre] = @role_Nombre
+
+				SELECT (SELECT role_Id FROM [acce].[tbRoles] WHERE [role_Nombre] = @role_Nombre) AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
+			END
+		ELSE
+			SELECT 'El rol ya existe' AS MessageStatus
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error' AS MessageStatus
+	END CATCH
+END
+GO
+
+
+/*Editar roles*/
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Update 
+	@role_Id                  INT,
+	@role_Nombre              NVARCHAR(100),  
+	@role_UsuModificacion     INT
+
+AS
+BEGIN 
+	BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM [acce].[tbRoles]
+						WHERE @role_Nombre = role_Nombre)
+		BEGIN			
+			UPDATE  [acce].[tbRoles]
+			SET 	[role_Nombre] = @role_Nombre,
+			        [role_UsuModificacion] = @role_UsuModificacion,
+					[role_FechaModificacion] = GETDATE()
+			WHERE 	[role_Id] = @role_Id
+			SELECT 'El rol ha sido editado con éxito'
+		END
+		ELSE IF EXISTS (SELECT * FROM [acce].[tbRoles]
+						WHERE @role_Nombre = role_Nombre
+							  AND role_Estado = 1
+							  AND role_Id != @role_Id)
+			SELECT 'El rol ya existe'
+		ELSE
+			UPDATE [acce].[tbRoles]
+			SET role_Estado = 1,
+			    role_UsuModificacion = @role_UsuModificacion,
+				[role_FechaModificacion] = GETDATE()
+			WHERE role_Nombre = @role_Nombre
+
+			SELECT 'El rol ha sido editado con éxito'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO
+
+
+/*Eliminar Rol*/
 CREATE OR ALTER PROCEDURE acce.UDP_acce_tbRoles_Delete 
 	@role_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles WHERE role_Id = @role_Id)
+		IF NOT EXISTS (SELECT * FROM [acce].tbUsuarios WHERE [role_Id] = @role_Id AND usua_Estado = 1)
 			BEGIN
-				UPDATE acce.tbRoles
+				UPDATE [acce].[tbRoles]
 				SET role_Estado = 0
 				WHERE role_Id = @role_Id
 
 				SELECT 'El rol ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El rol no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El rol no puede ser eliminado ya que está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
 GO
+
+
+
+
+
+
 
 --************ENFERMEDADES******************--
 

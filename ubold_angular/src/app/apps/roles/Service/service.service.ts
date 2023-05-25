@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
-import { Rol } from '../../Models';
+import { Rol, Pantalla } from '../../Models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -26,4 +26,14 @@ export class ServiceService {
   deleteRoles(id: number){
     return this.http.put(`${this.variableGlobal}Roles/Eliminar?id=${id}`, null);
   }
+
+  getPantallas(){
+    return this.http.get<Pantalla[]>(`${this.variableGlobal}Pantallas/Listado`);
+  }
+
+  
+  getRolx(id:number){
+    return this.http.get<Pantalla[]>(`${this.variableGlobal}Pantallas/ListadoXRoles?id=${id}`);
+  }
+
 }

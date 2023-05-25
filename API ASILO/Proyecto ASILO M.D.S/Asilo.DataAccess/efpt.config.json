@@ -146,6 +146,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[acce].[VW_tbPantallas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbPantallasPorRoles]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[acce].[VW_tbRoles]",
          "ObjectType": 3
       },

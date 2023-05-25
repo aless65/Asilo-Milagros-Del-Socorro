@@ -11,10 +11,10 @@ namespace Asilo.Entities.Entities
         public int role_Id { get; set; }
         public string role_Nombre { get; set; }
         public int role_UsuCreacion { get; set; }
-        public string usua_UsuCreacion_Nombre { get; set; }
+        public string role_NombreUsuarioCreacion { get; set; }
         public DateTime role_FechaCreacion { get; set; }
         public int? role_UsuModificacion { get; set; }
-        public string usua_UsuModificacion_Nombre { get; set; }
+        public string role_NombreUsuarioModificacion { get; set; }
         public DateTime? role_FechaModificacion { get; set; }
         public bool role_Estado { get; set; }
     }

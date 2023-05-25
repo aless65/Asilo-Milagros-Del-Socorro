@@ -16,16 +16,23 @@ namespace Asilo.DataAccess
         public static string UDP_Elimina_Usuarios = "acce.UDP_acce_tbUsuarios_DELETE";
         #endregion
 
-        #region Pantallas
+        #region Roles
+        public static string UDP_Lista_Roles = "acce.UDP_acce_tbRoles_List";
+        public static string UDP_Find_Roles = "acce.UDP_acce_tbRoles_Find";
+        public static string UDP_Inserta_Roles = "acce.UDP_acce_tbRoles_Insert";
+        public static string UDP_Edita_Roles = "acce.UDP_acce_tbRoles_Update";
+        public static string UDP_Elimina_Roles = "acce.UDP_acce_tbRoles_Delete";
 
+        public static string UDP_Lista_RolesXPantalla = "acce.UDP_acce_tbPantallasPorRoles_List";
+        public static string UDP_Inserta_RolesXPantalla = "acce.UDP_acce_tbPantallasPorRoles_Insert";
+        public static string UDP_Elimina_RolesXPantalla = "acce.UDP_acce_tbPantallaPorRoles_Delete";
         #endregion
 
-        #region Roles
-        public static string RolList = "acce.UDP_acce_tbRoles_List";
-        public static string RolFind = "asil.UDP_acce_VW_tbRoles_Find";
-        public static string AgregarRol = "acce.UDP_acce_tbRoles_Insert";
-        public static string ActualizarRol = "acce.UDP_acce_tbRoles_Update";
-        public static string EliminarRol = "acce.UDP_acce_tbRoles_Delete";
+        #region Pantallas
+        public static string UDP_Lista_Pantallas = "acce.UDP_acce_tbPantallas_List";
+        public static string UDP_Lista_PantallasMenu = "acce.UDP_opti_tbPantallas_ListMenu";
+
+        public static string UDP_Accesos_Pantallas = "acce.UDP_tbRolesPorPantalla_Accesos";
         #endregion
 
         #region Departamentos

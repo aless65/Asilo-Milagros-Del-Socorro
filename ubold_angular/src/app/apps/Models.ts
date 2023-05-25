@@ -72,12 +72,30 @@ export interface Enfermedad {
 export interface Rol {
     role_Id?: number;
     role_Nombre?: string;
+    role_Pantallas?: number[]; // Tipo de dato actualizado
     role_UsuCreacion?: number;
     usua_UsuCreacion_Nombre?: string;
     role_UsuModificacion?: number;
     usua_UsuModificacion_Nombre?: string;
     role_FechaCreacion?: string;
     role_FechaModificacion?: string;
+  
+    [key: string]: number | string | number[] | undefined; // Añadido número de tipo de dato
+  }
+  
+
+export interface Pantalla {
+    pant_Id?: number,
+    pant_Nombre?: string,
+    pant_Url?: string,
+    pant_Menu?: string,
+    pant_Icon?: string,
+    pant_UsuCreacion?: number,
+    pant_NombreUsuarioCreacion?: number,
+    pant_FechaCreacion?: string,
+    pant_UsuModificacion?: number,
+    pant_NombreUsuarioModificacio?: string,
+    pant_FechaModificacion?: string,
 
     [key: string]: number | string | undefined;
 }

@@ -109,10 +109,67 @@ namespace Asilo.BusinessLogic.Services
 
         #region Pantallas
 
+        public ServiceResult ListadoPantallas()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _pantallasRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult ListadoPantallasMenu(bool esAdmin, int role_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _pantallasRepository.ListMenu(esAdmin, role_Id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult ListadoPantallasXRoles(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _pantallasRepository.ListXRol(id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public string AccesoPantallas(int role_Id, bool esAdmin, string pant_Nombre)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _pantallasRepository.AccesoPantalla(role_Id, esAdmin, pant_Nombre);
+                return list;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
         #endregion
 
         #region Roles
-        public ServiceResult ListadoRol()
+
+        public ServiceResult ListadoRoles()
         {
             var result = new ServiceResult();
             try
@@ -126,30 +183,29 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult FindRol(int id)
+        public ServiceResult FindRoles(int id)
         {
             var result = new ServiceResult();
             try
             {
-                var roles = _rolesRepository.Find(id);
-                return result.Ok(roles);
+                var usuario = _rolesRepository.Find(id);
+                return result.Ok(usuario);
             }
             catch (Exception e)
             {
                 return result.Error(e.Message);
             }
         }
-
-        public ServiceResult InsertRol(tbRoles item)
+        public ServiceResult InsertRoles(tbRoles item)
         {
             var result = new ServiceResult();
             try
             {
                 var insert = _rolesRepository.Insert(item);
 
-                if (insert.MessageStatus == "El rol ha sido insertado exitosamente")
+                if (insert.MessageStatus == "El rol ha sido insertado con éxito")
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
-                else if (insert.MessageStatus == "Este rol ya existe")
+                else if (insert.MessageStatus == "El rol ya existe")
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
                 else
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
@@ -160,14 +216,14 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult UpdateRol(tbRoles item)
+        public ServiceResult UpdateRoles(tbRoles item)
         {
             var result = new ServiceResult();
             try
             {
                 var update = _rolesRepository.Update(item);
 
-                if (update.MessageStatus == "El rol ha sido editado exitosamente")
+                if (update.MessageStatus == "El rol ha sido editado con éxito")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
                 else if (update.MessageStatus == "El rol ya existe")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
@@ -180,16 +236,16 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult DeleteRol(int id)
+        public ServiceResult DeleteRoles(tbRoles item)
         {
             var result = new ServiceResult();
             try
             {
-                var delete = _rolesRepository.Delete(id);
+                var delete = _rolesRepository.Delete(item);
 
                 if (delete.MessageStatus == "El rol ha sido eliminado")
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
-                else if (delete.MessageStatus == "El rol no puede ser eliminado ya que está siendo usado en otro registro")
+                else if (delete.MessageStatus == "El rol no puede ser eliminado ya que está siendo usado")
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
                 else
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
@@ -199,7 +255,6 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
-
 
         #endregion
     }

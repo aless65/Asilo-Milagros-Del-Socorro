@@ -6,15 +6,13 @@ import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Rol } from '../../Models';
 import { ServiceService } from 'src/app/apps/roles/Service/service.service';
-// import { ToastModule } from 'primeng/toast';
-// import { MessageService } from 'primeng/api';
-// import { NgToastService } from 'ng-angular-popup';
+import { Select2Data } from 'ng-select2-component';
+
 
 @Component({
     selector: 'app-roles-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
-    // providers: [MessageService]
   })
   export class ListComponent implements OnInit {
 
@@ -24,7 +22,11 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
   selectedRol!: Rol;
   esEditar!: boolean;
   newRol!: FormGroup;
-
+  pantalla: Select2Data = [];
+  selectedPantallas: any[] = [];
+  
+  
+  @ViewChild('pant_Id', { static: true }) pant_Id: any;
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
   @ViewChild('deleteRolModal', { static: true }) deleteRolModal: any;
@@ -34,8 +36,7 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    // private toast: NgToastService,
-    // private messageService: MessageService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -47,8 +48,44 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
 
     this.newRol = this.fb.group({
       name: ['', Validators.required],
+      pant_Id: [[]],
     });
+
+    this.service.getPantallas().subscribe((response: any) => {
+      let esquemaLabels: string[] = [];
+      let options: { [key: string]: any[] } = {};
+    
+
+
+      response.data.forEach((item: any) => {
+        const esqueNombre: string = item.pant_Menu;
+        const pantaId: string = item.pant_Id;
+        const pantaNombre: string = item.pant_Nombre;
+    
+        if (!esquemaLabels.includes(esqueNombre)) {
+          esquemaLabels.push(esqueNombre);
+          options[esqueNombre] = [];
+        }
+    
+        options[esqueNombre].push({
+          value: pantaId,
+          label: pantaNombre
+        });
+      });
+    
+      this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+        label: esqueNombre,
+        options: options[esqueNombre]
+      }));
+    });
+
+    /*this.service.getRolx(this.pant_Id).subscribe((response: any) => {
+      let esquemaLabels: string[] = [];
+      let options: { [key: string]: any[] } = {};})*/
+
+    this.selectedPantallas = this.newRol.value.pant_Id;
   }
+
 
   // convenience getter for easy access to form fields
   get form1() { return this.newRol.controls; }
@@ -90,16 +127,22 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
 
   submitForm(): void {
     if(this.newRol.invalid){
-      console.log("pipi");
+     
+      console.log(this.pant_Id);
       return;
     }
-
+    console.log(this.pant_Id);
+    
+    //console.log(this.selectedPantallas);
     const rol: Rol = {
       role_Id: this.selectedRol?.role_Id || 0,
       role_Nombre: this.newRol.value.name,
+      role_Pantallas: this.pant_Id,
       role_UsuCreacion: 1,
       role_UsuModificacion: 1,
-    }
+    };
+
+    console.log(rol);
 
     if(this.esEditar){
 
@@ -117,12 +160,13 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
       
       this.service.addRoles(rol).subscribe(
         (response: any) => {
-          // this.openSuccess();
-          // this.showSuccess();
+         
           console.log("se pudo:", response);
+         // console.log(rol);
           this._fetchData();
         },
         (error) => {
+         // console.log(rol);
           console.log("no se pudo:", error);
         }
       )
@@ -132,13 +176,7 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
     this.activeModal.dismissAll('');
   }
 
-  // showSuccess(){
-  //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  // }
-
-  // openSuccess(){
-  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
-  // }
+ 
   _fetchData(): void {
     this.service.getRoles()
   .subscribe((response: any)=>{
@@ -153,11 +191,7 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
   initAdvancedTableData(): void {
     console.log(this.roles);
     this.columns = [
-      // {
-      //   name: 'name',
-      //   label: 'Basic Info',
-      //   formatter: this.enfermedadNameFormatter.bind(this)
-      // },
+     
       {
         name: 'role_Id',
         label: 'ID',
@@ -176,10 +210,6 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
       }]
   }
 
-  /**
- *  handles operations that need to be performed after loading table
- */
-
 
   handleTableLoad(event: any): void {
     // product cell
@@ -188,8 +218,10 @@ import { ServiceService } from 'src/app/apps/roles/Service/service.service';
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
         if (this.selectedRol) {
+          console.log(this.selectedRol.role_Pantallas)
           this.newRol = this.fb.group({
             name: [this.selectedRol.role_Nombre || '', Validators.required],
+            pant_Id: [this.pant_Id || '']
           });
           this.openModal("edit");
         }

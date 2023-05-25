@@ -43,20 +43,14 @@ GO
 INSERT INTO acce.tbPantallas(pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
 VALUES ('usuarios', '/acceso/usuarios', 'acceso', 'ic_user', 1),
        ('roles', '/acceso/roles', 'acceso', 'ic_kanban', 1),
-	   ('reporte citas', '/reportes/citas', 'reportes', 'ic_analytics', 1),
-       ('empleados', '/asilca/empleados', '�ptica', 'ic_user', 1),
-	   ('clientes', '/asilca/clientes', '�ptica', 'ic_user', 1),
-	   ('citas', '/asilca/citas', '�ptica', 'ic_calendar', 1),
-	   ('proveedores', '/asilca/proveedores', '�ptica', 'ic_banking', 1),
-	   ('ordenes', '/asilca/ordenes', '�ptica', 'ic_booking', 1),
-	   ('marcas', '/asilca/marcas', '�ptica', 'ic_ecommerce', 1),
-	   ('categorias', '/asilca/categorias','�ptica', 'ic_blog', 1),
-	   ('sucursales', '/asilca/sucursales', '�ptica', 'ic_banking', 1),
-	   ('consultorios', '/asilca/consultorios', '�ptica', 'ic_chat', 1),
-	   ('envios', '/asilca/envios', '�ptica', 'ic_mail', 1),
-	   ('ventas', '/asilca/ventas', '�ptica', 'ic_cart', 1),
-	   ('facturas', '/asilca/facturas', '�ptica', 'ic_invoice', 1)
-       --('Marca', '/Marca/Listado', 'asilca', 'marcasItem', 1)
+       ('enfermedades', '/asilo/enfermedades', 'asilo', 'ic_user', 1),
+	   ('centros', '/asilo/centros', 'asilo', 'ic_user', 1),
+	   ('cargos', '/asilo/cargos', 'asilo', 'ic_calendar', 1),
+	   ('habitaciones', '/asilo/habitaciones', 'asilo', 'ic_banking', 1),
+	   ('empleados', '/asilo/empleados', 'asilo', 'ic_booking', 1),
+	   ('proveedores', '/asilo/proveedores', 'asilo', 'ic_ecommerce', 1),
+	   ('residentes', '/asilo/residentes','asilo', 'ic_blog', 1)
+	   
 GO
 
 
