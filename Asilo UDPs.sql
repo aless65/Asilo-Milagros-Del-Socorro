@@ -1431,6 +1431,7 @@ AS
 		   agendeta_HoraEnd,
 		   t1.acti_Id,
 		   t5.acti_Nombre,
+		   t5.acti_Class,
 		   t1.medi_Id,
 		   t6.medi_Nombre,
 		   agendeta_Observaciones,

@@ -293,7 +293,7 @@
                         <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
                         <span class="d-none d-sm-inline">Administración</span>
                     </a>
-                    <ng-template ngbNavContent>
+                    <ng-template ngbNavContent *ngIf="selectedValueAgenda !== '2'">
                         <form class="form-horizontal" [formGroup]="validationWizardForm" #validationWizard="ngForm">
                             <div class="row mb-4">
                                 <div class="col-5" style="margin-left: 5%;">
@@ -325,7 +325,7 @@
                                         <select2 id="agen_Id" [data]="agenda" formControlName="agen_Id"
                                             [class.col-md-12]="form4.agen_Id.value !== '2'"
                                             [class.col-md-10]="form4.agen_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openModal($event, 'agen_Id')">
+                                            (update)="openAgenda($event, form4.agen_Id.value)">
                                         </select2>
                                         <button *ngIf="form4.agen_Id.value === '2'" type="button"
                                             class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
@@ -363,6 +363,24 @@
 
                         </form>
                     </ng-template>
+                    <ng-template ngbNavContent *ngIf="selectedValueAgenda === '2'">
+                        <div class="row">
+                          <div class="col-3">
+                            <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
+                              <i class="mdi mdi-arrow-left"></i> Regresar
+                            </a>
+                            <button class="btn btn-lg font-16 btn-primary w-100 ellipsis" id="btn-new-event" (click)="createNewEvent()">
+                              <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
+                            </button>
+                          </div>
+                          <div class="col-9">
+                            <div id="calendar">
+                              <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                            </div>
+                          </div>  
+                        </div>
+                      </ng-template>
+                      
                 </li>
             </ul>
 
@@ -370,6 +388,9 @@
 
         </div> <!-- end #validationWizard-->
     </div> <!-- end card-body -->
+    <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)"
+            (eventDeleted)="handleEventDelete($event)">
+    </app-residente-evento>
 </div> <!-- end card-->
 
 <ng-template #personalizarAgenda let-modal>
@@ -396,22 +417,6 @@
         <button type="button" class="btn btn-info waves-effect waves-light" (click)="modal.close('Close click')">Save changes</button>
     </div>
 </ng-template>
-
-
-<!-- <ng-template #personalizarAgenda let-modal>
-    <div class="modal-header bg-light">
-        <h4 class="modal-title" id="myCenterModalLabel">Personalizar Agenda</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
-    </div>
-    <div class="modal-body p-4">
-        <p>¿Realmente desea eliminar esta enfermedad?</p>
-        <div class="text-end">
-            <button type="button" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
-            <button type="button" class="btn btn-danger waves-effect waves-light"
-                (click)="modal.close('')">Cancelar</button>
-        </div>
-    </div>
-</ng-template> -->
 
 <ng-template #personalizarDieta let-modal>
     <div class="modal-header bg-light">

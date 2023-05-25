@@ -7,11 +7,13 @@ import { CreateRoutingModule } from './create-routing.module';
 import { CreateComponent } from './create.component';
 import { Select2Module } from 'ng-select2-component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarEventComponent } from '../eventos/evento.component';
 
 
 @NgModule({
   declarations: [
-    CreateComponent
+    CreateComponent,
+    CalendarEventComponent
   ],
   imports: [
     CommonModule,

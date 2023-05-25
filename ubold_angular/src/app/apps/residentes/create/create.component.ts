@@ -13,6 +13,7 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { Residente } from '../../Models';
+import { CalendarEventComponent } from '../eventos/evento.component';
 
 @Component({
   selector: 'app-residentes-create',
@@ -40,13 +41,14 @@ export class CreateComponent implements OnInit {
   selectedDay: any = {};
   event: EventInput = {};
   isEditable: boolean = false;
+  selectedValueAgenda: string = '';
+  goesBack: boolean = false;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
+  @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
   @ViewChild('calendar')
-
-
   calendarComponent!: FullCalendarComponent;
 
 
@@ -243,7 +245,7 @@ export class CreateComponent implements OnInit {
         title: item.acti_Nombre,
         start: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraStart),
         end: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraEnd),
-        classNames: ['bg-warning']
+        classNames: [item.acti_Class]
       }));
       console.log(this.calendarEventsData);
 
@@ -251,20 +253,20 @@ export class CreateComponent implements OnInit {
         themeSystem: 'bootstrap',
         bootstrapFontAwesome: false,
         buttonText: {
-          today: 'Today',
-          month: 'Month',
-          week: 'Week',
-          day: 'Day',
-          list: 'List',
-          prev: 'Prev',
-          next: 'Next'
+          // today: 'Today',
+          // month: 'Month',
+          // week: 'Week',
+          // day: 'Day',
+          // list: 'List',
+          // prev: 'Prev',
+          // next: 'Next'
         },
         initialView: 'timeGridDay',
         handleWindowResize: true,
         headerToolbar: {
           left: '',
           center: '',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+          right: ''
         },
         events: [...this.calendarEventsData],
         editable: true,
@@ -282,8 +284,14 @@ export class CreateComponent implements OnInit {
 
 
   }
-
-
+  /**
+   * Opens event modal
+   * @param title title of modal
+   * @param data data to be used in modal
+   */
+  openEventModal(title: string = "", data: any = {}): void {
+    this.eventModal.openModal(title, data);
+  }
 
   handleImageUpload(event: any): void {
     const file = event.target.files[0];
@@ -303,10 +311,6 @@ export class CreateComponent implements OnInit {
   openModal(event: Select2UpdateEvent, modal: string) {
     const selectedValue = event.value;
     if (selectedValue === '2') {
-      if (modal === 'agen_Id') {
-        this.modalService.open(this.personalizarAgenda);
-      }
-
       if (modal === 'diet_Id') {
         this.modalService.open(this.personalizarDieta);
       }
@@ -317,9 +321,23 @@ export class CreateComponent implements OnInit {
     }
   }
 
+  openAgenda(event: Select2UpdateEvent, id: number) {
+    if(!this.goesBack){
+      this.selectedValueAgenda = event.value.toString();
+    } 
+    this.goesBack = false;
+    return this.selectedValueAgenda;
+  }
+
+  goBack() {
+    this.selectedValueAgenda = 'papa';
+    this.goesBack = true;
+    return this.selectedValueAgenda;
+  }
+
   handleButtonClick(modal: string) {
     if (modal === 'agen_Id') {
-      this.modalService.open(this.personalizarAgenda);
+      this.selectedValueAgenda = '2';
     }
 
     if (modal === 'diet_Id') {
@@ -339,7 +357,7 @@ export class CreateComponent implements OnInit {
     this.selectedDay = arg;
     this.event = { id: String(this.calendarEventsData.length + 1), title: '', classNames: '', category: 'bg-danger', start: this.selectedDay.date };
     this.isEditable = false;
-    // this.openEventModal('Add New Event', this.event);
+    this.openEventModal('Agregar Evento', this.event);
   }
 
 
@@ -351,7 +369,7 @@ export class CreateComponent implements OnInit {
     const event = arg.event;
     this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
     this.isEditable = true;
-    // this.openEventModal('Edit Event', this.event);
+    this.openEventModal('Editar Evento', this.event);
   }
 
   /**
@@ -388,8 +406,50 @@ export class CreateComponent implements OnInit {
   createNewEvent(): void {
     this.event = { id: String(this.calendarEventsData.length + 1), title: '', classNames: '', category: 'bg-danger', start: new Date() };
     this.isEditable = false;
-    console.log('aquí agrega uwu');
+    this.openEventModal('Agregar Evento', this.event);
   }
+
+  /**
+   * Handle the event save
+   * @param newEvent new event
+   */
+  //agregar en general(desde botón o desde calendario)
+  handleEventSave(newEvent: EventInput): void {
+
+    if (this.isEditable) {
+      let modifiedEvents = [...this.calendarEventsData];
+      const eventIndex = modifiedEvents.findIndex((event) => event.id === newEvent.id);
+      this.calendarEventsData[eventIndex].title = newEvent.title;
+      this.calendarEventsData[eventIndex].classNames = newEvent.category;
+      this.calendarEventsData = modifiedEvents;
+      this.isEditable = false;
+    }
+    else {
+      let nEvent = {
+        id: newEvent.id,
+        title: newEvent.title,
+        start: newEvent.start,
+        classNames: newEvent.category
+      };
+      this.calendarEventsData.push(nEvent);
+    }
+    this.calendarOptions.events = [...this.calendarEventsData];
+
+  }
+
+   /**
+   * Deletes calendar event
+   * @param deleteEvent event to be deleted
+   */
+  //actualiza luego de delete
+  handleEventDelete(deleteEvent: EventInput): void {
+    let modifiedEvents = [...this.calendarEventsData];
+    const eventIndex = modifiedEvents.findIndex((event) => event.id === deleteEvent.id);
+    modifiedEvents.splice(eventIndex, 1);
+    this.calendarEventsData = modifiedEvents;
+    this.calendarOptions.events = [...this.calendarEventsData];
+  }
+
 
   // convenience getter for easy access to form fields
   get form1() { return this.accountForm.controls; }

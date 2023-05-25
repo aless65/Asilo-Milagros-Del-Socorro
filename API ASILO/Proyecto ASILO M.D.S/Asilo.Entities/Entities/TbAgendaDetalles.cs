@@ -11,7 +11,7 @@ namespace Asilo.Entities.Entities
         public int agendeta_Id { get; set; }
         public int agen_Id { get; set; }
         public string agendeta_HoraStart { get; set; }
-        public string? agendeta_HoraEnd { get; set; }
+        public string agendeta_HoraEnd { get; set; }
         public int? acti_Id { get; set; }
         public int? medi_Id { get; set; }
         public string agendeta_Observaciones { get; set; }

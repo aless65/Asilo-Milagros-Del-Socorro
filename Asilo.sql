@@ -322,6 +322,7 @@ CREATE TABLE asil.tbActividades
 (
 	acti_Id					INT IDENTITY,
 	acti_Nombre				NVARCHAR(100)NOT NULL,
+	acti_Class				NVARCHAR(500),
 
 	acti_UsuCreacion		INT NOT NULL,
 	acti_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_acti_FechaCreacion DEFAULT(GETDATE()),
@@ -912,17 +913,14 @@ VALUES('Mal de Alzheimer',1),
 	  ('Mal de Parkinson',1)
 GO
 --********INSERT TABLA ACTIVIDADES****************---
-INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
-VALUES('Medicación',1),
-	  ('Desayuno',1),
-      ('Almuerzo',1),
-	  ('Cena',1),
-	  ('Yoga',1),
-	  ('Caminar',1),
-	  ('Terapia de baile',1),
-	  ('Juegos de mesa',1),
-	  ('Lectura',1),
-	  ('Natación',1)
+INSERT INTO asil.tbActividades(acti_Nombre,acti_Class,acti_UsuCreacion)
+VALUES('Medicación','bg-info',1),
+	  ('Desayuno','bg-warning',1),
+      ('Almuerzo','bg-danger',1),
+	  ('Cena','bg-dark',1),
+	  ('Caminar','bg-success',1),
+	  ('Juegos de mesa','bg-success',1),
+	  ('Lectura','bg-primary',1)
 
 
 GO
@@ -1067,4 +1065,13 @@ VALUES (1, '09:00:00', '10:30:00', 2, null,  null, 1),
 	   (1, '12:00:00', '13:30:00', 3, null,  null, 1),
 	   (1, '18:00:00', '19:30:00', 4, null,  null, 1),
 	   (1, '15:20:00', '15:45:00', 6, null,  'no todos tienen q ir jejejej', 1)
+
+
+--********INSERT TABLA Medicamentos****************---
+INSERT INTO [asil].tbMedicamentos(medi_Nombre, prov_Id, medi_UsuCreacion)
+VALUES ('Divalproato sódico', 1, 1),
+	   ('Olanzapina (Zyprexa)', 10, 1),
+	   ('Acetato de metilprednisolona', 5, 1),
+	   ('Hidroxicloroquina', 1, 1),
+	   ('Nateglinida ', 8, 1)
 
