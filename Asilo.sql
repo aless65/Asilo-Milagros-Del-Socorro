@@ -453,8 +453,8 @@ CREATE TABLE asil.tbAgendaDetalles
 (
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
-	agendeta_HoraStart			TIME NOT NULL,
-	agendeta_HoraEnd			TIME,
+	agendeta_HoraStart			NVARCHAR(500) NOT NULL,
+	agendeta_HoraEnd			NVARCHAR(500),
 	acti_Id						INT,
 	medi_Id						INT,
 	agendeta_Observaciones		NVARCHAR(500),
@@ -977,21 +977,21 @@ GO
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
 VALUES('Estándar',1);
 GO
-INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
-VALUES('De pago',1);
+--INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
+--VALUES('De pago',1);
 
 	  --********INSERT TABLA Residente ****************---
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
 VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,1,'2010-10-05',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,2,'2010-02-25',1);
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,1,'2010-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
 VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',3,1,1,'2012-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,2,'2012-02-25',1);
+VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,1,'2012-02-25',1);
 
 
 	  --********INSERT TABLA Proveedores ****************---
@@ -1053,4 +1053,18 @@ VALUES
   ('Sobrino(a)', 1),
   ('Hermano(a)', 1),
   ('Otro', 1);
+
+
+----********INSERT TABLA Agendas ****************---
+--INSERT INTO [asil].tbAgendas(agen_Nombre, agen_UsuCreacion)
+--VALUES
+--  ('Estándar', 1)
+
+
+--********INSERT TABLA Agendas Detalles****************---
+INSERT INTO [asil].tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones, agendeta_UsuCreacion)
+VALUES (1, '09:00:00', '10:30:00', 2, null,  null, 1),
+	   (1, '12:00:00', '13:30:00', 3, null,  null, 1),
+	   (1, '18:00:00', '19:30:00', 4, null,  null, 1),
+	   (1, '15:20:00', '15:45:00', 6, null,  'no todos tienen q ir jejejej', 1)
 

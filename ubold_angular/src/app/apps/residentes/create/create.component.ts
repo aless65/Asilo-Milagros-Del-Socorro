@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Select2Data, Select2UpdateEvent  } from 'ng-select2-component';
+import { Select2Data, Select2UpdateEvent } from 'ng-select2-component';
 import { ServiceService } from '../../Service/service.service';
+import { ServiceService as ResidenteService } from 'src/app/apps/residentes/Service/service.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, DateInput, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core';
@@ -11,6 +12,7 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import { Residente } from '../../Models';
 
 @Component({
   selector: 'app-residentes-create',
@@ -42,6 +44,10 @@ export class CreateComponent implements OnInit {
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
+  @ViewChild('calendar')
+
+
+  calendarComponent!: FullCalendarComponent;
 
 
   accountForm!: FormGroup;
@@ -53,11 +59,12 @@ export class CreateComponent implements OnInit {
   validationWizardForm!: FormGroup;
 
 
-  constructor (private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private service: ServiceService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private resiService: ResidenteService) { }
 
-    selectedImage: string | ArrayBuffer | null = null;
+  selectedImage: string | ArrayBuffer | null = null;
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
@@ -79,7 +86,7 @@ export class CreateComponent implements OnInit {
       estacivi_Id: [0, Validators.required],
       resi_Sexo: ['', Validators.required],
     })
-    
+
     this.encargadoForm = this.fb.group({
       enca_Nombres: ['', Validators.required],
       enca_Apellidos: ['', Validators.required],
@@ -115,10 +122,10 @@ export class CreateComponent implements OnInit {
       this.estadoCivil = [{
         label: 'Escoja un estado',
         options: options
-        },
+      },
       ];
     });
-    
+
 
     this.service.getTiposSangre().subscribe((response: any) => {
       let options = response.data.map((item: any) => ({
@@ -129,10 +136,10 @@ export class CreateComponent implements OnInit {
       this.tipoSangre = [{
         label: 'Escoja un tipo de sangre',
         options: options
-        },
+      },
       ];
     });
-  
+
 
     this.service.getEnfermedades().subscribe((response: any) => {
       let options = response.data.map((item: any) => ({
@@ -143,30 +150,30 @@ export class CreateComponent implements OnInit {
       this.enfermedad = [{
         label: 'Escoja enfermedades',
         options: options
-        },
+      },
       ];
     });
 
     this.service.getMunicipios().subscribe((response: any) => {
       let depaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-    
+
       response.data.forEach((item: any) => {
         const depaNombre: string = item.depa_Nombre;
         const muniId: string = item.muni_id;
         const muniNombre: string = item.muni_Nombre;
-    
+
         if (!depaLabels.includes(depaNombre)) {
           depaLabels.push(depaNombre);
           options[depaNombre] = [];
         }
-    
+
         options[depaNombre].push({
           value: muniId,
           label: muniNombre
         });
       });
-    
+
       this.municipio = depaLabels.map((depaNombre: string) => ({
         label: depaNombre,
         options: options[depaNombre]
@@ -182,7 +189,7 @@ export class CreateComponent implements OnInit {
       this.parentesco = [{
         label: 'Escoja un parentesco',
         options: options
-        },
+      },
       ];
     });
 
@@ -195,7 +202,7 @@ export class CreateComponent implements OnInit {
       this.centro = [{
         label: 'Escoja un centro',
         options: options
-        },
+      },
       ];
     });
 
@@ -229,37 +236,54 @@ export class CreateComponent implements OnInit {
       },
     ];
 
-    this.calendarOptions = {
-      themeSystem: 'bootstrap',
-      bootstrapFontAwesome: false,
-      buttonText: {
-        // today: 'Today',
-        // month: 'Month',
-        // week: 'Week',
-        // day: 'Day',
-        // list: 'List',
-        // prev: 'Prev',
-        // next: 'Next'
-      },
-      initialView: 'timeGridDay',
-      handleWindowResize: true,
-      headerToolbar: {
-        left: '',
-        center: '',
-        right: ''
-      },
-      events: [...this.calendarEventsData],
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar 
-      selectable: true,
-      dateClick: this.handleDateClick.bind(this),
-      eventClick: this.handleEventClick.bind(this),
-      drop: this.onDrop.bind(this),
-      eventDrop: this.onEventDrop.bind(this)
-    }
-  
-    
+    this.resiService.getAgendaDetalles(1).subscribe((response: any) => {
+      const currentDate = new Date();
+      this.calendarEventsData = response.data.map((item: any) => ({
+        id: item.agendeta_Id,
+        title: item.acti_Nombre,
+        start: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraStart),
+        end: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraEnd),
+        classNames: ['bg-warning']
+      }));
+      console.log(this.calendarEventsData);
+
+      this.calendarOptions = {
+        themeSystem: 'bootstrap',
+        bootstrapFontAwesome: false,
+        buttonText: {
+          today: 'Today',
+          month: 'Month',
+          week: 'Week',
+          day: 'Day',
+          list: 'List',
+          prev: 'Prev',
+          next: 'Next'
+        },
+        initialView: 'timeGridDay',
+        handleWindowResize: true,
+        headerToolbar: {
+          left: '',
+          center: '',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        },
+        events: [...this.calendarEventsData],
+        editable: true,
+        droppable: true, // this allows things to be dropped onto the calendar 
+        selectable: true,
+        dateClick: this.handleDateClick.bind(this),
+        eventClick: this.handleEventClick.bind(this),
+        drop: this.onDrop.bind(this),
+        eventDrop: this.onEventDrop.bind(this)
+      }
+      console.log(this.calendarEventsData);
+    });
+
+
+
+
   }
+
+
 
   handleImageUpload(event: any): void {
     const file = event.target.files[0];
@@ -272,41 +296,41 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  deleteImage(){
+  deleteImage() {
     this.selectedImage = ''; // Clear the selectedImage variable to remove the image
   }
 
   openModal(event: Select2UpdateEvent, modal: string) {
     const selectedValue = event.value;
     if (selectedValue === '2') {
-      if(modal === 'agen_Id'){
+      if (modal === 'agen_Id') {
         this.modalService.open(this.personalizarAgenda);
       }
 
-      if(modal === 'diet_Id'){
+      if (modal === 'diet_Id') {
         this.modalService.open(this.personalizarDieta);
       }
 
-      if(modal === 'empe_Id'){
+      if (modal === 'empe_Id') {
         this.modalService.open(this.personalizarCuidado);
       }
     }
   }
 
   handleButtonClick(modal: string) {
-    if(modal === 'agen_Id'){
+    if (modal === 'agen_Id') {
       this.modalService.open(this.personalizarAgenda);
     }
 
-    if(modal === 'diet_Id'){
+    if (modal === 'diet_Id') {
       this.modalService.open(this.personalizarDieta);
     }
 
-    if(modal === 'empe_Id'){
+    if (modal === 'empe_Id') {
       this.modalService.open(this.personalizarCuidado);
     }
   }
-  
+
   /**
    * Handling date click on calendar
    * @param arg DateClickArg
@@ -327,7 +351,6 @@ export class CreateComponent implements OnInit {
     const event = arg.event;
     this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
     this.isEditable = true;
-    console.log('aquí agrega uwu');
     // this.openEventModal('Edit Event', this.event);
   }
 

@@ -104,3 +104,18 @@ export interface Centro {
 
     [key: string]: number | string | undefined;
 }
+
+export interface AgendaDetalle {
+    agendeta_Id?: number;
+    agendeta_HoraStart?: string;
+    agendeta_HoraEnd?: string;
+    acti_Id?: number;
+    acti_Nombre?: string;
+    medi_Id?: number;
+    medi_Nombre?: string;
+    agendeta_Observaciones?: string;
+    agendeta_UsuCreacion?: number;
+    agendeta_UsuModificacion?: number;
+
+    [key: string]: number | string | undefined;
+}

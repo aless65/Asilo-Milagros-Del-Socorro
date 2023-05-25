@@ -87,6 +87,7 @@ export class CalendarComponent implements OnInit {
       drop: this.onDrop.bind(this),
       eventDrop: this.onEventDrop.bind(this)
     }
+    console.log(this.calendarEventsData);
   }
 
   /**
@@ -95,6 +96,8 @@ export class CalendarComponent implements OnInit {
   _fetchData(): void {
     this.calendarEventsData = CALENDAREVENTS;
     this.externalEvents = EXTERNALEVENTS;
+
+    console.log(this.calendarEventsData);
   }
 
   /**
@@ -136,7 +139,7 @@ export class CalendarComponent implements OnInit {
   /**
    * on event drop between calendar
    */
-  //when elements are dragged somewhere else
+  //when elements are dragged somewhere else in the calendar
   onEventDrop(arg: EventDropArg): void {
     let modifiedEvents = [...this.calendarEventsData];
     const idx = modifiedEvents.findIndex((e: any) => e['id'] === arg.event.id);
