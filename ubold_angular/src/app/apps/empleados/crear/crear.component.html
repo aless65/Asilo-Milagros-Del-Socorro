@@ -82,10 +82,11 @@
                       
                       <div class="col-sm-6">
                         <div class="mb-3">
-                          <label for="validationCustom04" class="form-label">Fecha de Nacimiento</label>
+                          <label for="validationCustom04" class="form-label">Fecha de Nacimiento</label> 
                           <input type="date" class="form-control" id="validationCustom04" placeholder="fecha" required [(ngModel)]="empleado.empe_Nacimiento"
                             formControlName="Fecha"
-                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Fecha.valid , 'is-invalid': validate1.submitted && form1.Fecha.invalid }"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Fecha.valid , 
+                                        'is-invalid': validate1.submitted && form1.Fecha.invalid || isFechaInvalida }"
                             max="2004-12-31"> <!-- Establece la fecha máxima como "2004-12-31" -->
                           <div *ngIf="validate1.submitted && form1.Fecha.valid" class="valid-feedback">
                             Completo!
@@ -93,6 +94,9 @@
                           <div *ngIf="validate1.submitted && form1.Fecha.invalid" class="invalid-feedback">
                             La fecha de Nacimiento es requerida.
                           </div>
+
+
+                          
                         </div>
                       </div>
                       
@@ -149,7 +153,7 @@
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Estado Civil:</label>
                           
-                            <select2 id="estacivi_Id" required [(ngModel)] = "empleado.estacivi_Id" placeholder="estado civil..." 
+                            <select2 id="estacivi_Id"  [(ngModel)] = "empleado.estacivi_Id" placeholder="estado civil..." 
                             formControlName="estacivi_Id"  [minCountForSearch]="0" [data]="estadoCivil" 
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.estacivi_Id.valid , 'is-invalid': validate1.submitted && form1.estacivi_Id.invalid }">
                             </select2>
@@ -168,7 +172,7 @@
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Cargo:</label>
                           
-                            <select2 id="Cargo" required [(ngModel)] = "empleado.carg_Id" placeholder="cargo..." 
+                            <select2 id="Cargo"  [(ngModel)] = "empleado.carg_Id" placeholder="cargo..." 
                             formControlName="Cargo"  [minCountForSearch]="0" [data]="cargos" 
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Cargo.valid , 'is-invalid': validate1.submitted && form1.Cargo.invalid }">
                             </select2>
@@ -187,7 +191,7 @@
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Centro:</label>
                           
-                            <select2 id="Centro" required [(ngModel)] = "empleado.cent_Id" placeholder="centro..." 
+                            <select2 id="Centro"  [(ngModel)] = "empleado.cent_Id" placeholder="centro..." 
                             formControlName="Centro"  [minCountForSearch]="0" [data]="centros" 
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Centro.valid , 'is-invalid': validate1.submitted && form1.Centro.invalid }">
                             </select2>
@@ -205,7 +209,7 @@
                      <div class="col-sm-6">
                         <div class="mb-3">
                           <label for="validationCustom05" class="form-label">Municipio:</label>
-                          <select2 id="municipio-values" required [(ngModel)]="empleado.muni_Id" placeholder="municipio..." 
+                          <select2 id="municipio-values"  [(ngModel)]="empleado.muni_Id" placeholder="municipio..." 
                             formControlName="Muni" [minCountForSearch]="0" [data]="municipio"
                             [ngClass]="{ 'is-valid': validate1.submitted && form1.Muni.valid , 'is-invalid': validate1.submitted && form1.Muni.invalid }">
                           </select2>

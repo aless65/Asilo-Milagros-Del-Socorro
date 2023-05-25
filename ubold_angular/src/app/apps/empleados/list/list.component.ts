@@ -106,6 +106,11 @@ import { Router } from '@angular/router';
         formatter: (empleado: Empleados) => empleado.empe_NombreCompleto
       },
       {
+        name: 'empe_Identidad',
+        label: 'Identidad',
+        formatter: (empleado: Empleados) => empleado.empe_Identidad
+      },
+      {
         name: 'SexoDes',
         label: 'Sexo',
         formatter: (empleado: Empleados) => empleado.sexoDes
