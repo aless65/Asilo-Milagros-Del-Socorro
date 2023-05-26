@@ -292,6 +292,7 @@ CREATE OR ALTER VIEW asil.VW_tbActividades
 AS
 	SELECT acti_Id, 
 	       acti_Nombre, 
+		   acti_Class,
 		   acti_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   acti_FechaCreacion, 
@@ -1427,9 +1428,14 @@ CREATE OR ALTER VIEW asil.VW_tbAgendaDetalles
 AS
 	SELECT agendeta_Id,
 	       t1.agen_Id,
-		   agendeta_Hora,
+		   t4.agen_Nombre,
+		   agendeta_HoraStart,
+		   agendeta_HoraEnd,
 		   t1.acti_Id,
+		   t5.acti_Nombre,
+		   t5.acti_Class,
 		   t1.medi_Id,
+		   t6.medi_Nombre,
 		   agendeta_Observaciones,
 		   agendeta_UsuCreacion,
 		   agendeta_FechaCreacion,
@@ -1441,19 +1447,21 @@ AS
 		   FROM asil.tbAgendaDetalles t1 LEFT JOIN acce.tbUsuarios t2
 		   ON t1.agendeta_UsuCreacion = T2.usua_Id
 		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.agendeta_UsuModificacion = t3.usua_Id INNER JOIN asil.tbAgendas t4
-		   ON t1.agen_Id = t4.agen_Id INNER JOIN asil.tbActividades t5
-		   ON t1.acti_Id = t5.acti_Id INNER JOIN asil.tbMedicamentos t6
+		   ON t1.agendeta_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbAgendas t4
+		   ON t1.agen_Id = t4.agen_Id LEFT JOIN asil.tbActividades t5
+		   ON t1.acti_Id = t5.acti_Id LEFT JOIN asil.tbMedicamentos t6
 		   ON t1.medi_Id = t6.medi_Id
 GO
 
 /*LISTAR AGENDA DETALLES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_List
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_List 
+	@agen_Id	INT
 AS
 BEGIN
 	SELECT *
 	FROM asil.VW_tbAgendaDetalles
 	WHERE agendeta_Estado = 1
+	AND agen_Id = @agen_Id
 END
 GO
 
@@ -1472,7 +1480,8 @@ GO
 /*INSERTAR AGENDA DETALLES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Insert
 	@agen_Id					INT,
-	@agendeta_Hora				TIME,
+	@agendeta_HoraStart			TIME,
+	@agendeta_HoraEnd			TIME,
 	@acti_Id					INT ,
 	@medi_Id					INT,
 	@agendeta_Observaciones		NVARCHAR,
@@ -1483,25 +1492,26 @@ BEGIN
 	BEGIN TRY
 		IF NOT EXISTS (SELECT * FROM asil.tbAgendaDetalles
 						WHERE agen_Id = @agen_Id AND
-						       agendeta_Hora = @agendeta_Hora)
+						       agendeta_HoraStart = @agendeta_HoraStart)
 			BEGIN
-			INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_Hora, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
-			VALUES(@agen_Id, @agendeta_Hora, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
+			INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
+			VALUES(@agen_Id, @agendeta_HoraStart, @agendeta_HoraEnd, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
 			
 			SELECT 'El detalle de agenda ha sido insertado'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbAgendaDetalles 
 						WHERE agen_Id = @agen_Id AND
-						agendeta_Hora = @agendeta_Hora)
+						agendeta_HoraStart = @agendeta_HoraStart)
 			BEGIN
 				UPDATE asil.tbAgendaDetalles 
 				SET    agendeta_Estado      = 1,
 				       acti_Id = @acti_Id,
 					   medi_Id = @medi_Id,
+					   agendeta_HoraEnd = @agendeta_HoraEnd,
 					   agendeta_Observaciones = @agendeta_Observaciones,
 					   agendeta_UsuCreacion = @agendeta_UsuCreacion
 				WHERE agen_Id = @agen_Id AND
-					  agendeta_Hora = @agendeta_Hora
+					  agendeta_HoraStart = @agendeta_HoraStart
 
 				SELECT 'El detalle de agenda ha sido insertado'
 			END
@@ -1519,20 +1529,22 @@ GO
 
 /*EDITAR AGENDA DETALLES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Update
-    @agendeta_Id					INT,
+    @agendeta_Id				INT,
     @agen_Id					INT,
-	@agendeta_Hora				TIME,
+	@agendeta_HoraStart			TIME,
+	@agendeta_HoraEnd			TIME,
 	@acti_Id					INT ,
 	@medi_Id					INT,
 	@agendeta_Observaciones		NVARCHAR,
-	@agendeta_UsuModificacion		INT
+	@agendeta_UsuModificacion	INT
 AS
 BEGIN
 	BEGIN TRY
 		BEGIN			
 			UPDATE  asil.tbAgendaDetalles
 			SET 	agen_Id					   = @agen_Id,
-			        agendeta_Hora			   = @agendeta_Hora,
+			        agendeta_HoraStart		   = @agendeta_HoraStart,
+			        agendeta_HoraEnd		   = @agendeta_HoraEnd,
 					acti_Id					   = @acti_Id,
 					medi_Id					   = @medi_Id,
 					agendeta_Observaciones     = @agendeta_Observaciones,
@@ -3157,10 +3169,19 @@ CREATE OR ALTER PROCEDURE gral.UDP_gral_tbMunicipios_List
 	@depa_Id	INT
 AS
 BEGIN
-	SELECT muni_Id, muni_Nombre
-	FROM [gral].tbMunicipios
-	WHERE muni_Estado = 1
-	AND depa_Id = @depa_Id
+	IF @depa_Id < 1
+		BEGIN
+			SELECT muni_Id, muni_Nombre, depa.depa_Id, depa.depa_Nombre
+			FROM [gral].tbMunicipios muni INNER JOIN gral.tbDepartamentos depa
+			ON muni.depa_Id = depa.depa_Id
+		END
+	ELSE
+		BEGIN
+			SELECT muni_Id, muni_Nombre, depa.depa_Id, depa.depa_Nombre
+			FROM [gral].tbMunicipios muni INNER JOIN gral.tbDepartamentos depa
+			ON muni.depa_Id = depa.depa_Id
+			AND muni.depa_Id = @depa_Id
+		END
 END
 
 

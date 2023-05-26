@@ -68,3 +68,70 @@ export interface Enfermedad {
 
     [key: string]: number | string | undefined;
 }
+
+export interface TipoSangre {
+    tiposang_Id?: number;
+    tiposang_Nombre?: string;
+    tiposang_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    tiposang_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    tiposang_FechaCreacion?: string;
+    tiposang_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Municipio {
+    muni_Id?: string;
+    muni_Nombre?: string;
+    depa_Id?: string;
+    depa_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Parentesco {
+    pare_Id?: number;
+    pare_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Centro {
+    cent_Id?: number;
+    cent_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface AgendaDetalle {
+    agendeta_Id?: number;
+    agendeta_HoraStart?: string;
+    agendeta_HoraEnd?: string;
+    acti_Id?: number;
+    acti_Nombre?: string;
+    acti_Class?: string;
+    medi_Id?: number;
+    medi_Nombre?: string;
+    agendeta_Observaciones?: string;
+    agendeta_UsuCreacion?: number;
+    agendeta_UsuModificacion?: number;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Actividad {
+    acti_Id?: number;
+    acti_Nombre?: string;
+    acti_Class?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Medicamento {
+    medi_Id?: number;
+    medi_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}

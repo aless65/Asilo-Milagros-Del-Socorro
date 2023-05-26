@@ -47,6 +47,7 @@ namespace Asilo.DataAccess
         public static string ActualizarAgenda = "asil.UDP_tbAgendas_Actualizar";
         public static string EliminarAgenda = "asil.UPD_tbAgendas_Eliminar";
 
+        public static string AgendaDetalle_List = "asil.UDP_asil_tbAgendaDetalles_List";
         #endregion
 
         #region Cargos
@@ -175,6 +176,7 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Tipos de sangre
+        public static string UDP_Lista_TiposSangre = "asil.UDP_asil_tbTiposSangre_List";
 
         #endregion
     }

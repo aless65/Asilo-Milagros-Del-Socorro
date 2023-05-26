@@ -322,6 +322,7 @@ CREATE TABLE asil.tbActividades
 (
 	acti_Id					INT IDENTITY,
 	acti_Nombre				NVARCHAR(100)NOT NULL,
+	acti_Class				NVARCHAR(500),
 
 	acti_UsuCreacion		INT NOT NULL,
 	acti_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_acti_FechaCreacion DEFAULT(GETDATE()),
@@ -453,7 +454,8 @@ CREATE TABLE asil.tbAgendaDetalles
 (
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
-	agendeta_Hora				TIME NOT NULL,
+	agendeta_HoraStart			NVARCHAR(500) NOT NULL,
+	agendeta_HoraEnd			NVARCHAR(500),
 	acti_Id						INT,
 	medi_Id						INT,
 	agendeta_Observaciones		NVARCHAR(500),
@@ -911,17 +913,14 @@ VALUES('Mal de Alzheimer',1),
 	  ('Mal de Parkinson',1)
 GO
 --********INSERT TABLA ACTIVIDADES****************---
-INSERT INTO asil.tbActividades(acti_Nombre,acti_UsuCreacion)
-VALUES('Medicación',1),
-	  ('Desayuno',1),
-      ('Almuerzo',1),
-	  ('Cena',1),
-	  ('Yoga',1),
-	  ('Caminar',1),
-	  ('Terapia de baile',1),
-	  ('Juegos de mesa',1),
-	  ('Lectura',1),
-	  ('Natación',1)
+INSERT INTO asil.tbActividades(acti_Nombre,acti_Class,acti_UsuCreacion)
+VALUES('Medicación','bg-info',1),
+	  ('Desayuno','bg-warning',1),
+      ('Almuerzo','bg-danger',1),
+	  ('Cena','bg-dark',1),
+	  ('Caminar','bg-success',1),
+	  ('Juegos de mesa','bg-success',1),
+	  ('Lectura','bg-primary',1)
 
 
 GO
@@ -976,21 +975,21 @@ GO
 INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
 VALUES('Estándar',1);
 GO
-INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
-VALUES('De pago',1);
+--INSERT INTO asil.tbAgendas( [agen_Nombre], [agen_UsuCreacion])
+--VALUES('De pago',1);
 
 	  --********INSERT TABLA Residente ****************---
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
 VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,1,'2010-10-05',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,2,'2010-02-25',1);
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,1,'2010-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
 VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',3,1,1,'2012-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,2,'2012-02-25',1);
+VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,1,'2012-02-25',1);
 
 
 	  --********INSERT TABLA Proveedores ****************---
@@ -1042,7 +1041,37 @@ VALUES('Catalina','Diaz','0502198001425','F',1,'1990-12-05','0502','Barrio el Ce
 	  ('Mario','Jimenez','0501200202263','M',1,'2000-10-03','0502','3 calle 3 avenida ','91858401','mmario@gmail.com',2,1,1);
 
 
---SELECT*FROM [asil].[VW_tbEmpleados]
---[asil].[UDP_asil_tbEmpleados_List]
---SELECT*FROM [asil].[tbEmpleados]
+	  --********INSERT TABLA Parentescos ****************---
+INSERT INTO [asil].tbParentescos(pare_Nombre, pare_UsuCreacion)
+VALUES
+  ('Padre/Madre', 1),
+  ('Tío(a)', 1),
+  ('Primo(a)', 1),
+  ('Hijo(a)', 1),
+  ('Sobrino(a)', 1),
+  ('Hermano(a)', 1),
+  ('Otro', 1);
+
+
+----********INSERT TABLA Agendas ****************---
+--INSERT INTO [asil].tbAgendas(agen_Nombre, agen_UsuCreacion)
+--VALUES
+--  ('Estándar', 1)
+
+
+--********INSERT TABLA Agendas Detalles****************---
+INSERT INTO [asil].tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones, agendeta_UsuCreacion)
+VALUES (1, '09:00:00', '10:30:00', 2, null,  null, 1),
+	   (1, '12:00:00', '13:30:00', 3, null,  null, 1),
+	   (1, '18:00:00', '19:30:00', 4, null,  null, 1),
+	   (1, '15:20:00', '15:45:00', 6, null,  'no todos tienen q ir jejejej', 1)
+
+
+--********INSERT TABLA Medicamentos****************---
+INSERT INTO [asil].tbMedicamentos(medi_Nombre, prov_Id, medi_UsuCreacion)
+VALUES ('Divalproato sódico', 1, 1),
+	   ('Olanzapina (Zyprexa)', 10, 1),
+	   ('Acetato de metilprednisolona', 5, 1),
+	   ('Hidroxicloroquina', 1, 1),
+	   ('Nateglinida ', 8, 1)
 

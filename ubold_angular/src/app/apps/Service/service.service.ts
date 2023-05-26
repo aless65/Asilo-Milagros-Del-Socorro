@@ -1,28 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { EstadoCivil } from '../Models';
+import { EstadoCivil, TipoSangre, 
+         Enfermedad, Municipio,
+         Parentesco, Centro,
+         Actividad, Medicamento } from '../Models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   constructor(private http:HttpClient) { }
-
-  Url="http://asilomilagrosdelsocorro.somee.com/api/";
+  
+  variableGlobal: string = environment.variableGlobal;
 
   getEstadosCiviles(){
-    return this.http.get<EstadoCivil[]>(`${this.Url}EstadosCiviles/Listado`);
+    return this.http.get<EstadoCivil[]>(`${this.variableGlobal}EstadosCiviles/Listado`);
+  }
+
+  getTiposSangre(){
+    return this.http.get<TipoSangre[]>(`${this.variableGlobal}TiposSangre/Listado`);
   }
   
-//   addEnfermedades(newEnfermedad: Enfermedad){
-//     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-//   }
+  getEnfermedades(){
+    return this.http.get<Enfermedad[]>(`${this.variableGlobal}Enfermedades/Listado`);
+  }
   
-//   editEnfermedades(editEnfermedad: Enfermedad){
-//     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
-//   }
+  getMunicipios(){
+    return this.http.get<Municipio[]>(`${this.variableGlobal}Municipios/Listado?depa=0`);
+  }
+  
+  getParentescos(){
+    return this.http.get<Parentesco[]>(`${this.variableGlobal}Parentescos/Listado`);
+  }
 
-//   deleteEnfermedades(id: number){
-//     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
-//   }
+  getCentros(){
+    return this.http.get<Centro[]>(`${this.variableGlobal}Centros/Listado`);
+  }
+
+  getActividades(){
+    return this.http.get<Actividad[]>(`${this.variableGlobal}Actividades/Listado`);
+  }
+
+  getMedicamentos(){
+    return this.http.get<Medicamento[]>(`${this.variableGlobal}Medicamentos/Listado`);
+  }
 }
