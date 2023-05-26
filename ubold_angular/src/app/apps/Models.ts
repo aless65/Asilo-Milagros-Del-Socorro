@@ -69,7 +69,6 @@ export interface Enfermedad {
     [key: string]: number | string | undefined;
 }
 
-<<<<<<< HEAD
 export interface TipoSangre {
     tiposang_Id?: number;
     tiposang_Nombre?: string;
@@ -81,7 +80,8 @@ export interface TipoSangre {
     tiposang_FechaModificacion?: string;
 
     [key: string]: number | string | undefined;
-=======
+}
+
 export interface Cargos{
     carg_Id?: number;
     carg_Nombre?: string;
@@ -108,7 +108,6 @@ export interface Centros{
     usua_UsuModificacion_Nombre?: string;
     cent_FechaModificacion?: string;
 
->>>>>>> Meow
 }
 
 export interface Municipio {
@@ -118,7 +117,6 @@ export interface Municipio {
     depa_Nombre?: string;
 
     [key: string]: number | string | undefined;
-<<<<<<< HEAD
 }
 
 export interface Parentesco {
@@ -165,6 +163,3 @@ export interface Medicamento {
 
     [key: string]: number | string | undefined;
 }
-=======
-}
->>>>>>> Meow
