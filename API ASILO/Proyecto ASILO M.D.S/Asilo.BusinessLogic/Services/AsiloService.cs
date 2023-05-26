@@ -191,6 +191,19 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(ex.Message);
             }
         }
+        public ServiceResult ListadoAgendaDetalles(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _agendasRepository.ListDetalles(id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Cargos
@@ -1564,6 +1577,19 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Tipos de sangre
+        public ServiceResult ListadoTiposSangre()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _tiposSangreRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
 
         #endregion
     }
