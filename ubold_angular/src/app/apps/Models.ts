@@ -124,6 +124,7 @@ export interface AgendaDetalle {
 export interface Actividad {
     acti_Id?: number;
     acti_Nombre?: string;
+    acti_Class?: string;
 
     [key: string]: number | string | undefined;
 }

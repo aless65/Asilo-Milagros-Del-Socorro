@@ -12,7 +12,7 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { Residente } from '../../Models';
+import { AgendaDetalle } from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
 
 @Component({
@@ -43,6 +43,7 @@ export class CreateComponent implements OnInit {
   isEditable: boolean = false;
   selectedValueAgenda: string = '';
   goesBack: boolean = false;
+  agendadetalle: AgendaDetalle = {};
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -247,6 +248,9 @@ export class CreateComponent implements OnInit {
         end: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraEnd),
         classNames: [item.acti_Class]
       }));
+
+      this.agendadetalle = response.data;
+      
       console.log(this.calendarEventsData);
 
       this.calendarOptions = {

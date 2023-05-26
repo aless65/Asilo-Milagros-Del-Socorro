@@ -292,6 +292,7 @@ CREATE OR ALTER VIEW asil.VW_tbActividades
 AS
 	SELECT acti_Id, 
 	       acti_Nombre, 
+		   acti_Class,
 		   acti_UsuCreacion, 
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   acti_FechaCreacion, 

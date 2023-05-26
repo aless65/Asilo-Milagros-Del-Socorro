@@ -65,8 +65,8 @@
                 <div class="col-12">
                     <div class="mb-3">
                         <label class="form-label">Observaciones</label>
-                        <textarea class="form-control" placeholder="Observaciones" type="text" 
-                            id="event-title" required  [(ngModel)]="agendadetalle.agendeta_Observaciones" #title="ngModel"
+                        <textarea class="form-control" placeholder="Observaciones" name="agendeta_Observaciones"
+                            id="agendeta_Observaciones" required  [(ngModel)]="agendadetalle.agendeta_Observaciones" #title="ngModel"
                             [ngClass]="{ 'is-invalid':eventForm.submitted && title.invalid && (title.dirty || title.touched)}">
                         </textarea>
 
