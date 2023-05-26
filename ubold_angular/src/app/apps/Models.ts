@@ -69,6 +69,7 @@ export interface Enfermedad {
     [key: string]: number | string | undefined;
 }
 
+<<<<<<< HEAD
 export interface TipoSangre {
     tiposang_Id?: number;
     tiposang_Nombre?: string;
@@ -80,6 +81,34 @@ export interface TipoSangre {
     tiposang_FechaModificacion?: string;
 
     [key: string]: number | string | undefined;
+=======
+export interface Cargos{
+    carg_Id?: number;
+    carg_Nombre?: string;
+    carg_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    carg_FechaCreacion?: string;
+    carg_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    carg_FechaModificacion?: string;
+}
+
+export interface Centros{
+    cent_Id?:number;
+    cent_Nombre?: string;
+    muni_Id?: string;
+    muni_Nombre?: string;
+    depa_Id?: string,
+    depa_Nombre?: string; 
+    cent_Direccion?: string; 
+    cent_UsuCreacion?: number;
+    cent_FechaCreacion?: string;
+    usua_UsuCreacion_Nombre?: string;
+    cent_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    cent_FechaModificacion?: string;
+
+>>>>>>> Meow
 }
 
 export interface Municipio {
@@ -89,6 +118,7 @@ export interface Municipio {
     depa_Nombre?: string;
 
     [key: string]: number | string | undefined;
+<<<<<<< HEAD
 }
 
 export interface Parentesco {
@@ -135,3 +165,6 @@ export interface Medicamento {
 
     [key: string]: number | string | undefined;
 }
+=======
+}
+>>>>>>> Meow

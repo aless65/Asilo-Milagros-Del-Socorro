@@ -7,18 +7,19 @@ import { environment } from 'src/environments/environment'; //importar la variab
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceService {
+export class ServiceServiceE {
   variableGlobal: string = environment.variableGlobal;
 
   constructor(private http:HttpClient) { }
-
- /* Url="http://asilomilagrosdelsocorro.somee.com/api/";*/ //ya no se ocupa
 
   getEnfermedades(){
     return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/Listado`); //la usamos aqui
   }
   
-  addEnfermedades(newEnfermedad: Empleados){
-    return this.http.post<Empleados[]>(`${this.variableGlobal}Enfermedades/Insertar`, newEnfermedad);
+  createEmpleado(newEmpleado: Empleados){
+    newEmpleado.empe_UsuCreacion = 1;
+    return this.http.post<Empleados[]>(`${this.variableGlobal}Empleados/Insertar`, newEmpleado);
   }
+
+  
 }
