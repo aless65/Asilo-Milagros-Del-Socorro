@@ -44,9 +44,11 @@
                     <div class="mb-3">
                         <label for="validationIdentidad" class="form-label">Identidad</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="validationIdentidad" placeholder="0000000000000"
-                                aria-describedby="inputGroupPrepend"   [(ngModel)] = "empleado.empe_Identidad" required formControlName="Identidad"
-                                [ngClass]="{ 'is-valid': validate1.submitted && form1.Identidad.valid , 'is-invalid': validate1.submitted && form1.Identidad.invalid }">
+                          <input type="text" class="form-control" id="validationIdentidad" placeholder="0000000000000"
+                          aria-describedby="inputGroupPrepend" [(ngModel)]="empleado.empe_Identidad" required formControlName="Identidad"
+                          [ngClass]="{ 'is-valid': validate1.submitted && form1.Identidad.valid, 'is-invalid': validate1.submitted && form1.Identidad.invalid }"
+                          maxlength="13">
+                   
                             <div *ngIf="validate1.submitted && form1.Identidad.valid" class="valid-feedback">
                                 Completo!
                             </div>
@@ -120,9 +122,10 @@
                     <div class="col-sm-6">
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Telefono</label>
-                            <input type="text" class="form-control" id="validationCustom05" placeholder="teléfono" required [(ngModel)] = "empleado.empe_Telefono"
+                            <input type="text" class="form-control" id="validationCustom05" placeholder="+504" required [(ngModel)] = "empleado.empe_Telefono"
                                 formControlName="Telefono"
-                                [ngClass]="{ 'is-valid': validate1.submitted && form1.Telefono.valid , 'is-invalid': validate1.submitted && form1.Telefono.invalid }">
+                                [ngClass]="{ 'is-valid': validate1.submitted && form1.Telefono.valid , 'is-invalid': validate1.submitted && form1.Telefono.invalid }"
+                                maxlength="15">
                             <div *ngIf="validate1.submitted && form1.Telefono.valid" class="valid-feedback">
                                  Completo!
                             </div>
@@ -136,9 +139,11 @@
                      <div class="col-sm-6">
                         <div class="mb-3">
                             <label for="validationCustom05" class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="validationCustom05" placeholder="correo" required [(ngModel)] = "empleado.empe_Correo"
-                                formControlName="Correo"
-                                [ngClass]="{ 'is-valid': validate1.submitted && form1.Correo.valid , 'is-invalid': validate1.submitted && form1.Correo.invalid }">
+                            <input type="email" class="form-control" id="validationCustom05" placeholder="correo" required
+                            [(ngModel)]="empleado.empe_Correo" formControlName="Correo"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Correo.valid, 'is-invalid': validate1.submitted && form1.Correo.invalid }"
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+                     
                             <div *ngIf="validate1.submitted && form1.Correo.valid" class="valid-feedback">
                                  Completo!
                             </div>

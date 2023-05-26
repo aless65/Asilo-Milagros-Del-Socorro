@@ -46,13 +46,13 @@ export class CrearComponent implements OnInit {
     this.validationGroup1 = this.fb.group({
       Nombre: ['', Validators.required],
       Apellido: ['', Validators.required],
-      Identidad: ['', Validators.required],
+      Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13)]],
       Sexo: ['', Validators.required],
       estacivi_Id: [0, Validators.required],
       Fecha: ['', Validators.required],
       Muni: [0, Validators.required],
       Direccion: ['', Validators.required],
-      Telefono: ['', Validators.required],
+      Telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       Correo: ['', Validators.required],
       Cargo: [0, Validators.required],
       Centro: [0, Validators.required],
@@ -140,34 +140,10 @@ export class CrearComponent implements OnInit {
 
     
   validarYGuardar() {
-
+    this.isFechaInvalida = false;
     console.log(this.empleado.empe_Nacimiento); // "2005-01-01"
-
-    if (this.empleado.empe_Nacimiento) {
-      const year = Number(this.empleado.empe_Nacimiento.split('-')[0]); // Obtener el año de la fecha
     
-      if (year > 2004) {
-        this.isFechaInvalida = true; 
-        // Mostrar un toast que indique que la fecha de nacimiento no puede ser mayor a 2004
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 1700,
-          timerProgressBar: true,
-          titleText: '¡El empleado debe ser mayor de edad!',
-          icon: 'warning',
-          background: '#f6f6baf2'
-        }).then(() => {
-          // Acción luego de cerrarse el toast
-        });
-      }
-      else {
-        this.isFechaInvalida = false; // Establecer la variable como falsa si la fecha es válida
-      }
-     
-    }
-   else if (this.validationGroup1.invalid) {
+     if (this.validationGroup1.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -189,18 +165,41 @@ export class CrearComponent implements OnInit {
           console.log(`Error en el campo ${field}:`, errors);
         }
       });
-    } else {
+    }
+   /* else if (this.empleado.empe_Nacimiento ) {
+      const year = Number(this.empleado.empe_Nacimiento.split('-')[0]); // Obtener el año de la fecha
+    
+      if (year > 2004) {
+        this.isFechaInvalida = true; 
+        // Mostrar un toast que indique que la fecha de nacimiento no puede ser mayor a 2004
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡El empleado debe ser mayor de edad!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+      else{
+        this.isFechaInvalida = false; // Establecer la variable como falsa si la fecha es válida
+      }
+     
+     
+    }*/
+    else {
       // Si todos los campos del formulario son válidos, llamar a la función de guardar
       this.Guardar();
      
     }
+    
   }
 
 
-
-
-  
-  
   
   Guardar(){
     this.service.createEmpleado(this.empleado)
