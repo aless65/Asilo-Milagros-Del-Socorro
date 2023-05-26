@@ -7,6 +7,7 @@ import { CrearComponent } from './crear.component';
 import { Select2Module } from 'ng-select2-component';
 
 
+
 @NgModule({
   declarations: [
     CrearComponent

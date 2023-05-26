@@ -12,7 +12,7 @@ export class ServiceServiceE {
 
   constructor(private http:HttpClient) { }
 
-  getEnfermedades(){
+  getEmpleado(){
     return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/Listado`); //la usamos aqui
   }
   
@@ -21,5 +21,17 @@ export class ServiceServiceE {
     return this.http.post<Empleados[]>(`${this.variableGlobal}Empleados/Insertar`, newEmpleado);
   }
 
+
+  getEmpleadoId(id?: number){
+    return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/Find?id=`+id); 
+  }
   
+  editarEmpleado(newEmpleado: Empleados){
+    newEmpleado.empe_UsuModificacion = 1;
+    return this.http.put<Empleados[]>(`${this.variableGlobal}Empleados/Editar`, newEmpleado);
+  }
+
+  deleteEmpleados(id: number){
+    return this.http.put(`${this.variableGlobal}Empleados/Eliminar?id=${id}`, null);
+  }
 }
