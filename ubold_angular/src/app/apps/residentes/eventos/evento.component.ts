@@ -23,6 +23,7 @@ export class CalendarEventComponent implements OnInit {
 
   @Output() eventSaved: EventEmitter<EventInput> = new EventEmitter();
   @Output() eventDeleted: EventEmitter<EventInput> = new EventEmitter();
+  @Output() agendaDetalleSaved: EventEmitter<AgendaDetalle> = new EventEmitter();
 
   @ViewChild('content', { static: true }) content: any;
   constructor(public activeModal: NgbModal,
@@ -30,6 +31,13 @@ export class CalendarEventComponent implements OnInit {
 
 
   ngOnInit(): void {
+    window.addEventListener('DOMContentLoaded', function () {
+      var requiredLabels = document.querySelectorAll('label[for][required]');
+      requiredLabels.forEach(function (label) {
+        label.innerHTML = label.innerHTML.replace('*', '');
+      });
+    });
+
     this.service.getActividades().subscribe((response: any) => {
       this.actividadForClass = response.data;
       let options = response.data.map((item: any) => ({
@@ -64,25 +72,22 @@ export class CalendarEventComponent implements OnInit {
    * @param data data to be used in modal
    */
   openModal(title: string, data: any): void {
-    const currentDate = new Date();
+    // const currentDate = new Date();
+    console.log(data);
     this.modelTitle = title;
-    this.event = {
-      id: data['id'], title: data['title'],
-      start: data['start'], end: data['end'], classNames: data['classNames']
-    };
+    this.agendadetalle = {
+      agendeta_HoraStart: data['agendeta_HoraStart'], agendeta_HoraEnd: data['agendeta_HoraEnd'],
+      acti_Id: data['acti_Id'], medi_Id: data['medi_Id'], agendeta_Observaciones: data['agendeta_Observaciones'], agendeta_Id: data['agendeta_Id']
+    }
+    this.event.id = this.agendadetalle.agendeta_Id?.toString();
+    // this.event = {
+    //   id: data['id'], title: data['title'],
+    //   start: data['start'], end: data['end'], classNames: data['classNames']
+    // };
     this.activeModal.open(this.content, { backdrop: "static" });
   }
 
-  setEventTitle(selectRef: Select2) {
-    this.agendadetalle.acti_Id = parseInt(selectRef.value.toString(), 10);
-    const selectedOption = Array.isArray(selectRef.option)
-      ? selectRef.option[0] // Assuming you want the first option in case of multiple selections
-      : selectRef.option;
-
-    if (selectedOption && 'label' in selectedOption) {
-      this.agendadetalle.acti_Nombre = selectedOption.label;
-      this.event.title = selectedOption.label;
-    }
+  setEventTitle() {
 
     const matchingActividad = (this.actividadForClass).find(
       (actividadForClass: Actividad) => actividadForClass.acti_Id === this.agendadetalle.acti_Id
@@ -93,12 +98,26 @@ export class CalendarEventComponent implements OnInit {
       // Set a default value or handle the case when there is no match
       this.event.category = ['default-class'];
     }
-    console.log(this.actividadForClass);
-    console.log(this.event);
-    
+
+    const matchingTitle = (this.actividadForClass).find(
+      (actividadForClass: Actividad) => actividadForClass.acti_Id === this.agendadetalle.acti_Id
+    );
+    if (matchingActividad) {
+      this.event.title = matchingActividad.acti_Nombre?.toString();
+    } else {
+      // Set a default value or handle the case when there is no match
+      this.event.title = '';
+    }
+
+    if (this.event.title !== 'Medicación') {
+      this.agendadetalle.medi_Id = 0;
+    }
+
   }
 
-
+  clearFields() {
+    this.agendadetalle = {};
+  }
 
   /**
    * stores event in calendar events
@@ -107,9 +126,11 @@ export class CalendarEventComponent implements OnInit {
     const currentDate = new Date();
     this.event.start = new Date(currentDate.toDateString() + ' ' + this.agendadetalle.agendeta_HoraStart);
     this.event.end = new Date(currentDate.toDateString() + ' ' + this.agendadetalle.agendeta_HoraEnd);
-    console.log(this.event);
+    console.log('dio clikc al boton', this.event);
     this.eventSaved.emit(this.event);
+    this.agendaDetalleSaved.emit(this.agendadetalle);
     this.activeModal.dismissAll();
+    this.clearFields();
   }
 
   /**
@@ -118,6 +139,7 @@ export class CalendarEventComponent implements OnInit {
   deleteEvent() {
     this.eventDeleted.emit(this.event);
     this.activeModal.dismissAll();
+    this.clearFields();
   }
 
 

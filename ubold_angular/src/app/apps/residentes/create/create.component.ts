@@ -43,7 +43,8 @@ export class CreateComponent implements OnInit {
   isEditable: boolean = false;
   selectedValueAgenda: string = '';
   goesBack: boolean = false;
-  agendadetalle: AgendaDetalle = {};
+  agendadetalle: AgendaDetalle[] = [];
+  maxId: number = 0;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -69,6 +70,11 @@ export class CreateComponent implements OnInit {
 
   selectedImage: string | ArrayBuffer | null = null;
 
+
+
+  // ngOnInit() {
+  // }
+
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
 
@@ -80,6 +86,33 @@ export class CreateComponent implements OnInit {
       listPlugin
     ]);
 
+    this.eventModal.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
+      if (!this.isEditable) {
+        agendadetalle.agendeta_Id = this.maxId + 1;
+        this.agendadetalle.push(agendadetalle);
+      } else {
+
+        const eventIndex = this.agendadetalle.findIndex((detalle) => detalle.agendeta_Id === agendadetalle.agendeta_Id);
+
+        this.agendadetalle[eventIndex].agendeta_HoraStart = agendadetalle.agendeta_HoraStart;
+        this.agendadetalle[eventIndex].agendeta_HoraEnd = agendadetalle.agendeta_HoraEnd;
+        this.agendadetalle[eventIndex].agendeta_Observaciones = agendadetalle.agendeta_Observaciones;
+        this.agendadetalle[eventIndex].acti_Id = agendadetalle.acti_Id;
+        this.agendadetalle[eventIndex].medi_Id = agendadetalle.medi_Id;
+        this.agendadetalle[eventIndex].acti_Class = agendadetalle.acti_Class;
+
+        this.isEditable = false;
+      }
+    });
+
+
+    // this.createComponent.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
+    //   console.log('Agenda Detalle Saved:', agendadetalle);
+    // });
+
+    // this.createComponent.eventSaved.subscribe((event: EventInput) => {
+    //   console.log('Event Saved:', event);
+    // });
 
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
@@ -250,8 +283,8 @@ export class CreateComponent implements OnInit {
       }));
 
       this.agendadetalle = response.data;
-      
-      console.log(this.calendarEventsData);
+
+      console.log(this.agendadetalle);
 
       this.calendarOptions = {
         themeSystem: 'bootstrap',
@@ -326,9 +359,9 @@ export class CreateComponent implements OnInit {
   }
 
   openAgenda(event: Select2UpdateEvent, id: number) {
-    if(!this.goesBack){
+    if (!this.goesBack) {
       this.selectedValueAgenda = event.value.toString();
-    } 
+    }
     this.goesBack = false;
     return this.selectedValueAgenda;
   }
@@ -371,9 +404,14 @@ export class CreateComponent implements OnInit {
    */
   handleEventClick(arg: EventClickArg): void {
     const event = arg.event;
+    // const detalle = arg.event;
     this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
     this.isEditable = true;
-    this.openEventModal('Editar Evento', this.event);
+    const index = this.calendarEventsData.findIndex(item => item.id?.toString() === this.event.id);
+    console.log(this.event);
+    this.agendadetalle[index].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    this.agendadetalle[index].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    this.openEventModal('Editar Evento', this.agendadetalle[index]);
   }
 
   /**
@@ -397,8 +435,13 @@ export class CreateComponent implements OnInit {
    * on event drop between calendar
    */
   onEventDrop(arg: EventDropArg): void {
+    console.log("jala");
     let modifiedEvents = [...this.calendarEventsData];
-    const idx = modifiedEvents.findIndex((e: any) => e['id'] === arg.event.id);
+    const idx = modifiedEvents.findIndex((e: any) => e['id'].toString() === arg.event.id.toString());
+
+    this.agendadetalle[idx].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    this.agendadetalle[idx].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
     modifiedEvents[idx]['title'] = arg.event.title;
     modifiedEvents[idx]['className'] = arg.event.classNames;
     modifiedEvents[idx]['start'] = arg.event.start as DateInput;
@@ -422,36 +465,52 @@ export class CreateComponent implements OnInit {
 
     if (this.isEditable) {
       let modifiedEvents = [...this.calendarEventsData];
-      const eventIndex = modifiedEvents.findIndex((event) => event.id === newEvent.id);
+      const eventIndex = modifiedEvents.findIndex((event) => event.id?.toString() === newEvent.id?.toString());
+
       this.calendarEventsData[eventIndex].title = newEvent.title;
       this.calendarEventsData[eventIndex].classNames = newEvent.category;
+      this.calendarEventsData[eventIndex].start = newEvent.start;
+      this.calendarEventsData[eventIndex].end = newEvent.end;
+      this.calendarEventsData[eventIndex].category = newEvent.category;
+
       this.calendarEventsData = modifiedEvents;
-      this.isEditable = false;
-    }
-    else {
+    } else {
+      // Find the maximum id value in calendarEventsData
+      this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+
+      // Set newEvent.id to maxId + 1
+      newEvent.id = String(this.maxId + 1);
+
       let nEvent = {
         id: newEvent.id,
         title: newEvent.title,
         start: newEvent.start,
+        end: newEvent.end,
         classNames: newEvent.category
       };
       this.calendarEventsData.push(nEvent);
     }
-    this.calendarOptions.events = [...this.calendarEventsData];
 
+    this.calendarOptions.events = [...this.calendarEventsData];
   }
 
-   /**
-   * Deletes calendar event
-   * @param deleteEvent event to be deleted
-   */
+  /**
+  * Deletes calendar event
+  * @param deleteEvent event to be deleted
+  */
   //actualiza luego de delete
   handleEventDelete(deleteEvent: EventInput): void {
+    console.log(deleteEvent.id);
     let modifiedEvents = [...this.calendarEventsData];
-    const eventIndex = modifiedEvents.findIndex((event) => event.id === deleteEvent.id);
+    const eventIndex = modifiedEvents.findIndex((event) => event.id?.toString() === deleteEvent.id);
     modifiedEvents.splice(eventIndex, 1);
     this.calendarEventsData = modifiedEvents;
     this.calendarOptions.events = [...this.calendarEventsData];
+
+    let modifiedDetalles = [...this.agendadetalle];
+    const detalleIndex = modifiedDetalles.findIndex((detalle) => detalle.agendeta_Id?.toString() === deleteEvent.id);
+    modifiedDetalles.splice(detalleIndex, 1);
+    this.agendadetalle = [...modifiedDetalles];
   }
 
 
@@ -473,4 +532,5 @@ export class CreateComponent implements OnInit {
     }
 
   }
+
 }
