@@ -80,6 +80,15 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-      
+        public IEnumerable<VW_tbAgendaDetalles> ListDetalles(int id)
+        {
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@agen_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.Query<VW_tbAgendaDetalles>(ScriptsDataBase.AgendaDetalle_List, parametros, commandType: CommandType.StoredProcedure);
+        }
+
     }
 }

@@ -87,6 +87,7 @@ export class CalendarComponent implements OnInit {
       drop: this.onDrop.bind(this),
       eventDrop: this.onEventDrop.bind(this)
     }
+    console.log(this.calendarEventsData);
   }
 
   /**
@@ -95,6 +96,8 @@ export class CalendarComponent implements OnInit {
   _fetchData(): void {
     this.calendarEventsData = CALENDAREVENTS;
     this.externalEvents = EXTERNALEVENTS;
+
+    console.log(this.calendarEventsData);
   }
 
   /**
@@ -119,6 +122,7 @@ export class CalendarComponent implements OnInit {
    * adds external events by Drag n Drop
    * @param event dropped event
    */
+  //Cuando se arrastra de la barra lateral hacia el calendario
   onDrop(event: any): void {
     const draggedEl = event.draggedEl;
     const newEvent = {
@@ -135,6 +139,7 @@ export class CalendarComponent implements OnInit {
   /**
    * on event drop between calendar
    */
+  //when elements are dragged somewhere else in the calendar
   onEventDrop(arg: EventDropArg): void {
     let modifiedEvents = [...this.calendarEventsData];
     const idx = modifiedEvents.findIndex((e: any) => e['id'] === arg.event.id);
@@ -144,6 +149,7 @@ export class CalendarComponent implements OnInit {
     modifiedEvents[idx]['end'] = arg.event.end as DateInput;
     this.calendarEventsData = modifiedEvents;
     this.isEditable = false;
+    console.log(modifiedEvents);
   };
 
 
@@ -152,11 +158,12 @@ export class CalendarComponent implements OnInit {
    * Handling date click on calendar
    * @param arg DateClickArg
    */
+  //Click directamente en el calendario
   handleDateClick(arg: DateClickArg): void {
     this.selectedDay = arg;
     this.event = { id: String(this.calendarEventsData.length + 1), title: '', classNames: '', category: 'bg-danger', start: this.selectedDay.date };
     this.isEditable = false;
-    this.openEventModal('Add New Event', this.event);
+    this.openEventModal('Add New Event', this.event); 
   }
 
 
@@ -164,6 +171,7 @@ export class CalendarComponent implements OnInit {
    * Handling click on event on calendar 
    * @param arg EventClickArg
    */
+  //click en actividad ya creada (para editar)
   handleEventClick(arg: EventClickArg): void {
     const event = arg.event;
     this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
@@ -175,6 +183,7 @@ export class CalendarComponent implements OnInit {
    * Handle the event save
    * @param newEvent new event
    */
+  //agregar en general(desde botón o desde calendario)
   handleEventSave(newEvent: EventInput): void {
 
     if (this.isEditable) {
@@ -195,12 +204,14 @@ export class CalendarComponent implements OnInit {
       this.calendarEventsData.push(nEvent);
     }
     this.calendarOptions.events = [...this.calendarEventsData];
+
   }
 
   /**
    * Deletes calendar event
    * @param deleteEvent event to be deleted
    */
+  //actualiza luego de delete
   handleEventDelete(deleteEvent: EventInput): void {
     let modifiedEvents = [...this.calendarEventsData];
     const eventIndex = modifiedEvents.findIndex((event) => event.id === deleteEvent.id);

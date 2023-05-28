@@ -110,11 +110,25 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToView("VW_tbAgendaDetalles", "asil");
 
+                entity.Property(e => e.acti_Class).HasMaxLength(500);
+
+                entity.Property(e => e.acti_Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.agen_Nombre).HasMaxLength(300);
+
                 entity.Property(e => e.agendeta_FechaCreacion).HasColumnType("datetime");
 
                 entity.Property(e => e.agendeta_FechaModificacion).HasColumnType("datetime");
 
+                entity.Property(e => e.agendeta_HoraEnd).HasMaxLength(500);
+
+                entity.Property(e => e.agendeta_HoraStart)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
                 entity.Property(e => e.agendeta_Observaciones).HasMaxLength(500);
+
+                entity.Property(e => e.medi_Nombre).HasMaxLength(300);
 
                 entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
 
@@ -911,6 +925,8 @@ namespace Asilo.DataAccess.Context
                 entity.HasIndex(e => e.acti_Nombre, "UQ_asil_tbActividades_enfe_Nombre")
                     .IsUnique();
 
+                entity.Property(e => e.acti_Class).HasMaxLength(500);
+
                 entity.Property(e => e.acti_Estado)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -953,6 +969,12 @@ namespace Asilo.DataAccess.Context
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.agendeta_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.agendeta_HoraEnd).HasMaxLength(500);
+
+                entity.Property(e => e.agendeta_HoraStart)
+                    .IsRequired()
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.agendeta_Observaciones).HasMaxLength(500);
 

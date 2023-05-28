@@ -10,6 +10,7 @@ namespace Asilo.Entities.Entities
     {
         public int acti_Id { get; set; }
         public string acti_Nombre { get; set; }
+        public string acti_Class { get; set; }
         public int acti_UsuCreacion { get; set; }
         public string usua_UsuCreacion_Nombre { get; set; }
         public DateTime acti_FechaCreacion { get; set; }

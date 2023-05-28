@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { EstadoCivil, TipoSangre, Enfermedad, Municipio, Parentesco } from '../Models';
+import { EstadoCivil, TipoSangre, 
+         Enfermedad, Municipio,
+         Parentesco, Centro,
+         Actividad, Medicamento,
+         Cargos, Centros } from '../Models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  constructor(private http:HttpClient) { }
-  
   variableGlobal: string = environment.variableGlobal;
+
+  constructor(private http:HttpClient) { }
 
   getEstadosCiviles(){
     return this.http.get<EstadoCivil[]>(`${this.variableGlobal}EstadosCiviles/Listado`);
@@ -30,15 +34,21 @@ export class ServiceService {
   getParentescos(){
     return this.http.get<Parentesco[]>(`${this.variableGlobal}Parentescos/Listado`);
   }
-//   addEnfermedades(newEnfermedad: Enfermedad){
-//     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-//   }
-  
-//   editEnfermedades(editEnfermedad: Enfermedad){
-//     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
-//   }
 
-//   deleteEnfermedades(id: number){
-//     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
-//   }
+  getCentros(){
+    return this.http.get<Centro[]>(`${this.variableGlobal}Centros/Listado`);
+  }
+
+  getActividades(){
+    return this.http.get<Actividad[]>(`${this.variableGlobal}Actividades/Listado`);
+  }
+
+  getMedicamentos(){
+    return this.http.get<Medicamento[]>(`${this.variableGlobal}Medicamentos/Listado`);
+  }
+  
+  
+  getCargos(){
+    return this.http.get<Cargos[]>(`${this.variableGlobal}Cargos/Listado`);
+  }
 }

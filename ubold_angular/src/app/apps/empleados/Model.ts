@@ -1,6 +1,6 @@
 import { dateSelectionJoinTransformer } from "@fullcalendar/core";
 
-export interface Empleados {
+export class Empleados {
     empe_Id?: number;
     empe_Nombres?: string;
     empe_Apellidos?: string;			

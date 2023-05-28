@@ -5,7 +5,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Empleados } from '../Model';
-import { ServiceService } from 'src/app/apps/empleados/service.service';
+import { ServiceServiceE } from 'src/app/apps/empleados/service.service';
+import { Router } from '@angular/router';
+
 // import { ToastModule } from 'primeng/toast';
 // import { MessageService } from 'primeng/api';
 
@@ -29,7 +31,8 @@ import { ServiceService } from 'src/app/apps/empleados/service.service';
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
-    private service: ServiceService,
+    private service: ServiceServiceE,
+    private router:Router
     // private messageService: MessageService,
   ) { }
 
@@ -68,16 +71,7 @@ import { ServiceService } from 'src/app/apps/empleados/service.service';
     }
 
 
-    this.service.addEnfermedades(enfermedad).subscribe(
-      (response: any) => {
-        // this.showSuccess();
-        console.log("se pudo:", response);
-        this._fetchData();
-      },
-      (error) => {
-        console.log("no se pudo:", error);
-      }
-    )
+  
 
     this.activeModal.dismissAll('');
   }
@@ -110,6 +104,11 @@ import { ServiceService } from 'src/app/apps/empleados/service.service';
         name: 'empe_NombreCompleto',
         label: 'Nombre',
         formatter: (empleado: Empleados) => empleado.empe_NombreCompleto
+      },
+      {
+        name: 'empe_Identidad',
+        label: 'Identidad',
+        formatter: (empleado: Empleados) => empleado.empe_Identidad
       },
       {
         name: 'SexoDes',
@@ -180,6 +179,10 @@ matches(row: Empleados, term: string) {
       this.empleados = updatedData;
     }
 
+  }
+
+  Agregar(){
+    this.router.navigate(['crear']);
   }
 
 }
