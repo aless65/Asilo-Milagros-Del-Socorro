@@ -4,7 +4,8 @@ import { EstadoCivil, TipoSangre,
          Enfermedad, Municipio,
          Parentesco, Centro,
          Actividad, Medicamento,
-         Cargos, Centros } from '../Models';
+         Cargos, Habitacion,
+         MetodoPago } from '../Models';
 import { environment } from 'src/environments/environment';
 import { Empleados } from '../empleados/Model';
 
@@ -54,5 +55,13 @@ export class ServiceService {
   
   getCuidadoresDisponibles(id: number){
     return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/CuidadoresDisponibles?cent_Id=${id}`);
+  }
+  
+  getHabitacionesDisponibles(id: number){
+    return this.http.get<Habitacion[]>(`${this.variableGlobal}Habitaciones/HabitacionesDisponibles?cent_Id=${id}`);
+  }
+  
+  getMetodosPago(){
+    return this.http.get<MetodoPago[]>(`${this.variableGlobal}MetodosPago/Listado`);
   }
 }

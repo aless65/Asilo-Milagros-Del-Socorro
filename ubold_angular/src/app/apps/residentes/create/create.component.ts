@@ -37,6 +37,8 @@ export class CreateComponent implements OnInit {
   dieta: Select2Data = [];
   cuidado: Select2Data = [];
   cuidador: Select2Data = [];
+  habitacion: Select2Data = [];
+  metodopago: Select2Data = [];
   calendarOptions: CalendarOptions = {};
   calendarEventsData: EventInput[] = [];
   selectedDay: any = {};
@@ -152,14 +154,15 @@ export class CreateComponent implements OnInit {
     })
 
     this.validationWizardForm = this.fb.group({
-      agen_Id: [0, Validators.requiredTrue],
-      cent_Id: [0, Validators.required],
-      diet_Id: [0, Validators.required],
-      empe_Id: [0, Validators.required],
+      agen_Id: ['', Validators.requiredTrue],
+      cent_Id: ['', Validators.required],
+      diet_Id: ['', Validators.required],
+      empe_Id: ['', Validators.required],
+      habi_Id: ['', Validators.required],
     });
 
     this.cuidadoForm = this.fb.group({
-      empe_Id: [0, Validators.required],
+      empe_Id: ['', Validators.required],
     });
 
     this.dietaForm = this.fb.group({
@@ -263,6 +266,20 @@ export class CreateComponent implements OnInit {
       ];
     });
 
+
+    this.service.getMetodosPago().subscribe((response: any) => {
+      let options = response.data.map((item: any) => ({
+        value: item.meto_Id,
+        label: item.meto_Nombre
+      }));
+
+      this.metodopago = [{
+        label: 'Escoja un método de pago',
+        options: options
+      },
+      ];
+    });
+
     this.agenda = [
       {
         label: 'Escoja un tipo de agenda',
@@ -340,24 +357,58 @@ export class CreateComponent implements OnInit {
 
   }
 
-  openConfirmacion(){
+  handleAceptarClick() {
+    if (this.formCuidado.empe_Id.valid) {
+      this.modalService.dismissAll('');
+      this.openConfirmacion();
+    }
+  }
+
+  openConfirmacion() {
     this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
   }
 
-  populateCuidadoresDisponibles(selected: any){
-    if(selected){
+  populateCuidadoresDisponibles(selected: any) {
+    if (selected) {
       this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
         let options = response.data.map((item: any) => ({
           value: item.empe_Id,
           label: item.empe_NombreCompleto,
         }));
-  
+
         this.cuidador = [{
           label: 'Escoja una opción',
           options: options
         },
         ];
       });
+
+      this.service.getHabitacionesDisponibles(selected.value).subscribe((response: any) => {
+        let cateLabels: string[] = [];
+        let options: { [key: string]: any[] } = {};
+
+        response.data.forEach((item: any) => {
+          const cateNombre: string = item.cate_Nombre;
+          const habiId: number = item.habi_Id;
+          const habiNumbero: number = item.habi_Numero;
+
+          if (!cateLabels.includes(cateNombre)) {
+            cateLabels.push(cateNombre);
+            options[cateNombre] = [];
+          }
+
+          options[cateNombre].push({
+            value: habiId,
+            label: habiNumbero.toString()
+          });
+        });
+
+        this.habitacion = cateLabels.map((cateNombre: string) => ({
+          label: cateNombre,
+          options: options[cateNombre]
+        }));
+      });
+
     }
   }
 
@@ -464,8 +515,8 @@ export class CreateComponent implements OnInit {
     this.isEditable = true;
     const index = this.calendarEventsData.findIndex(item => item.id?.toString() === this.event.id);
     console.log(this.event);
-    this.agendadetalle[index].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    this.agendadetalle[index].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    this.agendadetalle[index].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.agendadetalle[index].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     this.openEventModal('Editar Evento', this.agendadetalle[index]);
   }
 
@@ -494,8 +545,8 @@ export class CreateComponent implements OnInit {
     let modifiedEvents = [...this.calendarEventsData];
     const idx = modifiedEvents.findIndex((e: any) => e['id'].toString() === arg.event.id.toString());
 
-    this.agendadetalle[idx].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    this.agendadetalle[idx].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    this.agendadetalle[idx].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.agendadetalle[idx].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     modifiedEvents[idx]['title'] = arg.event.title;
     modifiedEvents[idx]['className'] = arg.event.classNames;
@@ -574,6 +625,7 @@ export class CreateComponent implements OnInit {
   get form2() { return this.encargadoForm.controls; }
   get form3() { return this.profileForm.controls; }
   get form4() { return this.validationWizardForm.controls; }
+  get formCuidado() { return this.cuidadoForm.controls; }
 
   // goes to next wizard
   gotoNext(): void {

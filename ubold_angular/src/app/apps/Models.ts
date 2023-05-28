@@ -163,3 +163,24 @@ export interface Medicamento {
 
     [key: string]: number | string | undefined;
 }
+
+export interface Habitacion {
+    habi_Id?: number;
+    habi_Numero?: number;
+    cate_Id?: number;
+    habi_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    habi_FechaCreacion?: string;
+    habi_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    habi_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface MetodoPago {
+    meto_Id?: number;
+    meto_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}

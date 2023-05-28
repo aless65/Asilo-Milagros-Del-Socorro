@@ -1034,6 +1034,20 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(ex.Message);
             }
         }
+
+        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
 
         #region Historial de pagos
