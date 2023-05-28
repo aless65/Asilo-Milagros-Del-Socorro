@@ -41,7 +41,7 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label class="form-label" >Actividad</label>
-                        <select2 id="acti_Id" required [data]="actividad" hideRequired="true" #selectRef (update)="setEventTitle()" [(ngModel)]="agendadetalle.acti_Id" name="acti_Id">
+                        <select2 id="acti_Id" [data]="actividad" #selectRef (update)="setEventTitle()" [(ngModel)]="agendadetalle.acti_Id" name="acti_Id">
                         </select2>
                       
                         <div *ngIf="eventForm.submitted && title.invalid && (title.dirty || title.touched)" class="invalid-feedback">
@@ -120,7 +120,7 @@
                 <div class="col-md-6 col-8 text-end">
                     <button type="button" class="btn btn-light me-1" (click)="clearFields(); modal.dismiss('')">Cerrar</button>
                     <button type="submit" class="btn btn-success" id="btn-save-event"
-                        [disabled]="!eventForm.form.valid">Guardar</button>
+                    [disabled]="!eventForm.form.valid || (!agendadetalle || agendadetalle.acti_Id === undefined)">Guardar</button>
                 </div>
             </div>
         </form>

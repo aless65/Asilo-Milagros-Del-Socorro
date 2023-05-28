@@ -30,6 +30,7 @@ namespace Asilo.API.Controllers
             var list = _asiloServivce.FindEmpleados(id);
             return Ok(list);
         }
+
         [HttpGet("Listado")]
         public IActionResult Index()
         {
@@ -58,6 +59,13 @@ namespace Asilo.API.Controllers
         {
             var result = _asiloServivce.EliminarEmpleados(id);
             return Ok(result);
+        }
+
+        [HttpGet("CuidadoresDisponibles")]
+        public IActionResult CuidadoresDisponibles(int cent_Id)
+        {
+            var list = _asiloServivce.ListadoCuidadoresDisponibles(cent_Id);
+            return Ok(list);
         }
     }
 }

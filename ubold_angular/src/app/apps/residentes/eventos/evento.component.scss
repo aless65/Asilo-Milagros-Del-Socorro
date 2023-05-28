@@ -1,3 +1,4 @@
-// select2.required+.select2-container::before {
-//     content: none;
-//   }
+.hide-required:required {
+    display: none;
+  }
+  

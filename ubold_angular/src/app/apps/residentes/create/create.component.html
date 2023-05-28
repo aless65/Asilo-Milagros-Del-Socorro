@@ -256,7 +256,7 @@
                                         </div>
                                     </div>
                                 </div> <!-- end col -->
-                                
+
                                 <div class="col-6 mb-3">
                                     <div class="file-upload">
                                         <div class="image-preview" *ngIf="selectedImage">
@@ -293,14 +293,15 @@
                         <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
                         <span class="d-none d-sm-inline">Administración</span>
                     </a>
-                    <ng-template ngbNavContent *ngIf="selectedValueAgenda !== '2'">
+                    <ng-template ngbNavContent *ngIf="selectedValueAgenda !== '2' && selectedValueDieta!== '2'">
                         <form class="form-horizontal" [formGroup]="validationWizardForm" #validationWizard="ngForm">
                             <div class="row mb-4">
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
-                                        <select2 id="cent_Id" [data]="centro" formControlName="cent_Id"
-                                            [minCountForSearch]="0">
+                                        <select2 id="cent_Id" [data]="centro" #selectRef
+                                            (update)="populateCuidadoresDisponibles(selectRef.option)"
+                                            formControlName="cent_Id" [minCountForSearch]="0">
                                         </select2>
                                     </div>
 
@@ -309,7 +310,7 @@
                                         <select2 id="diet_Id" [data]="dieta" formControlName="diet_Id"
                                             [class.col-md-12]="form4.diet_Id.value !== '2'"
                                             [class.col-md-10]="form4.diet_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openModal($event, 'diet_Id')">
+                                            (update)="openDieta($event, form4.diet_Id.value)">
                                         </select2>
                                         <button *ngIf="form4.diet_Id.value === '2'" type="button"
                                             class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
@@ -365,22 +366,76 @@
                     </ng-template>
                     <ng-template ngbNavContent *ngIf="selectedValueAgenda === '2'">
                         <div class="row">
-                          <div class="col-3">
-                            <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
-                              <i class="mdi mdi-arrow-left"></i> Regresar
-                            </a>
-                            <button class="btn btn-lg font-16 btn-primary w-100 ellipsis" id="btn-new-event" (click)="createNewEvent()">
-                              <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
-                            </button>
-                          </div>
-                          <div class="col-9">
-                            <div id="calendar">
-                              <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                            <div class="col-3">
+                                <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
+                                    <i class="mdi mdi-arrow-left"></i> Regresar
+                                </a>
+                                <button class="btn btn-lg font-16 btn-primary w-100 ellipsis" id="btn-new-event"
+                                    (click)="createNewEvent()">
+                                    <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
+                                </button>
                             </div>
-                          </div>  
+                            <div class="col-9">
+                                <div id="calendar">
+                                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                                </div>
+                            </div>
                         </div>
-                      </ng-template>
-                      
+                    </ng-template>
+
+                    <ng-template ngbNavContent *ngIf="selectedValueDieta === '2'">
+                        <div class="row" [formGroup]="cuidadoForm">
+                            <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
+                                <i class="mdi mdi-arrow-left"></i> Regresar
+                            </a>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Desayuno</label>
+                                <textarea class="form-control" placeholder="Desayuno..." name="desayuno" id="desayuno"
+                                    formControlName="desayuno">
+                                </textarea>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Almuerzo</label>
+                                <textarea class="form-control" placeholder="Almuerzo..." name="almuerzo" id="almuerzo"
+                                    formControlName="almuerzo">
+                                </textarea>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Merienda</label>
+                                <textarea class="form-control" placeholder="Merienda..." name="merienda" id="merienda"
+                                    formControlName="merienda">
+                                </textarea>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Cena</label>
+                                <textarea class="form-control" placeholder="Cena..." name="cena" id="cena"
+                                    formControlName="cena">
+                                </textarea>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Restricciones</label>
+                                <textarea class="form-control" placeholder="Restricciones..."
+                                    name="agendeta_Observaciones" id="restricciones" formControlName="restricciones">
+                                </textarea>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" placeholder="Observaciones..." name="observaciones"
+                                    id="observaciones" formControlName="observaciones">
+                                </textarea>
+                            </div>
+
+                            <div class="container">
+                                <div class="button-container">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                    <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                        (click)="goBack()">Volver</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-template>
+
                 </li>
             </ul>
 
@@ -388,50 +443,21 @@
 
         </div> <!-- end #validationWizard-->
     </div> <!-- end card-body -->
-    <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)"
-            (eventDeleted)="handleEventDelete($event)">
+    <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)" (eventDeleted)="handleEventDelete($event)">
     </app-residente-evento>
 </div> <!-- end card-->
 
-<ng-template #personalizarAgenda let-modal>
-    <div class="modal-header bg-light">
-        <h4 class="modal-title" id="myCenterModalLabel">Personalizar Agenda</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
-    </div>
-    <div class="modal-body p-4">
-        <div class="row">
-            <div class="col-3"> 
-                <button class="btn btn-lg font-16 btn-primary w-100" id="btn-new-event" (click)="createNewEvent()">
-                    <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
-                </button>
-            </div>
-            <div class="col-9"> 
-                <div id="calendar">
-                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
-                </div>
-            </div>  
+<ng-template #personalizarDieta let-modal>
+    <div class="modal-content">
+        <div class="modal-header bg-light">
+            <h4 class="modal-title" id="myCenterModalLabel">Personalizar Dieta</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Close click')">Close</button>
-        <button type="button" class="btn btn-info waves-effect waves-light" (click)="modal.close('Close click')">Save changes</button>
+        <div class="modal-body p-4">
+        </div>
     </div>
 </ng-template>
 
-<ng-template #personalizarDieta let-modal>
-    <div class="modal-header bg-light">
-        <h4 class="modal-title" id="myCenterModalLabel">Personalizar Dieta</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
-    </div>
-    <div class="modal-body p-4">
-        <p>¿Realmente desea eliminar esta enfermedad?</p>
-        <div class="text-end">
-            <button type="button" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
-            <button type="button" class="btn btn-danger waves-effect waves-light"
-                (click)="modal.close('')">Cancelar</button>
-        </div>
-    </div>
-</ng-template>
 
 <ng-template #personalizarCuidado let-modal>
     <div class="modal-header bg-light">
@@ -439,11 +465,55 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
     </div>
     <div class="modal-body p-4">
-        <p>¿Realmente desea eliminar esta enfermedad?</p>
+        <div class="row" [formGroup]="cuidadoForm">
+            <div class="col-md-4 col-12">
+                <div class="image-container">
+                    <img src="https://i.ibb.co/MpcHmwS/38a415492985340aea03bc5744ae2304-tattooed-old-man-character-by-vexels.png"
+                        alt="Profile Image">
+                </div>
+            </div>
+            <div class="col-md-8 col-12 mb-4">
+                <p>Este "paquete" de cuidado personalizado garantiza que siempre haya un profesional de la salud a la
+                    disposición del residente para atender sus
+                    necesidades médicas, administrar medicamentos y brindarle la asistencia necesaria en todo momento.
+                </p>
+                <p>Para acceder a este nivel de cuidado, se requiere una tarifa mensual de <strong>5,000
+                        lempiras</strong>.
+                    Con un plazo de 15 días para pagar después de la fecha establecida, en caso de atrasos o
+                    inconvenientes.</p>
+                <label class="col-form-label" for="empe_Id">Asignar cuidador(a):</label>
+                <div class="col-md-9">
+                    <select2 id="empe_Id" [data]="cuidador" formControlName="empe_Id" [minCountForSearch]="0">
+                    </select2>
+                </div>
+            </div>
+        </div>
+
+
         <div class="text-end">
-            <button type="button" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-success waves-effect waves-light me-1"
+                (click)="openConfirmacion(); modal.close('')">Aceptar</button>
             <button type="button" class="btn btn-danger waves-effect waves-light"
-                (click)="modal.close('')">Cancelar</button>
+                (click)="modal.close('')">Cerrar</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #confirmarCuidadoPersonalizado let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Confirmar Pago</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <div class="row" [formGroup]="cuidadoForm">
+        </div>
+
+
+        <div class="text-end">
+            <button type="button" class="btn btn-success waves-effect waves-light me-1">Aceptar</button>
+            <button type="button" class="btn btn-danger waves-effect waves-light"
+                (click)="modal.close('')">Cerrar</button>
         </div>
     </div>
 </ng-template>

@@ -85,6 +85,7 @@ namespace Asilo.DataAccess
         public static string ActualizarEmpleados = "asil.UDP_tnEmpleados_Actualizar";
         public static string EliminarEmpleados = "asil.UPD_tbEmpleados_Eliminar";
 
+        public static string EmpleadosListCuidadoresDisponibles = "asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo";
         #endregion
 
         #region Encargados

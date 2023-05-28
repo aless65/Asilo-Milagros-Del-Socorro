@@ -1260,6 +1260,21 @@ BEGIN
 END
 GO
 
+
+/*LISTAR CUIDADORES DISPONIBLES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo 
+	@cent_Id	INT
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbEmpleados
+	WHERE [empe_Estado] = 1
+    AND carg_Id = 2
+    AND empe_Id NOT IN (SELECT empe_Id FROM asil.tbResidentes WHERE resi_Estado = 1 AND empe_Id IS NOT NULL)
+	AND cent_Id = @cent_Id
+END
+GO
+
 /*FIND EMPLEADOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_Find 
 	@empe_Id	INT

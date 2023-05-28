@@ -36,13 +36,16 @@ export class CreateComponent implements OnInit {
   agenda: Select2Data = [];
   dieta: Select2Data = [];
   cuidado: Select2Data = [];
+  cuidador: Select2Data = [];
   calendarOptions: CalendarOptions = {};
   calendarEventsData: EventInput[] = [];
   selectedDay: any = {};
   event: EventInput = {};
   isEditable: boolean = false;
   selectedValueAgenda: string = '';
+  selectedValueDieta: string = '';
   goesBack: boolean = false;
+  goesBackDieta: boolean = false;
   agendadetalle: AgendaDetalle[] = [];
   maxId: number = 0;
 
@@ -50,6 +53,7 @@ export class CreateComponent implements OnInit {
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
+  @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
   calendarComponent!: FullCalendarComponent;
 
@@ -61,6 +65,11 @@ export class CreateComponent implements OnInit {
   profileForm!: FormGroup;
 
   validationWizardForm!: FormGroup;
+
+  cuidadoForm!: FormGroup;
+
+  dietaForm!: FormGroup;
+
 
 
   constructor(private fb: FormBuilder,
@@ -147,6 +156,18 @@ export class CreateComponent implements OnInit {
       cent_Id: [0, Validators.required],
       diet_Id: [0, Validators.required],
       empe_Id: [0, Validators.required],
+    });
+
+    this.cuidadoForm = this.fb.group({
+      empe_Id: [0, Validators.required],
+    });
+
+    this.dietaForm = this.fb.group({
+      desayuno: ['', Validators.required],
+      almuerzo: ['', Validators.required],
+      cena: ['', Validators.required],
+      restricciones: ['', Validators.required],
+      observaciones: ['', Validators.required],
     });
 
     this.service.getEstadosCiviles().subscribe((response: any) => {
@@ -317,10 +338,29 @@ export class CreateComponent implements OnInit {
       console.log(this.calendarEventsData);
     });
 
-
-
-
   }
+
+  openConfirmacion(){
+    this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
+  }
+
+  populateCuidadoresDisponibles(selected: any){
+    if(selected){
+      this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
+        let options = response.data.map((item: any) => ({
+          value: item.empe_Id,
+          label: item.empe_NombreCompleto,
+        }));
+  
+        this.cuidador = [{
+          label: 'Escoja una opción',
+          options: options
+        },
+        ];
+      });
+    }
+  }
+
   /**
    * Opens event modal
    * @param title title of modal
@@ -349,11 +389,11 @@ export class CreateComponent implements OnInit {
     const selectedValue = event.value;
     if (selectedValue === '2') {
       if (modal === 'diet_Id') {
-        this.modalService.open(this.personalizarDieta);
+        this.modalService.open(this.personalizarDieta, { centered: true });
       }
 
       if (modal === 'empe_Id') {
-        this.modalService.open(this.personalizarCuidado);
+        this.modalService.open(this.personalizarCuidado, { centered: true });
       }
     }
   }
@@ -366,11 +406,26 @@ export class CreateComponent implements OnInit {
     return this.selectedValueAgenda;
   }
 
+  openDieta(event: Select2UpdateEvent, id: number) {
+    if (!this.goesBackDieta) {
+      this.selectedValueDieta = event.value.toString();
+    }
+    this.goesBackDieta = false;
+    return this.selectedValueDieta;
+  }
+
   goBack() {
     this.selectedValueAgenda = 'papa';
     this.goesBack = true;
-    return this.selectedValueAgenda;
+    this.selectedValueDieta = 'papa';
+    this.goesBackDieta = true;
   }
+
+  // goBackDieta() {
+  //   this.selectedValueDieta = 'papa';
+  //   this.goesBackDieta = true;
+  //   return this.selectedValueDieta;
+  // }
 
   handleButtonClick(modal: string) {
     if (modal === 'agen_Id') {
@@ -378,11 +433,11 @@ export class CreateComponent implements OnInit {
     }
 
     if (modal === 'diet_Id') {
-      this.modalService.open(this.personalizarDieta);
+      this.selectedValueDieta = '2';
     }
 
     if (modal === 'empe_Id') {
-      this.modalService.open(this.personalizarCuidado);
+      this.modalService.open(this.personalizarCuidado, { centered: true });
     }
   }
 

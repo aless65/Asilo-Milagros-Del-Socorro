@@ -564,6 +564,20 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         #endregion
 
         #region Encargados
