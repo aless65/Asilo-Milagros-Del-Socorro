@@ -6351,10 +6351,10 @@ svg.select.js@^3.0.1:
   dependencies:
     svg.js "^2.6.5"
 
-sweetalert2@^11.0.0, sweetalert2@^11.4.4:
-  version "11.4.4"
-  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.4.tgz"
-  integrity sha512-9yYWQuRT1v9JNI/paPTSYV+68MHwe9C+HQ/I2jtfaFzoJgYRftWXOs4JqmDSjT7m2m4r8ebMMn8LcxD1Wq9B/w==
+sweetalert2@^11.0.0, sweetalert2@^11.7.8:
+  version "11.7.8"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.7.8.tgz"
+  integrity sha512-s6WMsK0DogOZ2fj21tM5LjeBcQm7sPf+Z0sksxhZFs9HeIKAnLz8NMeIIOgcB/wS7/ZzP95d3jxzE6FbSau6eA==
 
 symbol-observable@4.0.0:
   version "4.0.0"

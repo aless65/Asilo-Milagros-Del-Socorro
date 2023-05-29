@@ -13,7 +13,8 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { AgendaDetalle, Residente,
-         Encargado, Expediente } from '../../Models';
+         Encargado, Expediente, Dieta,
+         HistorialPago } from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
 import Swal from 'sweetalert2';
 
@@ -54,12 +55,15 @@ export class CreateComponent implements OnInit {
   residente: Residente = {};
   encargado: Encargado = {};
   expediente: Expediente = {};
+  dietaModel: Dieta = {};
+  historialPago: HistorialPago = {};
   maxId: number = 0;
   isDatosPersonalesActive: boolean = true;
   isEncargadoActive: boolean = false;
   isExpedienteActive: boolean = false;
   isAdministracionActive: boolean = false;
   allValuesUndefinedOrNull!: boolean;
+  allValuesUndefinedOrNullDieta: boolean = false;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -80,6 +84,8 @@ export class CreateComponent implements OnInit {
 
   cuidadoForm!: FormGroup;
 
+  confirmarCuidadoForm!: FormGroup;
+
   dietaForm!: FormGroup;
 
 
@@ -99,6 +105,7 @@ export class CreateComponent implements OnInit {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
 
     this.expediente.expe_FechaApertura = new Date().toISOString().substring(0, 10);
+    this.historialPago.pago_Fecha = new Date().toISOString().substring(0, 10);
 
     FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       dayGridPlugin,
@@ -189,12 +196,18 @@ export class CreateComponent implements OnInit {
       empe_Id: ['', Validators.required],
     });
 
+    this.confirmarCuidadoForm = this.fb.group({
+      pago_Fecha: ['', Validators.required],
+      meto_Id: ['', Validators.required],
+    });
+
     this.dietaForm = this.fb.group({
-      desayuno: ['', Validators.required],
-      almuerzo: ['', Validators.required],
-      cena: ['', Validators.required],
-      restricciones: ['', Validators.required],
-      observaciones: ['', Validators.required],
+      desayuno: [''],
+      almuerzo: [''],
+      cena: [''],
+      merienda: [''],
+      restricciones: [''],
+      observaciones: [''],
     });
 
     this.service.getEstadosCiviles().subscribe((response: any) => {
@@ -494,15 +507,87 @@ export class CreateComponent implements OnInit {
       // });
       console.log(this.expediente);
       console.log(this.profileForm.valid);
-      // const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
-      // this.resiService.getImageUpload(expe_Fotografia);
+      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
+      this.resiService.getImageUpload(expe_Fotografia);
 
       // this.profileForm.valid = true;
     }
   }
   
   submitAdmin(){
-    if (this.accountForm.invalid) {
+    const agendaVaciaONull = this.agendadetalle;
+    this.allValuesUndefinedOrNullDieta = Object.values(agendaVaciaONull).every(value => value === undefined || value === null);
+    console.log(this.allValuesUndefinedOrNullDieta);
+
+    if(this.allValuesUndefinedOrNullDieta){
+      const formValues = this.dietaForm.value;
+      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      console.log("dieta");
+
+      if(this.allValuesUndefinedOrNullDieta){
+        console.log("dieta2");
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡La agenda no puede estar vacía!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+    
+    if(this.residente.diet_Id?.toString() === "2"){
+      const formValues = this.dietaForm.value;
+      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      console.log("dieta");
+
+      if(this.allValuesUndefinedOrNullDieta){
+        console.log("dieta2");
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡La dieta personalizada no puede estar vacía!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+
+    if(this.form4.empe_Id.value === "2"){
+      const formValues = this.confirmarCuidadoForm.value;
+      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      // console.log('dieta form', this.dietaForm);
+      // console.log('booleano', this.allValuesUndefinedOrNullDieta);
+      console.log("cuidado");
+
+      if((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm ){
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡Debe completar todos los pasos de la atención especial!',
+          icon: 'warning',
+          background: '#f6f6baf2',
+          
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+
+    if (this.profileForm.invalid) {
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -517,7 +602,7 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.accountForm.controls).forEach(field => {
+      Object.keys(this.profileForm.controls).forEach(field => {
         const control = this.accountForm.get(field);
         if (control?.invalid) {
           const errors = control.errors;
@@ -525,9 +610,45 @@ export class CreateComponent implements OnInit {
         }
       })
     } else{
-      console.log(this.residente);
-      this.isDatosPersonalesActive = false;
+      
+      if(!this.allValuesUndefinedOrNullDieta){
+        console.log(this.residente);
+        console.log(this.dietaModel);
+        this.isDatosPersonalesActive = false;
+      }
     }
+  }
+
+  submitDieta(){
+    const formValues = this.dietaForm.value;
+    this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+
+    if(this.allValuesUndefinedOrNullDieta){
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Debe llenar al menos un campo!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+    } else{
+      console.log(this.dietaModel);
+      this.selectedValueDieta = 'papa';
+      this.goesBackDieta = true;
+    }
+  }
+
+  submitConfirmar(){
+    console.log(this.historialPago);
+     if(this.confirmarCuidadoForm.valid){
+      console.log(this.historialPago, "entró");
+      this.modalService.dismissAll();
+     }
   }
 
   openConfirmacion() {
@@ -794,25 +915,26 @@ export class CreateComponent implements OnInit {
   get form3() { return this.profileForm.controls; }
   get form4() { return this.validationWizardForm.controls; }
   get formCuidado() { return this.cuidadoForm.controls; }
+  get formCuidadoConfirm() { return this.confirmarCuidadoForm.controls; }
   get formDieta() { return this.dietaForm.controls; }
 
   // goes to next wizard
-  gotoNext(): void {
-    if (this.accountForm.valid) {
-      if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
+  // gotoNext(): void {
+  //   if (this.accountForm.valid) {
+  //     if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
 
-        if (this.profileForm.valid) {
-          this.activeWizard4 = 4;
-        } else{
-          this.activeWizard4 = 3;
-        }
-      }
+  //       if (this.profileForm.valid) {
+  //         this.activeWizard4 = 4;
+  //       } else{
+  //         this.activeWizard4 = 3;
+  //       }
+  //     }
       
-      else {
-        this.activeWizard4 = 2;
-      }
-    }
+  //     else {
+  //       this.activeWizard4 = 2;
+  //     }
+  //   }
 
-  }
+  // }
 
 }

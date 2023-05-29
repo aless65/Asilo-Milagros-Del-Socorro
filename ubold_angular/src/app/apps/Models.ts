@@ -223,3 +223,24 @@ export interface MetodoPago {
 
     [key: string]: number | string | undefined;
 }
+
+export interface Dieta {
+    diet_Id?: number;
+    diet_Desayuno?: string;
+    diet_Almuerzo?: string;
+    diet_Cena?: string;
+    diet_Merienda?: string;
+    diet_Restricciones?: string;
+    diet_Observaciones?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface HistorialPago {
+    pago_Id?: number;
+    resi_Id?: number;
+    meto_Id?: number;
+    pago_Fecha?: string;
+
+    [key: string]: number | string | undefined;
+}
