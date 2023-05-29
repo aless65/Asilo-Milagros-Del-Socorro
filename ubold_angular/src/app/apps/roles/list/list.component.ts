@@ -24,7 +24,8 @@ import { Select2Data } from 'ng-select2-component';
   newRol!: FormGroup;
   pantalla: Select2Data = [];
   selectedPantallas: any[] = [];
-  
+  selectedRoleId: number | undefined = 0;
+
   
   @ViewChild('pant_Id', { static: true }) pant_Id: any;
   @ViewChild('advancedTable') advancedTable: any;
@@ -54,8 +55,6 @@ import { Select2Data } from 'ng-select2-component';
     this.service.getPantallas().subscribe((response: any) => {
       let esquemaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-    
-
 
       response.data.forEach((item: any) => {
         const esqueNombre: string = item.pant_Menu;
@@ -66,7 +65,7 @@ import { Select2Data } from 'ng-select2-component';
           esquemaLabels.push(esqueNombre);
           options[esqueNombre] = [];
         }
-    
+  
         options[esqueNombre].push({
           value: pantaId,
           label: pantaNombre
@@ -79,17 +78,10 @@ import { Select2Data } from 'ng-select2-component';
       }));
     });
 
-    /*this.service.getRolx(this.pant_Id).subscribe((response: any) => {
-      let esquemaLabels: string[] = [];
-      let options: { [key: string]: any[] } = {};})*/
-
     this.selectedPantallas = this.newRol.value.pant_Id;
   }
-
-
   // convenience getter for easy access to form fields
   get form1() { return this.newRol.controls; }
-
   /**
  * opens modal
  * @param title title of modal 
@@ -102,6 +94,15 @@ import { Select2Data } from 'ng-select2-component';
       this.esEditar = false;
     } else{
       this.esEditar = true;
+      if (this.selectedRoleId !== undefined) {
+        this.service.getRolx(this.selectedRoleId).subscribe((response: Rol[]) => {
+          this.roles = response;
+          console.log(this.roles);
+          console.log(this.selectedRoleId);
+        }, (error) => {
+          console.error(error);
+        });
+      }
     }
 
     this.activeModal.open(this.content, { centered: true });
@@ -150,6 +151,7 @@ import { Select2Data } from 'ng-select2-component';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          this.loadRoles();
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -178,13 +180,50 @@ import { Select2Data } from 'ng-select2-component';
 
  
   _fetchData(): void {
-    this.service.getRoles()
-  .subscribe((response: any)=>{
-    this.roles = response.data;
-    console.log(this.roles);
-  });
+    this.service.getRoles().subscribe((response: any) => {
+      this.roles = response.data;
+      console.log(this.roles);
+    });
+
+    
+  
+    if (this.selectedRol && this.selectedRol.role_Id && this.selectedRol.role_Id !== 0) {
+      this.service.getRolx(this.selectedRol.role_Id).subscribe(
+        (response: Rol[]) => {
+          this.roles = response;
+          console.log(this.roles);
+          console.log(this.selectedRol.role_Id);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 
+  loadRoles(): void {
+    if (this.selectedRol && this.selectedRol.role_Id && this.selectedRol.role_Id !== 0) {
+      this.service.getRolx(this.selectedRol.role_Id).subscribe(
+        (response: Rol[]) => {
+          this.roles = response;
+          let esquemaLabels: string[] = [];
+          let options: { [key: string]: any[] } = {};
+
+          this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+            label: esqueNombre,
+            options: options[esqueNombre] || []
+          }));
+          console.log(this.pantalla)
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+  }
+  
+  
+  
   /**
    * initialize advance table columns
    */
@@ -218,7 +257,8 @@ import { Select2Data } from 'ng-select2-component';
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
         if (this.selectedRol) {
-          console.log(this.selectedRol.role_Pantallas)
+          //console.log(this.selectedRol.role_Pantallas)
+          this.selectedRoleId = this.selectedRol.role_Id;
           this.newRol = this.fb.group({
             name: [this.selectedRol.role_Nombre || '', Validators.required],
             pant_Id: [this.pant_Id || '']
