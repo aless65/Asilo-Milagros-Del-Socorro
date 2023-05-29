@@ -132,13 +132,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
     this.activeModal.dismissAll('');
   }
 
-  // showSuccess(){
-  //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  // }
 
-  // openSuccess(){
-  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
-  // }
   _fetchData(): void {
     this.service.getEnfermedades()
   .subscribe((response: any)=>{
@@ -153,11 +147,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   initAdvancedTableData(): void {
     console.log(this.enfermedades);
     this.columns = [
-      // {
-      //   name: 'name',
-      //   label: 'Basic Info',
-      //   formatter: this.enfermedadNameFormatter.bind(this)
-      // },
+     
       {
         name: 'enfe_Id',
         label: 'ID',
@@ -225,7 +215,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   // action cell formatter
   enfermedadActionFormatter(enfermedad: Enfermedad): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
+      ` <a href="javascript:void(0);"  class="edit action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
         <a href="javascript:void(0);" class="delete action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }

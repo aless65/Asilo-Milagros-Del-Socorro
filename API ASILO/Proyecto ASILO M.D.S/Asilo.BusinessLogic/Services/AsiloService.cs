@@ -616,6 +616,20 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         #endregion
 
         #region Encargados
@@ -810,6 +824,23 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+
+
+        public ServiceResult ListadoExpePagan()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _expedientesRepository.ListarPagan();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+
         public ServiceResult ListadoHistorialExpedientesPorExpediente(int id)
         {
             var result = new ServiceResult();
@@ -1070,6 +1101,20 @@ namespace Asilo.BusinessLogic.Services
             catch (Exception ex)
             {
                 return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id);
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
             }
         }
         #endregion

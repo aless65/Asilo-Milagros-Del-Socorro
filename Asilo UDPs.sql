@@ -1841,6 +1841,21 @@ BEGIN
 END
 GO
 
+
+/*LISTAR CUIDADORES DISPONIBLES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo 
+	@cent_Id	INT
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbEmpleados
+	WHERE [empe_Estado] = 1
+    AND carg_Id = 2
+    AND empe_Id NOT IN (SELECT empe_Id FROM asil.tbResidentes WHERE resi_Estado = 1 AND empe_Id IS NOT NULL)
+	AND cent_Id = @cent_Id
+END
+GO
+
 /*FIND EMPLEADOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_Find 
 	@empe_Id	INT
@@ -1978,21 +1993,14 @@ GO
 
 /* ELIMINAR EMPLEADO*/
 
-CREATE OR ALTER PROCEDURE asil.UPD_tbEmpleados_Eliminar
+CREATE OR ALTER   PROCEDURE [asil].[UPD_tbEmpleados_Eliminar]
 	@empe_Id	INT
 AS
 BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE empe_Id = @empe_Id)
-			BEGIN
+	BEGIN TRY		
 				UPDATE asil.tbEmpleados 
 				SET empe_Estado = 0
-				WHERE empe_Id = @empe_Id
-
-				SELECT 1 AS proceso
-			END
-		ELSE
-			SELECT 'El registro del empleado no se puede eliminar porque está siendo usado'
+				WHERE empe_Id = @empe_Id			
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -2530,6 +2538,7 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbEncargados
 AS
 	SELECT enca_Id,
+		  enca_Nombres+' '+enca_Apellidos nombreCompleto,
 	       enca_Nombres,
 		   enca_Apellidos,
 		   enca_Identidad,
@@ -2539,7 +2548,8 @@ AS
 		   
 		   CASE WHEN  enca_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
-		   END AS  enca_Sexo,
+		   END AS  enca_SexoDesc,
+		   t1.enca_Sexo,
 		   t1.muni_Id,
 		   t7.muni_Nombre,
 		   enca_Direccion,
@@ -3338,8 +3348,9 @@ AS
 	       habi_Numero,
 		   t1.cate_Id,
 		   t4.cate_Nombre,
+		   t4.cate_Capacidad,
 		   t1.cent_Id,
-		   t5.cent_Nombre
+		   t5.cent_Nombre,
 		   habi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   habi_FechaCreacion,
@@ -3353,6 +3364,21 @@ AS
 		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
 		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
 		   ON t1.cent_Id = t5.cent_Id
+GO
+
+/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
+	@cent_Id	INT
+AS
+BEGIN
+
+	SELECT *
+	FROM asil.VW_tbHabitaciones habi
+	WHERE (SELECT COUNT(habiresi_Id)
+		FROM [asil].[tbHabitacionesXResidente]
+		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
+	AND cent_Id = @cent_Id
+END
 GO
 
 /*LISTAR HABITACIONES*/
@@ -4406,3 +4432,78 @@ BEGIN
 	END CATCH
 END
 GO
+
+
+CREATE OR ALTER   PROCEDURE [acce].[UDP_Login]
+	@usua_NombreUsuario Nvarchar(100),
+	@usua_Contrasena Nvarchar(Max)
+AS
+BEGIN
+
+        BEGIN TRY
+        Declare @Password Nvarchar(max) = (HASHBYTES('SHA2_512',@usua_Contrasena))
+        SELECT [usua_NombreUsuario],[usua_Contrasena] 
+		FROM    [acce].[tbUsuarios]    
+		WHERE   [usua_Contrasena] = @Password 
+        AND     [usua_NombreUsuario] = @usua_NombreUsuario
+
+        SELECT 1 as Proceso
+
+        END TRY
+        BEGIN CATCH
+
+        SELECT 0 as Proceso
+        END CATCH
+
+END
+GO
+
+
+--[acce].[UDP_Login] 'df','sd'
+
+--VISTAS PARA EL HISTORIAL DE PAGO
+
+--CREATE OR ALTER   VIEW [asil].[VW_tbExpedientes2]
+--AS
+--	SELECT t1.expe_Id,
+--		   t1.resi_Id,
+--		   (t5.[resi_Nombres] + ' ' + t5.[resi_Apellidos]) AS resi_NombreCompleto,
+--		   t5.resi_Estado,
+--		   t1.tiposang_Id,
+--		   t6.tiposang_Nombre,
+--		   t1.expe_FechaApertura,
+--		   t1.expe_Fotografia,
+--		   t1.expe_UsuCreacion, 
+--		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+--		   t1.expe_FechaCreacion, 
+--	       t1.expe_UsuModificacion,
+--		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+--		   t1.expe_FechaModificacion,
+--		   t1.expe_Estado
+--		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
+--		   ON t1.expe_UsuCreacion = T2.usua_Id
+--		   LEFT JOIN acce.tbUsuarios t3
+--		   ON t1.expe_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbResidentes t5
+--		   ON t1.resi_Id = t5.resi_Id LEFT JOIN asil.tbTiposSangre t6
+--		   ON t1.tiposang_Id = t6.tiposang_Id
+--GO
+
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_ListarResiPagan
+AS
+BEGIN
+BEGIN TRY
+    SELECT * FROM [asil].[VW_tbExpedientes]
+    WHERE [resi_Id] IN (SELECT [resi_Id] FROM [asil].[tbHistorialPagos])
+
+    SELECT 1
+END TRY
+
+BEGIN CATCH
+    SELECT 0
+END CATCH
+END
+GO
+
+asil.UDP_ListarResiPagan

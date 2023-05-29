@@ -43,7 +43,7 @@ export class LockScreen2Component implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
     if (this.lockScreenForm2.valid) {
-      this.authenticationService.login(this.authenticationService.currentUser()?.email!, this.formValues.password?.value)
+      this.authenticationService.login(this.authenticationService.currentUser()?.usua_NombreUsuario!, this.formValues.password?.value)
         .pipe(first())
         .subscribe(
           (data: any) => {

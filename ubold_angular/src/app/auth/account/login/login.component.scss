@@ -1,0 +1,21 @@
+.logo-img {
+    width: 220px; /* Ajusta el valor según el tamaño deseado */
+    margin: 0 auto; /* Centra horizontalmente la imagen */
+  }
+  
+  .login-card {
+    margin-left: 0px;
+    background-image: url('/assets/images/fondoLogin.jpg');
+    background-color: rgba(0, 0, 0, 0.8);
+    background-size: cover;
+    background-position: left;
+    padding: 30px;
+  }
+  .fixed-size-card {
+    height: 510px; /* Ajusta el valor según el tamaño deseado */
+  }
+  
+  .transparent-card {
+    background-color: rgba(0, 0, 0, 0.5); /* Ajusta el último valor (0.0 - 1.0) para cambiar el nivel de transparencia */
+  }
+  

@@ -1,0 +1,16 @@
+.custom-card {
+    width: 100%; /* Establece el ancho deseado para la tarjeta */
+    height: 310px; /* Establece la altura deseada para la tarjeta */
+  }
+  
+  .custom-card .bg-light {
+    max-height: 200px; /* Establece la altura máxima para la imagen */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde */
+  }
+  
+  .custom-card img {
+    width: 100%; /* Asegura que la imagen ocupe todo el espacio disponible */
+    height: auto; /* Permite que la altura se ajuste automáticamente para mantener la proporción */
+    object-fit: cover; /* Ajusta el tamaño de la imagen para que cubra completamente el contenedor */
+  }
+  

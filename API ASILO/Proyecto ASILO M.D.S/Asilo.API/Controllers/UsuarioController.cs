@@ -65,5 +65,12 @@ namespace Asilo.API.Controllers
             return Ok(delete);
         }
 
+
+        [HttpGet("Login")]
+        public IActionResult Login(string usuario, string contrasena)
+        {
+            var list = _seguridadServivce.Login(usuario, contrasena);
+            return Ok(list);
+        }
     }
 }

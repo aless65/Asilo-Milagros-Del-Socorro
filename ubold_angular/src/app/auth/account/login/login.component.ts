@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/service/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-auth-login',
@@ -30,8 +31,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['ubold@coderthemes.com', [Validators.required, Validators.email]],
-      password: ['test', Validators.required]
+      email: ['admin', [Validators.required]],
+      password: ['123', Validators.required]
     });
 
     // reset login status
@@ -55,16 +56,46 @@ export class LoginComponent implements OnInit {
     this.formSubmitted = true;
     if (this.loginForm.valid) {
       this.loading = true;
-      this.authenticationService.login(this.formValues.email?.value, this.formValues.password?.value)
-        .pipe(first())
-        .subscribe(
+      this.authenticationService.LoginPrueba(this.formValues.email?.value, this.formValues.password?.value)
+      .pipe(first())
+        .subscribe((data:any) => {
+      
+       if(data.data != ''){
+            this.router.navigate([this.returnUrl]);
+            console.log("por kha?");  
+           
+          }
+        else  if(data.data == ''){  
+          this.loading = false;
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Usuario o contraseña incorrectos!',
+              icon: 'warning',
+              background: '#f6f6baf2'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+          (error: any) => {
+            this.error = error;
+            this.loading = false;
+          }
+          console.log(data); // Log the response data
+        } );
+       /* .subscribe(
           (data: any) => {
             this.router.navigate([this.returnUrl]);
           },
           (error: any) => {
             this.error = error;
             this.loading = false;
-          });
+          }
+          
+          );*/
     }
   }
 

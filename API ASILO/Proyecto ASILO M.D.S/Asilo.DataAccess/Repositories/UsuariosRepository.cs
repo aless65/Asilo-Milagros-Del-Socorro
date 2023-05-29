@@ -61,6 +61,17 @@ namespace Asilo.DataAccess.Repositories
             return db.Query<VW_tbUsuarios>(ScriptsDataBase.UDP_Lista_Usuarios, null, commandType: CommandType.StoredProcedure);
         }
 
+        public IEnumerable<VW_tbUsuarios> Login(string usuario, string contrasena)
+        {
+            using var db = new SqlConnection(AsiloContext.ConnectionString); 
+            var parametros = new DynamicParameters();
+            parametros.Add("@usua_NombreUsuario", usuario, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_Contrasena", contrasena, DbType.String, ParameterDirection.Input);
+
+            return db.Query<VW_tbUsuarios>(ScriptsDataBase.Login, parametros, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+
         public RequestStatus Update(tbUsuarios item)
         {
             RequestStatus result = new RequestStatus();

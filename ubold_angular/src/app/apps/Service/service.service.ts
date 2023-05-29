@@ -4,8 +4,10 @@ import { EstadoCivil, TipoSangre,
          Enfermedad, Municipio,
          Parentesco, Centro,
          Actividad, Medicamento,
-         Cargos, Centros } from '../Models';
+         Cargos, Centros, Residente,
+         Habitacion, MetodoPago } from '../Models';
 import { environment } from 'src/environments/environment';
+import { Empleados } from '../empleados/Model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,9 @@ export class ServiceService {
     return this.http.get<Enfermedad[]>(`${this.variableGlobal}Enfermedades/Listado`);
   }
   
+ /* getMunicipios(){
+    return this.http.get<Municipio[]>(`http://asilomilagrosdelsocorro.somee.com/api/Municipios/Listado?depa=0`);
+  }*/
   getMunicipios(){
     return this.http.get<Municipio[]>(`${this.variableGlobal}Municipios/Listado?depa=0`);
   }
@@ -47,8 +52,24 @@ export class ServiceService {
     return this.http.get<Medicamento[]>(`${this.variableGlobal}Medicamentos/Listado`);
   }
   
-  
   getCargos(){
     return this.http.get<Cargos[]>(`${this.variableGlobal}Cargos/Listado`);
+  }
+
+  getResidentes(){
+    return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Listado`);
+  
+  }
+  
+  getCuidadoresDisponibles(id: number){
+    return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/CuidadoresDisponibles?cent_Id=${id}`);
+  }
+  
+  getHabitacionesDisponibles(id: number){
+    return this.http.get<Habitacion[]>(`${this.variableGlobal}Habitaciones/HabitacionesDisponibles?cent_Id=${id}`);
+  }
+  
+  getMetodosPago(){
+    return this.http.get<MetodoPago[]>(`${this.variableGlobal}MetodosPago/Listado`);
   }
 }
