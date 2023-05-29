@@ -32,8 +32,9 @@ export interface Residente {
     usuModif?: string;
     resi_FechaCreacion?: string;
     resi_FechaModificacion?: string;
+    habi_Id?: number;
 
-    [key: string]: number | string | undefined ;
+    [key: string]: number | string | undefined | number[];
 }
 
 export interface Encargado {

@@ -28,6 +28,29 @@ export class ServiceService {
   getImageUpload(img: string) {
     const headers = new HttpHeaders();
     headers.delete('Content-Type');
+    
+
+    // fetch(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   // body: JSON.stringify(data)
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw new Error('Error en la solicitud');
+    //     }
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     // Manejar la respuesta exitosa
+    //     console.log(data);
+    //   })
+    //   .catch(error => {
+    //     // Manejar el error
+    //     console.error(error);
+    //   });
 
     return this.http.post<any>(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, { headers: headers }).subscribe(
       (response) => {

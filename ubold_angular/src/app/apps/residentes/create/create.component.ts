@@ -178,7 +178,7 @@ export class CreateComponent implements OnInit {
     })
 
     this.validationWizardForm = this.fb.group({
-      agen_Id: ['', Validators.requiredTrue],
+      agen_Id: ['', Validators.required],
       cent_Id: ['', Validators.required],
       diet_Id: ['', Validators.required],
       empe_Id: ['', Validators.required],
@@ -493,12 +493,42 @@ export class CreateComponent implements OnInit {
       //   ];
       // });
       console.log(this.expediente);
-      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
-      this.resiService.getImageUpload(expe_Fotografia)
-      this.isDatosPersonalesActive = false;
+      console.log(this.profileForm.valid);
+      // const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
+      // this.resiService.getImageUpload(expe_Fotografia);
+
+      // this.profileForm.valid = true;
     }
   }
   
+  submitAdmin(){
+    if (this.accountForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.accountForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      console.log(this.residente);
+      this.isDatosPersonalesActive = false;
+    }
+  }
 
   openConfirmacion() {
     this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
@@ -586,6 +616,7 @@ export class CreateComponent implements OnInit {
   }
 
   openAgenda(event: Select2UpdateEvent, id: number) {
+    this.residente.agen_Id = Number(this.event.value.toString());
     if (!this.goesBack) {
       this.selectedValueAgenda = event.value.toString();
     }
@@ -594,6 +625,7 @@ export class CreateComponent implements OnInit {
   }
 
   openDieta(event: Select2UpdateEvent, id: number) {
+    this.residente.diet_Id = Number(this.event.value.toString());
     if (!this.goesBackDieta) {
       this.selectedValueDieta = event.value.toString();
     }
@@ -762,16 +794,20 @@ export class CreateComponent implements OnInit {
   get form3() { return this.profileForm.controls; }
   get form4() { return this.validationWizardForm.controls; }
   get formCuidado() { return this.cuidadoForm.controls; }
+  get formDieta() { return this.dietaForm.controls; }
 
   // goes to next wizard
   gotoNext(): void {
     if (this.accountForm.valid) {
       if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
-        this.activeWizard4 = 3;
+
+        if (this.profileForm.valid) {
+          this.activeWizard4 = 4;
+        } else{
+          this.activeWizard4 = 3;
+        }
       }
-      else if (this.profileForm.valid) {
-        this.activeWizard4 = 4;
-      }
+      
       else {
         this.activeWizard4 = 2;
       }
