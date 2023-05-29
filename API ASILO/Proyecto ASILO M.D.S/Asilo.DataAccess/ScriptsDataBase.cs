@@ -18,12 +18,23 @@ namespace Asilo.DataAccess
 
         #endregion
 
-        #region Pantallas
+        #region Roles
+        public static string UDP_Lista_Roles = "acce.UDP_acce_tbRoles_List";
+        public static string UDP_Find_Roles = "acce.UDP_acce_tbRoles_Find";
+        public static string UDP_Inserta_Roles = "acce.UDP_acce_tbRoles_Insert";
+        public static string UDP_Edita_Roles = "acce.UDP_acce_tbRoles_Update";
+        public static string UDP_Elimina_Roles = "acce.UDP_acce_tbRoles_Delete";
 
+        public static string UDP_Lista_RolesXPantalla = "acce.UDP_acce_tbPantallasPorRoles_List";
+        public static string UDP_Inserta_RolesXPantalla = "acce.UDP_acce_tbPantallasPorRoles_Insert";
+        public static string UDP_Elimina_RolesXPantalla = "acce.UDP_acce_tbPantallaPorRoles_Delete";
         #endregion
 
-        #region Roles
+        #region Pantallas
+        public static string UDP_Lista_Pantallas = "acce.UDP_acce_tbPantallas_List";
+        public static string UDP_Lista_PantallasMenu = "acce.UDP_opti_tbPantallas_ListMenu";
 
+        public static string UDP_Accesos_Pantallas = "acce.UDP_tbRolesPorPantalla_Accesos";
         #endregion
 
         #region Departamentos
@@ -54,6 +65,9 @@ namespace Asilo.DataAccess
 
         #region Cargos
         public static string UDP_Lista_Cargos = "asil.UDP_asil_tbCargos_List";
+        public static string UDP_Insert_Cargos = "asil.UDP_asil_tbCargos_Insert";
+        public static string UDP_Update_Cargos = "asil.UDP_asil_tbCargos_Update";
+        public static string UDP_Delete_Cargos = "asil.UDP_asil_tbCargos_Delete";
         #endregion
 
         #region Categorias Habitaciones
@@ -183,7 +197,6 @@ namespace Asilo.DataAccess
         #endregion
 
         #region Tipos de sangre
-        public static string UDP_Lista_TiposSangre = "asil.UDP_asil_tbTiposSangre_List";
 
         #endregion
     }

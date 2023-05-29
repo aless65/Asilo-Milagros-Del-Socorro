@@ -14,7 +14,16 @@ namespace Asilo.DataAccess.Repositories
     {
         public RequestStatus Delete(int id)
         {
-            throw new NotImplementedException();
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@carg_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Delete_Cargos, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
 
         public VW_tbCargos Find(int? id)
@@ -24,7 +33,17 @@ namespace Asilo.DataAccess.Repositories
 
         public RequestStatus Insert(tbCargos item)
         {
-            throw new NotImplementedException();
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parametros = new DynamicParameters();
+            parametros.Add("@carg_Nombre", item.carg_Nombre, DbType.String, ParameterDirection.Input);
+            parametros.Add("@carg_UsuCreacion", item.carg_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+
+            result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Insert_Cargos, parametros, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
 
         public IEnumerable<VW_tbCargos> List()
@@ -36,7 +55,18 @@ namespace Asilo.DataAccess.Repositories
 
         public RequestStatus Update(tbCargos item)
         {
-            throw new NotImplementedException();
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parametros = new DynamicParameters();
+            parametros.Add("@carg_Id", item.carg_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@carg_Nombre", item.carg_Nombre, DbType.String, ParameterDirection.Input);
+            parametros.Add("@carg_UsuModificacion", item.carg_UsuModificacion, DbType.Int32, ParameterDirection.Input);
+
+            result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Update_Cargos, parametros, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

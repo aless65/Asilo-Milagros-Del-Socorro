@@ -39,9 +39,12 @@ namespace Asilo.DataAccess.Context
         public virtual DbSet<VW_tbMedicamentos> VW_tbMedicamentos { get; set; }
         public virtual DbSet<VW_tbMetodosPagos> VW_tbMetodosPagos { get; set; }
         public virtual DbSet<VW_tbMuertos> VW_tbMuertos { get; set; }
+        public virtual DbSet<VW_tbPantallas> VW_tbPantallas { get; set; }
+        public virtual DbSet<VW_tbPantallasPorRoles> VW_tbPantallasPorRoles { get; set; }
         public virtual DbSet<VW_tbParentescos> VW_tbParentescos { get; set; }
         public virtual DbSet<VW_tbProveedores> VW_tbProveedores { get; set; }
         public virtual DbSet<VW_tbResidentes> VW_tbResidentes { get; set; }
+        public virtual DbSet<VW_tbRoles> VW_tbRoles { get; set; }
         public virtual DbSet<VW_tbTiposSangre> VW_tbTiposSangre { get; set; }
         public virtual DbSet<VW_tbUsuarios> VW_tbUsuarios { get; set; }
         public virtual DbSet<tbActividades> tbActividades { get; set; }
@@ -656,6 +659,62 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usua_UsuModificacion_Nombre).HasMaxLength(100);
             });
 
+            modelBuilder.Entity<VW_tbPantallas>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbPantallas", "acce");
+
+                entity.Property(e => e.pant_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.pant_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.pant_Icon)
+                    .IsRequired()
+                    .HasMaxLength(80);
+
+                entity.Property(e => e.pant_Menu)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.pant_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.pant_NombreUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.pant_NombreUsuarioModificacio).HasMaxLength(100);
+
+                entity.Property(e => e.pant_Url)
+                    .IsRequired()
+                    .HasMaxLength(300);
+            });
+
+            modelBuilder.Entity<VW_tbPantallasPorRoles>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbPantallasPorRoles", "acce");
+
+                entity.Property(e => e.pantrole_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.pantrole_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.pantrole_NombreMenu)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.pantrole_NombrePantalla)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.pantrole_NombreRol)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
             modelBuilder.Entity<VW_tbParentescos>(entity =>
             {
                 entity.HasNoKey();
@@ -800,6 +859,27 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usuCrea).HasMaxLength(100);
 
                 entity.Property(e => e.usuModif).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VW_tbRoles>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbRoles", "acce");
+
+                entity.Property(e => e.role_FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.role_FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.role_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.role_NombreUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.role_NombreUsuarioModificacion).HasMaxLength(100);
             });
 
             modelBuilder.Entity<VW_tbTiposSangre>(entity =>

@@ -221,6 +221,66 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult InsertCargos(tbCargos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _cargosRepository.Insert(item);
+
+                if (insert.MessageStatus == "El cargo ha sido insertado")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este cargo ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateCargos(tbCargos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _cargosRepository.Update(item);
+
+                if (update.MessageStatus == "El cargo ha sido editado")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "El cargo ya existe")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteCargos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _cargosRepository.Delete(id);
+
+                if (delete.MessageStatus == "El cargo ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "El cargo no puede ser eliminado ya que está siendo usado en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         #endregion
 
         #region Categorias Habitaciones
@@ -268,33 +328,25 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+       
+
         public ServiceResult InsertarCentros(tbCentros item)
         {
-            ServiceResult result = new ServiceResult();
+            var result = new ServiceResult();
             try
             {
-                var list = _centrosRepository.Insert(item);
-                if (list.CodeStatus > 0)
-                {
-                    return result.SetMessage("Exitoso", ServiceResultType.Success);
-                }
-                else if (list.CodeStatus == -2)
-                {
-                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
-                }
-                else if (list.CodeStatus == 0)
-                {
-                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
-                }
-                else
-                {
-                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
-                }
-            }
-            catch (Exception xe)
-            {
+                var insert = _centrosRepository.Insert(item);
 
-                return result.Error(xe.Message);
+                if (insert.MessageStatus == "El centro ha sido insertado con éxito")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "El centro ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
             }
         }
 
@@ -1622,19 +1674,6 @@ namespace Asilo.BusinessLogic.Services
         #endregion
 
         #region Tipos de sangre
-        public ServiceResult ListadoTiposSangre()
-        {
-            var result = new ServiceResult();
-            try
-            {
-                var list = _tiposSangreRepository.List();
-                return result.Ok(list);
-            }
-            catch (Exception e)
-            {
-                return result.Error(e.Message);
-            }
-        }
 
         #endregion
     }

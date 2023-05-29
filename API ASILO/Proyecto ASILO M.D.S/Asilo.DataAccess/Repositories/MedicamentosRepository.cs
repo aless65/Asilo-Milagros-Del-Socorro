@@ -45,8 +45,8 @@ namespace Asilo.DataAccess.Repositories
             var parametros = new DynamicParameters();
             parametros.Add("@medi_Nombre", item.medi_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@prov_Id", item.prov_Id, DbType.Int32, ParameterDirection.Input);
-           /* parametros.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@invecent_Stock", item.invecent_Stock, DbType.Int32, ParameterDirection.Input);*/
+           // parametros.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
+          //  parametros.Add("@invecent_Stock", item.invecent_Stock, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@medi_UsuCreacion", item.medi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
 
 
@@ -71,8 +71,8 @@ namespace Asilo.DataAccess.Repositories
             parametros.Add("@medi_Id", item.medi_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@medi_Nombre", item.medi_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@prov_Id", item.prov_Id, DbType.Int32, ParameterDirection.Input);
-          /*  parametros.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@invecent_Stock", item.invecent_Stock, DbType.Int32, ParameterDirection.Input);*/
+           // parametros.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
+            //parametros.Add("@invecent_Stock", item.invecent_Stock, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@medi_UsuModificacion", item.medi_UsuModificacion, DbType.Int32, ParameterDirection.Input);
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Medicamentos, parametros, commandType: CommandType.StoredProcedure);

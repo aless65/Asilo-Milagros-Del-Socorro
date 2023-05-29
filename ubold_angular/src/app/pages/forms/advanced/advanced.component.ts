@@ -17,7 +17,7 @@ export class AdvancedComponent implements OnInit {
   // select2 config
   countries: Select2Data = [];
 
-  // date picker config
+  // date picker config configuración del selector de fecha
   model1!: NgbDateStruct;
   model2!: NgbDateStruct;
   hidden: boolean = true;

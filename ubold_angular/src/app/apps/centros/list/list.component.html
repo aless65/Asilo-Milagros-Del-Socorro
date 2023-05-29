@@ -10,12 +10,12 @@
                         <!-- <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
                                 class="mdi mdi-cog"></i></button> -->
                         <button type="button" class="btn btn-danger waves-effect waves-light mb-2"
-                           >Agregar</button>
+                            (click)="openModal('new')">Agregar</button>
                     </div>
                 </div><!-- end col-->
             </div>
             <!-- customer table -->
-            <app-advanced-table  [tableData]="centros"
+            <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="centros"
                 [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
                 (search)="searchData($event)" [isSortable]="false"
                 tableClasses="table-centered table-nowrap table-hover">
@@ -25,4 +25,80 @@
     </div> <!-- end card-->
 </div>
 <!-- end row -->
+
+<!-- Modal -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">{{ esEditar ? 'Editar centro' : 'Agregar centro' }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="newCentro" #addCentro="ngForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="container">
+            <div class="col-sm-8">
+            <div class="row mb-3">
+                <label for="name" class="form-label">Nombre centro</label>
+                <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
+                    [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
+                <div *ngIf="addCentro.submitted && form1.name.invalid " class="invalid-feedback">
+                    Nombre requerido
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row mb-3">
+                <label class="col-form-label" for="muni_Id">Municipio</label>
+                <div class="col">
+                    <select2 id="muni_Id" [data]="municipio" formControlName="muni_Id" [minCountForSearch]="0"></select2>
+                </div>
+            </div>
+            <div *ngIf="newCentro?.get('muni_Id')?.invalid && newCentro?.get('muni_Id')?.touched" class="text-danger">
+                 Municipio requerido.
+            </div>
+        </div>
+        
+    
+        <div class="col-sm-6">
+            <div class="row mb-3">
+                <label for="direccion" class="col-form-label">Dirección centro</label>
+                <div class="col">
+                    <input type="text" class="form-control" id="direccion" placeholder="Dirección" required formControlName="direccion" [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
+                    <div *ngIf="addCentro.submitted && form1.name.invalid" class="invalid-feedback">
+                        Dirección requerido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
+                <button type="button" class="btn btn-danger waves-effect waves-light"
+                    (click)="modal.close('')">Cancelar</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Modal Delete -->
+<ng-template #deleteCentroModal let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Eliminar centro</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <p>¿Realmente desea eliminar esta centro?</p>
+        <div class="text-end">
+            <button type="button" (click)="deleteCentro()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-danger waves-effect waves-light"
+                (click)="modal.close('')">Cancelar</button>
+        </div>
+    </div>
+</ng-template>
 

@@ -40,21 +40,18 @@ namespace Asilo.DataAccess.Repositories
 
         public RequestStatus Insert(tbCentros item)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@cent_Nombre", item.cent_Nombre, DbType.String, ParameterDirection.Input);
-            parameters.Add("@muni_Id", item.muni_Id, DbType.Int32, ParameterDirection.Input);
-            parameters.Add("@cent_Direccion", item.cent_Direccion, DbType.String, ParameterDirection.Input);
-            parameters.Add("@cent_UsuCreacion", item.cent_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+            RequestStatus result = new RequestStatus();
+
             using var db = new SqlConnection(AsiloContext.ConnectionString);
-            var result = db.QueryFirst<int>(ScriptsDataBase.AgregarCentro, parameters, commandType: CommandType.StoredProcedure);
 
-            RequestStatus reques = new()
-            {
-                CodeStatus = result,
-                MessageStatus = "Centro insertado"
-            };
+            var parametros = new DynamicParameters();
+            parametros.Add("@cent_Nombre", item.cent_Nombre, DbType.String, ParameterDirection.Input);
+            parametros.Add("@muni_Id", item.muni_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cent_Direccion", item.cent_Direccion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cent_UsuCreacion", item.cent_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+            result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.AgregarCentro, parametros, commandType: CommandType.StoredProcedure);
 
-            return reques;
+            return result;
         }
 
         public IEnumerable<VW_tbCentros> List()
@@ -74,7 +71,7 @@ namespace Asilo.DataAccess.Repositories
             var parametros = new DynamicParameters();
             parametros.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@cent_Nombre", item.cent_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@muni_Id", item.muni_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@muni_Id", item.muni_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@cent_Direccion", item.cent_Direccion, DbType.String, ParameterDirection.Input);
             parametros.Add("@cent_UsuModificacion", item.cent_UsuModificacion, DbType.Int32, ParameterDirection.Input);
             var resultado = db.QueryFirst<int>(ScriptsDataBase.ActualizarCentro, parametros, commandType: System.Data.CommandType.StoredProcedure);

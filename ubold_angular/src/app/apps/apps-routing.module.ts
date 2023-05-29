@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule) },
+  { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule) },
   { path: 'enfermedades', loadChildren: () => import('./enfermedades/enfermedades.module').then(m => m.EnfermedadesModule) },
   { path: 'proveedores', loadChildren: () => import('./proveedores/proveedores.module').then(m => m.ProveedoresModule) },
   {path: 'centros', loadChildren: () => import('./centros/centros.module').then(m => m.CentrosModule) },

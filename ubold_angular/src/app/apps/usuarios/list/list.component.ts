@@ -98,6 +98,16 @@ import { ServiceService } from 'src/app/apps/usuarios/Service/service.service';
         formatter: (usuario: Usuario) => usuario.usua_NombreUsuario
       },
       {
+        name: 'role_Nombre',
+        label: 'Rol',
+        formatter: (usuario: Usuario) => usuario.role_Nombre
+      },
+      {
+        name: 'usua_EsAdmin',
+        label: 'Es Admin',
+        formatter: this.usuarioEsAdminFormatter.bind(this),
+      },
+      {
         name: 'Action',
         label: 'Action',
         width: 82,
@@ -112,7 +122,11 @@ import { ServiceService } from 'src/app/apps/usuarios/Service/service.service';
 
   
     
-  
+  usuarioEsAdminFormatter(usuario: Usuario): any {
+    return this.sanitizer.bypassSecurityTrustHtml(
+      `<input type="checkbox" ${usuario.usua_EsAdmin ? 'checked' : ''} disabled>`
+    );
+  }
 
 
   // formats name cell
@@ -126,12 +140,16 @@ import { ServiceService } from 'src/app/apps/usuarios/Service/service.service';
   }
 
   // action cell formatter
-  usuarioActionFormatter(usuario: Usuario): any {
-    return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${usuario.usua_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${usuario.usua_Id}"> <i class="mdi mdi-delete"></i></a>`
-    );
-  }
+  // action cell formatter
+usuarioActionFormatter(usuario: Usuario): any {
+
+  const editLink = `<a href="javascript:void(0);" class="edit action-icon" id="${usuario.usua_Id}"><i class="mdi mdi-square-edit-outline"></i></a>`;
+  const deleteLink = `<a href="javascript:void(0);" class="delete action-icon" id="${usuario.usua_Id}"><i class="mdi mdi-delete"></i></a>`;
+
+  const content = editLink + deleteLink;
+  return this.sanitizer.bypassSecurityTrustHtml(content);
+}
+
   
   // editEnfermedad(id: string): void {
   //   // Handle edit action

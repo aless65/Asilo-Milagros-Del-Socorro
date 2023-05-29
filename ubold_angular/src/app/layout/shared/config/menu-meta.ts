@@ -37,6 +37,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/usuarios/list',
     },
     {
+        key: 'apps-roles',
+        label: 'Roles',
+        isTitle: false,
+        icon: 'user',
+        link: '/apps/roles/list',
+    },
+    {
         key: 'apps-centros',
         label: 'Centros',
         isTitle: false,
