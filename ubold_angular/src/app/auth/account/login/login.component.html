@@ -19,8 +19,7 @@
                                 </span>
                             </a>
                         </div>
-                        <p class="text-muted mb-4 mt-3" i18n>Enter your email address and password to access admin
-                            panel.</p>
+                        <p class="text-muted mb-4 mt-3" i18n>Ingrese su usuario y contraseña para poder ingresar..........</p>
                     </div>
 
                     <form name="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -29,29 +28,26 @@
                         <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
 
                         <div class="mb-3">
-                            <label for="emailaddress" class="form-label" i18n>Email address</label>
+                            <label for="emailaddress" class="form-label" i18n>Usuario:</label>
                             <input class="form-control" type="email" id="emailaddress" i18n-placeholder
-                                placeholder="Enter your email" formControlName="email"
+                                placeholder="usuario" formControlName="email"
                                 [ngClass]="{'is-invalid': formSubmitted && formValues.email.invalid}" required>
 
                             <div *ngIf="formSubmitted && formValues.email.invalid" class="invalid-feedback">
 
                                 <div *ngIf="formValues.email.errors?.required" i18n>
-                                    Email is required.
+                                    El usuario es requerido.
                                 </div>
-                                <div *ngIf="formValues.email.errors?.email" i18n>
-                                    Email must be a valid Email Address
-                                </div>
-
+                              
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label" i18n>Password</label>
+                            <label for="password" class="form-label" i18n>contraseña:</label>
                             <div class="input-group input-group-merge">
                                 <input [type]="showPassword? 'text' : 'password'" id="password" class="form-control"
                                     i18n-placeholder placeholder="Enter your password" formControlName="password"
-                                    required minlength="4"
+                                    
                                     [ngClass]="{'is-invalid': formSubmitted && formValues.password.invalid}">
                                 <div class="input-group-text" (click)="showPassword=!showPassword">
                                     <span class="password-eye"></span>
@@ -59,7 +55,7 @@
                                 <div *ngIf="formSubmitted && formValues.password.invalid" class="invalid-feedback">
 
                                     <div *ngIf="formValues.password.errors?.required" i18n>
-                                        Password is required.
+                                       La contraseña es requerida.
                                     </div>
                                     <div *ngIf="formValues.password.errors?.minlength" i18n>
                                         Password length must be greater than 3.

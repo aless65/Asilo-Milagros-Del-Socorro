@@ -177,7 +177,7 @@ export class EditarComponent implements OnInit {
     
   }
   Editar() {
-    const id: number | undefined = isNaN(parseInt(localStorage.getItem("id") ?? '', 10)) ? undefined : parseInt(localStorage.getItem("id") ?? '', 10);
+    const id: number | undefined = isNaN(parseInt(localStorage.getItem("ID2") ?? '', 10)) ? undefined : parseInt(localStorage.getItem("ID2") ?? '', 10);
     console.log(id);
   
     this.service.getEmpleadoId(id)

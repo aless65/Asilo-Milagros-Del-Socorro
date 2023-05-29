@@ -6,7 +6,10 @@ export const environment = {
   production: false,
   demo: 'default',
   GOOGLE_MAPS_API_KEY: 'AIzaSyDpgQMpcfx1QU-8SM-ljcgjG4xrYtIYby4',
-  variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/'
+  variableGlobal: ' https://localhost:44371/api/'
+
+
+  /*variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/'*/
 };
 
 /*

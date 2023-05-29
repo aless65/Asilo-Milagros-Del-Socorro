@@ -80,13 +80,15 @@ namespace Asilo.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<VW_tbActividades>(entity =>
             {
                 entity.HasNoKey();
 
                 entity.ToView("VW_tbActividades", "asil");
+
+                entity.Property(e => e.acti_Class).HasMaxLength(500);
 
                 entity.Property(e => e.acti_FechaCreacion).HasColumnType("datetime");
 
@@ -364,7 +366,9 @@ namespace Asilo.DataAccess.Context
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.muni_Nombre).HasMaxLength(80);
+                entity.Property(e => e.muni_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(80);
 
                 entity.Property(e => e.usuarioCrea)
                     .IsRequired()
@@ -404,6 +408,12 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.enca_Sexo)
                     .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.enca_SexoDesc)
+                    .IsRequired()
                     .HasMaxLength(9)
                     .IsUnicode(false);
 
@@ -422,6 +432,10 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.muni_Nombre)
                     .IsRequired()
                     .HasMaxLength(80);
+
+                entity.Property(e => e.nombreCompleto)
+                    .IsRequired()
+                    .HasMaxLength(401);
 
                 entity.Property(e => e.pare_Nombre)
                     .IsRequired()

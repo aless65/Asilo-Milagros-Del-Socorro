@@ -1075,3 +1075,19 @@ VALUES ('Divalproato sódico', 1, 1),
 	   ('Hidroxicloroquina', 1, 1),
 	   ('Nateglinida ', 8, 1)
 
+
+
+GO
+
+INSERT INTO asil.tbEncargados([enca_Nombres], [enca_Apellidos], [enca_Identidad], [estacivi_Id], [enca_Nacimiento], [enca_Sexo], [muni_Id], [enca_Direccion], [enca_Telefono], [resi_Id], [pare_Id], [enca_UsuCreacion])
+VALUES('Andrés','álvarez','0502200102725',1,'2001-02-14','M','0502','Residencial la europa calle 5, casa 16','99658475',1,2,1);
+GO
+
+INSERT INTO asil.tbEncargados ([enca_Nombres], [enca_Apellidos], [enca_Identidad], [estacivi_Id], [enca_Nacimiento], [enca_Sexo], [muni_Id], [enca_Direccion], [enca_Telefono], [resi_Id], [pare_Id], [enca_UsuCreacion])
+VALUES ('Juan', 'Pérez', '0401199801234', 2, '1998-01-04', 'M', '0401', 'Colonia San Marcos calle 10, casa 24', '98765432', 2, 3, 1);
+
+GO
+INSERT INTO asil.tbEncargados ([enca_Nombres], [enca_Apellidos], [enca_Identidad], [estacivi_Id], [enca_Nacimiento], [enca_Sexo], [muni_Id], [enca_Direccion], [enca_Telefono], [resi_Id], [pare_Id], [enca_UsuCreacion])
+VALUES ('María', 'López', '0305199509876', 3, '1995-05-03', 'F', '0305', 'Barrio El Centro calle 15, casa 8', '12345678', 3, 4, 1);
+GO
+

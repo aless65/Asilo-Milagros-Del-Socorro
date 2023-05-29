@@ -32,6 +32,10 @@ C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO
 C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.dll
 C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\ref\Asilo.BusinessLogic.dll
 C:\Users\PC\Documents\GitHub\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.pdb
+C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.AssemblyInfo.cs
+C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.csproj.CoreCompileInputs.cache
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\bin\Release\net5.0\Asilo.BusinessLogic.deps.json
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\bin\Release\net5.0\Asilo.BusinessLogic.dll
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\bin\Release\net5.0\ref\Asilo.BusinessLogic.dll
@@ -41,10 +45,6 @@ C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto 
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\bin\Release\net5.0\Asilo.DataAccess.pdb
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\bin\Release\net5.0\Asilo.Entities.pdb
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.csproj.AssemblyReference.cache
-C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.AssemblyInfoInputs.cache
-C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.AssemblyInfo.cs
-C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.csproj.CoreCompileInputs.cache
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.csproj.CopyComplete
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\Asilo.BusinessLogic.dll
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.BusinessLogic\obj\Release\net5.0\ref\Asilo.BusinessLogic.dll

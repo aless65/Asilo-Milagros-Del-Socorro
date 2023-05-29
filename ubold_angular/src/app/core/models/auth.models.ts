@@ -11,3 +11,4 @@ export class User {
     location?: string;
     title?: string;
 }
+

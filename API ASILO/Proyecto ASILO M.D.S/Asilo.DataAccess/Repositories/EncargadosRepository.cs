@@ -87,7 +87,7 @@ namespace Asilo.DataAccess.Repositories
             parametros.Add("@enca_Telefono", item.enca_Telefono, DbType.String, ParameterDirection.Input);
             parametros.Add("@resi_Id", item.resi_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@pare_Id", item.pare_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@enca_UsuCreacion", item.enca_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@enca_UsuModificacion", item.enca_UsuModificacion, DbType.Int32, ParameterDirection.Input);
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Encargados, parametros, commandType: CommandType.StoredProcedure);
 

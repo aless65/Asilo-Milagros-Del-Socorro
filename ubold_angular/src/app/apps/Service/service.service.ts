@@ -4,7 +4,7 @@ import { EstadoCivil, TipoSangre,
          Enfermedad, Municipio,
          Parentesco, Centro,
          Actividad, Medicamento,
-         Cargos, Centros } from '../Models';
+         Cargos, Centros, Residente } from '../Models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -27,6 +27,9 @@ export class ServiceService {
     return this.http.get<Enfermedad[]>(`${this.variableGlobal}Enfermedades/Listado`);
   }
   
+ /* getMunicipios(){
+    return this.http.get<Municipio[]>(`http://asilomilagrosdelsocorro.somee.com/api/Municipios/Listado?depa=0`);
+  }*/
   getMunicipios(){
     return this.http.get<Municipio[]>(`${this.variableGlobal}Municipios/Listado?depa=0`);
   }
@@ -50,5 +53,9 @@ export class ServiceService {
   
   getCargos(){
     return this.http.get<Cargos[]>(`${this.variableGlobal}Cargos/Listado`);
+  }
+
+  getResidentes(){
+    return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Listado`);
   }
 }

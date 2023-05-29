@@ -14,6 +14,8 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Usuarios = "acce.UDP_acce_VW_tbUsuarios_Find";
         public static string UDP_Edita_Usuarios = "acce.UDP_acce_tbUsuarios_UPDATE";
         public static string UDP_Elimina_Usuarios = "acce.UDP_acce_tbUsuarios_DELETE";
+        public static string Login = "acce.UDP_Login";
+
         #endregion
 
         #region Pantallas

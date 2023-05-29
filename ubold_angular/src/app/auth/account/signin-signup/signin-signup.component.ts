@@ -32,14 +32,15 @@ export class SigninSignupComponent implements OnInit {
   ngOnInit(): void {
 
     this.loginForm = this.fb.group({
-      email: ['ubold@coderthemes.com', [Validators.required, Validators.email]],
+      email: ['ubold@coderthemes.com', [Validators.required]],
       password: ['test', Validators.required]
     });
 
+    
     this.signUpForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(4)]]
+      password: ['', [Validators.required]]
     });
 
     // reset login status
@@ -80,6 +81,8 @@ export class SigninSignupComponent implements OnInit {
           });
     }
   }
+
+
 
   /**
  * On signup form submit

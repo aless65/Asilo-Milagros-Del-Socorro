@@ -9,6 +9,8 @@ const routes: Routes = [
   { path: 'cargos', loadChildren: () => import('./cargos/cargos.module').then(m => m.CargosModule) },
   { path: 'habitaciones', loadChildren: () => import('./habitaciones/habitaciones.module').then(m => m.HabitacionesModule) },
   { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
+  { path: 'encargados', loadChildren: () => import('./encargados/encargados.module').then(m => m.EncargadosModule) },
+
   { path: 'residentes', loadChildren: () => import('./residentes/residentes.module').then(m => m.ResidentesModule) },
   { path: 'calendar', loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
   { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },

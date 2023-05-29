@@ -66,6 +66,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/empleados/list',
     },
     {
+        key: 'apps-encargados',
+        label: 'Encargados',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/encargados/list',
+    },
+    {
         key: 'apps-proveedores',
         label: 'Proveedores',
         isTitle: false,

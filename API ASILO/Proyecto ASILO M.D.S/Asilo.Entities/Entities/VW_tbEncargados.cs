@@ -9,12 +9,14 @@ namespace Asilo.Entities.Entities
     public partial class VW_tbEncargados
     {
         public int enca_Id { get; set; }
+        public string nombreCompleto { get; set; }
         public string enca_Nombres { get; set; }
         public string enca_Apellidos { get; set; }
         public string enca_Identidad { get; set; }
         public int estacivi_Id { get; set; }
         public string estacivi_Nombre { get; set; }
         public DateTime enca_Nacimiento { get; set; }
+        public string enca_SexoDesc { get; set; }
         public string enca_Sexo { get; set; }
         public string muni_Id { get; set; }
         public string muni_Nombre { get; set; }

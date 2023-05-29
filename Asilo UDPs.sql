@@ -1397,21 +1397,14 @@ GO
 
 /* ELIMINAR EMPLEADO*/
 
-CREATE OR ALTER PROCEDURE asil.UPD_tbEmpleados_Eliminar
+CREATE OR ALTER   PROCEDURE [asil].[UPD_tbEmpleados_Eliminar]
 	@empe_Id	INT
 AS
 BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE empe_Id = @empe_Id)
-			BEGIN
+	BEGIN TRY		
 				UPDATE asil.tbEmpleados 
 				SET empe_Estado = 0
-				WHERE empe_Id = @empe_Id
-
-				SELECT 1 AS proceso
-			END
-		ELSE
-			SELECT 'El registro del empleado no se puede eliminar porque está siendo usado'
+				WHERE empe_Id = @empe_Id			
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -1949,6 +1942,7 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbEncargados
 AS
 	SELECT enca_Id,
+		  enca_Nombres+' '+enca_Apellidos nombreCompleto,
 	       enca_Nombres,
 		   enca_Apellidos,
 		   enca_Identidad,
@@ -1958,7 +1952,8 @@ AS
 		   
 		   CASE WHEN  enca_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
-		   END AS  enca_Sexo,
+		   END AS  enca_SexoDesc,
+		   t1.enca_Sexo,
 		   t1.muni_Id,
 		   t7.muni_Nombre,
 		   enca_Direccion,
@@ -3821,3 +3816,33 @@ BEGIN
 	END CATCH
 END
 GO
+
+
+CREATE OR ALTER   PROCEDURE [acce].[UDP_Login]
+	@usua_NombreUsuario Nvarchar(100),
+	@usua_Contrasena Nvarchar(Max)
+AS
+BEGIN
+
+        BEGIN TRY
+        Declare @Password Nvarchar(max) = (HASHBYTES('SHA2_512',@usua_Contrasena))
+        SELECT [usua_NombreUsuario],[usua_Contrasena] 
+		FROM    [acce].[tbUsuarios]    
+		WHERE   [usua_Contrasena] = @Password 
+        AND     [usua_NombreUsuario] = @usua_NombreUsuario
+
+        SELECT 1 as Proceso
+
+        END TRY
+        BEGIN CATCH
+
+        SELECT 0 as Proceso
+        END CATCH
+
+END
+GO
+
+
+--[acce].[UDP_Login] 'df','sd'
+
+
