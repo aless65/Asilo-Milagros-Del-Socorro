@@ -482,7 +482,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined"
+                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = undefined"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>

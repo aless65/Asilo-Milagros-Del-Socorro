@@ -515,6 +515,8 @@ export class CreateComponent implements OnInit {
   }
   
   submitAdmin(){
+    let canInsert = true;
+
     const agendaVaciaONull = this.agendadetalle;
     this.allValuesUndefinedOrNullDieta = Object.values(agendaVaciaONull).every(value => value === undefined || value === null);
     console.log(this.allValuesUndefinedOrNullDieta);
@@ -525,6 +527,8 @@ export class CreateComponent implements OnInit {
       console.log("dieta");
 
       if(this.allValuesUndefinedOrNullDieta){
+        canInsert = false;
+
         console.log("dieta2");
         Swal.fire({
           toast: true,
@@ -547,6 +551,8 @@ export class CreateComponent implements OnInit {
       console.log("dieta");
 
       if(this.allValuesUndefinedOrNullDieta){
+        canInsert = false;
+        
         console.log("dieta2");
         Swal.fire({
           toast: true,
@@ -571,6 +577,8 @@ export class CreateComponent implements OnInit {
       console.log("cuidado");
 
       if((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm ){
+        canInsert = false;
+        
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -588,6 +596,8 @@ export class CreateComponent implements OnInit {
     } 
 
     if (this.profileForm.invalid) {
+      canInsert = false;
+      
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -610,8 +620,9 @@ export class CreateComponent implements OnInit {
         }
       })
     } else{
+      console.log("qqqq");
       
-      if(!this.allValuesUndefinedOrNullDieta){
+      if(canInsert){
         console.log(this.residente);
         console.log(this.dietaModel);
         this.isDatosPersonalesActive = false;

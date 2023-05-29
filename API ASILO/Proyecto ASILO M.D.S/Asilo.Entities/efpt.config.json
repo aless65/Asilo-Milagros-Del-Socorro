@@ -146,6 +146,18 @@
          "ObjectType": 0
       },
       {
+         "Name": "[acce].[VW_tbPantallas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbPantallasPorRoles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbRoles]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[acce].[VW_tbUsuarios]",
          "ObjectType": 3
       },
@@ -238,11 +250,15 @@
          "ObjectType": 3
       },
       {
+         "Name": "[asil].[VW_tbResidentes_Form]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[asil].[VW_tbTiposSangre]",
          "ObjectType": 3
       }
    ],
-   "UiHint": "LAPTOP-64AJM339.AsiloJAC",
+   "UiHint": "VJ2100.AsiloJAC",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

@@ -2230,6 +2230,168 @@ BEGIN
 END
 GO
 
+
+--SELECT 'jaja', 'ay noo'
+
+CREATE OR ALTER VIEW asil.VW_tbResidentes_Form
+AS
+	SELECT t1.resi_Id,
+	       t1.resi_Nombres,
+		   t1.resi_Apellidos,
+		   t1.resi_Identidad,
+		   t1.estacivi_Id AS estacivi_IdResi,
+		   t1.resi_Nacimiento,
+		   t1.resi_Sexo,
+		   t1.cent_Id,
+		   t1.diet_Id,
+		   t1.resi_FechaIngreso,
+		   t1.empe_Id,
+		   t1.agen_Id,
+		   t1.resi_UsuCreacion,
+		   t2.enca_Nombres,
+		   t2.enca_Apellidos,
+		   t2.enca_Identidad,
+		   t2.estacivi_Id AS estacivi_IdEnca,
+		   t2.enca_Nacimiento,
+		   t2.enca_Sexo,
+		   t2.muni_Id,
+		   t2.enca_Direccion,
+		   t2.enca_Telefono,
+		   t2.pare_Id,
+		   t2.enca_UsuCreacion,
+		   t3.tiposang_Id,
+		   t3.expe_FechaApertura, 
+		   t3.expe_Fotografia,
+		   t4.diet_Desayuno, 
+		   t4.diet_Almuerzo,
+		   t4.diet_Cena,
+		   t4.diet_Merienda,
+		   t4.diet_Restricciones,
+		   t4.diet_Observaciones,
+		   t5.meto_Id, 
+		   t5.pago_Fecha,
+		   t6.habi_Id
+	FROM [asil].[tbResidentes] t1 LEFT JOIN [asil].[tbEncargados] t2
+	ON t1.resi_Id = t2.resi_Id LEFT JOIN [asil].[tbExpedientes] t3
+	ON t3.resi_Id = t1.resi_Id LEFT JOIN [asil].[tbDietas] t4
+	ON t4.diet_Id = t1.diet_Id LEFT JOIN [asil].[tbHistorialPagos] t5
+	ON t5.resi_Id = t1.resi_Id LEFT JOIN [asil].[tbHabitacionesXResidente] t6
+	ON t6.resi_Id = t1.resi_Id
+		   
+GO
+
+/*INSERTAR FORMULARIO RESIDENTES*/
+CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_InsertPrincipal
+	@resi_Nombres			NVARCHAR(200),
+	@resi_Apellidos			NVARCHAR(200), 
+	@resi_Identidad			VARCHAR(13),
+	@estacivi_IdResi		INT, 
+	@resi_Nacimiento		DATE,
+	@resi_Sexo				CHAR(1), 
+	@cent_Id				INT,
+	@diet_Id				INT,
+	@resi_FechaIngreso		DATE, 
+	@empe_Id				INT,
+	@agen_Id				INT,
+	@resi_UsuCreacion		INT,
+	@enca_Nombres			NVARCHAR(200),
+    @enca_Apellidos			NVARCHAR(200),
+    @enca_Identidad			VARCHAR(13),
+    @estacivi_IdEnca		INT,
+    @enca_Nacimiento		DATE,
+    @enca_Sexo				CHAR ,
+    @muni_Id				CHAR(4),
+    @enca_Direccion			NVARCHAR(500),
+    @enca_Telefono			NVARCHAR(20),
+    @resi_Id				INT,
+    @pare_Id				INT,
+	@tiposang_Id			INT,
+	@expe_FechaApertura		DATE,
+	@expe_Fotografia		NVARCHAR(500),
+	@diet_Desayuno          NVARCHAR(500),
+    @diet_Almuerzo          NVARCHAR(500),
+    @diet_Cena              NVARCHAR(500),
+    @diet_Merienda          NVARCHAR(500),
+    @diet_Restricciones     NVARCHAR(500),
+    @diet_Observaciones     NVARCHAR(500),
+	@meto_Id				INT,
+	@pago_Fecha				DATE,
+	@habi_Id				INT
+AS
+BEGIN
+	BEGIN TRANSACTION 
+		IF @diet_Id > 1
+			BEGIN
+				INSERT INTO asil.tbDietas (diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_Restricciones, diet_Observaciones, diet_UsuCreacion)
+				VALUES (@diet_Desayuno, @diet_Almuerzo, @diet_Cena, @diet_Merienda, @diet_Restricciones, @diet_Observaciones, @resi_UsuCreacion)
+
+				SET @diet_Id = SCOPE_IDENTITY()
+			END
+		ELSE
+			BEGIN 
+				SET @diet_Id = NULL;
+			END
+
+		IF @agen_Id > 1
+		BEGIN
+			INSERT INTO asil.tbAgendas([agen_Nombre],[agen_UsuCreacion])
+		     VALUES(@resi_Nombres + ' ' + @resi_Apellidos, @resi_UsuCreacion);
+
+			SET @agen_Id = SCOPE_IDENTITY()
+		END
+
+		INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[diet_Id],[resi_FechaIngreso],[empe_Id], agen_Id ,[resi_UsuCreacion])
+		     VALUES(
+			 @resi_Nombres		,
+			 @resi_Apellidos	,	
+			 @resi_Identidad	,	
+			 @estacivi_IdResi		,
+			 @resi_Nacimiento	,
+			 @resi_Sexo			,
+			 @cent_Id			,
+			 @diet_Id			,
+			 @resi_FechaIngreso	,
+			 @empe_Id			,
+			 @agen_Id			,
+			 @resi_UsuCreacion	);
+
+	   SET @resi_Id = SCOPE_IDENTITY();
+
+	   INSERT INTO [asil].[tbHabitacionesXResidente](habi_Id, resi_Id, habiresi_UsuCreacion)
+	   VALUES (@habi_Id, @resi_Id, @resi_UsuCreacion)
+
+	   IF @enca_Nombres IS NOT NULL
+		BEGIN
+			INSERT INTO asil.tbEncargados(enca_Nombres,
+			                              enca_Apellidos,
+										  enca_Identidad, 
+										  estacivi_Id,
+										  enca_Nacimiento, 
+										  enca_Sexo, 
+										  muni_Id,
+										  enca_Direccion, 
+										  enca_Telefono, 
+										  resi_Id, 
+										  pare_Id, 
+										  enca_UsuCreacion)
+			VALUES(@enca_Nombres, @enca_Apellidos, @enca_Identidad, @estacivi_IdEnca,@enca_Nacimiento, @enca_Sexo, @muni_Id,@enca_Direccion, @enca_Telefono, @resi_Id, @pare_Id, @resi_UsuCreacion)	
+		END
+
+		IF @empe_Id IS NOT NULL
+			BEGIN
+
+				INSERT INTO asil.tbHistorialPagos([resi_Id],[meto_Id],[pago_Fecha],[pago_UsuCreacion])
+				 VALUES(@resi_Id		,
+						@meto_Id		,
+						@pago_Fecha		,
+						@resi_UsuCreacion);
+			END
+	ROLLBACK TRAN
+END
+GO
+
+
+
 /*INSERTAR RESIDENTES*/
 CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Agregar
 	@resi_Nombres			NVARCHAR(200),
@@ -2243,7 +2405,12 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Agregar
 	@resi_FechaIngreso		DATE, 
 	@empe_Id				INT,
 	@agen_Id				INT,
-	@resi_UsuCreacion		INT
+	@resi_UsuCreacion		INT,
+	@resi_Id				INT,
+	@tiposang_Id			INT,
+	@expe_FechaApertura		DATE,
+	@expe_Fotografia		NVARCHAR(500)
+
 AS
 BEGIN
 
@@ -3773,17 +3940,22 @@ END
 /*Listar municipios*/
 GO
 CREATE OR ALTER PROCEDURE gral.UDP_gral_tbMunicipios_List 
-	
+	@depa_Id	INT
 AS
 BEGIN
-	SELECT muni_Id,
-	       muni_Nombre,
-		   T1.depa_Id, 
-		   T2.depa_Nombre
-	FROM [gral].tbMunicipios T1 INNER JOIN [gral].tbDepartamentos T2
-	ON T1.depa_Id = T2.depa_Id
-	WHERE muni_Estado = 1
-	
+	IF @depa_Id < 1
+		BEGIN
+			SELECT muni_Id, muni_Nombre, depa.depa_Id, depa.depa_Nombre
+			FROM [gral].tbMunicipios muni INNER JOIN gral.tbDepartamentos depa
+			ON muni.depa_Id = depa.depa_Id
+		END
+	ELSE
+		BEGIN
+			SELECT muni_Id, muni_Nombre, depa.depa_Id, depa.depa_Nombre
+			FROM [gral].tbMunicipios muni INNER JOIN gral.tbDepartamentos depa
+			ON muni.depa_Id = depa.depa_Id
+			AND muni.depa_Id = @depa_Id
+		END
 END
 
 
@@ -3832,7 +4004,7 @@ GO
 /*  TABLA HISTORIAL DE PAGOS */
 
 
-/*VISTA HISTORIAL D EPAGO*/
+/*VISTA HISTORIAL DE PAGO*/
 CREATE OR ALTER VIEW asil.VW_tbHistorialPagos
 AS
 	SELECT 
@@ -4281,19 +4453,43 @@ GO
 
 -------------------------------------------------------------------------------------------------------------------------
 
-/*VISTA HABITACIONES*/
 CREATE OR ALTER VIEW asil.VW_tbHabitaciones
 AS
-	SELECT [habi_Id], [habi_Numero],
-	hab.[cate_Id], cate.cate_Nombre,hab.[cent_Id],cent.cent_Nombre,
-	[habi_UsuCreacion],usu1.usua_NombreUsuario usuCrea,[habi_FechaCreacion],
-	[habi_UsuModificacion], usu2.usua_NombreUsuario usuModif,
-	[habi_Estado], [habi_FechaModificacion]
-	FROM [asil].[tbHabitaciones] hab INNER JOIN [asil].[tbCategoriasHabitaciones] cate
-	ON cate.cate_Id = hab.cate_Id INNER JOIN [asil].[tbCentros] cent 
-	ON cent.cent_Id = hab.cent_Id INNER JOIN [acce].[tbUsuarios] usu1
-	ON usu1.usua_Id = hab.habi_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
-	ON usu2.usua_Id = hab.habi_UsuModificacion
+	SELECT habi_Id,
+	       habi_Numero,
+		   t1.cate_Id,
+		   t4.cate_Nombre,
+		   t4.cate_Capacidad,
+		   t1.cent_Id,
+		   t5.cent_Nombre,
+		   habi_UsuCreacion,
+		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+		   habi_FechaCreacion,
+		   habi_UsuModificacion,
+		   habi_FechaModificacion,
+		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
+		   habi_Estado
+		   FROM asil.tbHabitaciones t1 LEFT JOIN acce.tbUsuarios t2
+		   ON t1.habi_UsuCreacion = T2.usua_Id
+		   LEFT JOIN acce.tbUsuarios t3
+		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
+		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
+		   ON t1.cent_Id = t5.cent_Id
+GO
+
+/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
+	@cent_Id	INT
+AS
+BEGIN
+
+	SELECT *
+	FROM asil.VW_tbHabitaciones habi
+	WHERE (SELECT COUNT(habiresi_Id)
+		FROM [asil].[tbHabitacionesXResidente]
+		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
+	AND cent_Id = @cent_Id
+END
 GO
 
 /*LISTAR HABITACIONES*/
