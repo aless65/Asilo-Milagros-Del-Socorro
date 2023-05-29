@@ -33,7 +33,7 @@ namespace Asilo.DataAccess.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@prov_Id", id, DbType.Int32, ParameterDirection.Input);
 
-            return db.QueryFirst<VW_tbProveedores>(ScriptsDataBase.ResidentesFind, parameters, commandType: CommandType.StoredProcedure);
+            return db.QueryFirst<VW_tbProveedores>(ScriptsDataBase.ProveedoresFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbProveedores item)

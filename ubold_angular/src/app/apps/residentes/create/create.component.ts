@@ -12,8 +12,11 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { AgendaDetalle } from '../../Models';
+import { AgendaDetalle, Residente,
+         Encargado, Expediente, Dieta,
+         HistorialPago } from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-residentes-create',
@@ -36,19 +39,37 @@ export class CreateComponent implements OnInit {
   agenda: Select2Data = [];
   dieta: Select2Data = [];
   cuidado: Select2Data = [];
+  cuidador: Select2Data = [];
+  habitacion: Select2Data = [];
+  metodopago: Select2Data = [];
   calendarOptions: CalendarOptions = {};
   calendarEventsData: EventInput[] = [];
   selectedDay: any = {};
   event: EventInput = {};
   isEditable: boolean = false;
   selectedValueAgenda: string = '';
+  selectedValueDieta: string = '';
   goesBack: boolean = false;
-  agendadetalle: AgendaDetalle = {};
+  goesBackDieta: boolean = false;
+  agendadetalle: AgendaDetalle[] = [];
+  residente: Residente = {};
+  encargado: Encargado = {};
+  expediente: Expediente = {};
+  dietaModel: Dieta = {};
+  historialPago: HistorialPago = {};
+  maxId: number = 0;
+  isDatosPersonalesActive: boolean = true;
+  isEncargadoActive: boolean = false;
+  isExpedienteActive: boolean = false;
+  isAdministracionActive: boolean = false;
+  allValuesUndefinedOrNull!: boolean;
+  allValuesUndefinedOrNullDieta: boolean = false;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
+  @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
   calendarComponent!: FullCalendarComponent;
 
@@ -61,6 +82,13 @@ export class CreateComponent implements OnInit {
 
   validationWizardForm!: FormGroup;
 
+  cuidadoForm!: FormGroup;
+
+  confirmarCuidadoForm!: FormGroup;
+
+  dietaForm!: FormGroup;
+
+
 
   constructor(private fb: FormBuilder,
     private service: ServiceService,
@@ -69,8 +97,15 @@ export class CreateComponent implements OnInit {
 
   selectedImage: string | ArrayBuffer | null = null;
 
+  // ngOnInit() {
+  // }
+  
+
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
+
+    this.expediente.expe_FechaApertura = new Date().toISOString().substring(0, 10);
+    this.historialPago.pago_Fecha = new Date().toISOString().substring(0, 10);
 
     FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       dayGridPlugin,
@@ -80,40 +115,99 @@ export class CreateComponent implements OnInit {
       listPlugin
     ]);
 
+    this.eventModal.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
+      if (!this.isEditable) {
+        agendadetalle.agendeta_Id = this.maxId + 1;
+        this.agendadetalle.push(agendadetalle);
+      } else {
+
+        const eventIndex = this.agendadetalle.findIndex((detalle) => detalle.agendeta_Id === agendadetalle.agendeta_Id);
+
+        this.agendadetalle[eventIndex].agendeta_HoraStart = agendadetalle.agendeta_HoraStart;
+        this.agendadetalle[eventIndex].agendeta_HoraEnd = agendadetalle.agendeta_HoraEnd;
+        this.agendadetalle[eventIndex].agendeta_Observaciones = agendadetalle.agendeta_Observaciones;
+        this.agendadetalle[eventIndex].acti_Id = agendadetalle.acti_Id;
+        this.agendadetalle[eventIndex].medi_Id = agendadetalle.medi_Id;
+        this.agendadetalle[eventIndex].acti_Class = agendadetalle.acti_Class;
+
+        this.isEditable = false;
+      }
+    });
+
+    function maxDateValidator(minDate: Date) {
+      return (control: any): { [key: string]: any } | null => {
+        const selectedDate = new Date(control.value);
+        if (selectedDate > minDate) {
+          return { 'minDate': true };
+        }
+        return null;
+      };
+    }
+
+    // function minDateValidator(minDate: Date) {
+    //   return (control: any): { [key: string]: any } | null => {
+    //     const selectedDate = new Date(control.value);
+    //     if (selectedDate >= minDate) {
+    //       return { 'minDate': true };
+    //     }
+    //     return null;
+    //   };
+    // }
 
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
       resi_Apellidos: ['', Validators.required],
-      resi_Identidad: ['', Validators.required],
-      resi_Nacimiento: ['', Validators.required],
-      estacivi_Id: [0, Validators.required],
+      resi_Identidad: ['',  [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      resi_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(1959, 0, 1))]],
+      estacivi_Id: ['', Validators.required],
       resi_Sexo: ['', Validators.required],
     })
 
     this.encargadoForm = this.fb.group({
       enca_Nombres: ['', Validators.required],
       enca_Apellidos: ['', Validators.required],
-      enca_Identidad: ['', Validators.required],
-      enca_Nacimiento: ['', Validators.required],
+      enca_Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      enca_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(2006, 0, 1))]],
       enca_Sexo: ['', Validators.required],
-      estacivi_Id: [0, Validators.required],
+      estacivi_Id: ['', Validators.required],
       muni_Id: ['', Validators.required],
       enca_Direccion: ['', Validators.required],
-      enca_Telefono: ['', Validators.required],
-      pare_Id: [0, Validators.required],
+      enca_Telefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      pare_Id: ['', Validators.required],
     })
 
     this.profileForm = this.fb.group({
-      tiposang_Id: [0, Validators.required],
-      expe_FechaApertura: ['', Validators.required],
-      enfe_Id: [0, [Validators.required, Validators.email]]
+      tiposang_Id: ['', Validators.required],
+      expe_FechaApertura: [this.expediente.expe_FechaApertura, Validators.required],
+      enfe_Id: [''],
+      expe_Fotografia: [''],
+      expe_Enfermedades: [''],
     })
 
     this.validationWizardForm = this.fb.group({
-      agen_Id: [0, Validators.requiredTrue],
-      cent_Id: [0, Validators.required],
-      diet_Id: [0, Validators.required],
-      empe_Id: [0, Validators.required],
+      agen_Id: ['', Validators.required],
+      cent_Id: ['', Validators.required],
+      diet_Id: ['', Validators.required],
+      empe_Id: ['', Validators.required],
+      habi_Id: ['', Validators.required],
+    });
+
+    this.cuidadoForm = this.fb.group({
+      empe_Id: ['', Validators.required],
+    });
+
+    this.confirmarCuidadoForm = this.fb.group({
+      pago_Fecha: ['', Validators.required],
+      meto_Id: ['', Validators.required],
+    });
+
+    this.dietaForm = this.fb.group({
+      desayuno: [''],
+      almuerzo: [''],
+      cena: [''],
+      merienda: [''],
+      restricciones: [''],
+      observaciones: [''],
     });
 
     this.service.getEstadosCiviles().subscribe((response: any) => {
@@ -209,6 +303,20 @@ export class CreateComponent implements OnInit {
       ];
     });
 
+
+    this.service.getMetodosPago().subscribe((response: any) => {
+      let options = response.data.map((item: any) => ({
+        value: item.meto_Id,
+        label: item.meto_Nombre
+      }));
+
+      this.metodopago = [{
+        label: 'Escoja un método de pago',
+        options: options
+      },
+      ];
+    });
+
     this.agenda = [
       {
         label: 'Escoja un tipo de agenda',
@@ -250,8 +358,8 @@ export class CreateComponent implements OnInit {
       }));
 
       this.agendadetalle = response.data;
-      
-      console.log(this.calendarEventsData);
+
+      console.log(this.agendadetalle);
 
       this.calendarOptions = {
         themeSystem: 'bootstrap',
@@ -283,11 +391,314 @@ export class CreateComponent implements OnInit {
       }
       console.log(this.calendarEventsData);
     });
-
-
-
-
   }
+
+  handleAceptarClick() {
+    if (this.formCuidado.empe_Id.valid) {
+      this.modalService.dismissAll('');
+      this.openConfirmacion();
+    }
+  }
+
+  submitResidente(){
+    if (this.accountForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.accountForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      console.log(this.residente);
+      this.isDatosPersonalesActive = false;
+    }
+  }
+
+  submitEncargado() {
+    const formValues = this.encargadoForm.value;
+    this.allValuesUndefinedOrNull = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+    
+    if (this.allValuesUndefinedOrNull) {
+      // All values are undefined or null, perform the desired action here
+      console.log('All values are undefined or null', this.encargado, this.allValuesUndefinedOrNull);
+      this.isEncargadoActive = false;
+      return;
+    } else{
+      if (this.encargadoForm.invalid) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡Llene todos los campos!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Action after the toast is closed
+        });
+    
+        Object.keys(this.encargadoForm.controls).forEach(field => {
+          const control = this.encargadoForm.get(field);
+          if (control?.invalid) {
+            const errors = control.errors;
+            console.log(`Error en el campo ${field}:`, errors);
+          }
+        });
+
+        this.allValuesUndefinedOrNull = false;
+      } else {
+        console.log(this.encargado);
+        this.isEncargadoActive = false;
+      }
+    }
+  }
+
+   submitExpediente(){
+    if (this.profileForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.accountForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      // this.service.getMetodosPago().subscribe((response: any) => {
+      //   let options = response.data.map((item: any) => ({
+      //     value: item.meto_Id,
+      //     label: item.meto_Nombre
+      //   }));
+  
+      //   this.metodopago = [{
+      //     label: 'Escoja un método de pago',
+      //     options: options
+      //   },
+      //   ];
+      // });
+      console.log(this.expediente);
+      console.log(this.profileForm.valid);
+      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
+      this.resiService.getImageUpload(expe_Fotografia);
+
+      // this.profileForm.valid = true;
+    }
+  }
+  
+  submitAdmin(){
+    const agendaVaciaONull = this.agendadetalle;
+    this.allValuesUndefinedOrNullDieta = Object.values(agendaVaciaONull).every(value => value === undefined || value === null);
+    console.log(this.allValuesUndefinedOrNullDieta);
+
+    if(this.allValuesUndefinedOrNullDieta){
+      const formValues = this.dietaForm.value;
+      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      console.log("dieta");
+
+      if(this.allValuesUndefinedOrNullDieta){
+        console.log("dieta2");
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡La agenda no puede estar vacía!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+    
+    if(this.residente.diet_Id?.toString() === "2"){
+      const formValues = this.dietaForm.value;
+      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      console.log("dieta");
+
+      if(this.allValuesUndefinedOrNullDieta){
+        console.log("dieta2");
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡La dieta personalizada no puede estar vacía!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+
+    if(this.form4.empe_Id.value === "2"){
+      const formValues = this.confirmarCuidadoForm.value;
+      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      // console.log('dieta form', this.dietaForm);
+      // console.log('booleano', this.allValuesUndefinedOrNullDieta);
+      console.log("cuidado");
+
+      if((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm ){
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡Debe completar todos los pasos de la atención especial!',
+          icon: 'warning',
+          background: '#f6f6baf2',
+          
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
+      }
+    } 
+
+    if (this.profileForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.profileForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      
+      if(!this.allValuesUndefinedOrNullDieta){
+        console.log(this.residente);
+        console.log(this.dietaModel);
+        this.isDatosPersonalesActive = false;
+      }
+    }
+  }
+
+  submitDieta(){
+    const formValues = this.dietaForm.value;
+    this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+
+    if(this.allValuesUndefinedOrNullDieta){
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Debe llenar al menos un campo!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+    } else{
+      console.log(this.dietaModel);
+      this.selectedValueDieta = 'papa';
+      this.goesBackDieta = true;
+    }
+  }
+
+  submitConfirmar(){
+    console.log(this.historialPago);
+     if(this.confirmarCuidadoForm.valid){
+      console.log(this.historialPago, "entró");
+      this.modalService.dismissAll();
+     }
+  }
+
+  openConfirmacion() {
+    this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
+  }
+
+  populateCuidadoresDisponibles(selected: any) {
+    if (selected) {
+      this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
+        let options = response.data.map((item: any) => ({
+          value: item.empe_Id,
+          label: item.empe_NombreCompleto,
+        }));
+
+        this.cuidador = [{
+          label: 'Escoja una opción',
+          options: options
+        },
+        ];
+      });
+
+      this.service.getHabitacionesDisponibles(selected.value).subscribe((response: any) => {
+        let cateLabels: string[] = [];
+        let options: { [key: string]: any[] } = {};
+
+        response.data.forEach((item: any) => {
+          const cateNombre: string = item.cate_Nombre;
+          const habiId: number = item.habi_Id;
+          const habiNumbero: number = item.habi_Numero;
+
+          if (!cateLabels.includes(cateNombre)) {
+            cateLabels.push(cateNombre);
+            options[cateNombre] = [];
+          }
+
+          options[cateNombre].push({
+            value: habiId,
+            label: habiNumbero.toString()
+          });
+        });
+
+        this.habitacion = cateLabels.map((cateNombre: string) => ({
+          label: cateNombre,
+          options: options[cateNombre]
+        }));
+      });
+
+    }
+  }
+
   /**
    * Opens event modal
    * @param title title of modal
@@ -316,28 +727,45 @@ export class CreateComponent implements OnInit {
     const selectedValue = event.value;
     if (selectedValue === '2') {
       if (modal === 'diet_Id') {
-        this.modalService.open(this.personalizarDieta);
+        this.modalService.open(this.personalizarDieta, { centered: true });
       }
 
       if (modal === 'empe_Id') {
-        this.modalService.open(this.personalizarCuidado);
+        this.modalService.open(this.personalizarCuidado, { centered: true });
       }
     }
   }
 
   openAgenda(event: Select2UpdateEvent, id: number) {
-    if(!this.goesBack){
+    this.residente.agen_Id = Number(this.event.value.toString());
+    if (!this.goesBack) {
       this.selectedValueAgenda = event.value.toString();
-    } 
+    }
     this.goesBack = false;
     return this.selectedValueAgenda;
+  }
+
+  openDieta(event: Select2UpdateEvent, id: number) {
+    this.residente.diet_Id = Number(this.event.value.toString());
+    if (!this.goesBackDieta) {
+      this.selectedValueDieta = event.value.toString();
+    }
+    this.goesBackDieta = false;
+    return this.selectedValueDieta;
   }
 
   goBack() {
     this.selectedValueAgenda = 'papa';
     this.goesBack = true;
-    return this.selectedValueAgenda;
+    this.selectedValueDieta = 'papa';
+    this.goesBackDieta = true;
   }
+
+  // goBackDieta() {
+  //   this.selectedValueDieta = 'papa';
+  //   this.goesBackDieta = true;
+  //   return this.selectedValueDieta;
+  // }
 
   handleButtonClick(modal: string) {
     if (modal === 'agen_Id') {
@@ -345,11 +773,11 @@ export class CreateComponent implements OnInit {
     }
 
     if (modal === 'diet_Id') {
-      this.modalService.open(this.personalizarDieta);
+      this.selectedValueDieta = '2';
     }
 
     if (modal === 'empe_Id') {
-      this.modalService.open(this.personalizarCuidado);
+      this.modalService.open(this.personalizarCuidado, { centered: true });
     }
   }
 
@@ -371,9 +799,14 @@ export class CreateComponent implements OnInit {
    */
   handleEventClick(arg: EventClickArg): void {
     const event = arg.event;
+    // const detalle = arg.event;
     this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
     this.isEditable = true;
-    this.openEventModal('Editar Evento', this.event);
+    const index = this.calendarEventsData.findIndex(item => item.id?.toString() === this.event.id);
+    console.log(this.event);
+    this.agendadetalle[index].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.agendadetalle[index].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.openEventModal('Editar Evento', this.agendadetalle[index]);
   }
 
   /**
@@ -397,8 +830,13 @@ export class CreateComponent implements OnInit {
    * on event drop between calendar
    */
   onEventDrop(arg: EventDropArg): void {
+    console.log("jala");
     let modifiedEvents = [...this.calendarEventsData];
-    const idx = modifiedEvents.findIndex((e: any) => e['id'] === arg.event.id);
+    const idx = modifiedEvents.findIndex((e: any) => e['id'].toString() === arg.event.id.toString());
+
+    this.agendadetalle[idx].agendeta_HoraStart = arg.event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.agendadetalle[idx].agendeta_HoraEnd = arg.event.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     modifiedEvents[idx]['title'] = arg.event.title;
     modifiedEvents[idx]['className'] = arg.event.classNames;
     modifiedEvents[idx]['start'] = arg.event.start as DateInput;
@@ -422,36 +860,52 @@ export class CreateComponent implements OnInit {
 
     if (this.isEditable) {
       let modifiedEvents = [...this.calendarEventsData];
-      const eventIndex = modifiedEvents.findIndex((event) => event.id === newEvent.id);
+      const eventIndex = modifiedEvents.findIndex((event) => event.id?.toString() === newEvent.id?.toString());
+
       this.calendarEventsData[eventIndex].title = newEvent.title;
       this.calendarEventsData[eventIndex].classNames = newEvent.category;
+      this.calendarEventsData[eventIndex].start = newEvent.start;
+      this.calendarEventsData[eventIndex].end = newEvent.end;
+      this.calendarEventsData[eventIndex].category = newEvent.category;
+
       this.calendarEventsData = modifiedEvents;
-      this.isEditable = false;
-    }
-    else {
+    } else {
+      // Find the maximum id value in calendarEventsData
+      this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+
+      // Set newEvent.id to maxId + 1
+      newEvent.id = String(this.maxId + 1);
+
       let nEvent = {
         id: newEvent.id,
         title: newEvent.title,
         start: newEvent.start,
+        end: newEvent.end,
         classNames: newEvent.category
       };
       this.calendarEventsData.push(nEvent);
     }
-    this.calendarOptions.events = [...this.calendarEventsData];
 
+    this.calendarOptions.events = [...this.calendarEventsData];
   }
 
-   /**
-   * Deletes calendar event
-   * @param deleteEvent event to be deleted
-   */
+  /**
+  * Deletes calendar event
+  * @param deleteEvent event to be deleted
+  */
   //actualiza luego de delete
   handleEventDelete(deleteEvent: EventInput): void {
+    console.log(deleteEvent.id);
     let modifiedEvents = [...this.calendarEventsData];
-    const eventIndex = modifiedEvents.findIndex((event) => event.id === deleteEvent.id);
+    const eventIndex = modifiedEvents.findIndex((event) => event.id?.toString() === deleteEvent.id);
     modifiedEvents.splice(eventIndex, 1);
     this.calendarEventsData = modifiedEvents;
     this.calendarOptions.events = [...this.calendarEventsData];
+
+    let modifiedDetalles = [...this.agendadetalle];
+    const detalleIndex = modifiedDetalles.findIndex((detalle) => detalle.agendeta_Id?.toString() === deleteEvent.id);
+    modifiedDetalles.splice(detalleIndex, 1);
+    this.agendadetalle = [...modifiedDetalles];
   }
 
 
@@ -460,17 +914,27 @@ export class CreateComponent implements OnInit {
   get form2() { return this.encargadoForm.controls; }
   get form3() { return this.profileForm.controls; }
   get form4() { return this.validationWizardForm.controls; }
+  get formCuidado() { return this.cuidadoForm.controls; }
+  get formCuidadoConfirm() { return this.confirmarCuidadoForm.controls; }
+  get formDieta() { return this.dietaForm.controls; }
 
   // goes to next wizard
-  gotoNext(): void {
-    if (this.accountForm.valid) {
-      if (this.profileForm.valid) {
-        this.activeWizard4 = 3;
-      }
-      else {
-        this.activeWizard4 = 2;
-      }
-    }
+  // gotoNext(): void {
+  //   if (this.accountForm.valid) {
+  //     if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
 
-  }
+  //       if (this.profileForm.valid) {
+  //         this.activeWizard4 = 4;
+  //       } else{
+  //         this.activeWizard4 = 3;
+  //       }
+  //     }
+      
+  //     else {
+  //       this.activeWizard4 = 2;
+  //     }
+  //   }
+
+  // }
+
 }

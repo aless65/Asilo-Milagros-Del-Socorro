@@ -1,6 +1,6 @@
 <ng-template #content let-modal>
     <div class="modal-header py-3 px-4 border-bottom-0 d-block">
-        <button type="button" class="btn-close float-end" aria-label="Close" (click)="modal.dismiss('')">
+        <button type="button" class="btn-close float-end" aria-label="Close" (click)="clearFields(); modal.dismiss('')">
         </button>
         <h5 class="modal-title" id="modal-title">{{modelTitle}}</h5>
 
@@ -9,6 +9,7 @@
         <form class="needs-validation" name="event-form" id="form-event" (ngSubmit)="eventForm.submitted && saveEvent()"
             #eventForm="ngForm">
             <div class="row">
+                <!-- <input type="number" hidden name="agendeta_Id" [(ngModel)]="agendadetalle.agendeta_Id" #title="ngModel"> -->
                 <div class="col-6">
                     <div class="mb-3">
                         <label class="form-label">Hora Inicio</label>
@@ -39,20 +40,20 @@
                 </div>
                 <div class="col-6">
                     <div class="mb-3">
-                      <label class="form-label">Actividad</label>
-                      <select2 id="acti_Id" [data]="actividad" #selectRef (update)="setEventTitle(selectRef)">
-                      </select2>
-                  
-                      <div *ngIf="eventForm.submitted && title.invalid && (title.dirty || title.touched)" class="invalid-feedback">
-                        Please provide a valid event name
+                        <label class="form-label" >Actividad</label>
+                        <select2 id="acti_Id" [data]="actividad" #selectRef (update)="setEventTitle()" [(ngModel)]="agendadetalle.acti_Id" name="acti_Id">
+                        </select2>
+                      
+                        <div *ngIf="eventForm.submitted && title.invalid && (title.dirty || title.touched)" class="invalid-feedback">
+                          Please provide a valid event name
+                        </div>
                       </div>
-                    </div>
                   </div>
                   
                   <div class="col-6">
                     <div class="mb-3">
                       <label class="form-label">Medicamento</label>
-                      <select2 id="medi_Id" [data]="medicamento" 
+                      <select2 id="medi_Id" [data]="medicamento" #selectRef [(ngModel)]="agendadetalle.medi_Id" name="medi_Id"
                         [minCountForSearch]="0" [disabled]="event.title !== 'Medicación'">
                       </select2>
                   
@@ -66,7 +67,7 @@
                     <div class="mb-3">
                         <label class="form-label">Observaciones</label>
                         <textarea class="form-control" placeholder="Observaciones" name="agendeta_Observaciones"
-                            id="agendeta_Observaciones" required  [(ngModel)]="agendadetalle.agendeta_Observaciones" #title="ngModel"
+                            id="agendeta_Observaciones"  [(ngModel)]="agendadetalle.agendeta_Observaciones" #title="ngModel"
                             [ngClass]="{ 'is-invalid':eventForm.submitted && title.invalid && (title.dirty || title.touched)}">
                         </textarea>
 
@@ -117,9 +118,9 @@
                         (click)="deleteEvent()" id="btn-delete-event">Eliminar</button>
                 </div>
                 <div class="col-md-6 col-8 text-end">
-                    <button type="button" class="btn btn-light me-1" (click)="modal.dismiss('')">Cerrar</button>
+                    <button type="button" class="btn btn-light me-1" (click)="clearFields(); modal.dismiss('')">Cerrar</button>
                     <button type="submit" class="btn btn-success" id="btn-save-event"
-                        [disabled]="!eventForm.form.valid">Guardar</button>
+                    [disabled]="!eventForm.form.valid || (!agendadetalle || agendadetalle.acti_Id === undefined)">Guardar</button>
                 </div>
             </div>
         </form>

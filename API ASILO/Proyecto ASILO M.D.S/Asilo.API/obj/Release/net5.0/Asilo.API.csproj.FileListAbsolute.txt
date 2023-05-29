@@ -438,3 +438,4 @@ C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto 
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.API\obj\Release\net5.0\ref\Asilo.API.dll
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.API\obj\Release\net5.0\Asilo.API.pdb
 C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.API\obj\Release\net5.0\Asilo.API.genruntimeconfig.cache
+C:\Users\karla\OneDrive\Documents\Asilo-Milagros-Del-Socorro\API ASILO\Proyecto ASILO M.D.S\Asilo.API\obj\Release\net5.0\Asilo.API.MvcApplicationPartsAssemblyInfo.cs

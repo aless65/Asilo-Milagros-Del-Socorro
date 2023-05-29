@@ -15,11 +15,17 @@
                 </div><!-- end col-->
             </div>
             <!-- customer table -->
-            <app-advanced-table  [tableData]="usuarios"
-                [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
-                (search)="searchData($event)" [isSortable]="false"
-                tableClasses="table-centered table-nowrap table-hover">
-            </app-advanced-table>
+        
+            <app-advanced-table
+  [tableData]="usuarios"
+  [columns]="columns"
+  [pagination]="true"
+  [isSearchable]="true"
+  [hasRowSelection]="false"
+  (search)="searchData($event)"
+  [isSortable]="false"
+  tableClasses="table-centered table-nowrap table-hover"
+></app-advanced-table>
 
         </div> <!-- end card-body-->
     </div> <!-- end card-->

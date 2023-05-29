@@ -6,6 +6,16 @@ export interface EstadoCivil {
     [key: string]: number | string | undefined ;
 }
 
+export interface Cargos{
+    carg_Id?: number;
+    carg_Nombre?: string;
+    carg_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    carg_FechaCreacion?: string;
+    carg_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    carg_FechaModificacion?: string;
+}
 
 export interface Residente {
     resi_Id?: number;
@@ -25,17 +35,56 @@ export interface Residente {
     agen_Id?: number;
     resi_Nacimiento?: string;
     expe_Fotografia?: string;
-    expe_FechaApertura: string;
+    expe_FechaApertura?: string;
     resi_UsuCreacion?: number;
     usuCrea?: string;
     resi_UsuModificacion?: number;
     usuModif?: string;
     resi_FechaCreacion?: string;
     resi_FechaModificacion?: string;
+    habi_Id?: number;
+
+    [key: string]: number | string | undefined | number[];
+}
+
+export interface Encargado {
+    enca_Id?: number;
+    enca_Nombres?: string;
+    enca_Apellidos?: string;
+    enca_Identidad?: string;
+    estacivi_Id?: number;
+    enca_Nacimiento?: string;
+    enca_Sexo?: string;
+    muni_Id?: number;
+    enca_Direccion?: string;
+    enca_Telefono?: string;
+    resi_Id?: number;
+    pare_Id?: number;
+    enca_UsuCreacion?: number;
+    usuCrea?: string;
+    enca_UsuModificacion?: number;
+    usuModif?: string;
+    enca_FechaModificacion?: string;
 
     [key: string]: number | string | undefined ;
 }
 
+export interface Expediente {
+    expe_Id?: number;
+    resi_Id?: number;
+    tiposang_Id?: number;
+    expe_FechaApertura?: string;
+    expe_Fotografia?: string;
+    expe_Enfermedades?: number[];
+    expe_UsuCreacion?: number;
+    expe_UsuCreacion_Nombre?: string;
+    expe_UsuModificacion?: number;
+    expe_UsuModificacion_Nombre?: string;
+    expe_FechaCreacion?: string;
+    expe_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined | number[];
+}
 
 export interface Proveedor {
     prov_Id?: number;
@@ -69,6 +118,38 @@ export interface Enfermedad {
     [key: string]: number | string | undefined;
 }
 
+export interface Rol {
+    role_Id?: number;
+    role_Nombre?: string;
+    role_Pantallas?: number[]; // Tipo de dato actualizado
+    role_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    role_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    role_FechaCreacion?: string;
+    role_FechaModificacion?: string;
+  
+    [key: string]: number | string | number[] | undefined; // Añadido número de tipo de dato
+  }
+  
+
+export interface Pantalla {
+    pant_Id?: number,
+    pant_Nombre?: string,
+    pant_Url?: string,
+    pant_Menu?: string,
+    pant_Icon?: string,
+    pant_UsuCreacion?: number,
+    pant_NombreUsuarioCreacion?: number,
+    pant_FechaCreacion?: string,
+    pant_UsuModificacion?: number,
+    pant_NombreUsuarioModificacio?: string,
+    pant_FechaModificacion?: string,
+
+    [key: string]: number | string | undefined;
+}
+
+
 export interface TipoSangre {
     tiposang_Id?: number;
     tiposang_Nombre?: string;
@@ -82,7 +163,7 @@ export interface TipoSangre {
     [key: string]: number | string | undefined;
 }
 
-export interface Cargos{
+export interface Cargo{
     carg_Id?: number;
     carg_Nombre?: string;
     carg_UsuCreacion?: number;
@@ -160,6 +241,48 @@ export interface Actividad {
 export interface Medicamento {
     medi_Id?: number;
     medi_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Habitacion {
+    habi_Id?: number;
+    habi_Numero?: number;
+    cate_Id?: number;
+    habi_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    habi_FechaCreacion?: string;
+    habi_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    habi_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface MetodoPago {
+    meto_Id?: number;
+    meto_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Dieta {
+    diet_Id?: number;
+    diet_Desayuno?: string;
+    diet_Almuerzo?: string;
+    diet_Cena?: string;
+    diet_Merienda?: string;
+    diet_Restricciones?: string;
+    diet_Observaciones?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface HistorialPago {
+    pago_Id?: number;
+    resi_Id?: number;
+    meto_Id?: number;
+    pago_Fecha?: string;
 
     [key: string]: number | string | undefined;
 }

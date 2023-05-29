@@ -4,11 +4,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Proveedor } from '../../Models';
-import { ServiceService } from 'src/app/apps/proveedores/Service/service.service';
-// import { ToastModule } from 'primeng/toast';
-// import { MessageService } from 'primeng/api';
-// import { NgToastService } from 'ng-angular-popup';
+import { Proveedor } from '../Model';
+import { ServiceServiceP } from 'src/app/apps/proveedores/service.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
 
 @Component({
     selector: 'app-proveedores-list',
@@ -22,33 +22,38 @@ import { ServiceService } from 'src/app/apps/proveedores/Service/service.service
   proveedores: Proveedor[] = [];
   columns: Column[] = [];
   newProveedor!: FormGroup;
+  returnUrl: string = '/';
+  selectedProveedor!: Proveedor;
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
+  @ViewChild('deleteProveedorModal', { static: true }) deleteProveedorModal: any;
 
   constructor (
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
-    private service: ServiceService,
-    // private toast: NgToastService,
+    private service: ServiceServiceP,
+    private router:Router,
+    private route: ActivatedRoute,
+
+ 
     // private messageService: MessageService,
   ) { }
 
-  ngOnInit(): void {
-    this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Proveedores', path: '/', active: true }];
-    this._fetchData();
-    // initialize advance table 
-    this.initAdvancedTableData();
+    ngOnInit(): void {
+      this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Proveedor', path: '/', active: true }];
+      this._fetchData();
+      // initialize advance table 
+      this.initAdvancedTableData();
 
-    this.newProveedor = this.fb.group({
-      name: ['', Validators.required],
-      correo: ['', Validators.required],
-      phone: ['', Validators.required],
-      muni: ['', Validators.required],
-      direccion: ['', Validators.required],
-    });
-  }
+      this.newProveedor = this.fb.group({
+        name: ['', Validators.required],
+      });
+
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/proveedores/editar';
+
+    }
 
   // convenience getter for easy access to form fields
   get form1() { return this.newProveedor.controls; }
@@ -58,70 +63,43 @@ import { ServiceService } from 'src/app/apps/proveedores/Service/service.service
  * @param title title of modal 
  * @param data data to be used in modal
  */
-  openModal(): void {
-    this.activeModal.open(this.content, { centered: true });
-  }
+ 
+  openModalDelete(): void {
+    this.activeModal.open(this.deleteProveedorModal, { centered: true, windowClass: 'delete-modal' });
+  }  
 
-  submitForm(): void {
-    if(this.newProveedor.invalid){
-      console.log("pipi");
-      return;
-    }
-
-    const proveedor: Proveedor = {
-        prov_Nombre: this.newProveedor.value.name,
-        prov_CorreoElectronico: this.newProveedor.value.correo,
-        prov_Telefono: this.newProveedor.value.phone,
-        muni_Id: this.newProveedor.value.muni,
-        muni_Direccion: this.newProveedor.value.direccion,
-        prov_UsuCreacion: 1,
-    }
-
-
-    this.service.addProveedores(proveedor).subscribe(
-      (response: any) => {
-        // this.openSuccess();
-        // this.showSuccess();
-        console.log("se pudo:", response);
-        this._fetchData();
-      },
-      (error) => {
-        console.log("no se pudo:", error);
-      }
-    )
-
+  deleteProveedor(): void{
+    this.service.deleteProveedores(this.selectedProveedor.prov_Id || 0).subscribe(
+        (response: any) => {
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+    this._fetchData();
     this.activeModal.dismissAll('');
   }
 
-  // showSuccess(){
-  //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  // }
 
-  // openSuccess(){
-  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
-  // }
-
-  /**
-   * fetch contact list
-   */
   
   _fetchData(): void {
-    this.service.getProveedores()
+    this.service.getProveedor()
   .subscribe((response: any)=>{
     this.proveedores = response.data;
   });
   }
+
+  
+
 
   /**
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
     this.columns = [
-      // {
-      //   name: 'name',
-      //   label: 'Basic Info',
-      //   formatter: this.enfermedadNameFormatter.bind(this)
-      // },
+
       {
         name: 'prov_Id',
         label: 'ID',
@@ -133,19 +111,14 @@ import { ServiceService } from 'src/app/apps/proveedores/Service/service.service
         formatter: (proveedor: Proveedor) => proveedor.prov_Nombre
       },
       {
-        name: 'prov_CorreoElectronico',
-        label: 'Correo electrónico',
-        formatter: (proveedor: Proveedor) => proveedor.prov_CorreoElectronico
-      },
-      {
         name: 'prov_Telefono',
-        label: 'Teléfono',
+        label: 'Telefono',
         formatter: (proveedor: Proveedor) => proveedor.prov_Telefono
       },
       {
-        name: 'prov_Direccion',
-        label: 'Dirección',
-        formatter: (proveedor: Proveedor) => proveedor.prov_Direccion
+        name: 'prov_CorreoElectronico',
+        label: 'Correo Elecctronico',
+        formatter: (proveedor: Proveedor) => proveedor.prov_CorreoElectronico
       },
       {
         name: 'Action',
@@ -162,43 +135,59 @@ import { ServiceService } from 'src/app/apps/proveedores/Service/service.service
   handleTableLoad(event: any): void {
     // product cell
     document.querySelectorAll('.proveedor').forEach((e) => {
-      // e.addEventListener("click", () => {
-      //   this.selectedContact = this.contacts[Number(e.id) - 1]
+      e.addEventListener("click", () => {
+        const proveedorId = e.getAttribute('id');
+        const proveedor = this.proveedores.find((prove: Proveedor) => prove.prov_Id === Number(proveedorId));
+        if (proveedor) {
+          this.Editar(proveedor);
+        }
+      });
+    });
 
-      // });
+
+    document.querySelectorAll('.delete').forEach((e) => {
+      e.addEventListener("click", () => {  
+        const selectedId = Number(e.id);
+        this.selectedProveedor = this.proveedores.find(prove => prove.prov_Id === selectedId) || this.selectedProveedor;
+        if (this.selectedProveedor) {
+          this.newProveedor = this.fb.group({
+            name: [this.selectedProveedor.prov_Nombre || '', Validators.required],
+          });
+          this.openModalDelete();
+        }
+      });
     })
   }
+  
 
-  // formats name cell
-  proveedorNameFormatter(proveedor: Proveedor): any {
+  // action 
+  proveedorActionFormatter(proveedor: Proveedor): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      `
-      <div class="table-user">
-      <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${proveedor.prov_Id}">${proveedor.prov_Nombre}</a>
-      `
+      `<a class="edit action-icon proveedor" id="${proveedor.prov_Id}" role="button">
+        <i class="mdi mdi-square-edit-outline"></i>
+      </a>
+      <a href="javascript:void(0);" class="delete action-icon" id="${proveedor.prov_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
+  
 
-  // action cell formatter
-  proveedorActionFormatter(): any {
-    return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`
-    );
-  }
+  Editar(proveedor: Proveedor) {
+    console.log("si llegaaa");
+       localStorage.setItem("ID2", proveedor.prov_Id!.toString());
+       this.router.navigate([this.returnUrl]); 
+       console.log("Hola_");
+   }
 
-  /**
-* Match table data with search input
-* @param row Table row
-* @param term Search the value
-*/
-matches(row: Proveedor, term: string) {
-  return (row.prov_Id?.toString().includes(term) ||
-          row.prov_Nombre?.toLowerCase().includes(term) ||
-          row.prov_CorreoElectronico?.toLowerCase().includes(term) ||
-          row.prov_Telefono?.toLowerCase().includes(term) ||
-          row.prov_Direccion?.toLowerCase().includes(term));
-}
+
+    /**
+  * Match table data with search input
+  * @param row Table row
+  * @param term Search the value
+  */
+    matches(row: Proveedor, term: string) {
+      return (row.prov_Id?.toString().includes(term) ||
+              row.prov_Nombre?.toLowerCase().includes(term));
+    }
 
   /**
    * Search Method
@@ -216,8 +205,10 @@ matches(row: Proveedor, term: string) {
 
   }
 
-}
-// function showSuccess() {
-//   throw new Error('Function not implemented.');
-// }
+  Agregar(){
+    this.router.navigate(['crear']);
+  }
 
+
+  
+}
