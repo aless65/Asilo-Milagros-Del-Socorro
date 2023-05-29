@@ -6,6 +6,16 @@ export interface EstadoCivil {
     [key: string]: number | string | undefined ;
 }
 
+export interface Cargos{
+    carg_Id?: number;
+    carg_Nombre?: string;
+    carg_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    carg_FechaCreacion?: string;
+    carg_UsuModificacion?: number;
+    usua_UsuModificacion_Nombre?: string;
+    carg_FechaModificacion?: string;
+}
 
 export interface Residente {
     resi_Id?: number;
@@ -114,7 +124,7 @@ export interface TipoSangre {
     [key: string]: number | string | undefined;
 }
 
-export interface Cargos{
+export interface Cargo{
     carg_Id?: number;
     carg_Nombre?: string;
     carg_UsuCreacion?: number;

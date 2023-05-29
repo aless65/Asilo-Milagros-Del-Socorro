@@ -1,0 +1,132 @@
+
+<app-page-title [breadcrumbItems]="pageTitle" ></app-page-title>
+
+<br>
+<div class="custom-card">
+        <div class="card">
+            <div class="card-body">  
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Crear registro de proveedores</h5>
+                    <form class="needs-validation" [formGroup]="validationGroup1" #validate1="ngForm">
+                        <div class="row">
+                            <div class="col-sm-6">
+                      <div class="mb-3">
+                        <label for="validationCustom01" class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="nombre"
+                        [(ngModel)] = "proveedor.prov_Nombre"  required  formControlName="Nombre"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Nombre.valid , 'is-invalid': validate1.submitted && form1.Nombre.invalid }">
+                        <div *ngIf="validate1.submitted && form1.Nombre.valid" class="valid-feedback">
+                            completo!
+                        </div>
+
+                        <div *ngIf="validate1.submitted && form1.Nombre.invalid" class="invalid-feedback">
+                            El nombre es requerido
+                        </div>
+                      </div>
+                     </div>
+
+                    <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label for="validationCustom05" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="validationCustom05" placeholder="dirección" required [(ngModel)] = "proveedor.prov_Direccion"
+                            formControlName="Direccion"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Direccion.valid , 'is-invalid': validate1.submitted && form1.Direccion.invalid }">
+                        <div *ngIf="validate1.submitted && form1.Direccion.valid" class="valid-feedback">
+                             Completo!
+                        </div>
+
+                        <div *ngIf="validate1.submitted && form1.Direccion.invalid" class="invalid-feedback">
+                            La dirección es requerida.
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="validationCustom05" class="form-label">Telefono</label>
+                            <input type="text" class="form-control" id="validationCustom05" placeholder="+504" required [(ngModel)] = "proveedor.prov_Telefono"
+                                formControlName="Telefono"
+                                [ngClass]="{ 'is-valid': validate1.submitted && form1.Telefono.valid , 'is-invalid': validate1.submitted && form1.Telefono.invalid }"
+                                maxlength="15">
+                            <div *ngIf="validate1.submitted && form1.Telefono.valid" class="valid-feedback">
+                                 Completo!
+                            </div>
+    
+                            <div *ngIf="validate1.submitted && form1.Telefono.invalid" class="invalid-feedback">
+                                El teléfono es requerido.
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="validationCustom05" class="form-label">Correo</label>
+                            <input type="email" class="form-control" id="validationCustom05" placeholder="correo" required
+                            [(ngModel)]="proveedor.prov_CorreoElectronico" formControlName="Correo"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Correo.valid, 'is-invalid': validate1.submitted && form1.Correo.invalid }"
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+                     
+                            <div *ngIf="validate1.submitted && form1.Correo.valid" class="valid-feedback">
+                                 Completo!
+                            </div>
+    
+                            <div *ngIf="validate1.submitted && form1.Correo.invalid" class="invalid-feedback">
+                                El Correo es requerido.
+                            </div>
+                        </div>
+                     </div>
+
+                    
+
+                     
+                    
+                     
+
+                     <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="validationCustom05" class="form-label">Municipio:</label>
+                          <select2 id="municipio-values"  [(ngModel)]="proveedor.muni_Id" placeholder="municipio..." 
+                            formControlName="Muni" [minCountForSearch]="0" [data]="municipio"
+                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Muni.valid , 'is-invalid': validate1.submitted && form1.Muni.invalid }">
+                          </select2>
+                          <div *ngIf="validate1.submitted && form1.Muni.valid" class="valid-feedback">
+                            Completo!
+                          </div>
+                          <div *ngIf="validate1.submitted && form1.Muni.invalid" class="invalid-feedback">
+                            El Municipio es requerido.
+                          </div>
+                        </div>
+                      </div>
+                            
+                      <div class="container">
+                        <div class="button-container">
+                          <button class="btn btn-primary" type="submit" (click)="validarYGuardar()">Guardar</button>
+                          <button class="btn btn-outline-secondary waves-effect waves-light" type="button" (click)="Volver()">Volver</button>
+                        </div>
+                      </div>
+                      
+
+                </div>
+                </form>
+     
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+
+
+    
+<!-- Modal Delete -->
+<ng-template #deleteProveedorModal let-modal>
+  <div class="modal-header bg-light">
+      <h4 class="modal-title" id="myCenterModalLabel">Eliminar proveedor</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+  </div>
+  <div class="modal-body p-4">
+      <p>¿Realmente desea eliminar este proveedor?</p>
+      <div class="text-end">
+          <button type="button"  class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+          <button type="button" class="btn btn-danger waves-effect waves-light"
+              (click)="modal.close('')">Cancelar</button>
+      </div>
+    
+  </div>
+</ng-template>

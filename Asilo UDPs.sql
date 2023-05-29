@@ -1442,7 +1442,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCargos_Delete
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbCargos WHERE carg_Id = @carg_Id AND carg_Estado = 1)
+	IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE carg_Id = @carg_Id AND empe_Estado = 1)
 	BEGIN
 		UPDATE asil.tbCargos
 		SET carg_Estado = 0

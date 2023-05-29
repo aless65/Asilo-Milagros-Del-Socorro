@@ -19,60 +19,127 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
   pageTitle: BreadcrumbItem[] = [];
   cargos: Cargo[] = [];
   columns: Column[] = [];
- 
+  selectedCargo!: Cargo;
+  esEditar!: boolean;
+  newCargo!: FormGroup;
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
-
+  @ViewChild('deleteCargoModal', { static: true }) deleteCargoModal: any;
 
   constructor (
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    
+
   ) { }
 
   ngOnInit(): void {
-    this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Cargo', path: '/', active: true }];
+    this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Cargos', path: '/', active: true }];
+
     this._fetchData();
     // initialize advance table 
     this.initAdvancedTableData();
 
-  
+    this.newCargo = this.fb.group({
+      name: ['', Validators.required],
+    });
   }
 
   // convenience getter for easy access to form fields
-  
+  get form1() { return this.newCargo.controls; }
 
   /**
  * opens modal
  * @param title title of modal 
  * @param data data to be used in modal
  */
-  
-  
+  openModal(isEditOrNew: string): void {
+    
+    if(isEditOrNew === "new"){
+      this.newCargo.reset();
+      this.esEditar = false;
+    } else{
+      this.esEditar = true;
+    }
 
-  
+    this.activeModal.open(this.content, { centered: true });
+  }
 
-  
+  openModalDelete(): void {
+    this.activeModal.open(this.deleteCargoModal, { centered: true, windowClass: 'delete-modal' });
+  }  
 
-  // showSuccess(){
-  //   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  // }
+  deleteCargo(): void{
+    this.service.deleteCargos(this.selectedCargo.carg_Id || 0).subscribe(
+        (response: any) => {
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+    this._fetchData();
+    this.activeModal.dismissAll('');
+  }
 
-  // openSuccess(){
-  //   this.toast.success({detail:'Success',summary:'This is Success', sticky:true,position:'tr'})
-  // }
+  submitForm(): void {
+    if(this.newCargo.invalid){
+      console.log("pipi");
+      
+      return;
+    }
 
-  /**
-   * fetch contact list
-   */
+    const cargo: Cargo = {
+      carg_Id: this.selectedCargo?.carg_Id || 0,
+      carg_Nombre: this.newCargo.value.name,
+      carg_UsuCreacion: 1,
+      carg_UsuModificacion: 1,
+    }
+
+    if(this.esEditar){
+
+      this.service.editCargos(cargo).subscribe(
+        (response: any) => {
+          console.log("se pudo:", response);
+          console.log(cargo.carg_Nombre);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo error:", error);
+          console.log(cargo.carg_Nombre);
+          console.log(cargo.carg_Id);
+
+        }
+      )
+      
+    } else{
+      
+      this.service.addCargos(cargo).subscribe(
+        (response: any) => {
+          // this.openSuccess();
+          // this.showSuccess();
+          console.log("se pudo:", response);
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+      
+    }
+
+    this.activeModal.dismissAll('');
+  }
+
   
   _fetchData(): void {
     this.service.getCargos()
   .subscribe((response: any)=>{
     this.cargos = response.data;
+    console.log(this.cargos);
   });
   }
 
@@ -80,7 +147,7 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log('initAdvancedTableData');
+    console.log(this.cargos);
     this.columns = [
       // {
       //   name: 'name',
@@ -90,16 +157,16 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
       {
         name: 'carg_Id',
         label: 'ID',
-        formatter: (cargos: Cargo) => cargos.carg_Id
+        formatter: (cargo: Cargo) => cargo.carg_Id
       },
       {
         name: 'carg_Nombre',
         label: 'Nombre',
-        formatter: (cargos: Cargo) => cargos.carg_Nombre
+        formatter: (cargo: Cargo) => cargo.carg_Nombre
       },
       {
         name: 'Action',
-        label: 'Action',
+        label: 'Acciones',
         width: 82,
         formatter: this.cargoActionFormatter.bind(this),
       }]
@@ -110,17 +177,43 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
  */
 
 
-  
+  handleTableLoad(event: any): void {
+    // product cell
+    document.querySelectorAll('.edit').forEach((e) => {
+      e.addEventListener("click", () => {   
+        const selectedId = Number(e.id);
+        this.selectedCargo = this.cargos.find(cargo => cargo.carg_Id === selectedId) || this.selectedCargo;
+        if (this.selectedCargo) {
+          this.newCargo = this.fb.group({
+            name: [this.selectedCargo.carg_Nombre|| '', Validators.required],
+          });
+          this.openModal("edit");
+        }
+      });
+    });
     
-  
+    document.querySelectorAll('.delete').forEach((e) => {
+      e.addEventListener("click", () => {  
+        const selectedId = Number(e.id);
+        this.selectedCargo = this.cargos.find(cargo => cargo.carg_Id === selectedId) || this.selectedCargo;
+        if (this.selectedCargo) {
+          this.newCargo = this.fb.group({
+            name: [this.selectedCargo.carg_Nombre || '', Validators.required],
+          });
+          this.openModalDelete();
+        }
+      });
+    })
+  }
 
 
   // formats name cell
-  cargosNameFormatter(cargo: Cargo): any {
+  cargoNameFormatter(cargo: Cargo): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `
       <div class="table-user">
       <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${cargo.carg_Id}">${cargo.carg_Nombre}</a>
+      </div>
       `
     );
   }
@@ -132,16 +225,6 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
         <a href="javascript:void(0);" class="delete action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
-  
-  // editEnfermedad(id: string): void {
-  //   // Handle edit action
-  //   console.log('Edit button clicked for ID:', id);
-  // }
-  
-  // deleteEnfermedad(id: string): void {
-  //   // Handle delete action
-  //   console.log('Delete button clicked for ID:', id);
-  // }
 
   /**
 * Match table data with search input
@@ -170,7 +253,4 @@ matches(row: Cargo, term: string) {
   }
 
 }
-// function showSuccess() {
-//   throw new Error('Function not implemented.');
-// }
 

@@ -63,6 +63,9 @@ namespace Asilo.DataAccess
 
         #region Cargos
         public static string UDP_Lista_Cargos = "asil.UDP_asil_tbCargos_List";
+        public static string UDP_Insert_Cargos = "asil.UDP_asil_tbCargos_Insert";
+        public static string UDP_Update_Cargos = "asil.UDP_asil_tbCargos_Update";
+        public static string UDP_Delete_Cargos = "asil.UDP_asil_tbCargos_Delete";
         #endregion
 
         #region Categorias Habitaciones

@@ -221,6 +221,66 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult InsertCargos(tbCargos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _cargosRepository.Insert(item);
+
+                if (insert.MessageStatus == "El cargo ha sido insertado")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                else if (insert.MessageStatus == "Este cargo ya existe")
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult UpdateCargos(tbCargos item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var update = _cargosRepository.Update(item);
+
+                if (update.MessageStatus == "El cargo ha sido editado")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if (update.MessageStatus == "El cargo ya existe")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteCargos(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _cargosRepository.Delete(id);
+
+                if (delete.MessageStatus == "El cargo ha sido eliminado")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
+                else if (delete.MessageStatus == "El cargo no puede ser eliminado ya que está siendo usado en otro registro")
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Warning);
+                else
+                    return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         #endregion
 
         #region Categorias Habitaciones
