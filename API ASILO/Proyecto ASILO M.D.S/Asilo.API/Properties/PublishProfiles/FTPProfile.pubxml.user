@@ -8,7 +8,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
     <_PublishTargetUrl>ftp://155.254.244.28/www.asilomilagrosdelsocorro.somee.com</_PublishTargetUrl>
-    <History>True|2023-05-26T03:44:40.9047430Z;True|2023-05-25T20:34:58.8389542-06:00;False|2023-05-25T11:32:37.3802365-06:00;True|2023-05-25T07:20:54.1555546-06:00;False|2023-05-25T07:18:10.5717754-06:00;False|2023-05-25T07:17:40.2270401-06:00;False|2023-05-25T07:17:13.2087689-06:00;False|2023-05-25T07:17:09.0673812-06:00;False|2023-05-25T07:16:09.9880446-06:00;True|2023-05-25T00:02:37.6660031-06:00;True|2023-05-24T23:39:12.5820294-06:00;True|2023-05-23T21:26:08.2666404-06:00;False|2023-05-23T21:23:04.3524732-06:00;True|2023-05-23T09:42:49.9149174-06:00;False|2023-05-23T09:38:07.8466634-06:00;True|2023-05-22T20:33:31.8443744-06:00;True|2023-05-22T20:14:05.6046946-06:00;True|2023-05-22T13:56:08.2238391-06:00;True|2023-05-22T11:53:53.6280681-06:00;True|2023-05-20T19:24:43.1263891-06:00;True|2023-05-19T15:09:09.6458598-06:00;False|2023-05-19T10:49:30.4348598-06:00;True|2023-05-19T10:30:23.3718925-06:00;</History>
+    <History>True|2023-05-28T08:45:54.2494457Z;True|2023-05-27T12:07:35.9656927-06:00;True|2023-05-25T21:44:40.9047430-06:00;True|2023-05-25T20:34:58.8389542-06:00;False|2023-05-25T11:32:37.3802365-06:00;True|2023-05-25T07:20:54.1555546-06:00;False|2023-05-25T07:18:10.5717754-06:00;False|2023-05-25T07:17:40.2270401-06:00;False|2023-05-25T07:17:13.2087689-06:00;False|2023-05-25T07:17:09.0673812-06:00;False|2023-05-25T07:16:09.9880446-06:00;True|2023-05-25T00:02:37.6660031-06:00;True|2023-05-24T23:39:12.5820294-06:00;True|2023-05-23T21:26:08.2666404-06:00;False|2023-05-23T21:23:04.3524732-06:00;True|2023-05-23T09:42:49.9149174-06:00;False|2023-05-23T09:38:07.8466634-06:00;True|2023-05-22T20:33:31.8443744-06:00;True|2023-05-22T20:14:05.6046946-06:00;True|2023-05-22T13:56:08.2238391-06:00;True|2023-05-22T11:53:53.6280681-06:00;True|2023-05-20T19:24:43.1263891-06:00;True|2023-05-19T15:09:09.6458598-06:00;False|2023-05-19T10:49:30.4348598-06:00;True|2023-05-19T10:30:23.3718925-06:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -18,31 +18,31 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/19/2023 18:42:57</publishTime>
     </File>
     <File Include="Asilo.API.deps.json">
-      <publishTime>05/25/2023 21:42:40</publishTime>
+      <publishTime>05/28/2023 02:44:16</publishTime>
     </File>
     <File Include="Asilo.API.dll">
-      <publishTime>05/25/2023 21:39:15</publishTime>
+      <publishTime>05/28/2023 02:44:09</publishTime>
     </File>
     <File Include="Asilo.API.exe">
-      <publishTime>05/25/2023 21:39:15</publishTime>
+      <publishTime>05/28/2023 02:44:09</publishTime>
     </File>
     <File Include="Asilo.API.pdb">
-      <publishTime>05/25/2023 21:39:14</publishTime>
+      <publishTime>05/28/2023 02:44:09</publishTime>
     </File>
     <File Include="Asilo.API.runtimeconfig.json">
       <publishTime>05/25/2023 21:39:16</publishTime>
     </File>
     <File Include="Asilo.BusinessLogic.dll">
-      <publishTime>05/25/2023 21:39:07</publishTime>
+      <publishTime>05/28/2023 02:39:01</publishTime>
     </File>
     <File Include="Asilo.BusinessLogic.pdb">
-      <publishTime>05/25/2023 21:39:07</publishTime>
+      <publishTime>05/28/2023 02:39:01</publishTime>
     </File>
     <File Include="Asilo.DataAccess.dll">
-      <publishTime>05/25/2023 21:39:04</publishTime>
+      <publishTime>05/28/2023 02:38:58</publishTime>
     </File>
     <File Include="Asilo.DataAccess.pdb">
-      <publishTime>05/25/2023 21:39:04</publishTime>
+      <publishTime>05/28/2023 02:38:58</publishTime>
     </File>
     <File Include="Asilo.Entities.dll">
       <publishTime>05/25/2023 21:24:46</publishTime>
@@ -372,7 +372,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>11/11/2020 18:16:28</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>05/25/2023 21:42:41</publishTime>
+      <publishTime>05/28/2023 02:44:17</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll">
       <publishTime>11/11/2020 18:15:14</publishTime>

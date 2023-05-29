@@ -1260,6 +1260,21 @@ BEGIN
 END
 GO
 
+
+/*LISTAR CUIDADORES DISPONIBLES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo 
+	@cent_Id	INT
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbEmpleados
+	WHERE [empe_Estado] = 1
+    AND carg_Id = 2
+    AND empe_Id NOT IN (SELECT empe_Id FROM asil.tbResidentes WHERE resi_Estado = 1 AND empe_Id IS NOT NULL)
+	AND cent_Id = @cent_Id
+END
+GO
+
 /*FIND EMPLEADOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_Find 
 	@empe_Id	INT
@@ -2752,8 +2767,9 @@ AS
 	       habi_Numero,
 		   t1.cate_Id,
 		   t4.cate_Nombre,
+		   t4.cate_Capacidad,
 		   t1.cent_Id,
-		   t5.cent_Nombre
+		   t5.cent_Nombre,
 		   habi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   habi_FechaCreacion,
@@ -2767,6 +2783,21 @@ AS
 		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
 		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
 		   ON t1.cent_Id = t5.cent_Id
+GO
+
+/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
+	@cent_Id	INT
+AS
+BEGIN
+
+	SELECT *
+	FROM asil.VW_tbHabitaciones habi
+	WHERE (SELECT COUNT(habiresi_Id)
+		FROM [asil].[tbHabitacionesXResidente]
+		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
+	AND cent_Id = @cent_Id
+END
 GO
 
 /*LISTAR HABITACIONES*/
