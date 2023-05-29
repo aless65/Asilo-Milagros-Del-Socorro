@@ -881,6 +881,7 @@ GO
 INSERT INTO gral.tbEstadosCiviles(estacivi_Nombre,estacivi_UsuCreacion)
 VALUES('Soltero(a)',1),
       ('Casado(a)',1),
+      ('Viudo(a)',1),
 	  ('Divorciado(a)',1),
 	  ('Union Libre',1)
 GO
@@ -1054,6 +1055,7 @@ VALUES
   ('Tío(a)', 1),
   ('Primo(a)', 1),
   ('Hijo(a)', 1),
+  ('Nieto(a)', 1),
   ('Sobrino(a)', 1),
   ('Hermano(a)', 1),
   ('Otro', 1);

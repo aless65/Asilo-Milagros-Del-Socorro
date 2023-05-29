@@ -12,8 +12,10 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { AgendaDetalle } from '../../Models';
+import { AgendaDetalle, Residente,
+         Encargado, Expediente } from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-residentes-create',
@@ -49,7 +51,15 @@ export class CreateComponent implements OnInit {
   goesBack: boolean = false;
   goesBackDieta: boolean = false;
   agendadetalle: AgendaDetalle[] = [];
+  residente: Residente = {};
+  encargado: Encargado = {};
+  expediente: Expediente = {};
   maxId: number = 0;
+  isDatosPersonalesActive: boolean = true;
+  isEncargadoActive: boolean = false;
+  isExpedienteActive: boolean = false;
+  isAdministracionActive: boolean = false;
+  allValuesUndefinedOrNull!: boolean;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -81,13 +91,14 @@ export class CreateComponent implements OnInit {
 
   selectedImage: string | ArrayBuffer | null = null;
 
-
-
   // ngOnInit() {
   // }
+  
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
+
+    this.expediente.expe_FechaApertura = new Date().toISOString().substring(0, 10);
 
     FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       dayGridPlugin,
@@ -116,41 +127,54 @@ export class CreateComponent implements OnInit {
       }
     });
 
+    function maxDateValidator(minDate: Date) {
+      return (control: any): { [key: string]: any } | null => {
+        const selectedDate = new Date(control.value);
+        if (selectedDate > minDate) {
+          return { 'minDate': true };
+        }
+        return null;
+      };
+    }
 
-    // this.createComponent.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
-    //   console.log('Agenda Detalle Saved:', agendadetalle);
-    // });
-
-    // this.createComponent.eventSaved.subscribe((event: EventInput) => {
-    //   console.log('Event Saved:', event);
-    // });
+    // function minDateValidator(minDate: Date) {
+    //   return (control: any): { [key: string]: any } | null => {
+    //     const selectedDate = new Date(control.value);
+    //     if (selectedDate >= minDate) {
+    //       return { 'minDate': true };
+    //     }
+    //     return null;
+    //   };
+    // }
 
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
       resi_Apellidos: ['', Validators.required],
-      resi_Identidad: ['', Validators.required],
-      resi_Nacimiento: ['', Validators.required],
-      estacivi_Id: [0, Validators.required],
+      resi_Identidad: ['',  [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      resi_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(1959, 0, 1))]],
+      estacivi_Id: ['', Validators.required],
       resi_Sexo: ['', Validators.required],
     })
 
     this.encargadoForm = this.fb.group({
       enca_Nombres: ['', Validators.required],
       enca_Apellidos: ['', Validators.required],
-      enca_Identidad: ['', Validators.required],
-      enca_Nacimiento: ['', Validators.required],
+      enca_Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      enca_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(2006, 0, 1))]],
       enca_Sexo: ['', Validators.required],
-      estacivi_Id: [0, Validators.required],
+      estacivi_Id: ['', Validators.required],
       muni_Id: ['', Validators.required],
       enca_Direccion: ['', Validators.required],
-      enca_Telefono: ['', Validators.required],
-      pare_Id: [0, Validators.required],
+      enca_Telefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      pare_Id: ['', Validators.required],
     })
 
     this.profileForm = this.fb.group({
-      tiposang_Id: [0, Validators.required],
-      expe_FechaApertura: ['', Validators.required],
-      enfe_Id: [0, [Validators.required, Validators.email]]
+      tiposang_Id: ['', Validators.required],
+      expe_FechaApertura: [this.expediente.expe_FechaApertura, Validators.required],
+      enfe_Id: [''],
+      expe_Fotografia: [''],
+      expe_Enfermedades: [''],
     })
 
     this.validationWizardForm = this.fb.group({
@@ -354,7 +378,6 @@ export class CreateComponent implements OnInit {
       }
       console.log(this.calendarEventsData);
     });
-
   }
 
   handleAceptarClick() {
@@ -363,6 +386,119 @@ export class CreateComponent implements OnInit {
       this.openConfirmacion();
     }
   }
+
+  submitResidente(){
+    if (this.accountForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.accountForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      console.log(this.residente);
+      this.isDatosPersonalesActive = false;
+    }
+  }
+
+  submitEncargado() {
+    const formValues = this.encargadoForm.value;
+    this.allValuesUndefinedOrNull = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+    
+    if (this.allValuesUndefinedOrNull) {
+      // All values are undefined or null, perform the desired action here
+      console.log('All values are undefined or null', this.encargado, this.allValuesUndefinedOrNull);
+      this.isEncargadoActive = false;
+      return;
+    } else{
+      if (this.encargadoForm.invalid) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡Llene todos los campos!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Action after the toast is closed
+        });
+    
+        Object.keys(this.encargadoForm.controls).forEach(field => {
+          const control = this.encargadoForm.get(field);
+          if (control?.invalid) {
+            const errors = control.errors;
+            console.log(`Error en el campo ${field}:`, errors);
+          }
+        });
+
+        this.allValuesUndefinedOrNull = false;
+      } else {
+        console.log(this.encargado);
+        this.isEncargadoActive = false;
+      }
+    }
+  }
+
+   submitExpediente(){
+    if (this.profileForm.invalid) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
+      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
+
+      Object.keys(this.accountForm.controls).forEach(field => {
+        const control = this.accountForm.get(field);
+        if (control?.invalid) {
+          const errors = control.errors;
+          console.log(`Error en el campo ${field}:`, errors);
+        }
+      })
+    } else{
+      // this.service.getMetodosPago().subscribe((response: any) => {
+      //   let options = response.data.map((item: any) => ({
+      //     value: item.meto_Id,
+      //     label: item.meto_Nombre
+      //   }));
+  
+      //   this.metodopago = [{
+      //     label: 'Escoja un método de pago',
+      //     options: options
+      //   },
+      //   ];
+      // });
+      console.log(this.expediente);
+      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
+      this.resiService.getImageUpload(expe_Fotografia)
+      this.isDatosPersonalesActive = false;
+    }
+  }
+  
 
   openConfirmacion() {
     this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
@@ -630,8 +766,11 @@ export class CreateComponent implements OnInit {
   // goes to next wizard
   gotoNext(): void {
     if (this.accountForm.valid) {
-      if (this.profileForm.valid) {
+      if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
         this.activeWizard4 = 3;
+      }
+      else if (this.profileForm.valid) {
+        this.activeWizard4 = 4;
       }
       else {
         this.activeWizard4 = 2;

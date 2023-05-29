@@ -25,7 +25,7 @@ export interface Residente {
     agen_Id?: number;
     resi_Nacimiento?: string;
     expe_Fotografia?: string;
-    expe_FechaApertura: string;
+    expe_FechaApertura?: string;
     resi_UsuCreacion?: number;
     usuCrea?: string;
     resi_UsuModificacion?: number;
@@ -36,6 +36,44 @@ export interface Residente {
     [key: string]: number | string | undefined ;
 }
 
+export interface Encargado {
+    enca_Id?: number;
+    enca_Nombres?: string;
+    enca_Apellidos?: string;
+    enca_Identidad?: string;
+    estacivi_Id?: number;
+    enca_Nacimiento?: string;
+    enca_Sexo?: string;
+    muni_Id?: number;
+    enca_Direccion?: string;
+    enca_Telefono?: string;
+    resi_Id?: number;
+    pare_Id?: number;
+    enca_UsuCreacion?: number;
+    usuCrea?: string;
+    enca_UsuModificacion?: number;
+    usuModif?: string;
+    enca_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined ;
+}
+
+export interface Expediente {
+    expe_Id?: number;
+    resi_Id?: number;
+    tiposang_Id?: number;
+    expe_FechaApertura?: string;
+    expe_Fotografia?: string;
+    expe_Enfermedades?: number[];
+    expe_UsuCreacion?: number;
+    expe_UsuCreacion_Nombre?: string;
+    expe_UsuModificacion?: number;
+    expe_UsuModificacion_Nombre?: string;
+    expe_FechaCreacion?: string;
+    expe_FechaModificacion?: string;
+
+    [key: string]: number | string | undefined | number[];
+}
 
 export interface Proveedor {
     prov_Id?: number;

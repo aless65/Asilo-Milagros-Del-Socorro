@@ -239,6 +239,8 @@ export class CrearComponent implements OnInit {
       }
       else if(data.message == "Exitoso"){
         Swal.fire({
+          toast: true,
+          position: 'top-end',
           title: 'Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
@@ -246,8 +248,8 @@ export class CrearComponent implements OnInit {
           timer: 1850,
           timerProgressBar: true
         }).then(() => {
-           this.router.navigate([this.returnUrl]);
         });
+        this.router.navigate([this.returnUrl]);
       }
     })
    }

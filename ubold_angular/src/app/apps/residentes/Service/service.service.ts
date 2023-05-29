@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Residente, AgendaDetalle } from '../../Models';
 import { environment } from 'src/environments/environment';
 
@@ -7,28 +7,50 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ServiceService {
-  constructor(private http:HttpClient) { }
-  
+  constructor(private http: HttpClient) { }
+
+  // headers!: {
+  //   "Access-Control-Allow-Headers": "*", // this will allow all CORS requests
+  //   "Access-Control-Allow-Methods": 'OPTIONS,POST,GET', // this states the allowed methods
+  //   "Content-Type": "application/json" // this shows the expected content type
+  // }
+
   variableGlobal: string = environment.variableGlobal;
 
-  getResidentes(){
+  variableAPIimg: string = environment.imgAPI;
+
+  getResidentes() {
     return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Listado`);
   }
 
-  getAgendaDetalles(id: number){
+  getAgendaDetalles(id: number) {
     return this.http.get<AgendaDetalle[]>(`${this.variableGlobal}Agenda/ListadoDetalles?id=${id}`);
   }
-  
-  
-//   addEnfermedades(newEnfermedad: Enfermedad){
-//     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-//   }
-  
-//   editEnfermedades(editEnfermedad: Enfermedad){
-//     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
-//   }
 
-//   deleteEnfermedades(id: number){
-//     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
-//   }
+  getImageUpload(img: string) {
+    const headers = new HttpHeaders();
+    headers.delete('Content-Type');
+
+    return this.http.post<any>(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, { headers: headers }).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+
+  //   addEnfermedades(newEnfermedad: Enfermedad){
+  //     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
+  //   }
+
+  //   editEnfermedades(editEnfermedad: Enfermedad){
+  //     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);
+  //   }
+
+  //   deleteEnfermedades(id: number){
+  //     return this.http.put(`${this.Url}Enfermedades/Eliminar?id=${id}`, null);
+  //   }
 }

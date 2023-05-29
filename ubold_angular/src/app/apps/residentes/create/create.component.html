@@ -12,7 +12,7 @@
             <ul ngbNav #validationWizard="ngbNav" [(activeId)]="activeWizard4"
                 class="nav-pills nav-justified bg-light form-wizard-header mb-4">
                 <li [ngbNavItem]="1">
-                    <a ngbNavLink class="rounded-0 pt-2">
+                    <a ngbNavLink class="rounded-0 pt-2" [class.disabled]="!isDatosPersonalesActive">
                         <i class="mdi mdi-account-circle me-1"></i>
                         <span class="d-none d-sm-inline">Datos Personales</span>
                     </a>
@@ -23,65 +23,122 @@
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="mb-3">
                                         <label class="col-form-label" for="resi_Nombres">Nombres</label>
-                                        <input type="text" class="form-control" id="resi_Nombres" 
-                                            formControlName="resi_Nombres" required
-                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nombres.invalid}">
+                                        <input type="text" class="form-control" id="resi_Nombres"
+                                            [(ngModel)]="residente.resi_Nombres" required formControlName="resi_Nombres"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nombres.invalid, 'is-valid': accountWizard.submitted && form1.resi_Nombres.valid}">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nombres.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nombres.invalid"
+                                            class="invalid-feedback">
+                                            Nombres requeridos.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="col-form-label" for="resi_Identidad">
                                             Identidad</label>
                                         <input type="text" id="resi_Identidad" name="resi_Identidad"
                                             class="form-control" value="123456789" formControlName="resi_Identidad"
-                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid }">
+                                            [(ngModel)]="residente.resi_Identidad"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid , 'is-valid': accountWizard.submitted && form1.resi_Identidad.valid }">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Identidad.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Identidad.invalid"
+                                            class="invalid-feedback">
+                                            Identidad requerida.
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="col-form-label" for="resi_Nacimiento">
                                             Fecha de Nacimiento</label>
                                         <input type="date" id="resi_Nacimiento" name="resi_Nacimiento"
-                                            class="form-control" value="123456789" formControlName="resi_Nacimiento"
-                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nacimiento.invalid }">
+                                            [(ngModel)]="residente.resi_Nacimiento" class="form-control"
+                                            value="123456789" formControlName="resi_Nacimiento"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nacimiento.invalid , 'is-valid': accountWizard.submitted && form1.resi_Nacimiento.valid }">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nacimiento.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nacimiento.invalid"
+                                            class="invalid-feedback">
+                                            El residente debe tener al menos 65 años.
+                                        </div>
                                     </div>
                                 </div> <!-- end col -->
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="mb-3">
                                         <label class="col-form-label" for="resi_Apellidos">Apellidos</label>
-                                        <input type="text" class="form-control" id="resi_Apellidos" 
+                                        <input type="text" class="form-control" id="resi_Apellidos"
                                             formControlName="resi_Apellidos" required
-                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Apellidos.invalid}">
+                                            [(ngModel)]="residente.resi_Apellidos"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Apellidos.invalid, 'is-valid': accountWizard.submitted && form1.resi_Apellidos.valid}">
+
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Apellidos.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Apellidos.invalid"
+                                            class="invalid-feedback">
+                                            Apellidos requeridos.
+                                        </div>
                                     </div>
 
-                                    <div class="mb-3">
+                                    <div class="mb-4">
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [minCountForSearch]="0">
+                                            [(ngModel)]="residente.estacivi_Id" [minCountForSearch]="0"
+                                            [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
                                         </select2>
+
+                                        <div *ngIf="accountWizard.submitted && form1.estacivi_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.estacivi_Id.invalid"
+                                            class="invalid-feedback">
+                                            Estado civil requerido.
+                                        </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-form-label mb-1" for="confirm4">Sexo</label>
+                                        <!-- <label class="col-form-label mb-1" for="confirm4">Sexo</label> -->
 
-                                        <div class="col-6">
+                                        <label for="Sexo" class="form-label">Sexo</label>
+                                        <div class="radio-group">
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="sexo"
+                                                required value="F" [(ngModel)]="residente.resi_Sexo"
+                                                formControlName="resi_Sexo"
+                                                [ngClass]="{ 'is-valid': accountWizard.submitted && form1.resi_Sexo.valid , 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
+                                            Femenino
 
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" id="femenino" name="resi_Sexo"
-                                                    class="form-check-input"
-                                                    [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
-                                                <label class="form-check-label" for="femenino">Femenino</label>
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="Sexo"
+                                                value="M" required [(ngModel)]="residente.resi_Sexo"
+                                                formControlName="resi_Sexo" style="margin-left: 15px;"
+                                                [ngClass]="{ 'is-valid': accountWizard.submitted && form1.resi_Sexo.valid , 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
+                                            Masculino
+
+                                            <div *ngIf="accountWizard.submitted && form1.resi_Sexo.valid"
+                                                class="valid-feedback">
+                                                ¡Completo!
                                             </div>
-
-                                        </div>
-
-                                        <div class="col-6">
-
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" id="masculino" name="resi_Sexo"
-                                                    class="form-check-input"
-                                                    [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
-                                                <label class="form-check-label" for="masculino">Masculino</label>
+                                            <div *ngIf="accountWizard.submitted && form1.resi_Sexo.invalid"
+                                                class="invalid-feedback">
+                                                Sexo es requerido.
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -90,7 +147,8 @@
                             <ul class="list-inline mb-0 wizard mt-3">
 
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Siguiente</button>
+                                    <button type="submit" class="btn btn-secondary"
+                                        (click)="submitResidente()">Siguiente</button>
                                 </li>
                             </ul>
 
@@ -99,7 +157,7 @@
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="2">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2" [class.disabled]="!isEncargadoActive">
                         <i class="mdi mdi-account-supervisor-circle me-1"></i>
                         <span class="d-none d-sm-inline">Encargado</span>
                     </a>
@@ -110,40 +168,90 @@
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="mb-3">
                                         <label class="col-form-label" for="enca_Nombres">Nombres</label>
-                                        <input type="text" class="form-control" id="enca_Nombres" value="hyper"
-                                            formControlName="enca_Nombres" required
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nombres.invalid}">
+                                        <input type="text" class="form-control" id="enca_Nombres"
+                                            formControlName="enca_Nombres" required [(ngModel)]="encargado.enca_Nombres"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nombres.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Nombres.valid && allValuesUndefinedOrNull}">
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nombres.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nombres.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Nombres requeridos.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="col-form-label" for="enca_Identidad">
                                             Identidad</label>
                                         <input type="text" id="enca_Identidad" name="enca_Identidad"
-                                            class="form-control" value="123456789" formControlName="enca_Identidad"
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Identidad.invalid }">
+                                            [(ngModel)]="encargado.enca_Identidad" class="form-control"
+                                            value="123456789" formControlName="enca_Identidad"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Identidad.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Identidad.valid && allValuesUndefinedOrNull }">
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Identidad.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Identidad.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Identidad requerida.
+                                        </div>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label class="col-form-label" for="enca_Nacimiento">
                                             Fecha de Nacimiento</label>
                                         <input type="date" id="enca_Nacimiento" name="enca_Nacimiento"
-                                            class="form-control" value="123456789" formControlName="enca_Nacimiento"
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nacimiento.invalid }">
+                                            [(ngModel)]="encargado.enca_Nacimiento" class="form-control"
+                                            formControlName="enca_Nacimiento"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nacimiento.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Nacimiento.valid && allValuesUndefinedOrNull }">
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nacimiento.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nacimiento.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            El encargado debe tener al menos 18 años.
+                                        </div>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label class="col-form-label" for="muni_Id">
                                             Municipio</label>
                                         <select2 id="muni_Id" [data]="municipio" formControlName="muni_Id"
-                                            [minCountForSearch]="0">
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.muni_Id"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.muni_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.muni_Id.valid && allValuesUndefinedOrNull }">
                                         </select2>
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.muni_Id.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.muni_Id.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Municipio requerido.
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="col-form-label" for="enca_Telefono">
                                             Teléfono</label>
                                         <input type="text" id="enca_Telefono" name="enca_Telefono" class="form-control"
-                                            value="123456789" formControlName="enca_Telefono"
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Telefono.invalid }">
+                                            formControlName="enca_Telefono" [(ngModel)]="encargado.enca_Telefono"
+                                            [ngClass]="{'is-invalid': encargadoWizard.submitted && form2.enca_Telefono.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Telefono.valid && allValuesUndefinedOrNull }">
+
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Telefono.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Telefono.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Teléfono requerido.
+                                        </div>
+
                                     </div>
 
                                 </div> <!-- end col -->
@@ -152,55 +260,101 @@
                                         <label class="col-form-label" for="enca_Apellidos">Apellidos</label>
                                         <input type="text" class="form-control" id="enca_Apellidos" value="hyper"
                                             formControlName="enca_Apellidos" required
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Apellidos.invalid}">
-                                    </div>
+                                            [(ngModel)]="encargado.enca_Apellidos"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Apellidos.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Apellidos.valid && allValuesUndefinedOrNull}">
 
-                                    <div class="mb-3">
-                                        <label class="col-form-label" for="estacivi_Id">
-                                            Estado Civil</label>
-                                        <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [minCountForSearch]="0">
-                                        </select2>
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Apellidos.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Apellidos.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Apellidos requeridos.
+                                        </div>
+
                                     </div>
 
                                     <div class="mb-4">
-                                        <label class="col-form-label mb-1" for="confirm4">Sexo</label>
-                                        <div class="col-6">
+                                        <label class="col-form-label" for="estacivi_Id">
+                                            Estado Civil</label>
+                                        <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_Id"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.estacivi_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.estacivi_Id.valid && !allValuesUndefinedOrNull}">
+                                        </select2>
 
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" id="femenino" name="enca_Sexo"
-                                                    class="form-check-input"
-                                                    [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Sexo.invalid }">
-                                                <label class="form-check-label" for="femenino">Femenino</label>
-                                            </div>
-
+                                        <div *ngIf="encargadoWizard.submitted && form2.estacivi_Id.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
                                         </div>
-                                        <div class="col-6">
+                                        <div *ngIf="encargadoWizard.submitted && form2.estacivi_Id.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Estado civil requerido.
+                                        </div>
+                                    </div>
 
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" id="masculino" name="enca_Sexo"
-                                                    class="form-check-input"
-                                                    [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Sexo.invalid }">
-                                                <label class="form-check-label" for="masculino">Masculino</label>
+                                    <div class="mb-4">
+                                        <label for="Sexo" class="form-label">Sexo</label>
+                                        <div class="radio-group">
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="sexo"
+                                                required value="F" [(ngModel)]="encargado.enca_Sexo"
+                                                formControlName="enca_Sexo"
+                                                [ngClass]="{ 'is-valid': encargadoWizard.submitted && form2.enca_Sexo.valid && allValuesUndefinedOrNull, 'is-invalid': encargadoWizard.submitted && form2.enca_Sexo.invalid && !allValuesUndefinedOrNull }">
+                                            Femenino
+
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="Sexo"
+                                                value="M" required [(ngModel)]="encargado.enca_Sexo"
+                                                formControlName="enca_Sexo" style="margin-left: 15px;"
+                                                [ngClass]="{ 'is-valid': encargadoWizard.submitted && form2.enca_Sexo.valid  && allValuesUndefinedOrNull, 'is-invalid': encargadoWizard.submitted && form2.enca_Sexo.invalid && !allValuesUndefinedOrNull }">
+                                            Masculino
+
+                                            <div *ngIf="encargadoWizard.submitted && form2.enca_Sexo.valid && allValuesUndefinedOrNull"
+                                                class="valid-feedback">
+                                                ¡Completo!
                                             </div>
-
+                                            <div *ngIf="encargadoWizard.submitted && form2.enca_Sexo.invalid && !allValuesUndefinedOrNull"
+                                                class="invalid-feedback">
+                                                Sexo requerido.
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="col-form-label" for="enca_Direccion">Dirección Exacta</label>
-                                        <textarea type="text" class="form-control" id="enca_Direccion" value="hyper"
+                                        <input type="text" class="form-control" id="enca_Direccion"
                                             formControlName="enca_Direccion" required
-                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Direccion.invalid}">
-                                        </textarea>
+                                            [(ngModel)]="encargado.enca_Direccion"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Direccion.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Direccion.valid && allValuesUndefinedOrNull}">
+
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Direccion.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Direccion.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Dirección requerida.
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="col-form-label" for="pare_Id">
                                             Parentesco</label>
                                         <select2 id="pare_Id" [data]="parentesco" formControlName="pare_Id"
-                                            [minCountForSearch]="0">
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.pare_Id" name="pare_Id"
+                                            [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.pare_Id.invalid, 'is-valid && allValuesUndefinedOrNull': encargadoWizard.submitted && form2.pare_Id.valid && !allValuesUndefinedOrNull}">
+
                                         </select2>
+
+                                        <div *ngIf="encargadoWizard.submitted && form2.pare_Id.valid && allValuesUndefinedOrNull"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="encargadoWizard.submitted && form2.pare_Id.invalid && !allValuesUndefinedOrNull"
+                                            class="invalid-feedback">
+                                            Parentesco requerido.
+                                        </div>
+
                                     </div>
 
                                 </div> <!-- end col -->
@@ -209,10 +363,11 @@
                             <ul class="list-inline mb-0 wizard">
                                 <li class="previous list-inline-item">
                                     <button class="btn btn-secondary"
-                                        (click)="activeWizard4=activeWizard4-1">Anterior</button>
+                                        (click)="activeWizard4=activeWizard4-1; isEncargadoActive = false; isDatosPersonalesActive = true">Anterior</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Siguiente</button>
+                                    <button type="submit" class="btn btn-secondary"
+                                        (click)="submitEncargado()">Siguiente</button>
                                 </li>
                             </ul>
 
@@ -220,7 +375,7 @@
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="3">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2" [class.disabled]="!isExpedienteActive">
                         <i class="mdi mdi-face-profile me-1"></i>
                         <span class="d-none d-sm-inline">Expediente</span>
                     </a>
@@ -233,25 +388,43 @@
                                         <label class="col-md-3 col-form-label" for="tiposang_Id">Tipo de Sangre</label>
                                         <div class="col-md-9">
                                             <select2 id="tiposang_Id" [data]="tipoSangre" formControlName="tiposang_Id"
-                                                [minCountForSearch]="0"
-                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.tiposang_Id.invalid }">
+                                                [minCountForSearch]="0" [(ngModel)]="expediente.tiposang_Id" name="tiposang_Id"
+                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.tiposang_Id.invalid, 'is-valid': profileWizard.submitted && form3.tiposang_Id.valid }">
                                             </select2>
+
+                                            <div *ngIf="profileWizard.submitted && form3.tiposang_Id.valid"
+                                                class="valid-feedback">
+                                                ¡Completo!
+                                            </div>
+                                            <div *ngIf="profileWizard.submitted && form3.tiposang_Id.invalid"
+                                                class="invalid-feedback">
+                                                Tipo de sangre requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-md-3 col-form-label" for="expe_FechaApertura">Apertura</label>
                                         <div class="col-md-9">
-                                            <input type="date" id="expe_FechaApertura" name="expe_FechaApertura"
-                                                class="form-control" formControlName="expe_FechaApertura"
-                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.expe_FechaApertura.invalid }">
+                                            <input type="date" id="expe_FechaApertura" name="expe_FechaApertura" value="expediente.expe_FechaApertura | date:'yyyy-MM-dd'"
+                                                class="form-control" formControlName="expe_FechaApertura" [(ngModel)]="expediente.expe_FechaApertura"
+                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.expe_FechaApertura.invalid, 'is-valid': profileWizard.submitted && form3.expe_FechaApertura.valid }">
+                                        </div>
+
+                                        <div *ngIf="profileWizard.submitted && form3.expe_FechaApertura.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="profileWizard.submitted && form3.expe_FechaApertura.invalid"
+                                            class="invalid-feedback">
+                                            Fecha requerida.
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-md-3 col-form-label" for="enfe_Id">Enfermedades</label>
+                                        <label class="col-md-3 col-form-label" for="expe_Enfermedades">Enfermedades</label>
                                         <div class="col-md-9">
-                                            <select2 [data]="enfermedad" id="enfe_Id" multiple="true" #enfe_Id
-                                                [minCountForSearch]="0">
+                                            <select2 [data]="enfermedad" id="expe_Enfermedades" multiple="true" #enfe_Id formControlName="expe_Enfermedades"
+                                                [minCountForSearch]="0" [(ngModel)]="expediente.expe_Enfermedades">
                                             </select2>
                                         </div>
                                     </div>
@@ -266,8 +439,8 @@
                                         <div class="input-container">
                                             <label class="btn btn-blue rounded-pill" for="image">Agregar
                                                 fotografía</label>
-                                            <input type="file" id="image" name="image" class="form-control-file"
-                                                (change)="handleImageUpload($event)">
+                                            <input type="file" id="image" name="image" class="form-control-file" formControlName="expe_Fotografia"
+                                                (change)="handleImageUpload($event)" [(ngModel)]="expediente.expe_Fotografia">
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +454,7 @@
                                         (click)="activeWizard4=activeWizard4-1">Anterior</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary">Siguiente</button>
+                                    <button type="submit" (click)="submitExpediente()" class="btn btn-secondary">Siguiente</button>
                                 </li>
                             </ul>
 
@@ -289,7 +462,7 @@
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="4">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2" [class.disabled]="!isAdministracionActive">
                         <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
                         <span class="d-none d-sm-inline">Administración</span>
                     </a>
