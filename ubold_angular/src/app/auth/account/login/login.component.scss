@@ -1,0 +1,13 @@
+.logo-img {
+    width: 220px; /* Ajusta el valor según el tamaño deseado */
+    margin: 0 auto; /* Centra horizontalmente la imagen */
+  }
+  
+  .login-card {
+    background-image: url('/assets/images/fondoLogin.jpg'); /* Ruta absoluta desde la raíz del proyecto */
+    background-color: rgba(255, 255, 255, 0.8);
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+  }
+  

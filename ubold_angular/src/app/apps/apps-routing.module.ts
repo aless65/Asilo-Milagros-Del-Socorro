@@ -10,6 +10,8 @@ const routes: Routes = [
   { path: 'habitaciones', loadChildren: () => import('./habitaciones/habitaciones.module').then(m => m.HabitacionesModule) },
   { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
   { path: 'encargados', loadChildren: () => import('./encargados/encargados.module').then(m => m.EncargadosModule) },
+  { path: 'histoarialPagos', loadChildren: () => import('./historialPagos/historialPago.module').then(m => m.HistorialPagoModule) },
+
 
   { path: 'residentes', loadChildren: () => import('./residentes/residentes.module').then(m => m.ResidentesModule) },
   { path: 'calendar', loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
