@@ -9,11 +9,9 @@ import { environment } from 'src/environments/environment';
 export class ServiceService {
   constructor(private http: HttpClient) { }
 
-  // headers!: {
-  //   "Access-Control-Allow-Headers": "*", // this will allow all CORS requests
-  //   "Access-Control-Allow-Methods": 'OPTIONS,POST,GET', // this states the allowed methods
-  //   "Content-Type": "application/json" // this shows the expected content type
-  // }
+  headers!: {
+    'Content-Type' : 'multipart/form-data; charset=UTF-8'
+  }
 
   variableGlobal: string = environment.variableGlobal;
 
