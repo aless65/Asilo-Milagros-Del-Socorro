@@ -7,6 +7,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Proveedor } from '../Model';
 import { ServiceServiceP } from 'src/app/apps/proveedores/service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 
@@ -68,19 +69,34 @@ import { ActivatedRoute, Router } from '@angular/router';
     this.activeModal.open(this.deleteProveedorModal, { centered: true, windowClass: 'delete-modal' });
   }  
 
-  deleteProveedor(): void{
+  deleteProveedor(): void {
     this.service.deleteProveedores(this.selectedProveedor.prov_Id || 0).subscribe(
-        (response: any) => {
-          console.log("se pudo:", response);
-          this._fetchData();
-        },
-        (error) => {
-          console.log("no se pudo:", error);
-        }
-      )
+      (response: any) => {
+        console.log("se pudo:", response);
+        this._fetchData();
+        /*Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: response.message, // Mostrar la respuesta JSON en la alerta
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });*/
+  
+      },
+      (error) => {
+        console.log("no se pudo:", error);
+        
+      }
+    )
     this._fetchData();
     this.activeModal.dismissAll('');
   }
+  
 
 
   
