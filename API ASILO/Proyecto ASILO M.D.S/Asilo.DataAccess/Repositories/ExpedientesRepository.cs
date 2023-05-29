@@ -86,6 +86,11 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
+        public IEnumerable<VW_tbExpedientes> ListarPagan()
+        {
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            return db.Query<VW_tbExpedientes>(ScriptsDataBase.ListarResidentesPagan, null, commandType: CommandType.StoredProcedure);
+        }
         public IEnumerable<VW_tbExpedientes> List()
         {
             using var db = new SqlConnection(AsiloContext.ConnectionString);

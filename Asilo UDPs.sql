@@ -3845,4 +3845,49 @@ GO
 
 --[acce].[UDP_Login] 'df','sd'
 
+--VISTAS PARA EL HISTORIAL DE PAGO
 
+--CREATE OR ALTER   VIEW [asil].[VW_tbExpedientes2]
+--AS
+--	SELECT t1.expe_Id,
+--		   t1.resi_Id,
+--		   (t5.[resi_Nombres] + ' ' + t5.[resi_Apellidos]) AS resi_NombreCompleto,
+--		   t5.resi_Estado,
+--		   t1.tiposang_Id,
+--		   t6.tiposang_Nombre,
+--		   t1.expe_FechaApertura,
+--		   t1.expe_Fotografia,
+--		   t1.expe_UsuCreacion, 
+--		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+--		   t1.expe_FechaCreacion, 
+--	       t1.expe_UsuModificacion,
+--		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+--		   t1.expe_FechaModificacion,
+--		   t1.expe_Estado
+--		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
+--		   ON t1.expe_UsuCreacion = T2.usua_Id
+--		   LEFT JOIN acce.tbUsuarios t3
+--		   ON t1.expe_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbResidentes t5
+--		   ON t1.resi_Id = t5.resi_Id LEFT JOIN asil.tbTiposSangre t6
+--		   ON t1.tiposang_Id = t6.tiposang_Id
+--GO
+
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_ListarResiPagan
+AS
+BEGIN
+BEGIN TRY
+    SELECT * FROM [asil].[VW_tbExpedientes]
+    WHERE [resi_Id] IN (SELECT [resi_Id] FROM [asil].[tbHistorialPagos])
+
+    SELECT 1
+END TRY
+
+BEGIN CATCH
+    SELECT 0
+END CATCH
+END
+GO
+
+asil.UDP_ListarResiPagan

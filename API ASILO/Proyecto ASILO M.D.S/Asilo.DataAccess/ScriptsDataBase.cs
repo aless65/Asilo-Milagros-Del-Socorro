@@ -116,6 +116,8 @@ namespace Asilo.DataAccess
         public static string UDP_Inserta_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Insert";
         public static string UDP_Edita_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Update";
         public static string UDP_Elimina_HistorialExpedientes = "asil.UDP_asil_tbHistorialExpedientes_Delete";
+
+        public static string ListarResidentesPagan = "asil.UDP_ListarResiPagan";
         #endregion
 
         #region Habitaciones

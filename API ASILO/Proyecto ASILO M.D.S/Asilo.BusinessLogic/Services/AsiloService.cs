@@ -758,6 +758,23 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+
+
+        public ServiceResult ListadoExpePagan()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _expedientesRepository.ListarPagan();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+
         public ServiceResult ListadoHistorialExpedientesPorExpediente(int id)
         {
             var result = new ServiceResult();

@@ -1091,3 +1091,36 @@ INSERT INTO asil.tbEncargados ([enca_Nombres], [enca_Apellidos], [enca_Identidad
 VALUES ('María', 'López', '0305199509876', 3, '1995-05-03', 'F', '0305', 'Barrio El Centro calle 15, casa 8', '12345678', 3, 4, 1);
 GO
 
+
+
+
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(1,1,'2023-05-20',1);
+GO
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(1,2,'2023-04-20',1);
+GO
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(1,1,'2023-03-20',1);
+GO
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(2,1,'2023-05-20',1);
+GO
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(2,2,'2023-04-20',1);
+GO
+
+INSERT INTO asil.tbHistorialPagos([resi_Id], [meto_Id], [pago_Fecha], [pago_UsuCreacion])
+VALUES(2,1,'2023-03-20',1);
+GO
+
+
+
+
+
+

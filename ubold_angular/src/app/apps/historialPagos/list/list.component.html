@@ -1,5 +1,5 @@
 <!-- page title -->
-<app-page-title [breadcrumbItems]="pageTitle" title="Products"></app-page-title>
+<app-page-title [breadcrumbItems]="pageTitle" title="Historial de Pagos"></app-page-title>
 
 <div class="row">
     <div class="col-12">
@@ -8,12 +8,13 @@
                 <div class="row justify-content-between">
                     <div class="col-auto">
                         <form class="d-flex flex-wrap align-items-center">
-                            <label for="inputPassword2" class="visually-hidden">Search</label>
+                            <label for="inputPassword2" class="visually-hidden">Buscar</label>
                             <div class="me-3">
                                 <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2" name="search"
                                     placeholder="Search..." [(ngModel)]="searchTerm"
-                                    (ngModelChange)="searchData($event)">
+                                    (ngModelChange)="searchData2($event)">
                             </div>
+                            <!--
                             <label for="status-select" class="me-2">Sort By</label>
                             <div class="me-sm-3">
                                 <select class="form-select my-1 my-lg-0" id="status-select">
@@ -23,7 +24,7 @@
                                     <option value="3">Price High</option>
                                     <option value="4">Sold Out</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                     <div class="col-auto">
@@ -42,40 +43,40 @@
 <!-- end row-->
 
 <div class="row">
-    <div class="col-md-6 col-xl-3" *ngFor="let product of products | slice: (page-1) * pageSize : page * pageSize">
-        <div class="card product-box">
+    <div class="col-md-6 col-xl-3" *ngFor="let product of residentes | slice: (page-1) * pageSize : page * pageSize">
+       
+
+        <div class="card product-box custom-card">
             <div class="card-body">
                 <div class="product-action">
-                    <a href="javascript: void(0);" class="btn btn-success btn-xs waves-effect waves-light me-1"><i
+                    <a href="javascript:void(0);" class="btn btn-success btn-xs waves-effect waves-light me-1"><i
                             class="mdi mdi-pencil"></i></a>
-                    <a href="javascript: void(0);" class="btn btn-danger btn-xs waves-effect waves-light"><i
+                    <a href="javascript:void(0);" class="btn btn-danger btn-xs waves-effect waves-light"><i
                             class="mdi mdi-close"></i></a>
                 </div>
-
+        
                 <div class="bg-light">
-                    <img [src]="product.image" alt="product-pic" class="img-fluid" />
+                    <a [routerLink]="['../detail']" [queryParams]="{ id: product.resi_Id }">
+                        <img [src]="product.expe_Fotografia" alt="product-pic" class="img-fluid" />
+                    </a>
                 </div>
-
+        
                 <div class="product-info">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h5 class="font-16 mt-0 sp-line-1"><a [routerLink]="['../product/details']"
-                                    [queryParams]="{ id: product.id}" class="text-dark">{{product.name}}</a> </h5>
-                            <div class="text-warning mb-2 font-13">
-                                <i class="fa fa-star me-1" *ngFor="let item of [].constructor(product.rating)"></i>
-                            </div>
-                            <h5 class="m-0"> <span class="text-muted"> Stocks : {{product.quantity | number}} pcs</span>
+                            <h5 class="font-16 mt-0 sp-line-1">
+                                <a [routerLink]="['../detail']" [queryParams]="{ id: product.resi_Id }" class="text-dark">
+                                    {{ product.resi_NombreCompleto }}
+                                </a>
                             </h5>
                         </div>
-                        <div class="col-auto">
-                            <div class="product-price-tag">
-                                {{product.price | currency}}
-                            </div>
-                        </div>
                     </div> <!-- end row -->
-                </div> <!-- end product info-->
+                </div> <!-- end product info -->
             </div>
-        </div> <!-- end card-->
+        </div> <!-- end card -->
+        
+
+
     </div> <!-- end col-->
 
 </div>

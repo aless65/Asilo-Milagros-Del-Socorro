@@ -26,14 +26,14 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-        public VW_tbHistorialPagos Find(int? id)
+        public IEnumerable<VW_tbHistorialPagos> Find(int? id)
         {
             using var db = new SqlConnection(AsiloContext.ConnectionString);
 
             var parameters = new DynamicParameters();
-            parameters.Add("@pago_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@resi_Id", id, DbType.Int32, ParameterDirection.Input);
 
-            return db.QueryFirst<VW_tbHistorialPagos>(ScriptsDataBase.HistorialPagosFind, parameters, commandType: CommandType.StoredProcedure);
+            return db.Query<VW_tbHistorialPagos>(ScriptsDataBase.HistorialPagosFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbHistorialPagos item)
@@ -79,7 +79,9 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-       
-
+        VW_tbHistorialPagos IRepository<tbHistorialPagos, VW_tbHistorialPagos>.Find(int? id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

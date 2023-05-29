@@ -1,7 +1,14 @@
-<app-default-layout containerClass="account-pages mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6 col-xl-4 login-card">
-            <div class="card bg-pattern">
+
+    <div class="row justify-content login-card">
+        <div class="col-md-10 col-lg-8 col-xl-4 ">
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <p> <a [routerLink]="['../reset-password']" class="text-white-50 ms-1" i18n>
+                          </a></p>
+                  
+                </div> <!-- end col -->
+            </div>
+            <div class="card bg-pattern fixed-size-card transparent-card">
 
                 <div class="card-body p-4">
 
@@ -43,7 +50,7 @@
                             <label for="password" class="form-label" i18n>contraseña:</label>
                             <div class="input-group input-group-merge">
                                 <input [type]="showPassword? 'text' : 'password'" id="password" class="form-control"
-                                    i18n-placeholder placeholder="Enter your password" formControlName="password"
+                                    i18n-placeholder placeholder="contraseña" formControlName="password"
                                     
                                     [ngClass]="{'is-invalid': formSubmitted && formValues.password.invalid}">
                                 <div class="input-group-text" (click)="showPassword=!showPassword">
@@ -72,6 +79,7 @@
                         <div class="text-center d-grid">
                             <button class="btn btn-primary" type="button" (click)="onSubmit()" i18n> ENTRAR </button>
                         </div>
+                        
 
                     </form>
 
@@ -81,11 +89,11 @@
 
             <div class="row mt-3">
                 <div class="col-12 text-center">
-                    <p> <a [routerLink]="['../reset-password']" class="text-white-50 ms-1" i18n>Forgot your
-                            password?</a></p>
-                    <p class="text-white-50" i18n>Don't have an account? <a [routerLink]="['../register']"
-                            class="text-white ms-1"><b>Sign
-                                Up</b></a></p>
+                    <p> <a [routerLink]="['../reset-password']" class="text-white-50 ms-1" i18n>
+                          </a></p>
+                    <p class="text-white-50" i18n> <a [routerLink]="['../register']"
+                            class="text-white ms-1"><b>
+                                </b></a></p>
                 </div> <!-- end col -->
             </div>
             <!-- end row -->
@@ -93,4 +101,3 @@
         </div> <!-- end col -->
     </div>
     <!-- end row -->
-</app-default-layout>

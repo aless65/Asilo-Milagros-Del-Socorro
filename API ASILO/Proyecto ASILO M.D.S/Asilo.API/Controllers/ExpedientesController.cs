@@ -30,6 +30,14 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("ListadoPagan")]
+        public IActionResult Pagan()
+        {
+            var list = _asiloServivce.ListadoExpePagan();
+            return Ok(list);
+        }
+
+
         [HttpGet("ListadoHistorial")]
         public IActionResult IndexHistorial(int id)
         {
