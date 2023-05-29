@@ -1034,11 +1034,11 @@ VALUES('Catalina','Diaz','0502198001425','F',1,'1990-12-05','0502','Barrio el Ce
 	  ('Sebastian','Alvares','0103200302263','M',1,'2000-05-23','0502','2 calle 2 avenida ','39858401','sebastian23@gmail.com',2,1,1),
 	  ('Manuel','Almendradez','0203200202263','M',1,'2000-01-03','0502','1 calle 3 avenida ','90858401','manuel23@gmail.com',2,1,1),
 	  ('Mario','Jimenez','0501200202263','M',1,'2000-10-03','0502','3 calle 3 avenida ','91858401','mmario@gmail.com',2,1,1),
-	  ('Carlos', 'Martínez', '0502198001425', 'M', 1, '1980-05-02', '0502', 'Calle Principal #123', '99991234', 'carlosmartinez@gmail.com', 2, 2, 1),
+	  ('Carlos', 'Martínez', '0502198001455', 'M', 1, '1980-05-02', '0502', 'Calle Principal #123', '99991234', 'carlosmartinez@gmail.com', 2, 2, 1),
 	  ('María', 'García', '0502199005263', 'F', 1, '1990-02-05', '0502', 'Avenida Central #456', '99996543', 'mariagarcia@gmail.com', 2, 3, 1),
 	  ('Luis', 'Hernández', '0502200015263', 'M', 1, '2000-12-05', '0502', 'Barrio Nuevo #789', '99992134', 'luishernandez@gmail.com', 2, 4, 1),
 	  ('Ana', 'Rodríguez', '0102200001263', 'F', 1, '2000-02-01', '0502', 'Calle Secundaria #234', '99991222', 'anarodriguez@gmail.com', 2, 3, 1),
-	  ('Pedro', 'López', '0102200002263', 'M', 1, '2000-02-01', '0502', 'Avenida Principal #567', '99996567', 'pedrolopez@gmail.com', 2, 4, 1),
+	  ('Pedro', 'López', '0102205002263', 'M', 1, '2000-02-01', '0502', 'Avenida Principal #567', '99996567', 'pedrolopez@gmail.com', 2, 4, 1),
 	  ('Laura', 'Flores', '0203200205263', 'F', 1, '2002-03-02', '0502', 'Avenida Vieja #222', '99992222', 'lauraflores@gmail.com', 5, 1, 1);
 
 
