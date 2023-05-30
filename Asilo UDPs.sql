@@ -2359,7 +2359,7 @@ BEGIN
 				 @resi_Sexo			,
 				 @cent_Id			,
 				 @diet_Id			,
-				 @resi_FechaIngreso	,
+				 GETDATE()			,
 				 @empe_Id			,
 				 @agen_Id			,
 				 @resi_UsuCreacion	);

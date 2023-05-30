@@ -19,6 +19,7 @@ import {
 } from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-residentes-create',
@@ -27,6 +28,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateComponent implements OnInit {
 
+  returnUrl: string = '/';
   pageTitle: BreadcrumbItem[] = [];
   activeWizard1: number = 1;
   activeWizard2: number = 1;
@@ -95,7 +97,9 @@ export class CreateComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private service: ServiceService,
     private modalService: NgbModal,
-    private resiService: ResidenteService) { }
+    private router: Router,
+    private resiService: ResidenteService,
+    private route: ActivatedRoute) { }
 
   selectedImage: string | ArrayBuffer | null = null;
 
@@ -393,6 +397,8 @@ export class CreateComponent implements OnInit {
       }
       console.log(this.calendarEventsData);
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/list';
   }
 
   handleAceptarClick() {
@@ -495,18 +501,6 @@ export class CreateComponent implements OnInit {
         }
       })
     } else {
-      // this.service.getMetodosPago().subscribe((response: any) => {
-      //   let options = response.data.map((item: any) => ({
-      //     value: item.meto_Id,
-      //     label: item.meto_Nombre
-      //   }));
-
-      //   this.metodopago = [{
-      //     label: 'Escoja un método de pago',
-      //     options: options
-      //   },
-      //   ];
-      // });
       console.log(this.expediente);
       console.log(this.profileForm.valid);
       const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
@@ -572,8 +566,7 @@ export class CreateComponent implements OnInit {
     if (this.form4.empe_Id.value === "2") {
       const formValues = this.confirmarCuidadoForm.value;
       let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-      // console.log('dieta form', this.dietaForm);
-      // console.log('booleano', this.allValuesUndefinedOrNullDieta);
+
       console.log("cuidado");
 
       if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm) {
@@ -623,12 +616,6 @@ export class CreateComponent implements OnInit {
       console.log("qqqq");
 
       if (canInsert) {
-        // console.log(this.residente);
-        // console.log(this.dietaModel);
-        // console.log(this.encargado);
-        // console.log(this.expediente);
-        // console.log(this.historialPago);
-        // console.log(this.agendadetalle);
 
         const combinedModels = {};
 
@@ -643,15 +630,25 @@ export class CreateComponent implements OnInit {
         Object.assign(combinedModels, this.expediente);
         Object.assign(combinedModels, this.historialPago);
         this.residente.agen_Detalles = this.agendadetalle;
-        // Object.assign(combinedModels, this.agendadetalle);
-        // const agen_Detalles = [];
-        // agen_Detalles.push(this.agendadetalle);
-        // Object.assign(combinedModels, agen_Detalles);
 
         console.log(combinedModels);
 
         this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
           console.log(response);
+          if(response.message === "Exitoso"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
+            this.router.navigate([this.returnUrl]);
+          }
         })
 
         this.isDatosPersonalesActive = false;
