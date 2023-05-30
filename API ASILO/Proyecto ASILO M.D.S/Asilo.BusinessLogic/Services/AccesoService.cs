@@ -255,12 +255,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult DeleteRoles(tbRoles item)
+        public ServiceResult DeleteRoles(int id)
         {
             var result = new ServiceResult();
             try
             {
-                var delete = _rolesRepository.Delete(item);
+                var delete = _rolesRepository.Delete(id);
 
                 if (delete.MessageStatus == "El rol ha sido eliminado")
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);

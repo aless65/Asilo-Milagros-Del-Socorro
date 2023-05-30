@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -81,7 +82,11 @@ import { Select2Data } from 'ng-select2-component';
       }));
     });
 
+    
+
     this.selectedPantallas = this.newRol.value.pant_Id;
+
+    
   }
   // convenience getter for easy access to form fields
   get form1() { return this.newRol.controls; }
@@ -108,13 +113,15 @@ import { Select2Data } from 'ng-select2-component';
   }  
 
   deleteRol(): void{
+    console.log(this.selectedRol.role_Id, "llegas o no");
     this.service.deleteRoles(this.selectedRol.role_Id || 0).subscribe(
+     
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
         },
         (error) => {
-          console.log("no se pudo:", error);
+          console.log("no se pudo:",error );
         }
       )
     this._fetchData();
@@ -122,24 +129,20 @@ import { Select2Data } from 'ng-select2-component';
   }
 
   submitForm(): void {
-    if(this.newRol.invalid){
-     
-      console.log(this.pant_Id);
+    if (this.newRol.invalid) {
+      console.log(this.newRol.controls.pant_Id);
       return;
     }
-    console.log(this.pant_Id);
-    
-    //console.log(this.selectedPantallas);
+  
     const rol: Rol = {
       role_Id: this.selectedRol?.role_Id || 0,
       role_Nombre: this.newRol.value.name,
-      role_Pantallas: this.pant_Id,
+      role_Pantallas: this.newRol.value.pant_Id,
       role_UsuCreacion: 1,
       role_UsuModificacion: 1,
     };
-
+  
     console.log(rol);
-
     if(this.esEditar){
 
       this.service.editRoles(rol).subscribe(
@@ -181,21 +184,27 @@ import { Select2Data } from 'ng-select2-component';
     });
   }
 
-fetchData(): void {
-  if (this.selectedRol.role_Id) {
-    this.service.getRolx(this.selectedRol.role_Id).subscribe((response: any) => {
-      const pantIds: number[] = response.data.map((item: any) => item.pant_Id); // Extraer los valores de pant_Id
 
-      this.selectedPantallas = pantIds;
 
-      console.log(this.selectedPantallas, "en funcion"); // Verificar que se hayan asignado correctamente los valores
-
-      // Llenar el dropdown múltiple con los datos obtenidos
-      this.fillDropdown();
-    });
+  fetchData(): void {
+    if (this.selectedRol.role_Id) {
+      this.service.getRolx(this.selectedRol.role_Id).subscribe((response: any) => {
+        const pantIds: number[] = response.data.map((item: any) => item.pant_Id); // Extraer los valores de pant_Id
+  
+       // = response.data.map((item: any) => item.pant_Id); 
+        this.selectedPantallas = pantIds;
+  
+        console.log(this.selectedPantallas, "en funcion"); // Verificar que se hayan asignado correctamente los valores
+  
+        // Llenar el dropdown múltiple con los datos obtenidos
+        this.fillDropdown();
+  
+        // Actualizar los valores seleccionados en el dropdown múltiple
+        this.setSelectedPantallas();
+      });
+    }
   }
-}
-
+  
   
   fillDropdown(): void {
     this.service.getPantallas().subscribe((response: any) => {
@@ -214,7 +223,8 @@ fetchData(): void {
   
         options[esqueNombre].push({
           value: pantaId,
-          label: pantaNombre
+          label: pantaNombre,
+          selected: this.selectedPantallas.includes(pantaId) // Establecer la propiedad selected según si está en selectedPantallas
         });
       });
   
@@ -230,16 +240,17 @@ fetchData(): void {
   
   setSelectedPantallas(): void {
     if (this.selectedPantallas) {
-      this.newRol.get('pant_Id')?.setValue([...this.selectedPantallas]);
+      this.newRol.get('pant_Id')?.patchValue([...this.selectedPantallas]);
     }
   }
+  
 
 
   /**
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log(this.roles);
+    console.log(this.roles );
     this.columns = [
      
       {
@@ -269,24 +280,51 @@ fetchData(): void {
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
         this.fetchData();
         if (this.selectedRol) {
-          //console.log(this.selectedRol.role_Pantallas)
           this.selectedRoleId = this.selectedRol.role_Id;
-  
-          console.log(this.selectedPantallas, "en handle");
-          this.newRol = this.fb.group({
-            name: [this.selectedRol.role_Nombre || '', Validators.required],
-            pant_Id: [[]] // Inicializar con un array vacío
+    
+          this.service.getPantallas().subscribe((response: any) => {
+            let esquemaLabels: string[] = [];
+            let options: { [key: string]: any[] } = {};
+    
+            response.data.forEach((item: any) => {
+              const esqueNombre: string = item.pant_Menu;
+              const pantaId: string = item.pant_Id;
+              const pantaNombre: string = item.pant_Nombre;
+    
+              if (!esquemaLabels.includes(esqueNombre)) {
+                esquemaLabels.push(esqueNombre);
+                options[esqueNombre] = [];
+              }
+    
+              options[esqueNombre].push({
+                value: pantaId,
+                label: pantaNombre
+              });
+            });
+    
+            this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+              label: esqueNombre,
+              options: options[esqueNombre]
+            }));
+    
+            this.newRol = this.fb.group({
+              name: [this.selectedRol.role_Nombre || '', Validators.required],
+              pant_Id: [[this.selectedPantallas]] // Set default values here
+            });
+    
+            this.openModal("edit");
           });
-          this.openModal("edit");
         }
       });
     });
+    
   
     
     document.querySelectorAll('.delete').forEach((e) => {
       e.addEventListener("click", () => {  
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
+        console.log(this.selectedRol);
         if (this.selectedRol) {
           this.newRol = this.fb.group({
             name: [this.selectedRol.role_Nombre || '', Validators.required],
@@ -344,4 +382,3 @@ matches(row: Rol, term: string) {
   }
 
 }
-

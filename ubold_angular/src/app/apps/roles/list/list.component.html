@@ -46,7 +46,7 @@
             <div class="row mb-3">
                 <label class="col-md-3 col-form-label" for="pant_Id">Pantallas</label>
                 <div class="col-md-9">
-                    <select2 [data]="pantalla" formControllerName="pant_Id" id="pant_Id" multiple="true" #selectRef (update)="pant_Id = selectRef.value">
+                    <select2 [data]="pantalla" [value]="pant_Id" formControlName="pant_Id" id="pant_Id" name="pant_Id" multiple="true" #selectRef (update)="pant_Id = selectRef.value">
                     </select2>
                     
                     

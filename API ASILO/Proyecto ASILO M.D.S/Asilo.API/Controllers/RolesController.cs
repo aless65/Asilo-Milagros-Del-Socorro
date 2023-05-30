@@ -57,11 +57,12 @@ namespace Asilo.API.Controllers
         }
 
 
+
+
         [HttpPut("Eliminar")]
-        public IActionResult Delete(RolesViewModel rol)
+        public IActionResult Delete(int id)
         {
-            var item = _mapper.Map<tbRoles>(rol);
-            var delete = _accesoService.DeleteRoles(item);
+            var delete = _accesoService.DeleteRoles(id);
 
             return Ok(delete);
         }
