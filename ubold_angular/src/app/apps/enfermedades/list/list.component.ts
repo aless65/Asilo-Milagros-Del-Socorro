@@ -6,15 +6,13 @@ import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Enfermedad } from '../../Models';
 import { ServiceService } from 'src/app/apps/enfermedades/Service/service.service';
-// import { ToastModule } from 'primeng/toast';
-// import { MessageService } from 'primeng/api';
-// import { NgToastService } from 'ng-angular-popup';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-enfermedades-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
-    // providers: [MessageService]
+ 
   })
   export class ListComponent implements OnInit {
 
@@ -34,8 +32,7 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    // private toast: NgToastService,
-    // private messageService: MessageService,
+
   ) { }
 
   ngOnInit(): void {
@@ -79,6 +76,20 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if(response.message == "La enfermedad no puede ser eliminada ya que está siendo usada en otro registro"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'La enfermedad no puede ser eliminada ya que está siendo usada en otro registro',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -91,6 +102,18 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
   submitForm(): void {
     if(this.newEnfermedad.invalid){
       console.log("pipi");
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1700,
+          timerProgressBar: true,
+          titleText: '¡Llene todos los campos!',
+          icon: 'warning',
+          background: '#f6f6baf2'
+        }).then(() => {
+          // Acción luego de cerrarse el toast
+        });
       return;
     }
 
@@ -107,6 +130,33 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if (response.message == "La enfermedad ha sido editada exitosamente") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "La enfermedad ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Esta enfermedad ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+          
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -121,6 +171,32 @@ import { ServiceService } from 'src/app/apps/enfermedades/Service/service.servic
           // this.showSuccess();
           console.log("se pudo:", response);
           this._fetchData();
+          if (response.message == "La enfermedad ha sido insertada exitosamente") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "Esta enfermedad ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Esta enfermedad ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:", error);

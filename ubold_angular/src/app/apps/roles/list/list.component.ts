@@ -42,8 +42,11 @@ import { Select2Data } from 'ng-select2-component';
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Roles', path: '/', active: true }];
-
+   
     this._fetchData();
+    if (this.esEditar) {
+      this.fetchData();
+    } 
     // initialize advance table 
     this.initAdvancedTableData();
 
@@ -94,15 +97,7 @@ import { Select2Data } from 'ng-select2-component';
       this.esEditar = false;
     } else{
       this.esEditar = true;
-      if (this.selectedRoleId !== undefined) {
-        this.service.getRolx(this.selectedRoleId).subscribe((response: Rol[]) => {
-          this.roles = response;
-          console.log(this.roles);
-          console.log(this.selectedRoleId);
-        }, (error) => {
-          console.error(error);
-        });
-      }
+     
     }
 
     this.activeModal.open(this.content, { centered: true });
@@ -151,7 +146,7 @@ import { Select2Data } from 'ng-select2-component';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
-          this.loadRoles();
+          this.fetchData(); 
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -184,46 +179,62 @@ import { Select2Data } from 'ng-select2-component';
       this.roles = response.data;
       console.log(this.roles);
     });
+  }
 
-    
+fetchData(): void {
+  if (this.selectedRol.role_Id) {
+    this.service.getRolx(this.selectedRol.role_Id).subscribe((response: any) => {
+      const pantIds: number[] = response.data.map((item: any) => item.pant_Id); // Extraer los valores de pant_Id
+
+      this.selectedPantallas = pantIds;
+
+      console.log(this.selectedPantallas, "en funcion"); // Verificar que se hayan asignado correctamente los valores
+
+      // Llenar el dropdown múltiple con los datos obtenidos
+      this.fillDropdown();
+    });
+  }
+}
+
   
-    if (this.selectedRol && this.selectedRol.role_Id && this.selectedRol.role_Id !== 0) {
-      this.service.getRolx(this.selectedRol.role_Id).subscribe(
-        (response: Rol[]) => {
-          this.roles = response;
-          console.log(this.roles);
-          console.log(this.selectedRol.role_Id);
-        },
-        (error) => {
-          console.error(error);
+  fillDropdown(): void {
+    this.service.getPantallas().subscribe((response: any) => {
+      let esquemaLabels: string[] = [];
+      let options: { [key: string]: any[] } = {};
+  
+      response.data.forEach((item: any) => {
+        const esqueNombre: string = item.pant_Menu;
+        const pantaId: string = item.pant_Id;
+        const pantaNombre: string = item.pant_Nombre;
+  
+        if (!esquemaLabels.includes(esqueNombre)) {
+          esquemaLabels.push(esqueNombre);
+          options[esqueNombre] = [];
         }
-      );
+  
+        options[esqueNombre].push({
+          value: pantaId,
+          label: pantaNombre
+        });
+      });
+  
+      this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+        label: esqueNombre,
+        options: options[esqueNombre]
+      }));
+  
+      // Establecer los valores seleccionados en el dropdown múltiple
+      this.setSelectedPantallas();
+    });
+  }
+  
+  setSelectedPantallas(): void {
+    if (this.selectedPantallas) {
+      this.newRol.get('pant_Id')?.setValue([...this.selectedPantallas]);
     }
   }
 
-  loadRoles(): void {
-    if (this.selectedRol && this.selectedRol.role_Id && this.selectedRol.role_Id !== 0) {
-      this.service.getRolx(this.selectedRol.role_Id).subscribe(
-        (response: Rol[]) => {
-          this.roles = response;
-          let esquemaLabels: string[] = [];
-          let options: { [key: string]: any[] } = {};
 
-          this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
-            label: esqueNombre,
-            options: options[esqueNombre] || []
-          }));
-          console.log(this.pantalla)
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
-  }
-  
-  
-  
   /**
    * initialize advance table columns
    */
@@ -256,17 +267,21 @@ import { Select2Data } from 'ng-select2-component';
       e.addEventListener("click", () => {   
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
+        this.fetchData();
         if (this.selectedRol) {
           //console.log(this.selectedRol.role_Pantallas)
           this.selectedRoleId = this.selectedRol.role_Id;
+  
+          console.log(this.selectedPantallas, "en handle");
           this.newRol = this.fb.group({
             name: [this.selectedRol.role_Nombre || '', Validators.required],
-            pant_Id: [this.pant_Id || '']
+            pant_Id: [[]] // Inicializar con un array vacío
           });
           this.openModal("edit");
         }
       });
     });
+  
     
     document.querySelectorAll('.delete').forEach((e) => {
       e.addEventListener("click", () => {  

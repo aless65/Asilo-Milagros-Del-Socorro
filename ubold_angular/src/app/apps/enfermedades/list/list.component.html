@@ -38,10 +38,14 @@
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
                     [ngClass]="{ 'is-invalid': addEnfermedad.submitted && form1.name.invalid }">
-                <div *ngIf="addEnfermedad.submitted && form1.name.invalid " class="invalid-feedback">
-                    Nombre requerido
+                <div *ngIf="addEnfermedad.submitted && form1.name.invalid" class="valid-feedback">
+                    completo!
+                </div>
+                <div *ngIf="addEnfermedad.submitted && form1.name.invalid" class="invalid-feedback">
+                    El nombre es requerido
                 </div>
             </div>
+
 
             <div class="text-end">
                 <button type="submit" class="btn btn-success waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
