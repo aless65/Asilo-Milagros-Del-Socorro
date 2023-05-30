@@ -20,6 +20,8 @@ import {
 import { CalendarEventComponent } from '../eventos/evento.component';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ListComponent } from '../../residentes/list/list.component';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-residentes-create',
@@ -68,11 +70,13 @@ export class CreateComponent implements OnInit {
   isAdministracionActive: boolean = false;
   allValuesUndefinedOrNull!: boolean;
   allValuesUndefinedOrNullDieta: boolean = false;
+  residentesFromList: Residente[] = [];
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
+  @ViewChild('residenteList', { static: true }) residenteList!: ListComponent;
   @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
   calendarComponent!: FullCalendarComponent;
@@ -93,7 +97,6 @@ export class CreateComponent implements OnInit {
   dietaForm!: FormGroup;
 
 
-
   constructor(private fb: FormBuilder,
     private service: ServiceService,
     private modalService: NgbModal,
@@ -108,7 +111,7 @@ export class CreateComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
+    this.pageTitle = [{ label: 'Residentes', path: '/apps/residentes/list' }, { label: 'Nuevo', path: '/', active: true }];
 
     this.expediente.expe_FechaApertura = new Date().toISOString().substring(0, 10);
     this.historialPago.pago_Fecha = new Date().toISOString().substring(0, 10);
@@ -149,16 +152,6 @@ export class CreateComponent implements OnInit {
         return null;
       };
     }
-
-    // function minDateValidator(minDate: Date) {
-    //   return (control: any): { [key: string]: any } | null => {
-    //     const selectedDate = new Date(control.value);
-    //     if (selectedDate >= minDate) {
-    //       return { 'minDate': true };
-    //     }
-    //     return null;
-    //   };
-    // }
 
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
@@ -432,7 +425,33 @@ export class CreateComponent implements OnInit {
         }
       })
     } else {
-      console.log(this.residente);
+
+      this.residenteList.residentesListado.subscribe((residentesListado: Residente[]) => {
+        this.residentesFromList = residentesListado;
+
+        console.log(residentesListado);
+
+        const matchFound = this.residentesFromList.some(item => item.resi_Identidad === this.residente.resi_Identidad);
+  
+        if(matchFound){
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: '¡Ya existe un residente con este número de identidad!',
+            icon: 'warning',
+            background: '#f6f6baf2'
+          }).then(() => {
+            // Acción luego de cerrarse el toast
+          });
+  
+          this.residente.resi_Identidad = '';
+          this.form1.resi_Identidad.reset();
+        }
+      })
+
       this.isDatosPersonalesActive = false;
     }
   }
@@ -475,6 +494,8 @@ export class CreateComponent implements OnInit {
         this.isEncargadoActive = false;
       }
     }
+
+
   }
 
   submitExpediente() {
@@ -505,8 +526,6 @@ export class CreateComponent implements OnInit {
       console.log(this.profileForm.valid);
       const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
       this.resiService.getImageUpload(expe_Fotografia);
-
-      // this.profileForm.valid = true;
     }
   }
 
@@ -586,6 +605,8 @@ export class CreateComponent implements OnInit {
           // Acción luego de cerrarse el toast
         });
       }
+    } else {
+      this.residente.empe_Id = undefined;
     }
 
     if (this.validationWizardForm.invalid) {
@@ -648,6 +669,18 @@ export class CreateComponent implements OnInit {
             }).then(() => {
             });
             this.router.navigate([this.returnUrl]);
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: 'Perfecto!',
+              text: response.message, 
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
           }
         })
 

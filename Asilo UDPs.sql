@@ -2389,7 +2389,7 @@ BEGIN
 				VALUES(@enca_Nombres, @enca_Apellidos, @enca_Identidad, @estacivi_IdEnca,@enca_Nacimiento, @enca_Sexo, @muni_Id,@enca_Direccion, @enca_Telefono, @resi_Id, @pare_Id, @resi_UsuCreacion)	
 			END
 
-			IF @empe_Id IS NOT NULL
+			IF @empe_Id IS NOT NULL 
 				BEGIN
 
 					INSERT INTO asil.tbHistorialPagos([resi_Id],[meto_Id],[pago_Fecha],[pago_UsuCreacion])

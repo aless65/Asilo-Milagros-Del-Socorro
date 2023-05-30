@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
+
 export class ListComponent implements OnInit {
 
   pageTitle: BreadcrumbItem[] = [];
@@ -22,6 +23,8 @@ export class ListComponent implements OnInit {
   selectedResidente!: Residente;
   newContact!: FormGroup;
   age!: number | null;
+
+  @Output() residentesListado: EventEmitter<Residente[]> = new EventEmitter();
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
@@ -60,6 +63,7 @@ export class ListComponent implements OnInit {
  * @param data data to be used in modal
  */
   openCreate(): void {
+    this.residentesListado.emit(this.residentes);
     this.route.navigate(['apps/residentes/create']);
   }
 

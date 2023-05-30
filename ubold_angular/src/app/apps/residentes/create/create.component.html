@@ -41,7 +41,7 @@
                                         <label class="col-form-label" for="resi_Identidad">
                                             Identidad</label>
                                         <input type="text" id="resi_Identidad" name="resi_Identidad"
-                                            class="form-control" value="123456789" formControlName="resi_Identidad"
+                                            class="form-control" formControlName="resi_Identidad"
                                             [(ngModel)]="residente.resi_Identidad"
                                             [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid , 'is-valid': accountWizard.submitted && form1.resi_Identidad.valid }">
 
@@ -494,7 +494,7 @@
                                         <div *ngIf="validationWizard.submitted && form4.cent_Id.invalid"
                                             class="invalid-feedback">
                                             Centro requerido.
-                                        </div>
+                                        </div>  
                                     </div>
 
                                     <div class="row mb-3">
