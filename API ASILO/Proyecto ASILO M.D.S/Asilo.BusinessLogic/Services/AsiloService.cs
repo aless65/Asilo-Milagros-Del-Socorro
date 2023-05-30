@@ -1671,6 +1671,28 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(ex.Message);
             }
         }
+
+        public ServiceResult InsertarResidentesForm(VW_tbResidentes_Form item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _residentesRepository.InsertPrincipal(item);
+                if (list.MessageStatus == "todo biennnn")
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage(list.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
         #endregion
 
         #region Tipos de sangre

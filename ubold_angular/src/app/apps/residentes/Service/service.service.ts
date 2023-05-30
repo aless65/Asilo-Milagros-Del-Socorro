@@ -63,9 +63,9 @@ export class ServiceService {
   }
 
 
-  //   addEnfermedades(newEnfermedad: Enfermedad){
-  //     return this.http.post<Enfermedad[]>(`${this.Url}Enfermedades/Insertar`, newEnfermedad);
-  //   }
+    addResidentes(newResidenteForm: any){
+      return this.http.post<any>(`${this.variableGlobal}Residentes/InsertarPrincipal`, newResidenteForm);
+    }
 
   //   editEnfermedades(editEnfermedad: Enfermedad){
   //     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);

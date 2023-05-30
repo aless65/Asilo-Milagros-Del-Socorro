@@ -12,9 +12,11 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { AgendaDetalle, Residente,
-         Encargado, Expediente, Dieta,
-         HistorialPago } from '../../Models';
+import {
+  AgendaDetalle, Residente,
+  Encargado, Expediente, Dieta,
+  HistorialPago
+} from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
 import Swal from 'sweetalert2';
 
@@ -99,7 +101,7 @@ export class CreateComponent implements OnInit {
 
   // ngOnInit() {
   // }
-  
+
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
@@ -157,7 +159,7 @@ export class CreateComponent implements OnInit {
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
       resi_Apellidos: ['', Validators.required],
-      resi_Identidad: ['',  [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      resi_Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
       resi_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(1959, 0, 1))]],
       estacivi_Id: ['', Validators.required],
       resi_Sexo: ['', Validators.required],
@@ -400,7 +402,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  submitResidente(){
+  submitResidente() {
     if (this.accountForm.invalid) {
       Swal.fire({
         toast: true,
@@ -423,7 +425,7 @@ export class CreateComponent implements OnInit {
           console.log(`Error en el campo ${field}:`, errors);
         }
       })
-    } else{
+    } else {
       console.log(this.residente);
       this.isDatosPersonalesActive = false;
     }
@@ -432,13 +434,13 @@ export class CreateComponent implements OnInit {
   submitEncargado() {
     const formValues = this.encargadoForm.value;
     this.allValuesUndefinedOrNull = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-    
+
     if (this.allValuesUndefinedOrNull) {
       // All values are undefined or null, perform the desired action here
       console.log('All values are undefined or null', this.encargado, this.allValuesUndefinedOrNull);
       this.isEncargadoActive = false;
       return;
-    } else{
+    } else {
       if (this.encargadoForm.invalid) {
         Swal.fire({
           toast: true,
@@ -452,7 +454,7 @@ export class CreateComponent implements OnInit {
         }).then(() => {
           // Action after the toast is closed
         });
-    
+
         Object.keys(this.encargadoForm.controls).forEach(field => {
           const control = this.encargadoForm.get(field);
           if (control?.invalid) {
@@ -469,7 +471,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-   submitExpediente(){
+  submitExpediente() {
     if (this.profileForm.invalid) {
       Swal.fire({
         toast: true,
@@ -492,13 +494,13 @@ export class CreateComponent implements OnInit {
           console.log(`Error en el campo ${field}:`, errors);
         }
       })
-    } else{
+    } else {
       // this.service.getMetodosPago().subscribe((response: any) => {
       //   let options = response.data.map((item: any) => ({
       //     value: item.meto_Id,
       //     label: item.meto_Nombre
       //   }));
-  
+
       //   this.metodopago = [{
       //     label: 'Escoja un método de pago',
       //     options: options
@@ -513,20 +515,20 @@ export class CreateComponent implements OnInit {
       // this.profileForm.valid = true;
     }
   }
-  
-  submitAdmin(){
+
+  submitAdmin() {
     let canInsert = true;
 
     const agendaVaciaONull = this.agendadetalle;
     this.allValuesUndefinedOrNullDieta = Object.values(agendaVaciaONull).every(value => value === undefined || value === null);
     console.log(this.allValuesUndefinedOrNullDieta);
 
-    if(this.allValuesUndefinedOrNullDieta){
+    if (this.allValuesUndefinedOrNullDieta) {
       const formValues = this.dietaForm.value;
       this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       console.log("dieta");
 
-      if(this.allValuesUndefinedOrNullDieta){
+      if (this.allValuesUndefinedOrNullDieta) {
         canInsert = false;
 
         console.log("dieta2");
@@ -543,16 +545,16 @@ export class CreateComponent implements OnInit {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
-    
-    if(this.residente.diet_Id?.toString() === "2"){
+    }
+
+    if (this.residente.diet_Id?.toString() === "2") {
       const formValues = this.dietaForm.value;
       this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       console.log("dieta");
 
-      if(this.allValuesUndefinedOrNullDieta){
+      if (this.allValuesUndefinedOrNullDieta) {
         canInsert = false;
-        
+
         console.log("dieta2");
         Swal.fire({
           toast: true,
@@ -567,18 +569,18 @@ export class CreateComponent implements OnInit {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
+    }
 
-    if(this.form4.empe_Id.value === "2"){
+    if (this.form4.empe_Id.value === "2") {
       const formValues = this.confirmarCuidadoForm.value;
       let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       // console.log('dieta form', this.dietaForm);
       // console.log('booleano', this.allValuesUndefinedOrNullDieta);
       console.log("cuidado");
 
-      if((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm ){
+      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm) {
         canInsert = false;
-        
+
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -588,16 +590,16 @@ export class CreateComponent implements OnInit {
           titleText: '¡Debe completar todos los pasos de la atención especial!',
           icon: 'warning',
           background: '#f6f6baf2',
-          
+
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
+    }
 
     if (this.profileForm.invalid) {
       canInsert = false;
-      
+
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -619,22 +621,47 @@ export class CreateComponent implements OnInit {
           console.log(`Error en el campo ${field}:`, errors);
         }
       })
-    } else{
+    } else {
       console.log("qqqq");
-      
-      if(canInsert){
-        console.log(this.residente);
-        console.log(this.dietaModel);
+
+      if (canInsert) {
+        // console.log(this.residente);
+        // console.log(this.dietaModel);
+        // console.log(this.encargado);
+        // console.log(this.expediente);
+        // console.log(this.historialPago);
+        // console.log(this.agendadetalle);
+
+        const combinedModels = {};
+
+        // Merge the properties of each model into the combinedModels object
+        Number(this.residente.agen_Id);
+        Number(this.residente.diet_Id);
+        this.residente.resi_UsuCreacion = 1;
+        this.expediente.expe_Fotografia = 'https://i.ibb.co/YBsPM8F/58ca739f450fa305efd3d9b3f0832977.jpg';
+        Object.assign(combinedModels, this.residente);
+        Object.assign(combinedModels, this.dietaModel);
+        Object.assign(combinedModels, this.encargado);
+        Object.assign(combinedModels, this.expediente);
+        Object.assign(combinedModels, this.historialPago);
+        // Object.assign(combinedModels, this.agendadetalle);
+
+        console.log(combinedModels);
+
+        this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
+          console.log(response);
+        })
+
         this.isDatosPersonalesActive = false;
       }
     }
   }
 
-  submitDieta(){
+  submitDieta() {
     const formValues = this.dietaForm.value;
     this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
 
-    if(this.allValuesUndefinedOrNullDieta){
+    if (this.allValuesUndefinedOrNullDieta) {
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -647,19 +674,19 @@ export class CreateComponent implements OnInit {
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
-    } else{
+    } else {
       console.log(this.dietaModel);
       this.selectedValueDieta = 'papa';
       this.goesBackDieta = true;
     }
   }
 
-  submitConfirmar(){
+  submitConfirmar() {
     console.log(this.historialPago);
-     if(this.confirmarCuidadoForm.valid){
+    if (this.confirmarCuidadoForm.valid) {
       console.log(this.historialPago, "entró");
       this.modalService.dismissAll();
-     }
+    }
   }
 
   openConfirmacion() {
@@ -940,7 +967,7 @@ export class CreateComponent implements OnInit {
   //         this.activeWizard4 = 3;
   //       }
   //     }
-      
+
   //     else {
   //       this.activeWizard4 = 2;
   //     }

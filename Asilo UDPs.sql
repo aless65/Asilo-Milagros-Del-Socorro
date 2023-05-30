@@ -2320,72 +2320,86 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_InsertPrincipal
 AS
 BEGIN
 	BEGIN TRANSACTION 
-		IF @diet_Id > 1
+		BEGIN TRY
+			IF @diet_Id > 1
+				BEGIN
+					INSERT INTO asil.tbDietas (diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_Restricciones, diet_Observaciones, diet_UsuCreacion)
+					VALUES (@diet_Desayuno, @diet_Almuerzo, @diet_Cena, @diet_Merienda, @diet_Restricciones, @diet_Observaciones, @resi_UsuCreacion)
+
+					SET @diet_Id = SCOPE_IDENTITY()
+				END
+			ELSE
+				BEGIN 
+					SET @diet_Id = NULL;
+				END
+
+			IF @agen_Id > 1
 			BEGIN
-				INSERT INTO asil.tbDietas (diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_Restricciones, diet_Observaciones, diet_UsuCreacion)
-				VALUES (@diet_Desayuno, @diet_Almuerzo, @diet_Cena, @diet_Merienda, @diet_Restricciones, @diet_Observaciones, @resi_UsuCreacion)
+				INSERT INTO asil.tbAgendas([agen_Nombre],[agen_UsuCreacion])
+				 VALUES(@resi_Nombres + ' ' + @resi_Apellidos, @resi_UsuCreacion);
 
-				SET @diet_Id = SCOPE_IDENTITY()
-			END
-		ELSE
-			BEGIN 
-				SET @diet_Id = NULL;
+				SET @agen_Id = SCOPE_IDENTITY()
 			END
 
-		IF @agen_Id > 1
-		BEGIN
-			INSERT INTO asil.tbAgendas([agen_Nombre],[agen_UsuCreacion])
-		     VALUES(@resi_Nombres + ' ' + @resi_Apellidos, @resi_UsuCreacion);
+			INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[diet_Id],[resi_FechaIngreso],[empe_Id], agen_Id ,[resi_UsuCreacion])
+				 VALUES(
+				 @resi_Nombres		,
+				 @resi_Apellidos	,	
+				 @resi_Identidad	,	
+				 @estacivi_IdResi		,
+				 @resi_Nacimiento	,
+				 @resi_Sexo			,
+				 @cent_Id			,
+				 @diet_Id			,
+				 @resi_FechaIngreso	,
+				 @empe_Id			,
+				 @agen_Id			,
+				 @resi_UsuCreacion	);
 
-			SET @agen_Id = SCOPE_IDENTITY()
-		END
+		   SET @resi_Id = SCOPE_IDENTITY();
 
-		INSERT INTO asil.tbResidentes([resi_Nombres],[resi_Apellidos],[resi_Identidad],[estacivi_Id],[resi_Nacimiento],[resi_Sexo],[cent_Id],[diet_Id],[resi_FechaIngreso],[empe_Id], agen_Id ,[resi_UsuCreacion])
-		     VALUES(
-			 @resi_Nombres		,
-			 @resi_Apellidos	,	
-			 @resi_Identidad	,	
-			 @estacivi_IdResi		,
-			 @resi_Nacimiento	,
-			 @resi_Sexo			,
-			 @cent_Id			,
-			 @diet_Id			,
-			 @resi_FechaIngreso	,
-			 @empe_Id			,
-			 @agen_Id			,
-			 @resi_UsuCreacion	);
+		   INSERT INTO [asil].[tbHabitacionesXResidente](habi_Id, resi_Id, habiresi_UsuCreacion)
+		   VALUES (@habi_Id, @resi_Id, @resi_UsuCreacion)
 
-	   SET @resi_Id = SCOPE_IDENTITY();
+		   INSERT INTO asil.tbExpedientes(resi_Id, tiposang_Id, expe_FechaApertura, expe_Fotografia, expe_UsuCreacion)
+		   VALUES(@resi_Id,@tiposang_Id,@expe_FechaApertura,@expe_Fotografia,@resi_UsuCreacion)
 
-	   INSERT INTO [asil].[tbHabitacionesXResidente](habi_Id, resi_Id, habiresi_UsuCreacion)
-	   VALUES (@habi_Id, @resi_Id, @resi_UsuCreacion)
-
-	   IF @enca_Nombres IS NOT NULL
-		BEGIN
-			INSERT INTO asil.tbEncargados(enca_Nombres,
-			                              enca_Apellidos,
-										  enca_Identidad, 
-										  estacivi_Id,
-										  enca_Nacimiento, 
-										  enca_Sexo, 
-										  muni_Id,
-										  enca_Direccion, 
-										  enca_Telefono, 
-										  resi_Id, 
-										  pare_Id, 
-										  enca_UsuCreacion)
-			VALUES(@enca_Nombres, @enca_Apellidos, @enca_Identidad, @estacivi_IdEnca,@enca_Nacimiento, @enca_Sexo, @muni_Id,@enca_Direccion, @enca_Telefono, @resi_Id, @pare_Id, @resi_UsuCreacion)	
-		END
-
-		IF @empe_Id IS NOT NULL
+		   IF @enca_Nombres IS NOT NULL
 			BEGIN
-
-				INSERT INTO asil.tbHistorialPagos([resi_Id],[meto_Id],[pago_Fecha],[pago_UsuCreacion])
-				 VALUES(@resi_Id		,
-						@meto_Id		,
-						@pago_Fecha		,
-						@resi_UsuCreacion);
+				INSERT INTO asil.tbEncargados(enca_Nombres,
+											  enca_Apellidos,
+											  enca_Identidad, 
+											  estacivi_Id,
+											  enca_Nacimiento, 
+											  enca_Sexo, 
+											  muni_Id,
+											  enca_Direccion, 
+											  enca_Telefono, 
+											  resi_Id, 
+											  pare_Id, 
+											  enca_UsuCreacion)
+				VALUES(@enca_Nombres, @enca_Apellidos, @enca_Identidad, @estacivi_IdEnca,@enca_Nacimiento, @enca_Sexo, @muni_Id,@enca_Direccion, @enca_Telefono, @resi_Id, @pare_Id, @resi_UsuCreacion)	
 			END
+
+			IF @empe_Id IS NOT NULL
+				BEGIN
+
+					INSERT INTO asil.tbHistorialPagos([resi_Id],[meto_Id],[pago_Fecha],[pago_UsuCreacion])
+					 VALUES(@resi_Id		,
+							@meto_Id		,
+							@pago_Fecha		,
+							@resi_UsuCreacion);
+				END
+
+			COMMIT TRAN
+			SELECT @agen_Id + '||' + @resi_Id
+			
+			SELECT 1 AS CodeStatus, @agen_Id + '||' + @resi_Id AS MessageStatus
+		END TRY 
+		BEGIN CATCH
+			ROLLBACK TRAN
+			SELECT 'Transaction rolled back. Error: ' + ERROR_MESSAGE()
+		END CATCH 
 	ROLLBACK TRAN
 END
 GO

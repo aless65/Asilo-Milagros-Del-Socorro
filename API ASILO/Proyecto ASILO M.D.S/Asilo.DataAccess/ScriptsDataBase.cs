@@ -61,6 +61,7 @@ namespace Asilo.DataAccess
         public static string EliminarAgenda = "asil.UPD_tbAgendas_Eliminar";
 
         public static string AgendaDetalle_List = "asil.UDP_asil_tbAgendaDetalles_List";
+        public static string AgendaDetalle_Insert = "asil.UDP_asil_tbAgendaDetalles_Insert";
         #endregion
 
         #region Cargos
@@ -118,6 +119,8 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Enfermedades = "asil.UDP_asil_VW_tbEnfermedades_Find";
         public static string UDP_Edita_Enfermedades = "asil.UDP_asil_tbEnfermedades_Update";
         public static string UDP_Elimina_Enfermedades = "asil.UDP_asil_tbEnfermedades_Delete";
+
+        public static string UDP_Inserta_EnfermedadesXResidente = "asil.UDP_asil_tbEnfermedadesXResidente_Insert";
         #endregion
 
         #region Expedientes
@@ -193,6 +196,8 @@ namespace Asilo.DataAccess
         public static string AgregarResidentes = "asil.UDP_tbResidentes_Agregar";
         public static string ActualizarResidentes = "asil.UDP_tbResidentes_Actualizar";
         public static string EliminarResidentes = "asil.UPD_tbResidentes_Eliminar";
+
+        public static string ResidentesForm = "asil.UDP_tbResidentes_InsertPrincipal";
 
         #endregion
 

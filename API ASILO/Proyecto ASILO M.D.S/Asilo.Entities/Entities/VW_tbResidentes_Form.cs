@@ -35,14 +35,16 @@ namespace Asilo.Entities.Entities
         public int? tiposang_Id { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string expe_Fotografia { get; set; }
-        public string diet_Desayuno { get; set; }
-        public string diet_Almuerzo { get; set; }
-        public string diet_Cena { get; set; }
-        public string diet_Merienda { get; set; }
-        public string diet_Restricciones { get; set; }
-        public string diet_Observaciones { get; set; }
+        public int[]? expe_Enfermedades { get; set; }
+        public string? diet_Desayuno { get; set; }
+        public string? diet_Almuerzo { get; set; }
+        public string? diet_Cena { get; set; }
+        public string? diet_Merienda { get; set; }
+        public string? diet_Restricciones { get; set; }
+        public string? diet_Observaciones { get; set; }
         public int? meto_Id { get; set; }
         public DateTime? pago_Fecha { get; set; }
         public int? habi_Id { get; set; }
+        public tbAgendaDetalles[]? agen_Detalles { get; set; }
     }
 }

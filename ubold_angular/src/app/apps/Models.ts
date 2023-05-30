@@ -24,7 +24,7 @@ export interface Residente {
     resi_Identidad?: string;
     tiposang_Id?: number;
     tiposang_Nombre?: string;
-    estacivi_Id?: number;
+    estacivi_IdResi?: number;
     resi_Sexo?: string;
     cent_Id?: number;
     cent_Nombre?: string;
@@ -52,7 +52,7 @@ export interface Encargado {
     enca_Nombres?: string;
     enca_Apellidos?: string;
     enca_Identidad?: string;
-    estacivi_Id?: number;
+    estacivi_IdResi?: number;
     enca_Nacimiento?: string;
     enca_Sexo?: string;
     muni_Id?: number;

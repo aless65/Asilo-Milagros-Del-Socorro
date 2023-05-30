@@ -59,5 +59,13 @@ namespace Asilo.API.Controllers
             var result = _asiloServivce.EliminarResidentes(id);
             return Ok(result);
         }
+
+        [HttpPost("InsertarPrincipal")]
+        public IActionResult InsertarPrincipal(VW_tbResidentes_Form resi)
+        {
+            //var item = _mapper.Map<VW_tbResidentes_Form>(resi);
+            var response = _asiloServivce.InsertarResidentesForm(resi);
+            return Ok(response);
+        }
     }
 }

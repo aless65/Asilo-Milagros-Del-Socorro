@@ -99,7 +99,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [(ngModel)]="residente.estacivi_Id" [minCountForSearch]="0"
+                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
                                         </select2>
 
@@ -280,7 +280,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_Id"
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_IdEnca"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.estacivi_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.estacivi_Id.valid && !allValuesUndefinedOrNull}">
                                         </select2>
 
