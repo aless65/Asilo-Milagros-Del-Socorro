@@ -43,7 +43,8 @@ export interface Residente {
     resi_FechaCreacion?: string;
     resi_FechaModificacion?: string;
     habi_Id?: number;
-
+    agen_Detalles?: any;
+    
     [key: string]: number | string | undefined | number[];
 }
 

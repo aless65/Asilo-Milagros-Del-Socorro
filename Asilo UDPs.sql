@@ -2280,6 +2280,14 @@ AS
 		   
 GO
 
+EXEC asil.UDP_tbResidentes_InsertPrincipal 'jeje', 'jiji', '0547896547857',  2, 
+											'1936-02-01', 'M', 2, NULL, '2023-05-30', NULL, 1,
+											1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+											1, '2023-05-30', 'https://i.ibb.co/rZVnB4m/OIP.jpg', NULL, NULL,
+											NULL, NULL, NULL, NULL, NULL, NULL, 1
+
+GO
+
 /*INSERTAR FORMULARIO RESIDENTES*/
 CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_InsertPrincipal
 	@resi_Nombres			NVARCHAR(200),
@@ -2391,16 +2399,13 @@ BEGIN
 							@resi_UsuCreacion);
 				END
 
+				SELECT 1 AS CodeStatus, CONCAT(@agen_Id, '||', @resi_Id) AS MessageStatus
 			COMMIT TRAN
-			SELECT @agen_Id + '||' + @resi_Id
-			
-			SELECT 1 AS CodeStatus, @agen_Id + '||' + @resi_Id AS MessageStatus
 		END TRY 
 		BEGIN CATCH
 			ROLLBACK TRAN
-			SELECT 'Transaction rolled back. Error: ' + ERROR_MESSAGE()
+			SELECT 2 AS CodeStatus, 'Transaction rolled back. Error: ' + ERROR_MESSAGE() AS MessageStatus
 		END CATCH 
-	ROLLBACK TRAN
 END
 GO
 

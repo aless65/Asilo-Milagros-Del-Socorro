@@ -526,12 +526,11 @@ export class CreateComponent implements OnInit {
     if (this.allValuesUndefinedOrNullDieta) {
       const formValues = this.dietaForm.value;
       this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-      console.log("dieta");
 
       if (this.allValuesUndefinedOrNullDieta) {
         canInsert = false;
+        console.log("es la agenda");
 
-        console.log("dieta2");
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -555,7 +554,6 @@ export class CreateComponent implements OnInit {
       if (this.allValuesUndefinedOrNullDieta) {
         canInsert = false;
 
-        console.log("dieta2");
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -644,7 +642,11 @@ export class CreateComponent implements OnInit {
         Object.assign(combinedModels, this.encargado);
         Object.assign(combinedModels, this.expediente);
         Object.assign(combinedModels, this.historialPago);
+        this.residente.agen_Detalles = this.agendadetalle;
         // Object.assign(combinedModels, this.agendadetalle);
+        // const agen_Detalles = [];
+        // agen_Detalles.push(this.agendadetalle);
+        // Object.assign(combinedModels, agen_Detalles);
 
         console.log(combinedModels);
 

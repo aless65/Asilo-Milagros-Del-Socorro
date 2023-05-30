@@ -45,6 +45,6 @@ namespace Asilo.Entities.Entities
         public int? meto_Id { get; set; }
         public DateTime? pago_Fecha { get; set; }
         public int? habi_Id { get; set; }
-        public tbAgendaDetalles[]? agen_Detalles { get; set; }
+        public VW_tbAgendaDetalles[]? agen_Detalles { get; set; }
     }
 }

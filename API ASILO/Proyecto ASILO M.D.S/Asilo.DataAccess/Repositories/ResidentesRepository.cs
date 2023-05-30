@@ -141,53 +141,70 @@ namespace Asilo.DataAccess.Repositories
 
             using var db = new SqlConnection(AsiloContext.ConnectionString);
 
+            //var verresult = db.QueryFirst<string>(ScriptsDataBase.ResidentesForm, parameters, commandType: CommandType.StoredProcedure);
+
             result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ResidentesForm, parameters, commandType: CommandType.StoredProcedure);
 
             if(result.CodeStatus == 1)
             {
                 string[] ids = result.MessageStatus.Split("||", StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (var enfermedad in item.expe_Enfermedades)
+                if(item.expe_Enfermedades != null)
                 {
-                    var parameters2 = new DynamicParameters();
-                    parameters2.Add("@resi_Id", ids[1], DbType.Int32, ParameterDirection.Input);
-                    parameters2.Add("@enfe_Id", enfermedad, DbType.Int32, ParameterDirection.Input);
-
-                    var respuesta = db.QueryFirst<string>(ScriptsDataBase.UDP_Inserta_EnfermedadesXResidente, parameters2, commandType: CommandType.StoredProcedure);
-
-                    if (respuesta == "Ha ocurrido un error")
+                    foreach (var enfermedad in item.expe_Enfermedades)
                     {
-                        result.MessageStatus = "Ha ocurrido un error en la asignación de enfermedades";
-                        break;
-                    }
-                    else
-                    {
-                        result.MessageStatus = "todo biennnn";
+                        var parameters2 = new DynamicParameters();
+                        parameters2.Add("@resi_Id", ids[1], DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@enfe_Id", enfermedad, DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@enferesi_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+
+                        var respuesta = db.QueryFirst<string>(ScriptsDataBase.UDP_Inserta_EnfermedadesXResidente, parameters2, commandType: CommandType.StoredProcedure);
+
+                        if (respuesta == "Ha ocurrido un error")
+                        {
+                            result.MessageStatus = "Ha ocurrido un error en la asignación de enfermedades";
+                            break;
+                        }
+                        else
+                        {
+                            result.MessageStatus = "todo biennnn";
+                        }
                     }
                 }
-
-                foreach (var detalle in item.agen_Detalles)
+                else
                 {
-                    var parameters2 = new DynamicParameters();
-                    parameters2.Add("@agen_Id", ids[0], DbType.Int32, ParameterDirection.Input);
-                    parameters2.Add("@agendeta_HoraStart", detalle.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
-                    parameters2.Add("@agendeta_HoraEnd", detalle.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
-                    parameters2.Add("@acti_Id", detalle.acti_Id, DbType.Int32, ParameterDirection.Input);
-                    parameters2.Add("@medi_Id", detalle.medi_Id, DbType.Int32, ParameterDirection.Input);
-                    parameters2.Add("@agendeta_Observaciones", detalle.agendeta_Observaciones, DbType.String, ParameterDirection.Input);
-                    parameters2.Add("@agendeta_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+                    result.MessageStatus = "todo biennnn";
+                }
 
-                    var respuesta = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Insert, parameters2, commandType: CommandType.StoredProcedure);
+                if (item.agen_Detalles != null)
+                {
+                    foreach (var detalle in item.agen_Detalles)
+                    {
+                        var parameters2 = new DynamicParameters();
+                        parameters2.Add("@agen_Id", ids[0], DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@agendeta_HoraStart", detalle.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
+                        parameters2.Add("@agendeta_HoraEnd", detalle.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
+                        parameters2.Add("@acti_Id", detalle.acti_Id, DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@medi_Id", detalle.medi_Id, DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@agendeta_Observaciones", detalle.agendeta_Observaciones, DbType.String, ParameterDirection.Input);
+                        parameters2.Add("@agendeta_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
 
-                    if (respuesta == "Ha ocurrido un error")
-                    {
-                        result.MessageStatus = "Ha ocurrido un error al insertar los detalles de la agenda";
-                        break;
+                        var respuesta = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Insert, parameters2, commandType: CommandType.StoredProcedure);
+
+                        if (respuesta == "Ha ocurrido un error")
+                        {
+                            result.MessageStatus = "Ha ocurrido un error al insertar los detalles de la agenda";
+                            break;
+                        }
+                        else
+                        {
+                            result.MessageStatus = "todo biennnn";
+                        }
                     }
-                    else
-                    {
-                        result.MessageStatus = "todo biennnn";
-                    }
+                }
+                else
+                {
+                    result.MessageStatus = "todo biennnn";
                 }
             }
 
