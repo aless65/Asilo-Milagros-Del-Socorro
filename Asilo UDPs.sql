@@ -2280,11 +2280,11 @@ AS
 		   
 GO
 
-EXEC asil.UDP_tbResidentes_InsertPrincipal 'jeje', 'jiji', '0547896547857',  2, 
-											'1936-02-01', 'M', 2, NULL, '2023-05-30', NULL, 1,
-											1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-											1, '2023-05-30', 'https://i.ibb.co/rZVnB4m/OIP.jpg', NULL, NULL,
-											NULL, NULL, NULL, NULL, NULL, NULL, 1
+--EXEC asil.UDP_tbResidentes_InsertPrincipal 'jeje', 'jiji', '0547896547857',  2, 
+--											'1936-02-01', 'M', 2, NULL, '2023-05-30', NULL, 1,
+--											1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+--											1, '2023-05-30', 'https://i.ibb.co/rZVnB4m/OIP.jpg', NULL, NULL,
+--											NULL, NULL, NULL, NULL, NULL, NULL, 1
 
 GO
 

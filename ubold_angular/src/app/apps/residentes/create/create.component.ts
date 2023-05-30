@@ -426,31 +426,31 @@ export class CreateComponent implements OnInit {
       })
     } else {
 
-      this.residenteList.residentesListado.subscribe((residentesListado: Residente[]) => {
-        this.residentesFromList = residentesListado;
+      // this.residenteList.residentesListado.subscribe((residentesListado: Residente[]) => {
+      //   this.residentesFromList = residentesListado;
 
-        console.log(residentesListado);
+      //   console.log(residentesListado);
 
-        const matchFound = this.residentesFromList.some(item => item.resi_Identidad === this.residente.resi_Identidad);
+      //   const matchFound = this.residentesFromList.some(item => item.resi_Identidad === this.residente.resi_Identidad);
   
-        if(matchFound){
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1700,
-            timerProgressBar: true,
-            titleText: '¡Ya existe un residente con este número de identidad!',
-            icon: 'warning',
-            background: '#f6f6baf2'
-          }).then(() => {
-            // Acción luego de cerrarse el toast
-          });
+      //   if(matchFound){
+      //     Swal.fire({
+      //       toast: true,
+      //       position: 'top-end',
+      //       showConfirmButton: false,
+      //       timer: 1700,
+      //       timerProgressBar: true,
+      //       titleText: '¡Ya existe un residente con este número de identidad!',
+      //       icon: 'warning',
+      //       background: '#f6f6baf2'
+      //     }).then(() => {
+      //       // Acción luego de cerrarse el toast
+      //     });
   
-          this.residente.resi_Identidad = '';
-          this.form1.resi_Identidad.reset();
-        }
-      })
+      //     this.residente.resi_Identidad = '';
+      //     this.form1.resi_Identidad.reset();
+      //   }
+      // })
 
       this.isDatosPersonalesActive = false;
     }
