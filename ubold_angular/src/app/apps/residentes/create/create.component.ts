@@ -588,7 +588,7 @@ export class CreateComponent implements OnInit {
       }
     }
 
-    if (this.profileForm.invalid) {
+    if (this.validationWizardForm.invalid) {
       canInsert = false;
 
       Swal.fire({
