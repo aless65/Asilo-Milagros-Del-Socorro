@@ -229,6 +229,8 @@ import Swal from 'sweetalert2';
           this._fetchData();
           if (response.message == "El centro ha sido insertado con éxito") {
             Swal.fire({
+              toast: true,
+              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
@@ -356,8 +358,8 @@ import Swal from 'sweetalert2';
   // action cell formatter
   centroActionFormatter(centro: Centro): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"  ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
 
