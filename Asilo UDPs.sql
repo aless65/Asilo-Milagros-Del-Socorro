@@ -3468,12 +3468,12 @@ GO
 
 
 /*ELIMINAR HABITACIONES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 7
 	 @habi_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS( SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id )
+	IF NOT EXISTS( SELECT * FROM asil.tbHabitacionesXResidente WHERE habi_Id = @habi_Id and habiresi_Estado = 1 )
 	   BEGIN
 		UPDATE asil.tbHabitaciones
 		SET habi_Estado = 0
@@ -4317,7 +4317,7 @@ BEGIN
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
 						WHERE  habi_Numero = @habi_Numero
-						AND habi_Estado = 0)
+						AND habi_Estado = 0  )
 			BEGIN
 				UPDATE asil.tbHabitaciones 
 				SET habi_Estado = 1
@@ -4337,7 +4337,7 @@ GO
 /* ACTUALIZAR HABITACIONES */
 
 
-CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Actulaizar
+CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Actulaizar  
 		@habi_Id				INT,
 		@habi_Numero			INT,
 		@cate_Id				INT,
@@ -4386,12 +4386,12 @@ GO
 
 
 /*ELIMINAR HABITACION*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 
 	 @habi_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitacionesXResidente WHERE habi_Id = @habi_Id and habiresi_Estado = 1)
 			BEGIN
 					UPDATE asil.tbHabitaciones
 					SET habi_Estado = 0

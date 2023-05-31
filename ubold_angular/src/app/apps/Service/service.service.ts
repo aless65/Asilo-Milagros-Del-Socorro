@@ -5,7 +5,7 @@ import { EstadoCivil, TipoSangre,
          Parentesco, Centro,
          Actividad, Medicamento,
          Cargos, Centros, Residente,
-         Habitacion, MetodoPago } from '../Models';
+         Habitacion, MetodoPago, Categoria } from '../Models';
 import { environment } from 'src/environments/environment';
 import { Empleados } from '../empleados/Model';
 
@@ -72,4 +72,24 @@ export class ServiceService {
   getMetodosPago(){
     return this.http.get<MetodoPago[]>(`${this.variableGlobal}MetodosPago/Listado`);
   }
+
+  getHabitaciones(){
+    return this.http.get<Habitacion[]>(`${this.variableGlobal}Habitaciones/Listado`);
+  }
+  addHabitaciones(newhabitacion: Habitacion){
+    return this.http.post<Habitacion[]>(`${this.variableGlobal}Habitaciones/Insertar`, newhabitacion);
+  }
+  
+  editHabitaciones(editHabitacion: Habitacion){
+    return this.http.put<Habitacion[]>(`${this.variableGlobal}Habitaciones/Editar`, editHabitacion);
+  }
+
+  deleteHabitaciones(id: number){
+    return this.http.put(`${this.variableGlobal}Habitaciones/Eliminar?id=${id}`, null);
+  }
+
+  getCategoria(){
+    return this.http.get<Categoria[]>(`${this.variableGlobal}CategoriasHabitaciones/Listado`);
+  }
+  
 }

@@ -8,7 +8,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Rol } from '../../Models';
 import { ServiceService } from 'src/app/apps/roles/Service/service.service';
 import { Select2Data } from 'ng-select2-component';
-
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-roles-list',
@@ -80,7 +80,7 @@ import { Select2Data } from 'ng-select2-component';
         label: esqueNombre,
         options: options[esqueNombre]
       }));
-    });
+    }); 
 
     
 
@@ -119,6 +119,20 @@ import { Select2Data } from 'ng-select2-component';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if(response.message == "El rol no puede ser eliminado ya que está siendo usado"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'El rol no puede ser eliminado ya que está siendo usado',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:",error );
@@ -131,6 +145,18 @@ import { Select2Data } from 'ng-select2-component';
   submitForm(): void {
     if (this.newRol.invalid) {
       console.log(this.newRol.controls.pant_Id);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
       return;
     }
   
@@ -150,6 +176,33 @@ import { Select2Data } from 'ng-select2-component';
           console.log("se pudo:", response);
           this._fetchData();
           this.fetchData(); 
+          if (response.message == "El rol ha sido editado con éxito") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "El rol ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El rol ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -164,6 +217,32 @@ import { Select2Data } from 'ng-select2-component';
           console.log("se pudo:", response);
          // console.log(rol);
           this._fetchData();
+          if (response.message == "El rol ha sido insertado con éxito") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "El rol ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El rol ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
          // console.log(rol);
@@ -315,6 +394,7 @@ import { Select2Data } from 'ng-select2-component';
             this.openModal("edit");
           });
         }
+        
       });
     });
     

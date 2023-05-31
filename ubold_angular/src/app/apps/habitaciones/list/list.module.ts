@@ -7,6 +7,7 @@ import { AdvancedTableModule } from 'src/app/shared/advanced-table/advanced-tabl
 import { PageTitleModule } from 'src/app/shared/page-title/page-title.module';
 import { ListRoutingModule } from './list-routing.module';
 import { ListComponent } from './list.component';
+import { Select2Module } from 'ng-select2-component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ListComponent } from './list.component';
     ListRoutingModule,
     ReactiveFormsModule,
     NgbModalModule,
+    Select2Module
   ],
 })
 export class ListModule { }

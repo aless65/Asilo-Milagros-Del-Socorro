@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment'; //importar la variab
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceService {
+export class ServiceServiceH {
   
   variableGlobal: string = environment.variableGlobal;
   constructor(private http:HttpClient) { }
