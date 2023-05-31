@@ -26,8 +26,8 @@ export class ServiceService {
   }
 
   getImageUpload(img: string) {
-    const headers = new HttpHeaders();
-    headers.delete('Content-Type');
+    // const headers = new HttpHeaders();
+    // headers.delete('Content-Type');
     
 
     // fetch(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, {
@@ -52,7 +52,7 @@ export class ServiceService {
     //     console.error(error);
     //   });
 
-    return this.http.post<any>(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, { headers: headers }).subscribe(
+    return this.http.post<any>(`${this.variableAPIimg}`, img).subscribe(
       (response) => {
         console.log(response);
       },
@@ -64,7 +64,7 @@ export class ServiceService {
 
 
     addResidentes(newResidenteForm: any){
-      return this.http.post<any>(`${this.variableGlobal}Residentes/InsertarPrincipal`, newResidenteForm);
+      return this.http.post<any>(`localhost:44371/api/Residentes/InsertarPrincipal`, newResidenteForm);
     }
 
   //   editEnfermedades(editEnfermedad: Enfermedad){

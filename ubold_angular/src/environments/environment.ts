@@ -7,7 +7,7 @@ export const environment = {
   demo: 'default',
   GOOGLE_MAPS_API_KEY: 'AIzaSyDpgQMpcfx1QU-8SM-ljcgjG4xrYtIYby4',
   variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/',
-  imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409&image=',
+  imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409',
 };
 
 /*

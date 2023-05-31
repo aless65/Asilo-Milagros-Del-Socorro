@@ -524,8 +524,8 @@ export class CreateComponent implements OnInit {
     } else {
       console.log(this.expediente);
       console.log(this.profileForm.valid);
-      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
-      this.resiService.getImageUpload(expe_Fotografia);
+      // const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
+      console.log(this.expediente.expe_Fotografia);
     }
   }
 
@@ -644,7 +644,7 @@ export class CreateComponent implements OnInit {
         Number(this.residente.agen_Id);
         Number(this.residente.diet_Id);
         this.residente.resi_UsuCreacion = 1;
-        this.expediente.expe_Fotografia = 'https://i.ibb.co/YBsPM8F/58ca739f450fa305efd3d9b3f0832977.jpg';
+        this.expediente.expe_Fotografia = 'http://images6.fanpop.com/image/photos/42800000/random-random-42843735-564-634.jpg';
         Object.assign(combinedModels, this.residente);
         Object.assign(combinedModels, this.dietaModel);
         Object.assign(combinedModels, this.encargado);
@@ -784,10 +784,15 @@ export class CreateComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result;
+        const base64Image = (reader.result as string)?.split(',')[1];
+        this.resiService.getImageUpload(base64Image); // Type assertion to indicate that reader.result is a string
+        // this.residente.expe_Fotografia = base64Image;
+        // console.log(this.residente.expe_Fotografia);
       };
       reader.readAsDataURL(file);
     }
   }
+  
 
   deleteImage() {
     this.selectedImage = ''; // Clear the selectedImage variable to remove the image

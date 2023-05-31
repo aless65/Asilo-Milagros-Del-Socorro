@@ -1,0 +1,45 @@
+{
+  "resi_Id": 0,
+  "resi_Nombres": "string",
+  "resi_Apellidos": "string",
+  "resi_Identidad": "012547896547",
+  "estacivi_IdResi": 1,
+  "resi_Nacimiento": "2023-05-31T01:41:40.986Z",
+  "resi_Sexo": "F",
+  "cent_Id": 1,
+  "diet_Id": 0,
+  "resi_FechaIngreso": "2023-05-31T01:41:40.986Z",
+  "empe_Id": null,
+  "agen_Id": 1,
+  "resi_UsuCreacion": 1,
+  "enca_Nombres": null,
+  "enca_Apellidos": "string",
+  "enca_Identidad": "string",
+  "estacivi_IdEnca": 0,
+  "enca_Nacimiento": "2023-05-31T01:41:40.987Z",
+  "enca_Sexo": "string",
+  "muni_Id": "string",
+  "enca_Direccion": "string",
+  "enca_Telefono": "string",
+  "pare_Id": 0,
+  "enca_UsuCreacion": 0,
+  "tiposang_Id": 2,
+  "expe_FechaApertura": "2023-05-31T01:41:40.988Z",
+  "expe_Fotografia": "C:\\Users\\PC\\Pictures\\Graduación\\photo_2022-12-02_18-15-50.jpg",
+  "expe_Enfermedades": [
+    1,2
+  ],
+  "diet_Desayuno": "string",
+  "diet_Almuerzo": "string",
+  "diet_Cena": "string",
+  "diet_Merienda": "string",
+  "diet_Restricciones": "string",
+  "diet_Observaciones": "string",
+  "meto_Id": 0,
+  "pago_Fecha": "2023-05-31T01:41:40.988Z",
+  "habi_Id": 1,
+  "agen_Detalles": [
+    {
+    }
+  ]
+}
