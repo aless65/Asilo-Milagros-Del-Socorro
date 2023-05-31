@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-residentes-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 
 export class ListComponent implements OnInit {
@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
   selectedResidente!: Residente;
   newContact!: FormGroup;
   age!: number | null;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @Output() residentesListado: EventEmitter<Residente[]> = new EventEmitter();
 
@@ -67,6 +68,9 @@ export class ListComponent implements OnInit {
     this.route.navigate(['apps/residentes/create']);
   }
 
+  openHistorial(): void{
+    this.route.navigate(['apps/residentes/historial']);
+  }
   /**
    * fetch contact list
    */

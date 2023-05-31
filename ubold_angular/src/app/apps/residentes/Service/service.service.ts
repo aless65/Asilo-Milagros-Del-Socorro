@@ -10,7 +10,7 @@ export class ServiceService {
   constructor(private http: HttpClient) { }
 
   headers!: {
-    'Content-Type' : 'multipart/form-data; charset=UTF-8'
+    'Content-Type': 'multipart/form-data; charset=UTF-8'
   }
 
   variableGlobal: string = environment.variableGlobal;
@@ -25,47 +25,27 @@ export class ServiceService {
     return this.http.get<AgendaDetalle[]>(`${this.variableGlobal}Agenda/ListadoDetalles?id=${id}`);
   }
 
-  getImageUpload(img: string) {
-    // const headers = new HttpHeaders();
-    // headers.delete('Content-Type');
-    
+  getImageUpload(img: any) {
 
-    // fetch(`${this.variableAPIimg}https://i.ytimg.com/vi/SNnrUGPIcew/maxresdefault.jpg`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   // body: JSON.stringify(data)
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw new Error('Error en la solicitud');
-    //     }
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     // Manejar la respuesta exitosa
-    //     console.log(data);
-    //   })
-    //   .catch(error => {
-    //     // Manejar el error
-    //     console.error(error);
-    //   });
+    const formData = new FormData();
+    formData.append('image', img);
+    console.log(formData);
 
-    return this.http.post<any>(`${this.variableAPIimg}`, img).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    return this.http.post<any>(`${this.variableAPIimg}`, formData);
   }
 
 
-    addResidentes(newResidenteForm: any){
-      return this.http.post<any>(`localhost:44371/api/Residentes/InsertarPrincipal`, newResidenteForm);
-    }
+  addResidentes(newResidenteForm: any) {
+    return this.http.post<any>(`${this.variableGlobal}Residentes/InsertarPrincipal`, newResidenteForm);
+  }
+
+  getIdentidadResidenteExiste(identidad: string) {
+    return this.http.get<any>(`${this.variableGlobal}Residentes/IdentidadExiste?resi_Identidad=${identidad}`);
+  }
+
+  getIdentidadEncargadoExiste(identidad: string) {
+    return this.http.get<any>(`${this.variableGlobal}Encargados/IdentidadExiste?enca_Identidad=${identidad}`);
+  }
 
   //   editEnfermedades(editEnfermedad: Enfermedad){
   //     return this.http.put<Enfermedad[]>(`${this.Url}Enfermedades/Editar`, editEnfermedad);

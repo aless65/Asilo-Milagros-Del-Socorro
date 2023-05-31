@@ -661,6 +661,28 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult IdentidadExisteEnca(string enca_Identidad)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var identidad = _encargadosRepository.IdentidadExiste(enca_Identidad);
+
+                if (identidad.CodeStatus == 2)
+                {
+                    return result.SetMessage("Ya existe", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage("No existe", ServiceResultType.Error);
+                }
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         public ServiceResult InsertEncargados(tbEncargados item)
         {
             var result = new ServiceResult();
@@ -1576,6 +1598,27 @@ namespace Asilo.BusinessLogic.Services
             {
                 var enfermedad = _residentesRepository.Find(id);
                 return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult IdentidadExisteResi(string resi_Identidad)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var identidad = _residentesRepository.IdentidadExiste(resi_Identidad);
+                if(identidad.CodeStatus == 2)
+                {
+                    return result.SetMessage("Ya existe", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage("No existe", ServiceResultType.Error);
+                }
             }
             catch (Exception e)
             {

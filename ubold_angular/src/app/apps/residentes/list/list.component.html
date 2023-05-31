@@ -18,7 +18,7 @@
                 <!-- customer table -->
                 <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="residentes"
                     [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
-                    (search)="searchData($event)" [isSortable]="false"
+                    (search)="searchData($event)" [isSortable]="false" [pageSizeOptions]="pageSizeOptions"
                     tableClasses="table-centered table-nowrap table-hover">
                 </app-advanced-table>
 
@@ -37,7 +37,7 @@
                         <p class="text-muted">{{selectedResidente.sexoDes}}</p>
                         <p class="text-muted"><i class="mdi mdi-office-building"></i>{{selectedResidente.cent_Nombre}}</p>
 
-                        <a href="javascript: void(0);" class="btn btn-xs btn-info me-1">Ver Historial</a>
+                        <a href="javascript: void(0);" class="btn btn-xs btn-info me-1" (click)="openHistorial()">Ver Historial</a>
                     </div>
                 </div>
 
@@ -51,6 +51,7 @@
                     <p class="mb-3">{{ age }}</p>
 
                     <h4 class="font-13 text-muted text-uppercase mb-1">Enfermedades :</h4>
+                    <p class="mb-3">{{ selectedResidente.resi_Enfermedades ? selectedResidente.resi_Enfermedades : 'Ninguna' }}</p>
 
                     <h4 class="font-13 text-muted text-uppercase mb-1">Apertura del expediente :</h4>
                     <p class="mb-3">{{selectedResidente.expe_FechaApertura | date: 'dd/MM/yyyy'}}</p>

@@ -44,6 +44,7 @@ export interface Residente {
     resi_FechaModificacion?: string;
     habi_Id?: number;
     agen_Detalles?: any;
+    resi_Enfermedades?: string;
     
     [key: string]: number | string | undefined | number[];
 }

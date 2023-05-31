@@ -105,6 +105,7 @@ export class CreateComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   selectedImage: string | ArrayBuffer | null = null;
+  base64Image: any;
 
   // ngOnInit() {
   // }
@@ -358,8 +359,6 @@ export class CreateComponent implements OnInit {
 
       this.agendadetalle = response.data;
 
-      console.log(this.agendadetalle);
-
       this.calendarOptions = {
         themeSystem: 'bootstrap',
         bootstrapFontAwesome: false,
@@ -388,7 +387,7 @@ export class CreateComponent implements OnInit {
         drop: this.onDrop.bind(this),
         eventDrop: this.onEventDrop.bind(this)
       }
-      console.log(this.calendarEventsData);
+
     });
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/list';
@@ -417,14 +416,43 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.accountForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
-        }
-      })
+      // Object.keys(this.accountForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
     } else {
+
+      
+
+      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '').subscribe((response: any) => {
+
+        console.log(response);
+
+        if (response.code === 200) {
+
+          // this.accountForm.get('resi_Identidad')?.reset();
+          // this.residente.resi_Identidad = undefined;
+  
+          console.log("ps sí existe");
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: '¡Ya existe un residente con este número de identidad!',
+            icon: 'warning',
+            background: '#f6f6baf2'
+          }).then(() => {
+            // Action after the toast is closed
+          });
+        } else{
+          this.activeWizard4 = 2
+        }
+      });
 
       // this.residenteList.residentesListado.subscribe((residentesListado: Residente[]) => {
       //   this.residentesFromList = residentesListado;
@@ -432,7 +460,7 @@ export class CreateComponent implements OnInit {
       //   console.log(residentesListado);
 
       //   const matchFound = this.residentesFromList.some(item => item.resi_Identidad === this.residente.resi_Identidad);
-  
+
       //   if(matchFound){
       //     Swal.fire({
       //       toast: true,
@@ -446,7 +474,7 @@ export class CreateComponent implements OnInit {
       //     }).then(() => {
       //       // Acción luego de cerrarse el toast
       //     });
-  
+
       //     this.residente.resi_Identidad = '';
       //     this.form1.resi_Identidad.reset();
       //   }
@@ -461,8 +489,8 @@ export class CreateComponent implements OnInit {
     this.allValuesUndefinedOrNull = Object.values(formValues).every(value => value === undefined || value === null || value === '');
 
     if (this.allValuesUndefinedOrNull) {
-      // All values are undefined or null, perform the desired action here
-      console.log('All values are undefined or null', this.encargado, this.allValuesUndefinedOrNull);
+      this.activeWizard4 = 3
+      this.encargado.enca_Nombres = undefined;
       this.isEncargadoActive = false;
       return;
     } else {
@@ -480,17 +508,40 @@ export class CreateComponent implements OnInit {
           // Action after the toast is closed
         });
 
-        Object.keys(this.encargadoForm.controls).forEach(field => {
-          const control = this.encargadoForm.get(field);
-          if (control?.invalid) {
-            const errors = control.errors;
-            console.log(`Error en el campo ${field}:`, errors);
-          }
-        });
+        // Object.keys(this.encargadoForm.controls).forEach(field => {
+        //   const control = this.encargadoForm.get(field);
+        //   if (control?.invalid) {
+        //     const errors = control.errors;
+        //     console.log(`Error en el campo ${field}:`, errors);
+        //   }
+        // });
 
         this.allValuesUndefinedOrNull = false;
       } else {
-        console.log(this.encargado);
+
+        this.resiService.getIdentidadEncargadoExiste(this.encargado.enca_Identidad || '').subscribe((response: any) => {
+          // this.encargadoForm.get('enca_Identidad')?.reset();
+          // this.encargado.enca_Identidad = '';
+
+          if (response.code === 200) {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Ya existe un encargado con este número de identidad!',
+              icon: 'warning',
+              background: '#f6f6baf2'
+            }).then(() => {
+              // Action after the toast is closed
+            });
+          } else {
+            this.activeWizard4 = 3
+          }
+        });
+
+
         this.isEncargadoActive = false;
       }
     }
@@ -514,19 +565,67 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.accountForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
-        }
-      })
+      // Object.keys(this.accountForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
     } else {
       console.log(this.expediente);
       console.log(this.profileForm.valid);
       // const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
       console.log(this.expediente.expe_Fotografia);
     }
+  }
+
+  functionInsert() {
+    const combinedModels = {};
+
+    // Merge the properties of each model into the combinedModels object
+    Number(this.residente.agen_Id);
+    Number(this.residente.diet_Id);
+    this.residente.resi_UsuCreacion = 1;
+    Object.assign(combinedModels, this.residente);
+    Object.assign(combinedModels, this.dietaModel);
+    Object.assign(combinedModels, this.encargado);
+    Object.assign(combinedModels, this.expediente);
+    Object.assign(combinedModels, this.historialPago);
+    this.residente.agen_Detalles = this.agendadetalle;
+    console.log(combinedModels);
+
+    this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
+      console.log(response);
+      if (response.message === "Exitoso") {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: 'Perfecto!',
+          text: 'El registro se guardó con éxito!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1850,
+          timerProgressBar: true
+        }).then(() => {
+        });
+        this.router.navigate([this.returnUrl]);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: 'Perfecto!',
+          text: response.message,
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1850,
+          timerProgressBar: true
+        }).then(() => {
+        });
+      }
+    })
+
+    this.isDatosPersonalesActive = false;
   }
 
   submitAdmin() {
@@ -584,11 +683,11 @@ export class CreateComponent implements OnInit {
 
     if (this.form4.empe_Id.value === "2") {
       const formValues = this.confirmarCuidadoForm.value;
-      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '' || value === 0);
 
       console.log("cuidado");
 
-      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm) {
+      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm || this.historialPago.meto_Id === undefined || this.historialPago.meto_Id === null || this.historialPago.meto_Id === 0) {
         canInsert = false;
 
         Swal.fire({
@@ -626,65 +725,33 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.profileForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
-        }
-      })
+      // Object.keys(this.profileForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
     } else {
-      console.log("qqqq");
 
       if (canInsert) {
 
-        const combinedModels = {};
+        this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
+          console.log(response.data.url);
+          this.residente.expe_Fotografia = response.data.url.toString();
 
-        // Merge the properties of each model into the combinedModels object
-        Number(this.residente.agen_Id);
-        Number(this.residente.diet_Id);
-        this.residente.resi_UsuCreacion = 1;
-        this.expediente.expe_Fotografia = 'http://images6.fanpop.com/image/photos/42800000/random-random-42843735-564-634.jpg';
-        Object.assign(combinedModels, this.residente);
-        Object.assign(combinedModels, this.dietaModel);
-        Object.assign(combinedModels, this.encargado);
-        Object.assign(combinedModels, this.expediente);
-        Object.assign(combinedModels, this.historialPago);
-        this.residente.agen_Detalles = this.agendadetalle;
+          // if(this.residente.expe_Fotografia === undefined){
+          //   this.residente.expe_FechaApertura = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
+          // }
 
-        console.log(combinedModels);
-
-        this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
-          console.log(response);
-          if(response.message === "Exitoso"){
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              title: 'Perfecto!',
-              text: 'El registro se guardó con éxito!',
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 1850,
-              timerProgressBar: true
-            }).then(() => {
-            });
-            this.router.navigate([this.returnUrl]);
-          } else {
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              title: 'Perfecto!',
-              text: response.message, 
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 1850,
-              timerProgressBar: true
-            }).then(() => {
-            });
+          this.functionInsert();
+        },
+          (error: any) => {
+            this.residente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
+            this.functionInsert();
           }
-        })
+        );
 
-        this.isDatosPersonalesActive = false;
       }
     }
   }
@@ -784,15 +851,12 @@ export class CreateComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result;
-        const base64Image = (reader.result as string)?.split(',')[1];
-        this.resiService.getImageUpload(base64Image); // Type assertion to indicate that reader.result is a string
-        // this.residente.expe_Fotografia = base64Image;
-        // console.log(this.residente.expe_Fotografia);
+        this.base64Image = (reader.result as string)?.split(',')[1];
       };
       reader.readAsDataURL(file);
     }
   }
-  
+
 
   deleteImage() {
     this.selectedImage = ''; // Clear the selectedImage variable to remove the image

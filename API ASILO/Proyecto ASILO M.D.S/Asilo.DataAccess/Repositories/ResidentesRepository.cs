@@ -97,6 +97,20 @@ namespace Asilo.DataAccess.Repositories
         }
 
 
+        public RequestStatus IdentidadExiste(string resi_Identidad)
+        {
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@resi_Identidad", resi_Identidad, DbType.String, ParameterDirection.Input);
+
+            result = db.QueryFirst<RequestStatus>(ScriptsDataBase.IdentidadExisteResi, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
+
         public RequestStatus InsertPrincipal(VW_tbResidentes_Form item)
         {
             RequestStatus result = new RequestStatus();
@@ -140,8 +154,6 @@ namespace Asilo.DataAccess.Repositories
             parameters.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
 
             using var db = new SqlConnection(AsiloContext.ConnectionString);
-
-            //var verresult = db.QueryFirst<string>(ScriptsDataBase.ResidentesForm, parameters, commandType: CommandType.StoredProcedure);
 
             result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ResidentesForm, parameters, commandType: CommandType.StoredProcedure);
 

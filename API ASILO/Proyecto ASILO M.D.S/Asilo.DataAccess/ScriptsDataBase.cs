@@ -111,6 +111,8 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Encargados = "asil.UDP_asil_tbEncargados_Find";
         public static string UDP_Edita_Encargados = "asil.UDP_asil_tbEncargados_Update";
         public static string UDP_Elimina_Encargados = "asil.UDP_asil_tbEncargados_Delete";
+
+        public static string IdentidadExisteEnca = "asil.confirmarIdentidadRepetidaEnca";
         #endregion
 
         #region Enfermedades
@@ -198,6 +200,7 @@ namespace Asilo.DataAccess
         public static string EliminarResidentes = "asil.UPD_tbResidentes_Eliminar";
 
         public static string ResidentesForm = "asil.UDP_tbResidentes_InsertPrincipal";
+        public static string IdentidadExisteResi = "asil.confirmarIdentidadRepetidaResi";
 
         #endregion
 

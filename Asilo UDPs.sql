@@ -2213,9 +2213,15 @@ GO
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbResidentes_List
 AS
 BEGIN
-	SELECT *
-	FROM asil.VW_tbResidentes
-	WHERE resi_Estado  = 1
+	SELECT t1.*,
+	       (SELECT STRING_AGG(t3.enfe_Nombre, ', ') 
+			FROM [asil].[tbEnfermedadesXResidente] t2
+			LEFT JOIN asil.tbEnfermedades t3
+			ON t2.enfe_Id = t3.enfe_Id
+			WHERE t2.resi_Id = t1.resi_Id) AS resi_Enfermedades 
+	FROM asil.VW_tbResidentes t1 
+	WHERE resi_Estado  = 1 
+	ORDER BY t1.resi_Id
 END
 GO
 
@@ -2409,7 +2415,33 @@ BEGIN
 END
 GO
 
+GO
+CREATE OR ALTER PROCEDURE asil.confirmarIdentidadRepetidaResi
+	@resi_Identidad		NVARCHAR(13)
+AS
+BEGIN
+	IF EXISTS (SELECT [resi_Identidad] 
+			   FROM [asil].[tbResidentes]
+			   WHERE resi_Identidad = @resi_Identidad)
+		SELECT 2 AS CodeStatus
+	ELSE
+		SELECT 1 AS CodeStatus
+END
+GO
 
+GO
+CREATE OR ALTER PROCEDURE asil.confirmarIdentidadRepetidaEnca
+	@enca_Identidad		NVARCHAR(13)
+AS
+BEGIN
+	IF EXISTS (SELECT [enca_Identidad] 
+			   FROM [asil].tbEncargados
+			   WHERE enca_Identidad = @enca_Identidad)
+		SELECT 2 AS CodeStatus
+	ELSE
+		SELECT 1 AS CodeStatus
+END
+GO
 
 /*INSERTAR RESIDENTES*/
 CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Agregar
