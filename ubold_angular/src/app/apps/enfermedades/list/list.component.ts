@@ -132,8 +132,6 @@ import Swal from 'sweetalert2';
           this._fetchData();
           if (response.message == "La enfermedad ha sido editada exitosamente") {
             Swal.fire({
-              toast: true,
-              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
@@ -175,8 +173,6 @@ import Swal from 'sweetalert2';
           this._fetchData();
           if (response.message == "La enfermedad ha sido insertada exitosamente") {
             Swal.fire({
-              toast: true,
-              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
@@ -295,8 +291,8 @@ import Swal from 'sweetalert2';
   // action cell formatter
   enfermedadActionFormatter(enfermedad: Enfermedad): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);"  class="edit action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
+      ` <a href="javascript:void(0);"  class="edit action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${enfermedad.enfe_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
 
