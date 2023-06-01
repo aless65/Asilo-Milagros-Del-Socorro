@@ -1813,7 +1813,7 @@ AS
 	[empe_Sexo], CASE WHEN empe_Sexo= 'F' THEN 'Femenino'
 				ELSE 'Masculino'
 			END AS SexoDes,emp.[estacivi_Id],est.estacivi_Nombre, [empe_Nacimiento],
-	emp.[muni_Id],muni.muni_Nombre, depa.depa_Id, depa.depa_Nombre [empe_Direccion],
+	emp.[muni_Id],muni.muni_Nombre, depa.depa_Id, depa.depa_Nombre, [empe_Direccion],
 	[empe_Telefono], [empe_Correo], emp.[carg_Id], carg.carg_Nombre, emp.[cent_Id], cent.cent_Nombre,
 	[empe_UsuCreacion], usu1.usua_NombreUsuario usuarioCrea, [empe_FechaCreacion], [empe_UsuModificacion],
 	usu2.usua_NombreUsuario usuarioModif, [empe_FechaModificacion], [empe_Estado]
@@ -3645,6 +3645,8 @@ BEGIN
 	END CATCH
 END
 GO
+
+
 
 --************DONACIONES******************--
 

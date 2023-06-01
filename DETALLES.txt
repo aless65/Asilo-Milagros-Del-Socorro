@@ -31,3 +31,12 @@ EN EL  CSS DE TALLES:
 
 MIS ARCHVIVOS DE UDP... DEBEN ESTAR EN EL MAIN SI NO, NO FUNCIONARA LA LINEA D ETIEMPO... 
 ACTUALIZÉ LA VISTA DE EMPLEADOS
+
+Una tabla nueva para comida basica o cosas basicas, buscar lo que se dona normalmente en un asilo. 
+si se puede editar lo que ingresa y la cantidad de ello, el centro solo lo puede editar el admin.
+
+
+dato importante: si doco_Id es vacio o nulo, entonces mostrar descripcion.
+Si es admin entonces que eliga a los centros a los que va hacer esa misma donacion, si no, entonces solo una.
+
+no puede personalizar cada una de las donaciones que hara para cada centro, seria mucho relajo.

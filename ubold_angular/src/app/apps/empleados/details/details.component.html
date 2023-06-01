@@ -30,7 +30,7 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card card-bg-image">
             <div class="card-body">
                 <div class="row" >
 
@@ -54,47 +54,43 @@
                     </div> --> <!-- end col -->
                
                     <!-- CUANDO VAYA A PONER LA IMAGEN CAMBIA EL col-lg-10 a col4-lg-7 -->
-                    <div class="col-lg-10">
-                        <div class="ps-xl-3 mt-3 mt-xl-0">                   
-                            <h4 class="mb-4 text-center">Nombre: <span class="text-muted me-2">{{ empleado.empe_NombreCompleto }}</span></h4>
-                            <div class="row mb-3">
-                                <div class="col-md-6 order-md-1">
-                                    <div>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Identidad: {{empleado.empe_Identidad}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Fecha de Nacimiento: {{ empleado.dia }} de {{ empleado.mesNombre }} de {{ empleado.ayo }}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Sexo: {{empleado.sexoDes}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Estado Civil: {{empleado.estacivi_Nombre}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Teléfono: {{empleado.empe_Telefono}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Correo electrónico: {{empleado.empe_Correo}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 order-md-2">
-                                    <div>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Dirección: {{empleado.empe_Direccion}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Municipio: {{empleado.muni_Nombre}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Departamento: {{empleado.depa_Nombre}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Cargo: {{empleado.carg_Nombre}}</p>
-                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
-                                            Centro en que trabaja: {{empleado.cent_Nombre}}</p>
-                                    </div>
-                                </div>
-                                
-                            </div>                      
+                    <div class="col-md-6 order-md-1 flex-column">
+                        <div>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Identidad: {{empleado.empe_Identidad}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Fecha de Nacimiento: {{ empleado.dia }} de {{ empleado.mesNombre }} de {{ empleado.ayo }}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Sexo: {{empleado.sexoDes}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Estado Civil: {{empleado.estacivi_Nombre}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Teléfono: {{empleado.empe_Telefono}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Correo electrónico: {{empleado.empe_Correo}}</p>
                         </div>
-                    </div> <!-- end col -->
+                    </div>
+                    <div class="col-md-6 order-md-2 flex-column">
+                        <div>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Dirección: {{empleado.empe_Direccion}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Municipio: {{empleado.muni_Nombre}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Departamento: {{empleado.depa_Nombre}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Cargo: {{empleado.carg_Nombre}}</p>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Centro en que trabaja: {{empleado.cent_Nombre}}</p>
+                        </div>
+                    </div>
+                    
                 </div>
                 <!-- end row -->
-                <div class="table-responsive mt-4">
+               
+
+                <div class="table-responsive mt-4" style="margin-top: 20px;"> 
+                    <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Auditoría</h4>                   
                     <table class="table table-bordered table-centered mb-0">
                         <thead class="table-light">
                             <tr>
