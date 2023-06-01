@@ -4071,7 +4071,7 @@ BEGIN
 	BEGIN TRY
 
 
-	IF NOT EXISTS (SELECT * FROM asil.tbInventarioPorCentro WHERE cent_Id = @cent_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones WHERE cent_Id = @cent_Id AND habi_Estado = 1)
 			BEGIN
 			UPDATE asil.tbCentros
 			SET cent_Estado = 0

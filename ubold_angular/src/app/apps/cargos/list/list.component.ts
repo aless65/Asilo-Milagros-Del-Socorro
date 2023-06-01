@@ -133,6 +133,8 @@ import Swal from 'sweetalert2';
           this._fetchData();
           if (response.message == "El cargo ha sido editado") {
             Swal.fire({
+              toast: true,
+              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
@@ -142,6 +144,7 @@ import Swal from 'sweetalert2';
             }).then(() => {
               
             });
+           
           }
           else if(response.message == "El cargo ya existe"){
             Swal.fire({
@@ -177,6 +180,8 @@ import Swal from 'sweetalert2';
           this._fetchData();
           if (response.message == "El cargo ha sido insertado") {
             Swal.fire({
+              toast: true,
+              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
@@ -184,7 +189,6 @@ import Swal from 'sweetalert2';
               timer: 1850,
               timerProgressBar: true
             }).then(() => {
-              
             });
           }
           else if(response.message == "Este cargo ya existe"){
@@ -293,15 +297,15 @@ import Swal from 'sweetalert2';
       <div class="table-user">
       <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${cargo.carg_Id}">${cargo.carg_Nombre}</a>
       </div>
-      `
+      ` 
     );
   }
 
   // action cell formatter
   cargoActionFormatter(cargo: Cargo): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;" ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
 
