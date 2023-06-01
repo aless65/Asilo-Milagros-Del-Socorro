@@ -8,6 +8,7 @@ import { PageTitleModule } from 'src/app/shared/page-title/page-title.module';
 @NgModule({
   declarations: [
     
+
   ],
   imports: [
     CommonModule,

@@ -41,7 +41,7 @@ export class DetailsComponent implements OnInit {
 
 
    
-    this.pageTitle = [{ label: 'Extra Pages', path: '/' }, { label: 'Timeline', path: '/', active: true }];
+    this.pageTitle = [{ label: 'Historial de Pagos', path: '/' }, { label: 'Pagos', path: '/', active: true }];
    
     this._fetchData();
    /* this.cargarHistorial();*/

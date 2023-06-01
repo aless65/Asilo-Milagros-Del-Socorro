@@ -1,0 +1,122 @@
+<p>details works!</p>
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title=""></app-page-title>
+<div class="row">
+    <div class="col-12">
+        <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Detalles</h4>
+
+        <div class="card-content transparent-card">
+            <div class="card-body">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <form class="d-flex flex-wrap align-items-center">
+                            <label for="inputPassword2" class="visually-hidden">Buscar</label>
+                            <div class="me-3">
+                              
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-lg-end my-1 my-lg-0">
+                            <a [routerLink]="['../list']" class="btn btn-outline-secondary waves-effect waves-light mb-2">Volver</a>
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row" >
+
+                    <!-- TODO ESPACIO PARA IMAGEN  DEL RESIDENTE
+                    <div class="col-lg-5">
+                         <div [ngbNavOutlet]="nav" class="pt-0"></div> 
+                        aqui la magen del residende Ale 
+                      
+                        <ul ngbNav #nav="ngbNav" class="nav-pills nav-justified">
+                            
+                            <li ngbNavItem>
+                                <ng-template ngbNavContent>
+                                    <img src="../assets/images/products/product-9.jpg" alt=""
+                                        class="img-fluid mx-auto d-block rounded">
+                                </ng-template>
+                               
+                            </li>
+
+                        </ul>
+                        
+                    </div> --> <!-- end col -->
+               
+                    <!-- CUANDO VAYA A PONER LA IMAGEN CAMBIA EL col-lg-10 a col4-lg-7 -->
+                    <div class="col-lg-10">
+                        <div class="ps-xl-3 mt-3 mt-xl-0">                   
+                            <h4 class="mb-4 text-center">Nombre: <span class="text-muted me-2">{{ empleado.empe_NombreCompleto }}</span></h4>
+                            <div class="row mb-3">
+                                <div class="col-md-6 order-md-1">
+                                    <div>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Identidad: {{empleado.empe_Identidad}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Fecha de Nacimiento: {{ empleado.dia }} de {{ empleado.mesNombre }} de {{ empleado.ayo }}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Sexo: {{empleado.sexoDes}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Estado Civil: {{empleado.estacivi_Nombre}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Teléfono: {{empleado.empe_Telefono}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Correo electrónico: {{empleado.empe_Correo}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 order-md-2">
+                                    <div>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Dirección: {{empleado.empe_Direccion}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Municipio: {{empleado.muni_Nombre}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Departamento: {{empleado.depa_Nombre}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Cargo: {{empleado.carg_Nombre}}</p>
+                                        <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                            Centro en que trabaja: {{empleado.cent_Nombre}}</p>
+                                    </div>
+                                </div>
+                                
+                            </div>                      
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+                <div class="table-responsive mt-4">
+                    <table class="table table-bordered table-centered mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Usuario Creador</th>
+                                <th>Fecha Creación</th>
+                                <th>Usuario Modificador</th>
+                                <th>Fecha Modificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{empleado.usuarioCrea}}</td>
+                                <td>{{empleado.empe_FechaCreacion}}</td>
+                                <td>{{empleado.usuarioModif}}</td>
+                                <td>{{empleado.empe_FechaModificacion}}</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->

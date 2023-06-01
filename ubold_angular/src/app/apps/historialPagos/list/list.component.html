@@ -1,9 +1,11 @@
 <!-- page title -->
-<app-page-title [breadcrumbItems]="pageTitle" title="Historial de Pagos"></app-page-title>
+<app-page-title [breadcrumbItems]="pageTitle" title=""></app-page-title>
 
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Historial de Pagos</h4>
+
+        <div class="card-content transparent-card">
             <div class="card-body">
                 <div class="row justify-content-between">
                     <div class="col-auto">
@@ -11,8 +13,7 @@
                             <label for="inputPassword2" class="visually-hidden">Buscar</label>
                             <div class="me-3">
                                 <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2" name="search"
-                                    placeholder="Search..." [(ngModel)]="searchTerm"
-                                    (ngModelChange)="searchData2($event)">
+                                    placeholder="Buscar..." [(ngModel)]="searchTerm" (ngModelChange)="searchData2($event)">
                             </div>
                             <!--
                             <label for="status-select" class="me-2">Sort By</label>
@@ -29,9 +30,6 @@
                     </div>
                     <div class="col-auto">
                         <div class="text-lg-end my-1 my-lg-0">
-                            <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
-                                    class="mdi mdi-cog"></i></button>
-                        
                         </div>
                     </div><!-- end col-->
                 </div> <!-- end row -->
@@ -41,9 +39,11 @@
 </div>
 <!-- end row-->
 
+
 <div class="row">
     <div class="col-md-6 col-xl-3" *ngFor="let product of residentes | slice: (page-1) * pageSize : page * pageSize">
-       
+        <div class="row">
+            <div class="col">
 
         <div class="card product-box custom-card">
             <div class="card-body">
@@ -71,6 +71,8 @@
                 </div> <!-- end product info -->
             </div>
         </div> <!-- end card -->
+     </div> <!-- end col -->
+        </div> <!-- end row -->
     </div> <!-- end col-->
 </div>
 <!-- end row-->
@@ -78,8 +80,16 @@
 <div class="row">
     <div class="col-12">
         <ngb-pagination [collectionSize]="residentes.length" class="pagination-rounded d-flex justify-content-end mb-2"
-            [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
+        [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
 
     </div> <!-- end col-->
 </div>
 <!-- end row-->
+<style>
+    .transparent-card {
+        margin-bottom: 20px; /* Margen inferior para separar la primera tarjeta */
+    }
+    .col-md-6.col-xl-3 {
+        margin-bottom: 20px; /* Margen inferior para separar las tarjetas */
+    }
+</style>
