@@ -44,6 +44,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/roles/list',
     },
     {
+        key: 'apps-agendas',
+        label: 'Agendas',
+        isTitle: false,
+        icon: 'calendar',
+        link: '/apps/agendas/list',
+    },
+    {
         key: 'apps-centros',
         label: 'Centros',
         isTitle: false,

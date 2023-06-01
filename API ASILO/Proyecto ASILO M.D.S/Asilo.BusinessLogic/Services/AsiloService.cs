@@ -103,12 +103,43 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+
         public ServiceResult InsertarAgendas(tbAgendas item)
         {
             ServiceResult result = new ServiceResult();
             try
             {
                 var list = _agendasRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult InsertarAgendaDetalles(tbAgendaDetalles item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _agendasRepository.EditDetalles(item);
                 if (list.CodeStatus > 0)
                 {
                     return result.SetMessage("Exitoso", ServiceResultType.Success);

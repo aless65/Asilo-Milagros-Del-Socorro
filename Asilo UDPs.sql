@@ -2065,13 +2065,53 @@ BEGIN
 END
 GO
 
+/*EDITAR AGENDA DETALLES (OFICIAL)*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_EditOficial
+	@agen_Id					INT,
+	@agendeta_HoraStart			NVARCHAR(500),
+	@agendeta_HoraEnd			NVARCHAR(500),
+	@acti_Id					INT,
+	@medi_Id					INT,
+	@agendeta_Observaciones		NVARCHAR,
+	@agendeta_UsuCreacion		INT
+	
+AS 
+BEGIN
+	BEGIN TRY
+		DELETE FROM [asil].[tbAgendaDetalles]
+		WHERE agen_Id = @agen_Id
+
+		IF NOT EXISTS (SELECT *
+						FROM [asil].[tbAgendaDetalles]
+						WHERE [agen_Id] = @agen_Id
+						AND	[agendeta_HoraStart] = @agendeta_HoraStart
+						AND [agendeta_HoraEnd] = @agendeta_HoraEnd
+						AND [acti_Id] = @acti_Id
+						AND [medi_Id] = @medi_Id
+						AND [agendeta_Observaciones] = @agendeta_Observaciones)
+			BEGIN
+				INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
+				VALUES(@agen_Id, @agendeta_HoraStart, @agendeta_HoraEnd, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
+
+				SELECT 1 AS CodeStatus
+			END
+		ELSE
+			SELECT -2 AS CodeStatus
+
+	END TRY
+	BEGIN CATCH
+		SELECT 0 AS CodeStatus
+	END CATCH
+END
+GO
+
 
 /*INSERTAR AGENDA DETALLES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Insert
 	@agen_Id					INT,
-	@agendeta_HoraStart			TIME,
-	@agendeta_HoraEnd			TIME,
-	@acti_Id					INT ,
+	@agendeta_HoraStart			NVARCHAR(500),
+	@agendeta_HoraEnd			NVARCHAR(500),
+	@acti_Id					INT,
 	@medi_Id					INT,
 	@agendeta_Observaciones		NVARCHAR,
 	@agendeta_UsuCreacion		INT

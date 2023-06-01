@@ -1,0 +1,30 @@
+<app-page-title [breadcrumbItems]="pageTitle" title="Agendas
+"></app-page-title>
+
+
+<div class="row">
+    <div class="col-3">
+        <!-- <a class="position-relative top-0 start-0 mt-3 ml-3">
+            <i class="mdi mdi-arrow-left"></i> Regresar
+        </a> -->
+        <br>
+        <button class="btn btn-lg font-16 btn-primary w-100 ellipsis" id="btn-new-event"
+            (click)="createNewEvent()">
+            <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
+        </button>
+        <br>
+        <br>
+        <button class="btn btn-lg font-16 btn-blue w-100 ellipsis" id="btn-new-event"
+            (click)="updateAgendaDetalles()">
+            Guardar Cambios
+        </button>
+    </div>
+    <div class="col-9">
+        <div id="calendar" *ngIf="calendarOptions">
+            <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+        </div>
+    </div>
+</div>
+
+<app-agenda-evento #eventModal (eventSaved)="handleEventSave($event)" (eventDeleted)="handleEventDelete($event)">
+</app-agenda-evento>

@@ -61,7 +61,7 @@ namespace Asilo.DataAccess
         public static string EliminarAgenda = "asil.UPD_tbAgendas_Eliminar";
 
         public static string AgendaDetalle_List = "asil.UDP_asil_tbAgendaDetalles_List";
-        public static string AgendaDetalle_Insert = "asil.UDP_asil_tbAgendaDetalles_Insert";
+        public static string AgendaDetalle_Insert = "asil.UDP_asil_tbAgendaDetalles_EditOficial";
         #endregion
 
         #region Cargos

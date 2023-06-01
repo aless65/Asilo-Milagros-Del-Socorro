@@ -70,8 +70,6 @@ export class ListComponent implements OnInit {
 
   openHistorial(id: number): void {
     this.service.FindExpediente(id).subscribe(([expediente, historialExpediente]) => {
-      console.log('Expediente: ', expediente);
-      console.log('Historial: ', historialExpediente);
   
       // Assign the obtained data to variables
       // For example:
@@ -85,6 +83,10 @@ export class ListComponent implements OnInit {
           historialData: historialData
         }
       });
+
+      localStorage.setItem('expedienteData', JSON.stringify(expedienteData));
+      localStorage.setItem('historialData', JSON.stringify(historialData));
+
     });
   }
   

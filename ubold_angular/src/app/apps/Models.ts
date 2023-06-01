@@ -45,7 +45,7 @@ export interface Residente {
     resi_FechaModificacion?: string;
     habi_Id?: number;
     agen_Detalles?: any;
-    resi_Enfermedades?: string;
+    resi_Enfermedades?: string; 
     
     [key: string]: number | string | undefined | number[];
 }
@@ -218,6 +218,7 @@ export interface Centro {
 }
 
 export interface AgendaDetalle {
+    agen_Id?: number;
     agendeta_Id?: number;
     agendeta_HoraStart?: string;
     agendeta_HoraEnd?: string;
@@ -229,6 +230,13 @@ export interface AgendaDetalle {
     agendeta_Observaciones?: string;
     agendeta_UsuCreacion?: number;
     agendeta_UsuModificacion?: number;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Agenda {
+    agen_Id?: number;
+    agen_Nombre?: string;
 
     [key: string]: number | string | undefined;
 }

@@ -55,6 +55,29 @@ namespace Asilo.DataAccess.Repositories
             return reques;
         }
 
+        public RequestStatus EditDetalles(tbAgendaDetalles item)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@agendeta_HoraStart", item.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
+            parameters.Add("@agendeta_HoraEnd", item.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
+            parameters.Add("@acti_Id", item.acti_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@medi_Id", item.medi_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@agendeta_Observaciones", item.agendeta_Observaciones, DbType.String, ParameterDirection.Input);
+            parameters.Add("@agendeta_UsuCreacion", item.agendeta_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            var result = db.QueryFirst<int>(ScriptsDataBase.AgendaDetalle_Insert, parameters, commandType: CommandType.StoredProcedure);
+
+            RequestStatus reques = new()
+            {
+                CodeStatus = result,
+                MessageStatus = "Agenda actualizada"
+            };
+
+            return reques;
+        }
+
         public IEnumerable<VW_tbAgendas> List()
         {
             using var db = new SqlConnection(AsiloContext.ConnectionString);

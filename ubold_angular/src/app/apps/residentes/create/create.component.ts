@@ -587,12 +587,15 @@ export class CreateComponent implements OnInit {
     Number(this.residente.agen_Id);
     Number(this.residente.diet_Id);
     this.residente.resi_UsuCreacion = 1;
+    this.residente.agen_Detalles = this.agendadetalle;
     Object.assign(combinedModels, this.residente);
     Object.assign(combinedModels, this.dietaModel);
     Object.assign(combinedModels, this.encargado);
     Object.assign(combinedModels, this.expediente);
     Object.assign(combinedModels, this.historialPago);
-    this.residente.agen_Detalles = this.agendadetalle;
+
+    console.log(this.residente.agen_Detalles);
+
     console.log(combinedModels);
 
     this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
@@ -601,7 +604,7 @@ export class CreateComponent implements OnInit {
         Swal.fire({
           toast: true,
           position: 'top-end',
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,
