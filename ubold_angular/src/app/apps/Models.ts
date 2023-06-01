@@ -34,6 +34,7 @@ export interface Residente {
     empe_Id?: number;
     agen_Id?: number;
     resi_Nacimiento?: string;
+    expe_Id?: number,
     expe_Fotografia?: string;
     expe_FechaApertura?: string;
     resi_UsuCreacion?: number;
@@ -285,6 +286,16 @@ export interface HistorialPago {
     resi_Id?: number;
     meto_Id?: number;
     pago_Fecha?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface HistorialExpediente {
+    expe_Id?: number;
+    histexpe_Observaciones?: string;
+    empe_Id?: number;
+    empe_NombreCompleto?: string;
+    histexpe_FechaActualizacion?: string;
 
     [key: string]: number | string | undefined;
 }

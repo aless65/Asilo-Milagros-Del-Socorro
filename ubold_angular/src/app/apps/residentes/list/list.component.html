@@ -37,7 +37,7 @@
                         <p class="text-muted">{{selectedResidente.sexoDes}}</p>
                         <p class="text-muted"><i class="mdi mdi-office-building"></i>{{selectedResidente.cent_Nombre}}</p>
 
-                        <a href="javascript: void(0);" class="btn btn-xs btn-info me-1" (click)="openHistorial()">Ver Historial</a>
+                        <a href="javascript: void(0);" class="btn btn-xs btn-info me-1" (click)="openHistorial(selectedResidente.expe_Id || 0)">Ver Historial</a>
                     </div>
                 </div>
 

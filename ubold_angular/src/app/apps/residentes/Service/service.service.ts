@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Residente, AgendaDetalle } from '../../Models';
+import { Residente, AgendaDetalle,
+         HistorialExpediente } from '../../Models';
 import { environment } from 'src/environments/environment';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +47,13 @@ export class ServiceService {
 
   getIdentidadEncargadoExiste(identidad: string) {
     return this.http.get<any>(`${this.variableGlobal}Encargados/IdentidadExiste?enca_Identidad=${identidad}`);
+  }
+
+  FindExpediente(id: number) {
+    const request1 = this.http.get<Residente>(`${this.variableGlobal}Residentes/Find?id=${id}`);
+    const request2 = this.http.get<HistorialExpediente[]>(`${this.variableGlobal}Expedientes/ListadoHistorial?id=${id}`);
+
+    return forkJoin([request1, request2]);
   }
 
   //   editEnfermedades(editEnfermedad: Enfermedad){

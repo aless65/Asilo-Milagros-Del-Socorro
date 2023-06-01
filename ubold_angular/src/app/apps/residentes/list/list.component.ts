@@ -68,9 +68,27 @@ export class ListComponent implements OnInit {
     this.route.navigate(['apps/residentes/create']);
   }
 
-  openHistorial(): void{
-    this.route.navigate(['apps/residentes/historial']);
+  openHistorial(id: number): void {
+    this.service.FindExpediente(id).subscribe(([expediente, historialExpediente]) => {
+      console.log('Expediente: ', expediente);
+      console.log('Historial: ', historialExpediente);
+  
+      // Assign the obtained data to variables
+      // For example:
+      const expedienteData = expediente;
+      const historialData = historialExpediente;
+  
+      // Pass the data as parameters in the navigation function using 'state'
+      this.route.navigate(['apps/residentes/historial'], {
+        state: {
+          expedienteData: expedienteData,
+          historialData: historialData
+        }
+      });
+    });
   }
+  
+  
   /**
    * fetch contact list
    */

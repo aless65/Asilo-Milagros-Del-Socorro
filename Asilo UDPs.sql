@@ -2194,6 +2194,7 @@ AS
 	res.[agen_Id], ag.agen_Nombre,[resi_UsuCreacion], usu1.usua_NombreUsuario usuCrea, [resi_FechaCreacion], 
 	[resi_UsuModificacion], usu2.usua_NombreUsuario usuModif, [resi_FechaModificacion],
 	[resi_Estado],
+	expe_Id,
 	expe.expe_Fotografia, expe_FechaApertura
 	FROM [asil].[tbResidentes] res INNER JOIN gral.tbEstadosCiviles esci
 	ON esci.estacivi_Id = res.estacivi_Id LEFT JOIN asil.tbDietas dit

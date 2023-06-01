@@ -42,6 +42,7 @@ namespace Asilo.Entities.Entities
         public string usuModif { get; set; }
         public DateTime? resi_FechaModificacion { get; set; }
         public bool resi_Estado { get; set; }
+        public int expe_Id { get; set; }
         public string expe_Fotografia { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string? resi_Enfermedades { get; set; }
