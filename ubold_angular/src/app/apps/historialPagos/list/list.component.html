@@ -31,8 +31,7 @@
                         <div class="text-lg-end my-1 my-lg-0">
                             <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
                                     class="mdi mdi-cog"></i></button>
-                            <a [routerLink]="['../products-edit']" class="btn btn-danger waves-effect waves-light"><i
-                                    class="mdi mdi-plus-circle me-1"></i> Add New</a>
+                        
                         </div>
                     </div><!-- end col-->
                 </div> <!-- end row -->
@@ -49,10 +48,8 @@
         <div class="card product-box custom-card">
             <div class="card-body">
                 <div class="product-action">
-                    <a href="javascript:void(0);" class="btn btn-success btn-xs waves-effect waves-light me-1"><i
-                            class="mdi mdi-pencil"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-xs waves-effect waves-light"><i
-                            class="mdi mdi-close"></i></a>
+                    <a  class="btn btn-success btn-xs waves-effect waves-light me-1"><i class="bi bi-check-circle-fill"></i></a>
+                    <a  class="btn btn-danger btn-xs waves-effect waves-light me-1"><i class="bi bi-exclamation-circle-fill"></i> Pendiente</a>
                 </div>
         
                 <div class="bg-light">
@@ -74,17 +71,13 @@
                 </div> <!-- end product info -->
             </div>
         </div> <!-- end card -->
-        
-
-
     </div> <!-- end col-->
-
 </div>
 <!-- end row-->
 
 <div class="row">
     <div class="col-12">
-        <ngb-pagination [collectionSize]="products.length" class="pagination-rounded d-flex justify-content-end mb-2"
+        <ngb-pagination [collectionSize]="residentes.length" class="pagination-rounded d-flex justify-content-end mb-2"
             [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
 
     </div> <!-- end col-->

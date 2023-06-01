@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http'
 import { Encargado } from '../encargados/Model';
 import { environment } from 'src/environments/environment'; //importar la variable global
 import { Residente } from './Model';
-
+import { HistorialPago } from './Model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class ServiceServiceH {
 
   constructor(private http:HttpClient) { }
 
-  getHistorial(){
-    return this.http.get<Encargado[]>(`${this.variableGlobal}HistorialPagos/Listado`); 
+  getHistorial(resi_Id: number){
+    return this.http.get<HistorialPago[]>(`${this.variableGlobal}HistorialPagos/Find?id=${resi_Id}`); 
   }
   
   getResidentes(){

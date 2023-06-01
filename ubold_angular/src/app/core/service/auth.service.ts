@@ -19,20 +19,10 @@ export class AuthenticationService {
     constructor (private http: HttpClient) {
     }
 
-    /**
-     * Returns the current user
-     */
-   /*public currentUser(): User | null {
-        if (!this.user) {
-            this.user = JSON.parse(sessionStorage.getItem('currentUser')!);
-        }
-        return this.user;
-    }*/
-
 
    public currentUser(): Usuario | null {
         if (!this.user) {
-            this.user = JSON.parse(sessionStorage.getItem('currentUser')!);
+            this.user = JSON.parse(localStorage.getItem('currentUser')!);
         }
         return this.user;
     }
@@ -51,7 +41,7 @@ export class AuthenticationService {
                     if (user && user.token) {
                         this.user = user;
                         // store user details and jwt in session
-                        sessionStorage.setItem('currentUser', JSON.stringify(user));
+                        localStorage.setItem('currentUser', JSON.stringify(user));
                     }
                     return user;
                 }));
@@ -68,19 +58,11 @@ export class AuthenticationService {
         LoginPrueba(username?: string, contra?: string) {
             return this.http.get<Usuario[]>(`${this.variableGlobal}Usuario/Login?usuario=${username}&contrasena=${contra}`)
           
-            .pipe(map(user => {
-                // login successful if there's a jwt token in the response
-               
-                    // store user details and jwt in session
-                    sessionStorage.setItem('currentUser', JSON.stringify(user));
+            .pipe(map(user => {           
+                localStorage.setItem('currentUser', JSON.stringify(user));
             
                     return user;
             }));
-           /*  .subscribe(data => {
-
-                console.log(data); // Log the response data
-              });*/
-
 
           }
 
@@ -104,7 +86,7 @@ export class AuthenticationService {
      */
     logout(): void {
         // remove user from session storage to log user out
-        sessionStorage.removeItem('currentUser');
+        localStorage.removeItem('currentUser');
         this.user = null;
     }
 }

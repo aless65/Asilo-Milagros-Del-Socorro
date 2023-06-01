@@ -1,32 +1,75 @@
 <!-- page title -->
-<app-page-title [breadcrumbItems]="pageTitle" title="Timeline"></app-page-title>
+<app-page-title [breadcrumbItems]="pageTitle" title=""></app-page-title>
+
 
 <div class="row">
     <div class="col-12">
-        <div class="timeline">
-            <ng-container *ngFor="let timeline of timelineData;let i=index">
-                <article class="timeline-item">
-                    <h2 class="m-0 d-none">&nbsp;</h2>
-                    <div class="time-show" [class.mt-0]="i===0">
-                        <a href="javascript:void(0)" class="btn btn-primary width-lg">{{timeline.day}}</a>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3 text-center">Pagos</h5>
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <form class="d-flex flex-wrap align-items-center">
+                            <label for="inputPassword2" class="visually-hidden">Buscar</label>
+                            <div class="me-3">
+                                <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2" name="search"
+                                    placeholder="Search..." [(ngModel)]="searchTerm"   (ngModelChange)="searchData2($event)"  >
+                            </div>
+                            <!--
+                            <label for="status-select" class="me-2">Sort By</label>
+                            <div class="me-sm-3">
+                                <select class="form-select my-1 my-lg-0" id="status-select">
+                                    <option selected="">All</option>
+                                    <option value="1">Popular</option>
+                                    <option value="2">Price Low</option>
+                                    <option value="3">Price High</option>
+                                    <option value="4">Sold Out</option>
+                                </select>
+                            </div> -->
+                        </form>
                     </div>
-                </article>
-
-                <article class="timeline-item" *ngFor="let post of timeline.posts!"
-                    [class.timeline-item-left]="post.id%2!=0">
-                    <div class="timeline-desk">
-                        <div class="timeline-box">
-                            <span [class]="post.id%2!=0 ? 'arrow-alt' : 'arrow'"></span>
-                            <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
-                            <h4 class="mt-0 font-16">{{post.postedOn}}</h4>
-                            <p class="text-muted"><small>{{post.time}}</small></p>
-                            <div [innerHtml]="getRenderedPostContent(post.content!)"></div>
+                    <div class="col-auto">
+                        <div class="text-lg-end my-1 my-lg-0">
+                           
+                            <a [routerLink]="['../list']" class="btn btn-outline-secondary waves-effect waves-light mb-2"> Volver</a>
                         </div>
-                    </div>
-                </article>
-            </ng-container>
-        </div>
-        <!-- end timeline -->
-    </div> <!-- end col -->
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
 </div>
-<!-- end row -->
+<!-- end row-->
+
+<div class="row">
+    <div class="col-12">
+      <div class="timeline">
+        <ng-container>
+          <article class="timeline-item">
+            <h2 class="m-0 d-none">&nbsp;</h2>
+            <div class="time-show">
+              <a href="javascript:void(0)" class="btn btn-primary width-lg">2023</a>
+            </div>
+          </article>
+  
+          <article class="timeline-item" *ngFor="let time of timelineData; let i = index" [ngClass]="i % 2 === 0 ? 'timeline-item-right' : 'timeline-item-left'">
+            <div class="timeline-desk">
+              <div class="timeline-box text-center"> <!-- Agrega la clase text-center -->
+                <span [class]="time?.pago_Id !== undefined && time?.pago_Id! % 2 !== 0 ? 'arrow-alt' : 'arrow'"></span>
+                <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                <h4 class="mt-0 font-16">Fecha: {{time?.dia}} de {{time?.mesNombre}}</h4>
+                <p class="text-muted"><small>Pago con: {{time?.meto_Nombre}}</small></p>
+                <p class="text-muted"><small>Id del pago: {{time?.pago_Id}}</small></p>
+                <div><p>__________________________________________________________________</p></div>
+                <!-- Renderizar contenido HTML seguro -->
+              </div>
+            </div>
+          </article>
+          
+        </ng-container>
+      </div>
+      <!-- end timeline -->
+    </div>
+    <!-- end col -->
+  </div>
+  

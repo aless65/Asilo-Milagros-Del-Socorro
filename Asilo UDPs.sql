@@ -3858,16 +3858,17 @@ END
 GO
 
 /*FIND HISTORIAL PAGOS*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialPagos_Find 
-	@pago_Id	INT
+CREATE OR ALTER   PROCEDURE [asil].[UDP_asil_tbHistorialPagos_Find] 
+	@resi_Id	INT
 AS
 BEGIN
 	SELECT * FROM asil.VW_tbHistorialPagos
 	WHERE pago_Estado = 1
-	AND  pago_Id = @pago_Id
+	AND  resi_Id = @resi_Id
 END
 GO
 
+--[asil].[UDP_asil_tbHistorialPagos_Find] 1
 
 
 /*INSERTAR HISTORIAL PAGOS*/ 
@@ -4502,3 +4503,5 @@ END
 GO
 
 asil.UDP_ListarResiPagan
+
+
