@@ -27,11 +27,17 @@ GO
 --***********CREACION TABLA PANTALLAS*****************---
 CREATE TABLE acce.tbPantallas(
 	pant_Id					INT IDENTITY,
-	pant_Nombre				NVARCHAR(100) NOT NULL,
-	pant_Url				NVARCHAR(300) NOT NULL,
-	pant_Menu				NVARCHAR(300) NOT NULL,
-	pant_Icon				NVARCHAR(80) NOT NULL,
-	pant_UsuCreacion		INT NOT NULL,
+	pant_key                NVARCHAR(100),
+	pant_Nombre				NVARCHAR(100),
+	pant_Url				NVARCHAR(300),
+	pant_Menu				NVARCHAR(300),
+	pant_Icon				NVARCHAR(80),
+	pant_isTitle            Bit,
+	collapsed               bit,
+    badgeVariant            NVARCHAR(255),
+    badgeText               NVARCHAR(255),
+    parentKey               NVARCHAR(255),
+	pant_UsuCreacion		INT,
 	pant_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_pant_FechaCreacion DEFAULT(GETDATE()),
 	pant_UsuModificacion	INT,
 	pant_FechaModificacion	DATETIME,
@@ -40,18 +46,27 @@ CREATE TABLE acce.tbPantallas(
 );
 GO
 
-INSERT INTO acce.tbPantallas(pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
-VALUES ('usuarios', '/acceso/usuarios', 'acceso', 'ic_user', 1),
-       ('roles', '/acceso/roles', 'acceso', 'ic_kanban', 1),
-       ('enfermedades', '/asilo/enfermedades', 'asilo', 'ic_user', 1),
-	   ('centros', '/asilo/centros', 'asilo', 'ic_user', 1),
-	   ('cargos', '/asilo/cargos', 'asilo', 'ic_calendar', 1),
-	   ('habitaciones', '/asilo/habitaciones', 'asilo', 'ic_banking', 1),
-	   ('empleados', '/asilo/empleados', 'asilo', 'ic_booking', 1),
-	   ('proveedores', '/asilo/proveedores', 'asilo', 'ic_ecommerce', 1),
-	   ('residentes', '/asilo/residentes','asilo', 'ic_blog', 1)
-	   
+INSERT INTO acce.tbPantallas(pant_key,pant_Nombre,pant_isTitle, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
+VALUES ('apps-enfermedades', 'Enfermedades', 0,'/apps/enfermedades/list','Asilo','activity', 1),
+       ('apps-usuarios', 'Usuarios', 0,'/apps/usuarios/list','Acceso','user', 1),
+	    ('apps-roles', 'Roles', 0,'/apps/roles/list','Acceso','user', 1),
+		('apps-centros', 'Centros', 0,'/apps/centros/list','Asilo','trello', 1),
+		('apps-cargos', 'Cargos', 0,'/apps/cargos/list','Asilo','aperture', 1),
+		('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
+		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','activity', 1),
+		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','activity', 1),
+		('apps-historialPagos', 'Historial de Pagos', 0,'/apps/histoarialPagos/list','Asilo','activity', 1),
+		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','book', 1),
+		('apps-residentes', 'Residentes', 0,'/apps/residentes/list','Asilo','users', 1)
 GO
+
+INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+
+VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
+
+INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
+
 
 
 
@@ -1134,3 +1149,15 @@ VALUES('100',1,1,1),
 	  ('100',1,4,1),
 	  ('101',3,2,1),
 	  ('101',1,4,1)
+
+
+  INSERT INTO [acce].[tbPantallasPorRoles](role_Id,pant_Id,pantrole_UsuCreacion)
+  VALUES(1,2,1),
+        (1,4,1),
+		(1,5,1),
+		(2,6,1),
+		(1,7,1),
+		(1,8,1),
+		(2,9,1),
+		(2,10,1),
+		(2,11,1)

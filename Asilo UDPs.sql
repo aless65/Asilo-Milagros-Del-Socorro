@@ -40,7 +40,7 @@ END
 GO
 
 /*Insertar Usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_Insert
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_Insert 
 	@usua_NombreUsuario NVARCHAR(150),
 	@usua_Contrasena NVARCHAR(MAX),
 	@usua_EsAdmin BIT,
@@ -3468,7 +3468,7 @@ GO
 
 
 /*ELIMINAR HABITACIONES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 7
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 
 	 @habi_Id	INT
 AS
 BEGIN

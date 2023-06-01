@@ -30,6 +30,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/enfermedades/list',
     },
     {
+        key: 'apps-medicamentos',
+        label: 'Medicamentos',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/medicamentos/list',
+    },
+    {
         key: 'apps-usuarios',
         label: 'Usuarios',
         isTitle: false,

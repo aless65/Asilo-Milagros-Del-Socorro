@@ -313,7 +313,7 @@ import { Select2Data } from 'ng-select2-component';
         width: 82,
         formatter: this.habitacionActionFormatter.bind(this),
       }]
-  }
+  } 
 
   /**
  *  handles operations that need to be performed after loading table
