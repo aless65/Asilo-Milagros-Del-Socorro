@@ -47,25 +47,31 @@ CREATE TABLE acce.tbPantallas(
 GO
 
 INSERT INTO acce.tbPantallas(pant_key,pant_Nombre,pant_isTitle, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
-VALUES ('apps-enfermedades', 'Enfermedades', 0,'/apps/enfermedades/list','Asilo','activity', 1),
-       ('apps-usuarios', 'Usuarios', 0,'/apps/usuarios/list','Acceso','user', 1),
-	    ('apps-roles', 'Roles', 0,'/apps/roles/list','Acceso','user', 1),
+VALUES	('inicio', 'Inicio', 1,NULL,NULL,NULL, 1),
+        ('ds-dashboard-1', 'Dashboard', 0,'/dashboard-1','Inicio','home', 1),
+		('acceso', 'Acceso', 1,NULL,NULL,NULL, 1),
+        ('apps-usuarios', 'Usuarios', 0,'/apps/usuarios/list','Acceso','user', 1),
+	    ('apps-roles', 'Roles', 0,'/apps/roles/list','Acceso','airplay', 1),
+		('asilo', 'Asilo', 1,NULL,NULL,NULL, 1),
+		('apps-residentes', 'Residentes', 0,'/apps/residentes/list','Asilo','users', 1),
+		('apps-agendas', 'Agendas', 0,'/apps/agendas/list','Asilo','calendar', 1),
+		('apps-historialPagos', 'Historial de Pagos', 0,'/apps/histoarialPagos/list','Asilo','credit-card', 1),
+		('apps-enfermedades', 'Enfermedades', 0,'/apps/enfermedades/list','Asilo','activity', 1),
+		('apps-medicamentos', 'Medicamentos', 0,'/apps/medicamentos/list','Asilo','package', 1),
 		('apps-centros', 'Centros', 0,'/apps/centros/list','Asilo','trello', 1),
-		('apps-cargos', 'Cargos', 0,'/apps/cargos/list','Asilo','aperture', 1),
+		('apps-cargos', 'Cargos', 0,'/apps/cargos/list','Asilo','shield', 1),
 		('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
-		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','activity', 1),
-		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','activity', 1),
-		('apps-historialPagos', 'Historial de Pagos', 0,'/apps/histoarialPagos/list','Asilo','activity', 1),
-		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','book', 1),
-		('apps-residentes', 'Residentes', 0,'/apps/residentes/list','Asilo','users', 1)
+		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','users', 1),
+		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','user-check', 1),
+		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1)
 GO
 
-INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
 
-VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
+--VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
 
-INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
-VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+--VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
 
 
 

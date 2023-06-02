@@ -4,7 +4,6 @@ import { EventService } from '../core/service/event.service';
 import { LAYOUT_DETACHED, LAYOUT_HORIZONTAL, LAYOUT_TWO_COLUMN_MENU, LAYOUT_VERTICAL, LAYOUT_WIDTH_BOXED, LEFT_SIDEBAR_TYPE_CONDENSED, LEFT_SIDEBAR_TYPE_DEFAULT } from './shared/config/layout.model';
 import { getLayoutConfig } from './shared/helper/utils';
 import { LayoutConfig } from './shared/models/layout-config.model';
-import { ServiceService } from '../layout/Service/service.service'; // Importa el servicio MenuService
 import { MenuItem } from '../layout/shared/models/menu.model';
 
 @Component({
@@ -25,7 +24,7 @@ export class LayoutContainerComponent implements OnInit, AfterViewInit {
 
   constructor(
     private eventService: EventService,
-    private menuService: ServiceService // Inyecta el servicio MenuService
+    
   ) {}
 
   ngOnInit(): void {
