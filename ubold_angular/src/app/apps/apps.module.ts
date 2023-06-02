@@ -6,6 +6,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
+
 // import { ToastModule } from 'primeng/toast';
 // import {NgToastModule} from 'ng-angular-popup';
 
@@ -13,7 +14,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 @NgModule({
   declarations: [
 
-          
+         
   ],
   imports: [
     CommonModule,

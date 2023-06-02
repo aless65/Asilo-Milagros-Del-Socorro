@@ -29,7 +29,8 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.pageTitle = [{ label: 'Ecommerce', path: '/' }, { label: 'Products', path: '/', active: true }];
+    this.pageTitle = [{ label: 'Historial de Pagos', path: '/' }, { label: 'Residentes', path: '/', active: true }];
+    
     this._fetchData();
 
     this.cargarResidente();

@@ -24,6 +24,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   columns: Column[] = [];
   newEmppleado!: FormGroup;
   returnUrl: string = '/';
+  details: string = '/';
+
   selectedEmpleado!: Empleados;
 
   @ViewChild('advancedTable') advancedTable: any;
@@ -53,6 +55,7 @@ import { ActivatedRoute, Router } from '@angular/router';
       });
 
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/empleados/editar';
+      this.details = this.route.snapshot.queryParams['returnUrl'] || '/apps/empleados/details';
 
     }
 
@@ -144,8 +147,6 @@ import { ActivatedRoute, Router } from '@angular/router';
         }
       });
     });
-
-
     document.querySelectorAll('.delete').forEach((e) => {
       e.addEventListener("click", () => {  
         const selectedId = Number(e.id);
@@ -158,26 +159,39 @@ import { ActivatedRoute, Router } from '@angular/router';
         }
       });
     })
+
+    document.querySelectorAll('.details').forEach((e) => {
+      e.addEventListener("click", () => {
+        const empleadoId = e.getAttribute('id');
+        this.Details(Number(empleadoId));
+      });
+    });
   }
   
-
-  // action 
+  // action de los botones iconos
   empleadoActionFormatter(empleado: Empleados): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `<a class="edit action-icon empleado" id="${empleado.empe_Id}" role="button">
         <i class="mdi mdi-square-edit-outline"></i>
       </a>
-      <a href="javascript:void(0);" class="delete action-icon" id="${empleado.empe_Id}"> <i class="mdi mdi-delete"></i></a>`
+      <a href="javascript:void(0);" class="delete action-icon" id="${empleado.empe_Id}"> <i class="mdi mdi-delete"></i></a>
+
+      <a class="details action-icon details" id="${empleado.empe_Id}"> <i class="bi bi-list-task"></i> </a>
+      `
     );
   }
-  
 
-  Editar(empleado: Empleados) {
-    console.log("si llegaaa");
-       localStorage.setItem("id", empleado.empe_Id!.toString());
-       this.router.navigate([this.returnUrl]); 
-   }
+  //funcion para ir a la pagina editar y mandar el parametro o algo asi
+  Details(empleadoId: number): void {
+    this.router.navigate([this.details], { queryParams: { id: empleadoId } });
+  }
 
+
+    Editar(empleado: Empleados) {
+      console.log("si llegaaa");
+         localStorage.setItem("id", empleado.empe_Id!.toString());
+         this.router.navigate([this.returnUrl]); 
+     }
 
     /**
   * Match table data with search input

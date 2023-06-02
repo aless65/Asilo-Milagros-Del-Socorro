@@ -87,3 +87,29 @@ export const TIMELINEDATA: TimelineItem[] = [
         }]
     }
 ];
+
+
+
+
+
+
+/*export const TIMELINEDATA2: Pagos[] = [
+    {
+        id: 1,
+        day: '2023',
+        posts: [{
+            pago_Id: ,
+            pago_Fecha: '',
+            meto_Nombre: '',
+            content: `<p class="mb-0">Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? </p>`,
+        }]
+    },
+    {
+        id: 2,
+        day: '2022',
+        posts: [{}]
+    }
+
+
+   
+];*/

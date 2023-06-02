@@ -1,5 +1,5 @@
 
-    <div class="row justify-content login-card">
+    <div class="row justify-content-center login-card">
         <div class="col-md-10 col-lg-8 col-xl-4 ">
             <div class="row mt-3">
                 <div class="col-12 text-center">
@@ -23,7 +23,7 @@
                             </a>
 
                         </div>
-                        <p class="text-muted mb-4 mt-3" i18n>Ingrese su usuario y contraseña para poder ingresar</p>
+                        <p class="text-muted mb-4 mt-3 texto-azul" i18n style="color: rgb(255, 255, 255);">Ingrese su usuario y contraseña para poder ingresar</p>
                     </div>
 
                     <form name="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -32,7 +32,8 @@
                         <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
 
                         <div class="mb-3">
-                            <label for="emailaddress" class="form-label" i18n>Usuario:</label>
+                            <label for="emailaddress" class="form-label texto-azul" i18n>Usuario:</label>
+
                             <input class="form-control" type="email" id="emailaddress" i18n-placeholder
                                 placeholder="usuario" formControlName="email"
                                 [ngClass]="{'is-invalid': formSubmitted && formValues.email.invalid}" required>
@@ -47,7 +48,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label" i18n>contraseña:</label>
+                            <label for="password" class="form-label  texto-azul" i18n>contraseña:</label>
                             <div class="input-group input-group-merge">
                                 <input [type]="showPassword? 'text' : 'password'" id="password" class="form-control"
                                     i18n-placeholder placeholder="contraseña" formControlName="password"
@@ -61,9 +62,7 @@
                                     <div *ngIf="formValues.password.errors?.required" i18n>
                                        La contraseña es requerida.
                                     </div>
-                                    <div *ngIf="formValues.password.errors?.minlength" i18n>
-                                        Password length must be greater than 3.
-                                    </div>
+                                    
 
                                 </div>
                             </div>
@@ -72,7 +71,7 @@
                         <div class="mb-3">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
-                                <label class="form-check-label" for="checkbox-signin" i18n>Remember me</label>
+                                <label class="form-check-label texto-azul" for="checkbox-signin" i18n>Recordar</label>
                             </div>
                         </div>
 

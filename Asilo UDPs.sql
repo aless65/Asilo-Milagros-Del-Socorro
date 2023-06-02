@@ -1819,7 +1819,7 @@ AS
 	[empe_Sexo], CASE WHEN empe_Sexo= 'F' THEN 'Femenino'
 				ELSE 'Masculino'
 			END AS SexoDes,emp.[estacivi_Id],est.estacivi_Nombre, [empe_Nacimiento],
-	emp.[muni_Id],muni.muni_Nombre, depa.depa_Id, depa.depa_Nombre [empe_Direccion],
+	emp.[muni_Id],muni.muni_Nombre, depa.depa_Id, depa.depa_Nombre, [empe_Direccion],
 	[empe_Telefono], [empe_Correo], emp.[carg_Id], carg.carg_Nombre, emp.[cent_Id], cent.cent_Nombre,
 	[empe_UsuCreacion], usu1.usua_NombreUsuario usuarioCrea, [empe_FechaCreacion], [empe_UsuModificacion],
 	usu2.usua_NombreUsuario usuarioModif, [empe_FechaModificacion], [empe_Estado]
@@ -3873,6 +3873,8 @@ BEGIN
 END
 GO
 
+
+
 --************DONACIONES******************--
 
 /*Vista donaciones*/
@@ -4090,16 +4092,17 @@ END
 GO
 
 /*FIND HISTORIAL PAGOS*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialPagos_Find 
-	@pago_Id	INT
+CREATE OR ALTER   PROCEDURE [asil].[UDP_asil_tbHistorialPagos_Find] 
+	@resi_Id	INT
 AS
 BEGIN
 	SELECT * FROM asil.VW_tbHistorialPagos
 	WHERE pago_Estado = 1
-	AND  pago_Id = @pago_Id
+	AND  resi_Id = @resi_Id
 END
 GO
 
+--[asil].[UDP_asil_tbHistorialPagos_Find] 1
 
 
 /*INSERTAR HISTORIAL PAGOS*/ 
@@ -4656,10 +4659,86 @@ BEGIN
 					SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque est� siendo usado'
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
 	END CATCH
 END
 GO
+
+
+CREATE OR ALTER   PROCEDURE [acce].[UDP_Login]
+	@usua_NombreUsuario Nvarchar(100),
+	@usua_Contrasena Nvarchar(Max)
+AS
+BEGIN
+
+        BEGIN TRY
+        Declare @Password Nvarchar(max) = (HASHBYTES('SHA2_512',@usua_Contrasena))
+        SELECT [usua_NombreUsuario],[usua_Contrasena] 
+		FROM    [acce].[tbUsuarios]    
+		WHERE   [usua_Contrasena] = @Password 
+        AND     [usua_NombreUsuario] = @usua_NombreUsuario
+
+        SELECT 1 as Proceso
+
+        END TRY
+        BEGIN CATCH
+
+        SELECT 0 as Proceso
+        END CATCH
+
+END
+GO
+
+
+--[acce].[UDP_Login] 'df','sd'
+
+--VISTAS PARA EL HISTORIAL DE PAGO
+
+--CREATE OR ALTER   VIEW [asil].[VW_tbExpedientes2]
+--AS
+--	SELECT t1.expe_Id,
+--		   t1.resi_Id,
+--		   (t5.[resi_Nombres] + ' ' + t5.[resi_Apellidos]) AS resi_NombreCompleto,
+--		   t5.resi_Estado,
+--		   t1.tiposang_Id,
+--		   t6.tiposang_Nombre,
+--		   t1.expe_FechaApertura,
+--		   t1.expe_Fotografia,
+--		   t1.expe_UsuCreacion, 
+--		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+--		   t1.expe_FechaCreacion, 
+--	       t1.expe_UsuModificacion,
+--		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+--		   t1.expe_FechaModificacion,
+--		   t1.expe_Estado
+--		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
+--		   ON t1.expe_UsuCreacion = T2.usua_Id
+--		   LEFT JOIN acce.tbUsuarios t3
+--		   ON t1.expe_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbResidentes t5
+--		   ON t1.resi_Id = t5.resi_Id LEFT JOIN asil.tbTiposSangre t6
+--		   ON t1.tiposang_Id = t6.tiposang_Id
+--GO
+
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_ListarResiPagan
+AS
+BEGIN
+BEGIN TRY
+    SELECT * FROM [asil].[VW_tbExpedientes]
+    WHERE [resi_Id] IN (SELECT [resi_Id] FROM [asil].[tbHistorialPagos])
+
+    SELECT 1
+END TRY
+
+BEGIN CATCH
+    SELECT 0
+END CATCH
+END
+GO
+
+
+

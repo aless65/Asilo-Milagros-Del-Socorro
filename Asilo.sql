@@ -708,14 +708,34 @@ CREATE TABLE asil.tbHabitacionesXResidente
 );
 GO
 
+--****************************************************************************************************************************************************
+
 --********TABLA DONACIONES****************---
+
+CREATE TABLE asil.tbCategoriaDonaciones(
+	cado_Id					INT IDENTITY PRIMARY KEY,
+	cado_NombreCategoria	NVARCHAR(200) NOT NULL
+);
+
+GO
+
+CREATE TABLE asil.tbDonacionesComunes(
+	doco_Id						INT IDENTITY PRIMARY KEY,
+	doco_Nombre					NVARCHAR(300) NOT NULL,
+	cado_Id						INT NOT NULL,
+	CONSTRAINT FK_asil_tbDonacionesComunes_cado_Id_CategoriasDonaciones							FOREIGN KEY(cado_Id) 					REFERENCES asil.tbCategoriaDonaciones(cado_Id),
+);
+
+GO
+
+
 CREATE TABLE asil.tbDonaciones
 (
 	dona_Id						INT IDENTITY,
-	dona_NombreDonante			NVARCHAR(400) NOT NULL,
-	dona_Cantidad				DECIMAL(18, 2) NOT NULL,
 	dona_Fecha					DATE NOT NULL,
-	
+	dona_QueEs					CHAR(1),
+	dona_NombreDonante			NVARCHAR(400) NOT NULL,
+
 	dona_UsuCreacion			INT NOT NULL,
 	dona_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_dona_FechaCreacion DEFAULT(GETDATE()),
 	dona_UsuModificacion		INT,
@@ -723,9 +743,22 @@ CREATE TABLE asil.tbDonaciones
 	dona_Estado					BIT NOT NULL CONSTRAINT DF_dona_Estado DEFAULT(1)
 	CONSTRAINT PK_asil_tbDonaciones_dona_Id													PRIMARY KEY(dona_Id),
 	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_dona_UsuCreacion_usua_Id  				FOREIGN KEY(dona_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_dona_UsuModificacion_usua_Id  			FOREIGN KEY(dona_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id)
+	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_dona_UsuModificacion_usua_Id  			FOREIGN KEY(dona_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+
 );
 GO
+
+CREATE TABLE asil.tbDonacionesDetalles(
+	deto_Id						INT IDENTITY PRIMARY KEY,
+	dona_Id						INT NOT NULL,
+	doco_Id						INT,
+	deto_Cantidad				DECIMAL(18, 2) NOT NULL,
+	deto_Descripcion			NVARCHAR(MAX),
+	CONSTRAINT FK_asil_tbDonacionesDetalles_doco_Id_tbDonacionesComunes								FOREIGN KEY(doco_Id) 					REFERENCES asil.tbDonacionesComunes(doco_Id),
+	CONSTRAINT FK_asil_tbDonacionesDetalles_dona_Id_tbDonaciones									FOREIGN KEY(dona_Id) 					REFERENCES asil.tbDonaciones(dona_Id),
+
+);
+
 
 --********TABLA DONACIONES X CENTRO****************---
 CREATE TABLE asil.tbDonacionesXCentro
@@ -744,6 +777,8 @@ CREATE TABLE asil.tbDonacionesXCentro
 	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_donacent_UsuModificacion_usua_Id  			FOREIGN KEY(donacent_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id)
 );
 GO
+
+--****************************************************************************************************************************************************
 
 --********TABLA MUERTOS****************---
 CREATE TABLE asil.tbMuertos
