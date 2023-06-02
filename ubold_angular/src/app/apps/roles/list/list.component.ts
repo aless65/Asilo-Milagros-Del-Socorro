@@ -59,27 +59,30 @@ export class ListComponent implements OnInit {
     this.service.getPantallas().subscribe((response: any) => {
       let esquemaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-
       response.data.forEach((item: any) => {
-        const esqueNombre: string = item.pant_Menu;
-        const pantaId: string = item.pant_Id;
-        const pantaNombre: string = item.pant_Nombre;
-
-        if (!esquemaLabels.includes(esqueNombre)) {
-          esquemaLabels.push(esqueNombre);
-          options[esqueNombre] = [];
+        if(item.pant_Menu != null){
+          const esqueNombre: string = item.pant_Menu;
+          const pantaId: string = item.pant_Id;
+          const pantaNombre: string = item.pant_Nombre;
+  
+          if (!esquemaLabels.includes(esqueNombre)) {
+            esquemaLabels.push(esqueNombre);
+            options[esqueNombre] = [];
+          }
+  
+          options[esqueNombre].push({
+            value: pantaId,
+            label: pantaNombre
+          });
         }
-
-        options[esqueNombre].push({
-          value: pantaId,
-          label: pantaNombre
-        });
-      });
+        }
+      );
 
       this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
         label: esqueNombre,
         options: options[esqueNombre]
       }));
+      console.log(this.pantalla);
     });
 
 

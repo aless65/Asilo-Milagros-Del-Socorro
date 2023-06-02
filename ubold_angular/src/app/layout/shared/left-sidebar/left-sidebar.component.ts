@@ -7,7 +7,7 @@ import { MENU_ITEMS } from '../config/menu-meta';
 import { MenuItem } from '../models/menu.model';
 import { findAllParent, findMenuItem } from '../helper/utils';
 import feather from "feather-icons";
-
+import { ServiceService } from 'src/app/layout/Service/service.service';
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
@@ -25,13 +25,16 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
 
   loggedInUser: any = {};
 
+  // aaaa = MENU_ITEMS;
+  aaaaa: MenuItem[] = [];
 
   menuItems: MenuItem[] = [];
 
   constructor (
     router: Router,
     private authService: AuthenticationService,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private menuService: ServiceService) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenu(); //actiavtes menu
@@ -43,8 +46,41 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    this.aaaaa = MENU_ITEMS;
+    console.log(this.aaaaa);
     this.initMenu();
     this.loggedInUser = this.authService.currentUser();
+    let isAdmin: boolean = false;
+    let roleId: number = 2;
+
+    this.menuService.getMenuItems(isAdmin, roleId).subscribe(
+      (response: any) => {
+        console.log(response.data);
+        const apiData = response.data;
+        const MENU_ITEMS: MenuItem[] = [];
+
+        for (const key in apiData) {
+          const menuItemData = apiData[key];
+          const menuItem: MenuItem = {
+            key: menuItemData.pant_key,
+            label: menuItemData.pant_Nombre,
+            isTitle: !menuItemData.pant_Menu,
+            icon: menuItemData.pant_Icon,
+            link: menuItemData.pant_Url,
+          };
+          MENU_ITEMS.push(menuItem);
+        }
+
+        this.menuItems = MENU_ITEMS;
+        console.log(MENU_ITEMS);
+
+      },
+      (error: any) => {
+        console.error('Error al obtener los elementos del menú:', error);
+      }
+
+    );
 
     this.eventService.subscribe('toggleTwoToneIcons', (enable) => {
       this.hasTwoToneIcons = enable;
@@ -80,7 +116,8 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
    * initialize menuitems
    */
   initMenu(): void {
-    this.menuItems = MENU_ITEMS;
+    this.menuItems = this.menuItems;
+
   }
 
   /**

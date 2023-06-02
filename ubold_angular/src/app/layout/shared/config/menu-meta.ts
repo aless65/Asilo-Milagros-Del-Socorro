@@ -1,5 +1,7 @@
 import { MenuItem } from '../models/menu.model';
 
+
+
 // menu items for vertcal and detached layout
 const MENU_ITEMS: MenuItem[] = [
     { key: 'inicio', label: 'Inicio', isTitle: true },
