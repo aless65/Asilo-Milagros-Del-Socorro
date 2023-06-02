@@ -72,6 +72,7 @@ export class HistorialComponent implements OnInit {
     };
 
 
+
     generatePdf = async () => {
         const imageDataUrl = await this.getDataUrl(this.expediente.expe_Fotografia || 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg');
         const backgroundDataUrl = await this.getDataUrl('https://i.ibb.co/8YqvgZM/3.png');
@@ -221,5 +222,4 @@ export class HistorialComponent implements OnInit {
     }
 
 }
-
 

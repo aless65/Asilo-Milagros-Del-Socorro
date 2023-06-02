@@ -51,7 +51,7 @@ import Swal from 'sweetalert2';
     this.newCentro = this.formBuilder.group({
       name: ['', Validators.required],
       direccion: ['', Validators.required],
-      muni_Id: new FormControl('', Validators.required),
+      muni_Id: new FormControl(0, Validators.required),
       
     });
    
@@ -321,7 +321,7 @@ import Swal from 'sweetalert2';
         if (this.selectedCentro) {
           this.newCentro = this.formBuilder.group({
             name: [this.selectedCentro.cent_Nombre || '', Validators.required],
-            muni_Id: [this.selectedCentro.muni_Id || '', Validators.required],
+            muni_Id: [this.selectedCentro.muni_Id || 0, Validators.required],
             direccion: [this.selectedCentro.cent_Direccion || '', Validators.required],
           });
           this.openModal("edit");

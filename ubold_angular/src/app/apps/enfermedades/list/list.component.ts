@@ -81,11 +81,11 @@ import Swal from 'sweetalert2';
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
-              timer: 1700,
+              timer: 2000,
               timerProgressBar: true,
               titleText: 'La enfermedad no puede ser eliminada ya que está siendo usada en otro registro',
-              icon: 'error',
-              background: '#fff0f0f5'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -152,8 +152,8 @@ import Swal from 'sweetalert2';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Esta enfermedad ya existe!',
-              icon: 'error',
-              background: '#fff0f0f5'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -195,8 +195,8 @@ import Swal from 'sweetalert2';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Esta enfermedad ya existe!',
-              icon: 'error',
-              background: '#fff0f0f5'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

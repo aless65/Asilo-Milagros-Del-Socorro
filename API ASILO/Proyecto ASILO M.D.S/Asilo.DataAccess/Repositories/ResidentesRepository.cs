@@ -188,7 +188,7 @@ namespace Asilo.DataAccess.Repositories
                     result.MessageStatus = "todo biennnn";
                 }
 
-                if (item.agen_Detalles != null)
+                if (item.agen_Detalles != null && item.agen_Id != 1)
                 {
                     foreach (var detalle in item.agen_Detalles)
                     {

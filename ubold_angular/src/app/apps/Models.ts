@@ -52,7 +52,7 @@ export interface Residente {
     resi_Identidad?: string;
     tiposang_Id?: number;
     tiposang_Nombre?: string;
-    estacivi_Id?: number;
+    estacivi_IdResi?: number;
     resi_Sexo?: string;
     cent_Id?: number;
     cent_Nombre?: string;

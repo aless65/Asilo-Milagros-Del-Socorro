@@ -3595,28 +3595,44 @@ GO
 
 --************HABITACIONES******************--
 
-/*VISTA HABITACIONES*/
-CREATE OR ALTER VIEW asil.VW_tbHabitaciones
+--/*VISTA HABITACIONES*/
+--CREATE OR ALTER VIEW asil.VW_tbHabitaciones
+--AS
+--	SELECT habi_Id,
+--	       habi_Numero,
+--		   t1.cate_Id,
+--		   t4.cate_Nombre,
+--		   t4.cate_Capacidad,
+--		   t1.cent_Id,
+--		   t5.cent_Nombre,
+--		   habi_UsuCreacion,
+--		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+--		   habi_FechaCreacion,
+--		   habi_UsuModificacion,
+--		   habi_FechaModificacion,
+--		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
+--		   habi_Estado
+--		   FROM asil.tbHabitaciones t1 LEFT JOIN acce.tbUsuarios t2
+--		   ON t1.habi_UsuCreacion = T2.usua_Id
+--		   LEFT JOIN acce.tbUsuarios t3
+--		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
+--		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
+--		   ON t1.cent_Id = t5.cent_Id
+--GO
+
+/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
+	@cent_Id	INT
 AS
-	SELECT habi_Id,
-	       habi_Numero,
-		   t1.cate_Id,
-		   t4.cate_Nombre,
-		   t1.cent_Id,
-		   t5.cent_Nombre
-		   habi_UsuCreacion,
-		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   habi_FechaCreacion,
-		   habi_UsuModificacion,
-		   habi_FechaModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
-		   habi_Estado
-		   FROM asil.tbHabitaciones t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.habi_UsuCreacion = T2.usua_Id
-		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
-		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
-		   ON t1.cent_Id = t5.cent_Id
+BEGIN
+
+	SELECT *
+	FROM asil.VW_tbHabitaciones habi
+	WHERE (SELECT COUNT(habiresi_Id)
+		FROM [asil].[tbHabitacionesXResidente]
+		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
+	AND cent_Id = @cent_Id
+END
 GO
 
 /*LISTAR HABITACIONES*/
@@ -4631,7 +4647,8 @@ AS
 	hab.[cate_Id], cate.cate_Nombre,hab.[cent_Id],cent.cent_Nombre,
 	[habi_UsuCreacion],usu1.usua_NombreUsuario usuCrea,[habi_FechaCreacion],
 	[habi_UsuModificacion], usu2.usua_NombreUsuario usuModif,
-	[habi_Estado], [habi_FechaModificacion]
+	[habi_Estado], [habi_FechaModificacion], 
+		   cate.cate_Capacidad
 	FROM [asil].[tbHabitaciones] hab INNER JOIN [asil].[tbCategoriasHabitaciones] cate
 	ON cate.cate_Id = hab.cate_Id INNER JOIN [asil].[tbCentros] cent 
 	ON cent.cent_Id = hab.cent_Id INNER JOIN [acce].[tbUsuarios] usu1

@@ -586,7 +586,7 @@ export class EditComponent implements OnInit {
         Swal.fire({
           toast: true,
           position: 'top-end',
-          title: '¡¡Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,
@@ -599,7 +599,7 @@ export class EditComponent implements OnInit {
         Swal.fire({
           toast: true,
           position: 'top-end',
-          title: '¡Perfecto!',
+          title: 'Perfecto!',
           text: response.message,
           icon: 'success',
           showConfirmButton: false,
