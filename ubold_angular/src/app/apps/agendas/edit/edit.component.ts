@@ -71,6 +71,7 @@ export class EditComponent implements OnInit {
           if (!this.isEditable) {
             agendadetalle.agendeta_Id = this.maxId + 1;
             agendadetalle.agen_Id = this.agendaId;
+            agendadetalle.agendeta_UsuCreacion = 1;
             this.agendadetalle.push(agendadetalle);
           } else {
     
@@ -217,11 +218,15 @@ export class EditComponent implements OnInit {
 
             this.calendarEventsData = modifiedEvents;
         } else {
-            // Find the maximum id value in calendarEventsData
-            this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
-
-            // Set newEvent.id to maxId + 1
-            newEvent.id = String(this.maxId + 1);
+            if(this.calendarEventsData.length === 0){
+                newEvent.id = "1";
+            } else{
+                // Find the maximum id value in calendarEventsData
+                this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+    
+                // Set newEvent.id to maxId + 1
+                newEvent.id = String(this.maxId + 1);
+            }
 
             let nEvent = {
                 id: newEvent.id,
@@ -279,14 +284,14 @@ export class EditComponent implements OnInit {
                 timerProgressBar: true,
                 titleText: '¡La agenda no puede estar vacía!',
                 icon: 'warning',
-                background: '#00ffff'
+                background: '#f6f6baf2'
               }).then(() => {
                 // Acción luego de cerrarse el toast
               });
         } else { 
             console.log(this.agendadetalle, 'agenda detalle');
             console.log(this.originalAgenda, 'original agenda');
-            if(this.agendadetalle === this.originalAgenda){
+            if(JSON.stringify(this.agendadetalle) === JSON.stringify(this.originalAgenda)){
                 Swal.fire({
                     toast: true,
                     position: 'top-end',
@@ -300,36 +305,26 @@ export class EditComponent implements OnInit {
                   });
                   this.router.navigate([this.returnUrl]);
             } else{
-                let canInsert = false;
 
-                this.agendadetalle.forEach(detalle => {
-                    console.log("entra bien");
-                    console.log(detalle);
-
-                    this.service.addAgendaDetalles(detalle).subscribe((response: any) => {
-                        console.log(response);
-                        if(response.code === 200){
-                            canInsert = true;
-                        } else{
-                            canInsert = false;
-                        }
-                    });
+                this.service.addAgendaDetalles(this.agendadetalle).subscribe((response: any) => {
+                    console.log(response);
+                    console.log(this.agendadetalle);
+                    if(response.code === 200){
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            title: '¡Perfecto!',
+                            text: 'La agenda ha sido actualizada',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1850,
+                            timerProgressBar: true
+                          }).then(() => {
+                          });
+                          this.router.navigate([this.returnUrl]);
+                    } else{
+                    }
                 });
-
-                if(canInsert){
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        title: '¡Perfecto!',
-                        text: 'La agenda ha sido actualizadaaaa',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1850,
-                        timerProgressBar: true
-                      }).then(() => {
-                      });
-                      this.router.navigate([this.returnUrl]);
-                }
             }
         }
     }

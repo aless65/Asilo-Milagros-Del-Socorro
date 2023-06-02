@@ -1786,15 +1786,20 @@ CREATE OR ALTER PROCEDURE asil.UPD_tbAgendas_Eliminar
 AS
 BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbAgendas WHERE agen_Id = @agen_Id)
+		UPDATE asil.tbResidentes
+		SET agen_Id = 1
+		WHERE agen_Id = @agen_Id
+
+		IF NOT EXISTS (SELECT * FROM asil.tbResidentes WHERE agen_Id = @agen_Id) 
 			BEGIN
 				UPDATE asil.tbAgendas 
 				SET agen_Estado = 0
 				WHERE agen_Id = @agen_Id
+
 				SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'La agenda no puede ser eliminada porque está siendo usada'
+			SELECT -2
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -2078,14 +2083,11 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_EditOficial
 AS 
 BEGIN
 	BEGIN TRY
-		DELETE FROM [asil].[tbAgendaDetalles]
-		WHERE agen_Id = @agen_Id
-
 		IF NOT EXISTS (SELECT *
 						FROM [asil].[tbAgendaDetalles]
 						WHERE [agen_Id] = @agen_Id
-						AND	[agendeta_HoraStart] = @agendeta_HoraStart
-						AND [agendeta_HoraEnd] = @agendeta_HoraEnd
+						AND LEFT([agendeta_HoraStart], 5) = LEFT(@agendeta_HoraStart, 5)
+						AND LEFT([agendeta_HoraEnd], 5) = LEFT(@agendeta_HoraEnd, 5)
 						AND [acti_Id] = @acti_Id
 						AND [medi_Id] = @medi_Id
 						AND [agendeta_Observaciones] = @agendeta_Observaciones)
@@ -2193,21 +2195,17 @@ GO
 
 
 /*ELIMINAR AGENDA DETALLES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Delete
-	 @agendeta_Id	INT
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Delete 
+	 @agen_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbAgendaDetalles WHERE agendeta_Id = @agendeta_Id AND agendeta_Estado = 1)
-			BEGIN
-		UPDATE asil.tbAgendaDetalles
-		SET agendeta_Estado = 0
-		WHERE agendeta_Id = @agendeta_Id
+	
+		DELETE FROM [asil].[tbAgendaDetalles]
+		WHERE agen_Id = @agen_Id
 
-		SELECT 'El detalle de la agenda ha sido eliminado'
-		END
-		ELSE
-			SELECT 'El detalle de la agenda no puede ser eliminado ya que está siendo usado en otro registro'
+		SELECT 'Se ha eliminado'
+
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'

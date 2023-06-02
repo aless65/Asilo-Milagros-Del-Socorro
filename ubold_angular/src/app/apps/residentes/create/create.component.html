@@ -501,7 +501,6 @@
                                             [class.col-md-12]="form4.diet_Id.value !== '2'"
                                             [(ngModel)]="residente.diet_Id"
                                             [class.col-md-10]="form4.diet_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openDieta($event, residente.diet_Id || 0)"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.diet_Id.invalid, 'is-valid': validationWizard.submitted && form4.diet_Id.valid }">
 
                                         </select2>
@@ -548,7 +547,6 @@
                                             [class.col-md-12]="form4.agen_Id.value !== '2'"
                                             [(ngModel)]="residente.agen_Id"
                                             [class.col-md-10]="form4.agen_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openAgenda($event, residente.agen_Id || 0)"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
 
                                         </select2>

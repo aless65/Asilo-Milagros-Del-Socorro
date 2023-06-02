@@ -15,12 +15,16 @@ export class ServiceService {
   getAgendas(){
     return this.http.get<Agenda[]>(`${this.variableGlobal}Agenda/Listado`); //la usamos aqui
   }
+
+  deleteAgenda(id: number){
+    return this.http.put<any>(`${this.variableGlobal}Agenda/Eliminar?id=${id}`, null); //la usamos aqui
+  }
   
   getAgendaDetalles(id: number){
     return this.http.get<AgendaDetalle[]>(`${this.variableGlobal}Agenda/ListadoDetalles?id=${id}`); //la usamos aqui
   }
   
-  addAgendaDetalles(detalle: AgendaDetalle){
+  addAgendaDetalles(detalle: AgendaDetalle[]){
     return this.http.post<any>(`${this.variableGlobal}Agenda/InsertarDetalles`, detalle); //la usamos aqui
   }
 //   createEmpleado(newEmpleado: Empleados){

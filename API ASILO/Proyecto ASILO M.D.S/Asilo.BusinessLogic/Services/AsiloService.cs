@@ -134,7 +134,7 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult InsertarAgendaDetalles(tbAgendaDetalles item)
+        public ServiceResult InsertarAgendaDetalles(tbAgendaDetalles[] item)
         {
             ServiceResult result = new ServiceResult();
             try
@@ -206,7 +206,7 @@ namespace Asilo.BusinessLogic.Services
                 {
                     return result.SetMessage("Registro eliminado", ServiceResultType.Success);
                 }
-                else if (delete.MessageStatus == "La agenda no puede ser eliminada porque está siendo usada")
+                else if (delete.CodeStatus == -2)
                 {
                     return result.SetMessage("no se pudo", ServiceResultType.Warning);
                 }

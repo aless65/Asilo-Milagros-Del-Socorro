@@ -25,3 +25,20 @@
     </div> <!-- end card-->
 </div>
 <!-- end row -->
+
+<!-- Modal Delete -->
+<ng-template #deleteAgendaModal let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Eliminar agenda</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <p>¿Realmente desea eliminar esta agenda? Al eliminarla, la agenda del residente será cambiada a estándar</p>
+        <br>
+        <div class="text-end">
+            <button type="button" (click)="deleteEnfermedad()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-danger waves-effect waves-light"
+                (click)="modal.close('')">Cancelar</button>
+        </div>
+    </div>
+</ng-template>

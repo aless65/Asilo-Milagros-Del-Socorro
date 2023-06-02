@@ -7,6 +7,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Agenda } from '../../Models';
 import { ServiceService } from '../service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-agendas-list',
@@ -20,11 +21,13 @@ export class ListComponent implements OnInit {
     returnUrl: string = '/';
     columns: Column[] = [];
     pageSizeOptions: number[] = [5, 10, 25, 50];
+    selectedAgenda!: Agenda;
     //   newEmppleado!: FormGroup;
     //   returnUrl: string = '/';
     //   selectedEmpleado!: Empleados;
 
     @ViewChild('advancedTable') advancedTable: any;
+    @ViewChild('deleteAgendaModal', { static: true }) deleteAgendaModal: any;
 
     constructor(
         private sanitizer: DomSanitizer,
@@ -130,18 +133,18 @@ export class ListComponent implements OnInit {
         });
 
 
-        // document.querySelectorAll('.delete').forEach((e) => {
-        //   e.addEventListener("click", () => {  
-        //     const selectedId = Number(e.id);
-        //     this.selectedEmpleado = this.empleados.find(empe => empe.empe_Id === selectedId) || this.selectedEmpleado;
-        //     if (this.selectedEmpleado) {
-        //       this.newEmppleado = this.fb.group({
-        //         name: [this.selectedEmpleado.empe_NombreCompleto || '', Validators.required],
-        //       });
-        //       this.openModalDelete();
-        //     }
-        //   });
-        // })
+        document.querySelectorAll('.delete').forEach((e) => {
+            e.addEventListener("click", () => {
+                const selectedId = Number(e.id);
+                this.selectedAgenda = this.agendas.find(agen => agen.agen_Id === selectedId) || this.selectedAgenda;
+                if (this.selectedAgenda) {
+                    //   this.newAgenda = this.fb.group({
+                    //     name: [this.selectedEmpleado.empe_NombreCompleto || '', Validators.required],
+                    //   });
+                    this.openModalDelete();
+                }
+            });
+        })
     }
 
 
@@ -189,11 +192,48 @@ export class ListComponent implements OnInit {
 
     }
 
-    //   Agregar(){
-    //     this.router.navigate(['crear']);
-    //   }
+    openModalDelete(): void {
+        this.activeModal.open(this.deleteAgendaModal, { centered: true, windowClass: 'delete-modal' });
+    }
 
-
+    deleteEnfermedad(): void {
+        this.service.deleteAgenda(this.selectedAgenda.agen_Id || 0).subscribe(
+            (response: any) => {
+                if(response.code === 200){
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        title: '¡Perfecto!',
+                        text: 'La agenda ha sido eliminada',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1850,
+                        timerProgressBar: true
+                      }).then(() => {
+                      });
+                      this._fetchData();
+                } else if(response.code === 202){
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1700,
+                        timerProgressBar: true,
+                        titleText: '¡La agenda está siendo usada en otros registros!',
+                        icon: 'warning',
+                        background: '#f6f6baf2'
+                      }).then(() => {
+                        // Acción luego de cerrarse el toast
+                      });
+                }
+            },
+            (error) => {
+                console.log("no se pudo:", error);
+            }
+        )
+        this._fetchData();
+        this.activeModal.dismissAll('');
+    }
 
 }
 

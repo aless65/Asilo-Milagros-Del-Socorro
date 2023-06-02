@@ -385,7 +385,9 @@ export class CreateComponent implements OnInit {
         dateClick: this.handleDateClick.bind(this),
         eventClick: this.handleEventClick.bind(this),
         drop: this.onDrop.bind(this),
-        eventDrop: this.onEventDrop.bind(this)
+        eventDrop: this.onEventDrop.bind(this),
+        allDaySlot: false,
+        dayHeaderContent: 'Agenda',
       }
 
     });
@@ -432,9 +434,6 @@ export class CreateComponent implements OnInit {
         console.log(response);
 
         if (response.code === 200) {
-
-          // this.accountForm.get('resi_Identidad')?.reset();
-          // this.residente.resi_Identidad = undefined;
   
           console.log("ps sí existe");
           Swal.fire({
@@ -453,32 +452,6 @@ export class CreateComponent implements OnInit {
           this.activeWizard4 = 2
         }
       });
-
-      // this.residenteList.residentesListado.subscribe((residentesListado: Residente[]) => {
-      //   this.residentesFromList = residentesListado;
-
-      //   console.log(residentesListado);
-
-      //   const matchFound = this.residentesFromList.some(item => item.resi_Identidad === this.residente.resi_Identidad);
-
-      //   if(matchFound){
-      //     Swal.fire({
-      //       toast: true,
-      //       position: 'top-end',
-      //       showConfirmButton: false,
-      //       timer: 1700,
-      //       timerProgressBar: true,
-      //       titleText: '¡Ya existe un residente con este número de identidad!',
-      //       icon: 'warning',
-      //       background: '#f6f6baf2'
-      //     }).then(() => {
-      //       // Acción luego de cerrarse el toast
-      //     });
-
-      //     this.residente.resi_Identidad = '';
-      //     this.form1.resi_Identidad.reset();
-      //   }
-      // })
 
       this.isDatosPersonalesActive = false;
     }
@@ -520,8 +493,6 @@ export class CreateComponent implements OnInit {
       } else {
 
         this.resiService.getIdentidadEncargadoExiste(this.encargado.enca_Identidad || '').subscribe((response: any) => {
-          // this.encargadoForm.get('enca_Identidad')?.reset();
-          // this.encargado.enca_Identidad = '';
 
           if (response.code === 200) {
             Swal.fire({
@@ -575,7 +546,6 @@ export class CreateComponent implements OnInit {
     } else {
       console.log(this.expediente);
       console.log(this.profileForm.valid);
-      // const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
       console.log(this.expediente.expe_Fotografia);
     }
   }
@@ -743,10 +713,6 @@ export class CreateComponent implements OnInit {
           console.log(response.data.url);
           this.residente.expe_Fotografia = response.data.url.toString();
 
-          // if(this.residente.expe_Fotografia === undefined){
-          //   this.residente.expe_FechaApertura = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
-          // }
-
           this.functionInsert();
         },
           (error: any) => {
@@ -902,12 +868,6 @@ export class CreateComponent implements OnInit {
     this.selectedValueDieta = 'papa';
     this.goesBackDieta = true;
   }
-
-  // goBackDieta() {
-  //   this.selectedValueDieta = 'papa';
-  //   this.goesBackDieta = true;
-  //   return this.selectedValueDieta;
-  // }
 
   handleButtonClick(modal: string) {
     if (modal === 'agen_Id') {
