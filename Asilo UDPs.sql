@@ -3658,8 +3658,8 @@ AS
 		   t1.[dona_Fecha],
 		   t1.[dona_QueEs],
 		    CASE WHEN [dona_QueEs] = 'P' THEN 'Particular'
-			 WHEN [dona_QueEs] = 'I' THEN 'Institución'
-			 WHEN [dona_QueEs] = 'O' THEN 'Otros'
+			WHEN [dona_QueEs] = 'I' THEN 'Institución'
+			WHEN [dona_QueEs] = 'O' THEN 'Otros'
 			END AS esDescrip,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   t1.dona_FechaCreacion, 
@@ -3688,28 +3688,110 @@ BEGIN
 END
 GO
 
+
+
+
+
 /*Insertar donaciones*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Insert
 	@dona_NombreDonante		NVARCHAR(400),
-	@dona_Cantidad			DECIMAL(18,2),
 	@dona_Fecha				DATE,
+	@dona_QueEs				CHAR(1),
 	@dona_UsuCreacion		INT
 AS 
 BEGIN
 	
 	BEGIN TRY
 
-		INSERT INTO asil.tbDonaciones(dona_NombreDonante, dona_Cantidad, dona_Fecha, dona_UsuCreacion)
-			VALUES(@dona_NombreDonante,@dona_Cantidad,@dona_Fecha,@dona_UsuCreacion)
+		INSERT INTO asil.tbDonaciones(dona_NombreDonante,dona_QueEs, dona_Fecha, dona_UsuCreacion)
+			VALUES(@dona_NombreDonante,@dona_QueEs,@dona_Fecha,@dona_UsuCreacion)
 
 			SELECT SCOPE_IDENTITY()
 
 	END TRY
 	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
+		SELECT 0
 	END CATCH 
 END
 GO
+
+
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesDetalles
+@dona_Id					INT, 
+@doco_Id					INT, 
+@deto_Cantidad				INT, 
+@deto_Descripcion			NVARCHAR(MAX),
+@deto_CantidadDinero		DECIMAL(18,2)
+AS
+BEGIN
+ BEGIN TRY
+	INSERT INTO [asil].[tbDonacionesDetalles]
+	VALUES(@dona_Id,@doco_Id,@deto_Cantidad,@deto_Descripcion,@deto_CantidadDinero)
+
+	SELECT 1
+ END TRY
+
+ BEGIN CATCH
+ SELECT 0
+ END CATCH
+
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesXCentroInsert
+@dona_Id					INT,
+@cent_Id					INT,
+@donacent_UsuCreacion		INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT*FROM)
+
+END
+GO
+
+
+
+
+/*CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallasPorRoles_Insert 
+	@role_Id               INT, 
+	@pant_Id               INT, 
+	@pantrole_UsuCreacion  INT
+AS
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
+						WHERE pant_Id = @pant_Id AND role_Id = @role_Id)
+			BEGIN
+			INSERT INTO acce.tbPantallasPorRoles(role_Id,pant_Id,pantrole_UsuCreacion)
+			VALUES(@role_Id,@pant_Id,@pantrole_UsuCreacion)
+			
+			SELECT 'Operación realizada con éxito'
+			END
+		ELSE IF EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
+						WHERE pant_Id = @pant_Id AND role_Id = @role_Id
+						AND pantrole_Estado = 0)
+			BEGIN
+				UPDATE [acce].[tbPantallasPorRoles]
+				SET [pantrole_Estado] = 1
+				WHERE pant_Id = @pant_Id AND role_Id = @role_Id
+
+				SELECT 'Operación realizada con éxito'
+			END
+		ELSE
+			SELECT 'La pantalla x rol ya existe'
+	END TRY
+	BEGIN CATCH
+		SELECT 'Ha ocurrido un error'
+	END CATCH
+END
+GO*/
+
+
 
 /*Find donaciones*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Find 
