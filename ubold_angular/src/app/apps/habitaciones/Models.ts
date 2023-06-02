@@ -1,5 +1,5 @@
 
-export interface Habitacion {
+export class Habitacion {
     habi_Id?: number;
     habi_Numero?: number; 
     cate_Id?: number;
@@ -10,7 +10,6 @@ export interface Habitacion {
     usuCrea?: string;
     habi_UsuModificacion?: number;
     usuModif?: string;
-    
 
     [key: string]: number | string | undefined;
 }

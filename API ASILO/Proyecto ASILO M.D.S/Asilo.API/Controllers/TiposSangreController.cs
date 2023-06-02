@@ -21,11 +21,11 @@ namespace Asilo.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Listado")]
-        public IActionResult Index()
-        {
-            var list = _asiloServivce.ListadoTiposSangre();
-            return Ok(list);
-        }
+        //[HttpGet("Listado")]
+        //public IActionResult Index()
+        //{
+        //    var list = _asiloServivce.ListadoTiposSangre();
+        //    return Ok(list);
+        //}
     }
 }

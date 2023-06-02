@@ -9,26 +9,132 @@
                     <div>
                         <!-- <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
                                 class="mdi mdi-cog"></i></button> -->
-                        <button type="button" class="btn btn-danger waves-effect waves-light mb-2"
-                           >Agregar</button>
+                        <button type="button" class="btn btn-pink waves-effect waves-light mb-2"
+                            (click)="openModal('new')">Agregar</button>
                     </div>
                 </div><!-- end col-->
             </div>
             <!-- customer table -->
-        
-            <app-advanced-table
-  [tableData]="usuarios"
-  [columns]="columns"
-  [pagination]="true"
-  [isSearchable]="true"
-  [hasRowSelection]="false"
-  (search)="searchData($event)"
-  [isSortable]="false"
-  tableClasses="table-centered table-nowrap table-hover"
-></app-advanced-table>
+            <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="usuarios"
+                [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                (search)="searchData($event)" [isSortable]="false"
+                tableClasses="table-centered table-nowrap table-hover">
+            </app-advanced-table>
 
         </div> <!-- end card-body-->
     </div> <!-- end card-->
 </div>
 <!-- end row -->
 
+<!-- Modal -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">{{ esEditar ? 'Editar usuario' : 'Agregar usuario' }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        
+        <form [formGroup]="newUsuario" #addUsuarios="ngForm" (ngSubmit)="submitForm()">
+            <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name"  placeholder="Nombre" required formControlName="name"
+                    [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.name.invalid }">
+                <div *ngIf="addUsuarios.submitted && form1.name.invalid" class="valid-feedback">
+                    completo!
+                </div>
+                <div *ngIf="addUsuarios.submitted && form1.name.invalid" class="invalid-feedback">
+                    El nombre es requerido
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <div class="mb-3">
+            <label for="contra" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contra"  placeholder="Contraseña" required formControlName="contra"
+                [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.contra.invalid }">
+            <div *ngIf="addUsuarios.submitted && form1.contra.invalid" class="valid-feedback">
+                completo!
+            </div>
+            <div *ngIf="addUsuarios.submitted && form1.contra.invalid" class="invalid-feedback">
+                La contraseña es requerido
+            </div>
+        </div>
+    </div>
+
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="validationCustom05" class="form-label">Rol:</label>
+                  
+                    <select2 id="rol" placeholder="rol..."  formControlName="rol" name="rol"   [data]="roles" 
+                    [ngClass]="{ 'is-valid': addUsuarios.submitted && form1.rol.valid , 'is-invalid': addUsuarios.submitted && form1.rol.invalid }">
+                    </select2>
+
+                    <div *ngIf="addUsuarios.submitted && form1.rol.invalid" class="valid-feedback">
+                         Completo!
+                    </div>
+
+                    <div *ngIf="addUsuarios.submitted && form1.rol.invalid" class="invalid-feedback">
+                        El rol es requerido.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="validationCustom05" class="form-label">Empleado:</label>
+                  
+                    <select2 id="empleado"  placeholder="empleado..." formControlName="empleado"  [data]="empleados" name="empleado"
+                    [ngClass]="{ 'is-valid': addUsuarios.submitted && form1.empleado.valid , 'is-invalid': addUsuarios.submitted && form1.empleado.invalid }">
+                    </select2>
+
+                    <div *ngIf="addUsuarios.submitted && form1.empleado.invalid" class="valid-feedback">
+                         Completo!
+                    </div>
+
+                    <div *ngIf="addUsuarios.submitted && form1.empleado.invalid" class="invalid-feedback">
+                        El empleado es requerido.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 mt-4"> <!-- Añadido "mt-3" para ajustar el espacio debajo -->
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="adminCheckbox" name="adminCheckbox" formControlName="admin"
+                      [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.admin.invalid }">
+                    <label class="form-check-label" for="adminCheckbox">Es Admin</label>
+                  </div>
+                </div>
+              </div>
+              
+
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
+                <button type="button" class="btn btn-outline-secondary waves-effect waves-light"
+                    (click)="modal.close('')">Cancelar</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Modal Delete -->
+<ng-template #deleteUsuarioModal let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Eliminar Usuario</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <p>¿Realmente desea eliminar este usuario?</p>
+        <div class="text-end">
+            <button type="button" (click)="deleteUsuario()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-danger waves-effect waves-light"
+                (click)="modal.close('')">Cancelar</button>
+        </div>
+    </div>
+</ng-template>

@@ -4,6 +4,8 @@ import { EventService } from '../core/service/event.service';
 import { LAYOUT_DETACHED, LAYOUT_HORIZONTAL, LAYOUT_TWO_COLUMN_MENU, LAYOUT_VERTICAL, LAYOUT_WIDTH_BOXED, LEFT_SIDEBAR_TYPE_CONDENSED, LEFT_SIDEBAR_TYPE_DEFAULT } from './shared/config/layout.model';
 import { getLayoutConfig } from './shared/helper/utils';
 import { LayoutConfig } from './shared/models/layout-config.model';
+import { ServiceService } from '../layout/Service/service.service'; // Importa el servicio MenuService
+import { MenuItem } from '../layout/shared/models/menu.model';
 
 @Component({
   selector: 'app-layout-container',
@@ -18,12 +20,33 @@ export class LayoutContainerComponent implements OnInit, AfterViewInit {
   layoutConfig!: LayoutConfig;
   layoutWidth!: string;
   configuredDemo: string = "default";
+  menuItems: MenuItem[] = []; // Array para almacenar los elementos del menú
 
-  constructor (private eventService: EventService) { }
+
+  constructor(
+    private eventService: EventService,
+    private menuService: ServiceService // Inyecta el servicio MenuService
+  ) {}
 
   ngOnInit(): void {
     // default settings
     this.configuredDemo = environment.demo;
+
+  /*   let isAdmin: boolean = false; // Asigna un valor por defecto a isAdmin
+  let roleId: number = 2;
+
+  // Lógica para determinar si el usuario es administrador y obtener el ID del rol del usuario
+  // Asigna los valores correspondientes a las variables isAdmin y roleId
+
+   // Llama al método getMenuItems del servicio MenuService para obtener los elementos del menú
+   this.menuService.getMenuItems(isAdmin, roleId).subscribe(
+    (menuItems: MenuItem[]) => {
+      this.menuItems = menuItems;
+    },
+    (error: any) => {
+      console.error('Error al obtener los elementos del menú:', error);
+    }
+  );*/
 
     // tslint:disable-next-line: max-line-length
     this.layoutType = this.configuredDemo === 'creative' ? LAYOUT_HORIZONTAL : (this.configuredDemo === 'modern' ? LAYOUT_DETACHED : (this.configuredDemo === 'saas' ? LAYOUT_TWO_COLUMN_MENU : LAYOUT_VERTICAL));
@@ -52,6 +75,8 @@ export class LayoutContainerComponent implements OnInit, AfterViewInit {
       }, 20);
     });
 
+
+    
 
     this.updateDimensions();
 

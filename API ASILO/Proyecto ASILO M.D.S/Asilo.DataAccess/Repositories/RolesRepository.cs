@@ -12,7 +12,7 @@ namespace Asilo.DataAccess.Repositories
 {
     public class RolesRepository : IRepository<tbRoles, VW_tbRoles>
     {
-        public RequestStatus Delete(tbRoles item)
+        public RequestStatus Delete(int id)
         {
             RequestStatus result = new RequestStatus();
 
@@ -20,14 +20,14 @@ namespace Asilo.DataAccess.Repositories
 
             var parametros = new DynamicParameters();
 
-            parametros.Add("role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("role_Id", id, DbType.Int32, ParameterDirection.Input);
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Elimina_Roles, parametros, commandType: CommandType.StoredProcedure);
 
             if (result.MessageStatus == "El rol ha sido eliminado")
             {
                 var parametrosDelete = new DynamicParameters();
-                parametrosDelete.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
+                parametrosDelete.Add("@role_Id",id, DbType.Int32, ParameterDirection.Input);
 
                 db.Query(ScriptsDataBase.UDP_Elimina_RolesXPantalla, parametrosDelete, commandType: CommandType.StoredProcedure);
             }
@@ -35,10 +35,7 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-        public RequestStatus Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public VW_tbRoles Find(int? id)
         {
