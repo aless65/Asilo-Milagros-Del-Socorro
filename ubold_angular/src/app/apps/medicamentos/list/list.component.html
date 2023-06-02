@@ -40,7 +40,7 @@
                 <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name"  placeholder="Nombre" required formControlName="name"
-                    [ngClass]="{ 'is-invalid': addMedicamento.submitted && form1.name.invalid }">
+                    [ngClass]="{ 'is-invalid': addMedicamento.submitted && form1.name.invalid }" >
                 <div *ngIf="addMedicamento.submitted && form1.name.invalid" class="valid-feedback">
                     completo!
                 </div>
@@ -54,7 +54,7 @@
                 <div class="mb-3">
                     <label for="validationCustom05" class="form-label">Proveedor:</label>
                   
-                    <select2 id="Proveedor" placeholder="Proveedor..."  formControlName="Proveedor" name="Proveedor"  [minCountForSearch]="0" [data]="proveedores" 
+                    <select2 id="Proveedor" placeholder="Proveedor..." formControlName="Proveedor" name="Proveedor"  [minCountForSearch]="0" [data]="proveedores" 
                     [ngClass]="{ 'is-valid': addMedicamento.submitted && form1.Proveedor.valid , 'is-invalid': addMedicamento.submitted && form1.Proveedor.invalid }">
                     </select2>
 

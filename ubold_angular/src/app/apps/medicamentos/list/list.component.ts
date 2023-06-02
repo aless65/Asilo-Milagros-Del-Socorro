@@ -55,6 +55,7 @@ import { Select2Data } from 'ng-select2-component';
       Centro: new FormControl('', Validators.required),
     });
     
+    
     this.service.getProveedor().subscribe((response: any) => {
       let optionsProveedores = response.data.map((item: any) => ({
         value: item.prov_Id,
@@ -173,6 +174,8 @@ import { Select2Data } from 'ng-select2-component';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          //console.log(medicamento,"centrossss")
+          //console.log(this.newMedicamento.value.Centro,"centro")
           if(response.message == "YaExiste"){
             Swal.fire({
               toast: true,
@@ -331,12 +334,15 @@ import { Select2Data } from 'ng-select2-component';
       e.addEventListener("click", () => {   
         const selectedId = Number(e.id);
         this.selectedMedicamento = this.medicamentos.find(medicamento => medicamento.medi_Id === selectedId) || this.selectedMedicamento;
+        console.log(this.selectedMedicamento.prov_Id,"hola")
         if (this.selectedMedicamento) {
           this.newMedicamento = this.fb.group({
             name: [this.selectedMedicamento.medi_Nombre || '', Validators.required],
-            Proveedor: [this.selectedMedicamento.prove_Id || '', Validators.required],
+            Proveedor: [this.selectedMedicamento.prov_Id || '', Validators.required],
             Centro: [this.selectedMedicamento.cent_Id || '', Validators.required],
           });
+          console.log(this.selectedMedicamento.prov_Id,this.newMedicamento.value.Proveedor)
+          console.log(this.selectedMedicamento.cent_Id,this.newMedicamento.value.Centro, "aquiiii")
           this.openModal("edit");
         }
       });

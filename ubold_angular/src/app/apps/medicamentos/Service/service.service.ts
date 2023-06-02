@@ -30,7 +30,7 @@ export class ServiceService {
 
   
   getProveedor(){
-    return this.http.get<Proveedor[]>(`${this.variableGlobal}Proveedores/Listado/Listado`);
+    return this.http.get<Proveedor[]>(`${this.variableGlobal}Proveedores/Listado`);
   }
   
   getCentros(){
