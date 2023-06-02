@@ -1810,6 +1810,7 @@ GO
 
 
 
+
 --************EMPLEADOS******************--
 
 /*VISTA EMPLEADOS*/
@@ -1844,6 +1845,21 @@ BEGIN
 	SELECT *
 	FROM asil.VW_tbEmpleados
 	WHERE  [empe_Estado] = 1
+END
+GO
+
+
+/*LISTAR CUIDADORES DISPONIBLES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo 
+	@cent_Id	INT
+AS
+BEGIN
+	SELECT *
+	FROM asil.VW_tbEmpleados
+	WHERE [empe_Estado] = 1
+    AND carg_Id = 2
+    AND empe_Id NOT IN (SELECT empe_Id FROM asil.tbResidentes WHERE resi_Estado = 1 AND empe_Id IS NOT NULL)
+	AND cent_Id = @cent_Id
 END
 GO
 
@@ -1984,28 +2000,20 @@ GO
 
 /* ELIMINAR EMPLEADO*/
 
-CREATE OR ALTER PROCEDURE asil.UPD_tbEmpleados_Eliminar
+CREATE OR ALTER   PROCEDURE [asil].[UPD_tbEmpleados_Eliminar]
 	@empe_Id	INT
 AS
 BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE empe_Id = @empe_Id)
-			BEGIN
+	BEGIN TRY		
 				UPDATE asil.tbEmpleados 
 				SET empe_Estado = 0
-				WHERE empe_Id = @empe_Id
-
-				SELECT 1 AS proceso
-			END
-		ELSE
-			SELECT 'El registro del empleado no se puede eliminar porque estï¿½ siendo usado'
+				WHERE empe_Id = @empe_Id			
 	END TRY
 	BEGIN CATCH
 		SELECT 0
 	END CATCH
 END
 GO
-
 --************/EMPLEADOS******************--
 
 --************AGENDA DETALLES******************--
@@ -2777,12 +2785,14 @@ BEGIN
 END
 GO
 
+
 --************ENCARGADOS******************--
 
 /*VISTA ENCARGADOS*/
 CREATE OR ALTER VIEW asil.VW_tbEncargados
 AS
 	SELECT enca_Id,
+		  enca_Nombres+' '+enca_Apellidos nombreCompleto,
 	       enca_Nombres,
 		   enca_Apellidos,
 		   enca_Identidad,
@@ -2792,7 +2802,8 @@ AS
 		   
 		   CASE WHEN  enca_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
-		   END AS  enca_Sexo,
+		   END AS  enca_SexoDesc,
+		   t1.enca_Sexo,
 		   t1.muni_Id,
 		   t7.muni_Nombre,
 		   enca_Direccion,
@@ -2901,7 +2912,7 @@ BEGIN
 				SELECT 'El encargado ha sido insertado exitosamente'
 			END
 		ELSE
-			SELECT 'Ya existe un encargado con este nï¿½mero de identidad'
+			SELECT 'Ya existe un encargado con este número de identidad'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2956,7 +2967,7 @@ BEGIN
 							  AND enca_Estado = 1
 							  AND enca_Id     != @enca_Id)
 
-			SELECT 'Ya existe un encargado con este nï¿½mero de identidad'
+			SELECT 'Ya existe un encargado con este número de identidad'
 		ELSE
 			UPDATE  asil.tbEncargados
 			SET     enca_Estado	           = 1,
@@ -3969,17 +3980,17 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesXCentroInsert
-@dona_Id					INT,
-@cent_Id					INT,
-@donacent_UsuCreacion		INT
-AS
-BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT*FROM)
+--CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesXCentroInsert
+--@dona_Id					INT,
+--@cent_Id					INT,
+--@donacent_UsuCreacion		INT
+--AS
+--BEGIN
+--	BEGIN TRY
+--		IF NOT EXISTS (SELECT*FROM)
 
-END
-GO
+--END
+--GO
 
 
 
@@ -4032,30 +4043,30 @@ GO
 
 
 /*Editar donaciones*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Update
-	@dona_Id					INT,
-	@dona_NombreDonante			NVARCHAR(300),
-	@dona_Cantidad				DECIMAL(18,2),
-	@dona_Fecha					DATE,
-	@dona_UsuModificacion		INT
-AS
-BEGIN
-	BEGIN TRY
-		UPDATE asil.tbDonaciones
-			SET 	dona_NombreDonante = @dona_NombreDonante,
-					dona_Cantidad = @dona_Cantidad,
-					dona_Fecha = @dona_Fecha,
-					dona_UsuModificacion = @dona_UsuModificacion,
-					[dona_FechaModificacion] = GETDATE()
-			WHERE 	dona_Id = @dona_Id
+--CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Update
+--	@dona_Id					INT,
+--	@dona_NombreDonante			NVARCHAR(300),
+--	@dona_Cantidad				DECIMAL(18,2),
+--	@dona_Fecha					DATE,
+--	@dona_UsuModificacion		INT
+--AS
+--BEGIN
+--	BEGIN TRY
+--		UPDATE asil.tbDonaciones
+--			SET 	dona_NombreDonante = @dona_NombreDonante,
+--					dona_Cantidad = @dona_Cantidad,
+--					dona_Fecha = @dona_Fecha,
+--					dona_UsuModificacion = @dona_UsuModificacion,
+--					[dona_FechaModificacion] = GETDATE()
+--			WHERE 	dona_Id = @dona_Id
 
-			SELECT 'La donaciï¿½n ha sido editada exitosamente'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
-END
-GO
+--			SELECT 'La donaciï¿½n ha sido editada exitosamente'
+--	END TRY
+--	BEGIN CATCH
+--		SELECT 'Ha ocurrido un error'
+--	END CATCH
+--END
+--GO
 
 
 /*Eliminar donaciones*/
