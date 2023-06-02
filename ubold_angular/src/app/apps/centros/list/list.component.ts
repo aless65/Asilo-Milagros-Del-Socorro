@@ -7,6 +7,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Centro } from '../Models';
 import { Select2Data } from 'ng-select2-component';
 import { ServiceService } from 'src/app/apps/centros/Service/service.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-centros-list',
@@ -114,6 +115,20 @@ import { ServiceService } from 'src/app/apps/centros/Service/service.service';
         (response: any) => {
           console.log("si si si:", response);
           this._fetchData();
+       if(response.message == "El registro no puede ser eliminado porque está siendo usado"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'El registro no puede ser eliminado porque está siendo usado',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("error noo:", error);
@@ -126,6 +141,18 @@ import { ServiceService } from 'src/app/apps/centros/Service/service.service';
   submitForm(): void {
     if(this.newCentro.invalid){
       console.log("pipi");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
      
       return;
     }
@@ -145,6 +172,46 @@ import { ServiceService } from 'src/app/apps/centros/Service/service.service';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if(response.message == "YaExiste"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Ya existe un encargado con esa identidad!',
+              icon: 'error',
+              background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+          else if(response.message == "ErrorInespero"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Ha ocurrido en error inesperado!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+          else if(response.message == "Exitoso"){
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -160,6 +227,33 @@ import { ServiceService } from 'src/app/apps/centros/Service/service.service';
           console.log("se pudo:", response);
           console.log("se pudo:", centro);
           this._fetchData();
+          if (response.message == "El centro ha sido insertado con éxito") {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          } else if (response.message == "El centro ya existe") {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El centro ya existe!',
+              icon: 'error',
+              background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -264,8 +358,8 @@ import { ServiceService } from 'src/app/apps/centros/Service/service.service';
   // action cell formatter
   centroActionFormatter(centro: Centro): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"  ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${centro.cent_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
 

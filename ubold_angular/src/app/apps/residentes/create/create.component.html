@@ -40,7 +40,7 @@
                                         <label class="col-form-label" for="resi_Identidad">
                                             Identidad</label>
                                         <input type="text" id="resi_Identidad" name="resi_Identidad"
-                                            class="form-control" formControlName="resi_Identidad"
+                                            class="form-control" value="123456789" formControlName="resi_Identidad"
                                             [(ngModel)]="residente.resi_Identidad"
                                             [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid , 'is-valid': accountWizard.submitted && form1.resi_Identidad.valid }">
 
@@ -98,7 +98,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0"
+                                            [(ngModel)]="residente.estacivi_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
                                         </select2>
 
@@ -278,7 +278,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_IdEnca"
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_Id"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.estacivi_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.estacivi_Id.valid && !allValuesUndefinedOrNull}">
                                         </select2>
 
@@ -480,7 +480,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = 0"
+                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>
@@ -492,7 +492,7 @@
                                         <div *ngIf="validationWizard.submitted && form4.cent_Id.invalid"
                                             class="invalid-feedback">
                                             Centro requerido.
-                                        </div>  
+                                        </div>
                                     </div>
 
                                     <div class="row mb-3">

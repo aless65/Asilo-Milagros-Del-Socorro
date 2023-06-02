@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -7,7 +8,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Rol } from '../../Models';
 import { ServiceService } from 'src/app/apps/roles/Service/service.service';
 import { Select2Data } from 'ng-select2-component';
-
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-roles-list',
@@ -24,7 +25,8 @@ import { Select2Data } from 'ng-select2-component';
   newRol!: FormGroup;
   pantalla: Select2Data = [];
   selectedPantallas: any[] = [];
-  
+  selectedRoleId: number | undefined = 0;
+
   
   @ViewChild('pant_Id', { static: true }) pant_Id: any;
   @ViewChild('advancedTable') advancedTable: any;
@@ -41,8 +43,11 @@ import { Select2Data } from 'ng-select2-component';
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Roles', path: '/', active: true }];
-
+   
     this._fetchData();
+    if (this.esEditar) {
+      this.fetchData();
+    } 
     // initialize advance table 
     this.initAdvancedTableData();
 
@@ -54,8 +59,6 @@ import { Select2Data } from 'ng-select2-component';
     this.service.getPantallas().subscribe((response: any) => {
       let esquemaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-    
-
 
       response.data.forEach((item: any) => {
         const esqueNombre: string = item.pant_Menu;
@@ -66,7 +69,7 @@ import { Select2Data } from 'ng-select2-component';
           esquemaLabels.push(esqueNombre);
           options[esqueNombre] = [];
         }
-    
+  
         options[esqueNombre].push({
           value: pantaId,
           label: pantaNombre
@@ -77,19 +80,16 @@ import { Select2Data } from 'ng-select2-component';
         label: esqueNombre,
         options: options[esqueNombre]
       }));
-    });
+    }); 
 
-    /*this.service.getRolx(this.pant_Id).subscribe((response: any) => {
-      let esquemaLabels: string[] = [];
-      let options: { [key: string]: any[] } = {};})*/
+    
 
     this.selectedPantallas = this.newRol.value.pant_Id;
+
+    
   }
-
-
   // convenience getter for easy access to form fields
   get form1() { return this.newRol.controls; }
-
   /**
  * opens modal
  * @param title title of modal 
@@ -102,6 +102,7 @@ import { Select2Data } from 'ng-select2-component';
       this.esEditar = false;
     } else{
       this.esEditar = true;
+     
     }
 
     this.activeModal.open(this.content, { centered: true });
@@ -112,13 +113,29 @@ import { Select2Data } from 'ng-select2-component';
   }  
 
   deleteRol(): void{
+    console.log(this.selectedRol.role_Id, "llegas o no");
     this.service.deleteRoles(this.selectedRol.role_Id || 0).subscribe(
+     
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if(response.message == "El rol no puede ser eliminado ya que está siendo usado"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'El rol no puede ser eliminado ya que está siendo usado',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
-          console.log("no se pudo:", error);
+          console.log("no se pudo:",error );
         }
       )
     this._fetchData();
@@ -126,30 +143,66 @@ import { Select2Data } from 'ng-select2-component';
   }
 
   submitForm(): void {
-    if(this.newRol.invalid){
-     
-      console.log(this.pant_Id);
+    if (this.newRol.invalid) {
+      console.log(this.newRol.controls.pant_Id);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
       return;
     }
-    console.log(this.pant_Id);
-    
-    //console.log(this.selectedPantallas);
+  
     const rol: Rol = {
       role_Id: this.selectedRol?.role_Id || 0,
       role_Nombre: this.newRol.value.name,
-      role_Pantallas: this.pant_Id,
+      role_Pantallas: this.newRol.value.pant_Id,
       role_UsuCreacion: 1,
       role_UsuModificacion: 1,
     };
-
+  
     console.log(rol);
-
     if(this.esEditar){
 
       this.service.editRoles(rol).subscribe(
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          this.fetchData(); 
+          if (response.message == "El rol ha sido editado con éxito") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "El rol ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El rol ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -164,6 +217,32 @@ import { Select2Data } from 'ng-select2-component';
           console.log("se pudo:", response);
          // console.log(rol);
           this._fetchData();
+          if (response.message == "El rol ha sido insertado con éxito") {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+          }
+          else if(response.message == "El rol ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El rol ya existe!',
+              icon: 'error',
+              background: '#f47171f0'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
          // console.log(rol);
@@ -178,18 +257,79 @@ import { Select2Data } from 'ng-select2-component';
 
  
   _fetchData(): void {
-    this.service.getRoles()
-  .subscribe((response: any)=>{
-    this.roles = response.data;
-    console.log(this.roles);
-  });
+    this.service.getRoles().subscribe((response: any) => {
+      this.roles = response.data;
+      console.log(this.roles);
+    });
   }
+
+
+
+  fetchData(): void {
+    if (this.selectedRol.role_Id) {
+      this.service.getRolx(this.selectedRol.role_Id).subscribe((response: any) => {
+        const pantIds: number[] = response.data.map((item: any) => item.pant_Id); // Extraer los valores de pant_Id
+  
+       // = response.data.map((item: any) => item.pant_Id); 
+        this.selectedPantallas = pantIds;
+  
+        console.log(this.selectedPantallas, "en funcion"); // Verificar que se hayan asignado correctamente los valores
+  
+        // Llenar el dropdown múltiple con los datos obtenidos
+        this.fillDropdown();
+  
+        // Actualizar los valores seleccionados en el dropdown múltiple
+        this.setSelectedPantallas();
+      });
+    }
+  }
+  
+  
+  fillDropdown(): void {
+    this.service.getPantallas().subscribe((response: any) => {
+      let esquemaLabels: string[] = [];
+      let options: { [key: string]: any[] } = {};
+  
+      response.data.forEach((item: any) => {
+        const esqueNombre: string = item.pant_Menu;
+        const pantaId: string = item.pant_Id;
+        const pantaNombre: string = item.pant_Nombre;
+  
+        if (!esquemaLabels.includes(esqueNombre)) {
+          esquemaLabels.push(esqueNombre);
+          options[esqueNombre] = [];
+        }
+  
+        options[esqueNombre].push({
+          value: pantaId,
+          label: pantaNombre,
+          selected: this.selectedPantallas.includes(pantaId) // Establecer la propiedad selected según si está en selectedPantallas
+        });
+      });
+  
+      this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+        label: esqueNombre,
+        options: options[esqueNombre]
+      }));
+  
+      // Establecer los valores seleccionados en el dropdown múltiple
+      this.setSelectedPantallas();
+    });
+  }
+  
+  setSelectedPantallas(): void {
+    if (this.selectedPantallas) {
+      this.newRol.get('pant_Id')?.patchValue([...this.selectedPantallas]);
+    }
+  }
+  
+
 
   /**
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log(this.roles);
+    console.log(this.roles );
     this.columns = [
      
       {
@@ -217,21 +357,54 @@ import { Select2Data } from 'ng-select2-component';
       e.addEventListener("click", () => {   
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
+        this.fetchData();
         if (this.selectedRol) {
-          console.log(this.selectedRol.role_Pantallas)
-          this.newRol = this.fb.group({
-            name: [this.selectedRol.role_Nombre || '', Validators.required],
-            pant_Id: [this.pant_Id || '']
+          this.selectedRoleId = this.selectedRol.role_Id;
+    
+          this.service.getPantallas().subscribe((response: any) => {
+            let esquemaLabels: string[] = [];
+            let options: { [key: string]: any[] } = {};
+    
+            response.data.forEach((item: any) => {
+              const esqueNombre: string = item.pant_Menu;
+              const pantaId: string = item.pant_Id;
+              const pantaNombre: string = item.pant_Nombre;
+    
+              if (!esquemaLabels.includes(esqueNombre)) {
+                esquemaLabels.push(esqueNombre);
+                options[esqueNombre] = [];
+              }
+    
+              options[esqueNombre].push({
+                value: pantaId,
+                label: pantaNombre
+              });
+            });
+    
+            this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+              label: esqueNombre,
+              options: options[esqueNombre]
+            }));
+    
+            this.newRol = this.fb.group({
+              name: [this.selectedRol.role_Nombre || '', Validators.required],
+              pant_Id: [[this.selectedPantallas]] // Set default values here
+            });
+    
+            this.openModal("edit");
           });
-          this.openModal("edit");
         }
+        
       });
     });
+    
+  
     
     document.querySelectorAll('.delete').forEach((e) => {
       e.addEventListener("click", () => {  
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
+        console.log(this.selectedRol);
         if (this.selectedRol) {
           this.newRol = this.fb.group({
             name: [this.selectedRol.role_Nombre || '', Validators.required],
@@ -289,4 +462,3 @@ matches(row: Rol, term: string) {
   }
 
 }
-

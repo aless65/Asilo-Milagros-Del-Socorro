@@ -6,6 +6,25 @@ export interface EstadoCivil {
     [key: string]: number | string | undefined ;
 }
 
+
+export interface Usuario {
+    usua_Id?: number;
+    usua_NombreUsuario?: string; 
+    usua_Contrasena?: string;
+    usua_EsAdmin?: string;
+    role_Id?: number;
+    role_Nombre?: string;
+    empe_NombreCompleto?: string;
+    empe_Id?:number;
+    usua_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    usua_UsuModificacion?: number;
+    cent_Id?: number;
+    usua_UsuModificacion_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
 export interface Cargos{
     carg_Id?: number;
     carg_Nombre?: string;
@@ -17,6 +36,15 @@ export interface Cargos{
     carg_FechaModificacion?: string;
 }
 
+export interface Categoria{
+    cate_Id?: number;
+    cate_Nombre?: string;
+    cate_Capacidad?: number;
+    cate_Climatizacion?: string;
+    cate_UsuCreacion?: number;
+    cate_UsuModificacion?:number;
+}
+
 export interface Residente {
     resi_Id?: number;
     resi_Nombres?: string;
@@ -24,7 +52,7 @@ export interface Residente {
     resi_Identidad?: string;
     tiposang_Id?: number;
     tiposang_Nombre?: string;
-    estacivi_IdResi?: number;
+    estacivi_Id?: number;
     resi_Sexo?: string;
     cent_Id?: number;
     cent_Nombre?: string;
@@ -55,7 +83,7 @@ export interface Encargado {
     enca_Nombres?: string;
     enca_Apellidos?: string;
     enca_Identidad?: string;
-    estacivi_IdResi?: number;
+    estacivi_Id?: number;
     enca_Nacimiento?: string;
     enca_Sexo?: string;
     muni_Id?: number;
@@ -258,15 +286,16 @@ export interface Medicamento {
 
 export interface Habitacion {
     habi_Id?: number;
-    habi_Numero?: number;
+    habi_Numero?: number; 
     cate_Id?: number;
+    cate_Nombre?: string;
+    cent_Id?: number;
+    cent_Nombre?: string;
     habi_UsuCreacion?: number;
-    usua_UsuCreacion_Nombre?: string;
-    habi_FechaCreacion?: string;
+    usuCrea?: string;
     habi_UsuModificacion?: number;
-    usua_UsuModificacion_Nombre?: string;
-    habi_FechaModificacion?: string;
-
+    usuModif?: string;
+    
     [key: string]: number | string | undefined;
 }
 

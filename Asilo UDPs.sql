@@ -40,7 +40,7 @@ END
 GO
 
 /*Insertar Usuarios*/
-CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_Insert
+CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_Insert 
 	@usua_NombreUsuario NVARCHAR(150),
 	@usua_Contrasena NVARCHAR(MAX),
 	@usua_EsAdmin BIT,
@@ -116,7 +116,7 @@ BEGIN
 			usua_FechaModificacion = GETDATE()
 		WHERE usua_Id = @usua_Id
 
-		SELECT 'El usuario ha sido editado con éxito'
+		SELECT 'El usuario ha sido editado con ï¿½xito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -276,7 +276,7 @@ GO
 --				SELECT 'El rol ha sido eliminado'
 --			END
 --		ELSE
---			SELECT 'El rol no puede ser eliminado ya que está siendo usado en otro registro'
+--			SELECT 'El rol no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 --	END TRY
 --	BEGIN CATCH
 --		SELECT 'Ha ocurrido un error'
@@ -378,7 +378,7 @@ BEGIN
 			INSERT INTO [acce].[tbPantallas](pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
 			VALUES(@pant_Nombre, @pant_Url, @pant_Menu, @pant_Icon, @pant_UsuCreacion)
 			
-			SELECT 'La pantalla ha sido insertada con éxito'
+			SELECT 'La pantalla ha sido insertada con ï¿½xito'
 			END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
 						WHERE [pant_Nombre] = @pant_Nombre AND
@@ -388,7 +388,7 @@ BEGIN
 				SET [pant_Estado] = 1
 				WHERE  [pant_Nombre] = @pant_Nombre
 
-				SELECT 'La pantalla ha sido insertada con éxito'
+				SELECT 'La pantalla ha sido insertada con ï¿½xito'
 			END
 		ELSE
 			SELECT 'La pantalla ya existe'
@@ -422,7 +422,7 @@ BEGIN
 					[pant_UsuModificacion]= @pant_UsuModificacion,
 					[pant_FechaModificacion] = GETDATE()
 			WHERE 	[pant_Id] = @pant_Id
-			SELECT 'La pantalla ha sido editada con éxito'
+			SELECT 'La pantalla ha sido editada con ï¿½xito'
 		END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
 						WHERE @pant_Nombre = [pant_Nombre]
@@ -439,7 +439,7 @@ BEGIN
 				[pant_FechaModificacion] = GETDATE()
 			WHERE  [pant_Nombre] = @pant_Nombre
 
-			SELECT 'La pantalla ha sido editada con éxito'
+			SELECT 'La pantalla ha sido editada con ï¿½xito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -463,7 +463,7 @@ BEGIN
 				SELECT 'La pantalla ha sido eliminada'
 			END
 		ELSE
-			SELECT 'La pantalla no puede ser eliminada ya que está siendo usada'
+			SELECT 'La pantalla no puede ser eliminada ya que estï¿½ siendo usada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -538,7 +538,7 @@ BEGIN
 			INSERT INTO acce.tbPantallasPorRoles(role_Id,pant_Id,pantrole_UsuCreacion)
 			VALUES(@role_Id,@pant_Id,@pantrole_UsuCreacion)
 			
-			SELECT 'Operación realizada con éxito'
+			SELECT 'Operaciï¿½n realizada con ï¿½xito'
 			END
 		ELSE IF EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
 						WHERE pant_Id = @pant_Id AND role_Id = @role_Id
@@ -548,7 +548,7 @@ BEGIN
 				SET [pantrole_Estado] = 1
 				WHERE pant_Id = @pant_Id AND role_Id = @role_Id
 
-				SELECT 'Operación realizada con éxito'
+				SELECT 'Operaciï¿½n realizada con ï¿½xito'
 			END
 		ELSE
 			SELECT 'La pantalla x rol ya existe'
@@ -633,7 +633,7 @@ BEGIN
 			INSERT INTO [acce].[tbRoles](role_Nombre, role_UsuCreacion)
 			VALUES(@role_Nombre, @role_UsuCreacion)
 			
-			SELECT SCOPE_IDENTITY() AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
+			SELECT SCOPE_IDENTITY() AS CodeStatus, 'El rol ha sido insertado con ï¿½xito' AS MessageStatus
 			END
 		ELSE IF EXISTS (SELECT * FROM  [acce].[tbRoles]
 						WHERE role_Nombre = @role_Nombre
@@ -643,7 +643,7 @@ BEGIN
 				SET [role_Estado] = 1
 				WHERE [role_Nombre] = @role_Nombre
 
-				SELECT (SELECT role_Id FROM [acce].[tbRoles] WHERE [role_Nombre] = @role_Nombre) AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
+				SELECT (SELECT role_Id FROM [acce].[tbRoles] WHERE [role_Nombre] = @role_Nombre) AS CodeStatus, 'El rol ha sido insertado con ï¿½xito' AS MessageStatus
 			END
 		ELSE
 			SELECT 'El rol ya existe' AS MessageStatus
@@ -672,7 +672,7 @@ BEGIN
 			        [role_UsuModificacion] = @role_UsuModificacion,
 					[role_FechaModificacion] = GETDATE()
 			WHERE 	[role_Id] = @role_Id
-			SELECT 'El rol ha sido editado con éxito'
+			SELECT 'El rol ha sido editado con ï¿½xito'
 		END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbRoles]
 						WHERE @role_Nombre = role_Nombre
@@ -686,7 +686,7 @@ BEGIN
 				[role_FechaModificacion] = GETDATE()
 			WHERE role_Nombre = @role_Nombre
 
-			SELECT 'El rol ha sido editado con éxito'
+			SELECT 'El rol ha sido editado con ï¿½xito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -710,7 +710,7 @@ BEGIN
 				SELECT 'El rol ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El rol no puede ser eliminado ya que está siendo usado'
+			SELECT 'El rol no puede ser eliminado ya que estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -857,7 +857,7 @@ BEGIN
 				SELECT 'La enfermedad ha sido eliminada'
 			END
 		ELSE
-			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usada en otro registro'
+			SELECT 'La enfermedad no puede ser eliminada ya que estï¿½ siendo usada en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1005,9 +1005,9 @@ BEGIN
 END
 GO
 
---************CATEGORÍAS HABITACIONES******************--
+--************CATEGORï¿½AS HABITACIONES******************--
 
-/*VISTA CATEGORÍAS HABITACIONES*/
+/*VISTA CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER VIEW asil.VW_tbCategoriasHabitaciones
 AS
 	SELECT cate_Id,
@@ -1027,7 +1027,7 @@ AS
 		   ON t1.cate_UsuModificacion = t3.usua_Id 
 GO
 
-/*LISTAR CATEGORÍAS HABITACIONES*/
+/*LISTAR CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_List
 AS
 BEGIN
@@ -1037,7 +1037,7 @@ BEGIN
 END
 GO
 
-/*FIND CATEGORÍAS HABITACIONES*/
+/*FIND CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_Find 
 	@cate_Id	INT
 AS
@@ -1049,7 +1049,7 @@ END
 GO
 
 
-/*INSERTAR CATEGORÍAS HABITACIONES*/
+/*INSERTAR CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_Insert
 	@cate_Nombre          NVARCHAR(100),
 	@cate_Capacidad       INT,
@@ -1064,7 +1064,7 @@ BEGIN
 			INSERT INTO asil.tbCategoriasHabitaciones(cate_Nombre, cate_Capacidad, cate_Climatizacion, cate_UsuCreacion)
 			VALUES(@cate_Nombre, @cate_Capacidad, @cate_Climatizacion, @cate_UsuCreacion)
 			
-			SELECT 'La categoria de la habitación ha sido insertada'
+			SELECT 'La categoria de la habitaciï¿½n ha sido insertada'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbCategoriasHabitaciones 
 						WHERE cate_Nombre = @cate_Nombre
@@ -1077,10 +1077,10 @@ BEGIN
 					   cate_UsuCreacion   = @cate_UsuCreacion
 				WHERE cate_Nombre = @cate_Nombre
 
-				SELECT 'La categoria de la habitación ha sido insertada'
+				SELECT 'La categoria de la habitaciï¿½n ha sido insertada'
 			END
 		ELSE
-			SELECT 'Esta categoria de la habitación ya existe'
+			SELECT 'Esta categoria de la habitaciï¿½n ya existe'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1091,7 +1091,7 @@ GO
 
 
 
-/*EDITAR CATEGORÍAS HABITACIONES*/
+/*EDITAR CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_Update
     @cate_Id              INT,
 	@cate_Nombre          NVARCHAR(100),
@@ -1136,7 +1136,7 @@ END
 GO
 
 
-/*ELIMINAR CATEGORÍAS HABITACIONES*/
+/*ELIMINAR CATEGORï¿½AS HABITACIONES*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbCategoriasHabitaciones_Delete
 	 @cate_Id	INT
 AS
@@ -1151,7 +1151,7 @@ BEGIN
 		SELECT 'La categoria ha sido eliminada'
 		END
 		ELSE
-			SELECT 'La categoria no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'La categoria no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1306,7 +1306,7 @@ BEGIN
 				SELECT 'El medicamento ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El medicamento no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El medicamento no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1451,7 +1451,7 @@ BEGIN
 		SELECT 'El cargo ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El cargo no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El cargo no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1659,7 +1659,7 @@ BEGIN
 		SELECT 'La dieta ha sido eliminada'
 		END
 		ELSE
-			SELECT 'La dieta no puede ser eliminada ya que está siendo usado en otro registro'
+			SELECT 'La dieta no puede ser eliminada ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1846,21 +1846,6 @@ BEGIN
 END
 GO
 
-
-/*LISTAR CUIDADORES DISPONIBLES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_List_Cuidadores_Dispo 
-	@cent_Id	INT
-AS
-BEGIN
-	SELECT *
-	FROM asil.VW_tbEmpleados
-	WHERE [empe_Estado] = 1
-    AND carg_Id = 2
-    AND empe_Id NOT IN (SELECT empe_Id FROM asil.tbResidentes WHERE resi_Estado = 1 AND empe_Id IS NOT NULL)
-	AND cent_Id = @cent_Id
-END
-GO
-
 /*FIND EMPLEADOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbEmpleados_Find 
 	@empe_Id	INT
@@ -1998,14 +1983,21 @@ GO
 
 /* ELIMINAR EMPLEADO*/
 
-CREATE OR ALTER   PROCEDURE [asil].[UPD_tbEmpleados_Eliminar]
+CREATE OR ALTER PROCEDURE asil.UPD_tbEmpleados_Eliminar
 	@empe_Id	INT
 AS
 BEGIN
-	BEGIN TRY		
+	BEGIN TRY
+		IF NOT EXISTS (SELECT * FROM asil.tbEmpleados WHERE empe_Id = @empe_Id)
+			BEGIN
 				UPDATE asil.tbEmpleados 
 				SET empe_Estado = 0
-				WHERE empe_Id = @empe_Id			
+				WHERE empe_Id = @empe_Id
+
+				SELECT 1 AS proceso
+			END
+		ELSE
+			SELECT 'El registro del empleado no se puede eliminar porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -2495,12 +2487,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_Agregar
 	@resi_FechaIngreso		DATE, 
 	@empe_Id				INT,
 	@agen_Id				INT,
-	@resi_UsuCreacion		INT,
-	@resi_Id				INT,
-	@tiposang_Id			INT,
-	@expe_FechaApertura		DATE,
-	@expe_Fotografia		NVARCHAR(500)
-
+	@resi_UsuCreacion		INT
 AS
 BEGIN
 
@@ -2633,7 +2620,7 @@ BEGIN
 				SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro del Residente no puede ser eliminado porque está siendo usado'
+			SELECT 'El registro del Residente no puede ser eliminado porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -2780,7 +2767,7 @@ BEGIN
 		SELECT 'El parentesco ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El parentesco no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El parentesco no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 
 	END TRY
 	BEGIN CATCH
@@ -2795,7 +2782,6 @@ GO
 CREATE OR ALTER VIEW asil.VW_tbEncargados
 AS
 	SELECT enca_Id,
-		  enca_Nombres+' '+enca_Apellidos nombreCompleto,
 	       enca_Nombres,
 		   enca_Apellidos,
 		   enca_Identidad,
@@ -2805,8 +2791,7 @@ AS
 		   
 		   CASE WHEN  enca_Sexo = 'F' THEN 'Femenino'
 				ELSE 'Masculino'
-		   END AS  enca_SexoDesc,
-		   t1.enca_Sexo,
+		   END AS  enca_Sexo,
 		   t1.muni_Id,
 		   t7.muni_Nombre,
 		   enca_Direccion,
@@ -2915,7 +2900,7 @@ BEGIN
 				SELECT 'El encargado ha sido insertado exitosamente'
 			END
 		ELSE
-			SELECT 'Ya existe un encargado con este número de identidad'
+			SELECT 'Ya existe un encargado con este nï¿½mero de identidad'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2970,7 +2955,7 @@ BEGIN
 							  AND enca_Estado = 1
 							  AND enca_Id     != @enca_Id)
 
-			SELECT 'Ya existe un encargado con este número de identidad'
+			SELECT 'Ya existe un encargado con este nï¿½mero de identidad'
 		ELSE
 			UPDATE  asil.tbEncargados
 			SET     enca_Estado	           = 1,
@@ -3152,7 +3137,7 @@ BEGIN
 		SELECT 'El tipo de sangre ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El tipo de sangre no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El tipo de sangre no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3311,7 +3296,7 @@ BEGIN
 		SELECT 'La enfermedad por recidente ha sido eliminada'
 		END
 		ELSE
-			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usado en otro registro'
+			SELECT 'La enfermedad no puede ser eliminada ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3456,7 +3441,7 @@ BEGIN
 				SELECT 'El expediente ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El expediente no puede ser eliminado ya que está siendo usado en otro registro'
+			SELECT 'El expediente no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3479,7 +3464,7 @@ AS
 		   ON t1.empe_Id = t2.empe_Id
 GO
 
-/*Listar historial expedientes según expediente*/
+/*Listar historial expedientes segï¿½n expediente*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHistorialExpedientes_List
 	@expe_Id		INT
 AS
@@ -3605,9 +3590,8 @@ AS
 	       habi_Numero,
 		   t1.cate_Id,
 		   t4.cate_Nombre,
-		   t4.cate_Capacidad,
 		   t1.cent_Id,
-		   t5.cent_Nombre,
+		   t5.cent_Nombre
 		   habi_UsuCreacion,
 		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   habi_FechaCreacion,
@@ -3621,21 +3605,6 @@ AS
 		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
 		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
 		   ON t1.cent_Id = t5.cent_Id
-GO
-
-/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
-	@cent_Id	INT
-AS
-BEGIN
-
-	SELECT *
-	FROM asil.VW_tbHabitaciones habi
-	WHERE (SELECT COUNT(habiresi_Id)
-		FROM [asil].[tbHabitacionesXResidente]
-		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
-	AND cent_Id = @cent_Id
-END
 GO
 
 /*LISTAR HABITACIONES*/
@@ -3676,7 +3645,7 @@ BEGIN
 			INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
 			VALUES(@habi_Numero, @cate_Id, @cent_Id, @habi_UsuCreacion)
 			
-			SELECT 'La habitación ha sido insertada'
+			SELECT 'La habitaciï¿½n ha sido insertada'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
 						WHERE @habi_Numero = @habi_Numero
@@ -3689,10 +3658,10 @@ BEGIN
 					   cent_Id = @cent_Id
 				WHERE habi_Numero = @habi_Numero
 
-				SELECT 'La habitación ha sido insertada'
+				SELECT 'La habitaciï¿½n ha sido insertada'
 			END
 		ELSE
-			SELECT 'Esta habitación ya existe'
+			SELECT 'Esta habitaciï¿½n ya existe'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3724,14 +3693,14 @@ BEGIN
 					habi_FechaModificacion = GETDATE()
 			WHERE 	habi_Id              = @habi_Id
 
-			SELECT 'La habitación ha sido editada'
+			SELECT 'La habitaciï¿½n ha sido editada'
 		END
 		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones
 						WHERE habi_Numero      = @habi_Numero
 							  AND habi_Estado  = 1
 							  AND habi_Id     != @habi_Id)
 
-			SELECT 'La habitación ya existe'
+			SELECT 'La habitaciï¿½n ya existe'
 		ELSE
 			UPDATE  asil.tbHabitaciones
 			SET     habi_Estado	          = 1,
@@ -3741,7 +3710,7 @@ BEGIN
 					habi_FechaModificacion = GETDATE()
 			WHERE   habi_Numero = @habi_Numero
 
-			SELECT 'La habitación ha sido editada'
+			SELECT 'La habitaciï¿½n ha sido editada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3751,21 +3720,21 @@ GO
 
 
 /*ELIMINAR HABITACIONES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 
 	 @habi_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS( SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id )
+	IF NOT EXISTS( SELECT * FROM asil.tbHabitacionesXResidente WHERE habi_Id = @habi_Id and habiresi_Estado = 1 )
 	   BEGIN
 		UPDATE asil.tbHabitaciones
 		SET habi_Estado = 0
 		WHERE habi_Id   = @habi_Id
 
-		SELECT 'La habitación ha sido eliminada'
+		SELECT 'La habitaciï¿½n ha sido eliminada'
 		END
 		ELSE 
-		SELECT 'La habitación no puede ser eliminada ya que se esta usando en otro registro'
+		SELECT 'La habitaciï¿½n no puede ser eliminada ya que se esta usando en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -3984,7 +3953,7 @@ BEGIN
 					[dona_FechaModificacion] = GETDATE()
 			WHERE 	dona_Id = @dona_Id
 
-			SELECT 'La donación ha sido editada exitosamente'
+			SELECT 'La donaciï¿½n ha sido editada exitosamente'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -4003,7 +3972,7 @@ BEGIN
 				SET dona_Estado = 0
 				WHERE dona_Id = @dona_Id
 
-				SELECT 'La donación ha sido eliminada'
+				SELECT 'La donaciï¿½n ha sido eliminada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -4094,7 +4063,7 @@ GO
 /*  TABLA HISTORIAL DE PAGOS */
 
 
-/*VISTA HISTORIAL DE PAGO*/
+/*VISTA HISTORIAL D EPAGO*/
 CREATE OR ALTER VIEW asil.VW_tbHistorialPagos
 AS
 	SELECT 
@@ -4156,7 +4125,7 @@ BEGIN TRY
 END
 GO
 
-/*ACTUALIZAR HISTORIAL PAGOS*/   /* HAY ALGO QUE NO ME CUADRA AQUÍ, PENDIENTE COMENTARLO CON ALLE*/
+/*ACTUALIZAR HISTORIAL PAGOS*/   /* HAY ALGO QUE NO ME CUADRA AQUï¿½, PENDIENTE COMENTARLO CON ALLE*/
 CREATE OR ALTER PROCEDURE asil.UDP_tbHistorialPagos_Actualizar
 	@pago_Id				INT, 
     @resi_Id				INT,
@@ -4201,7 +4170,7 @@ BEGIN
 				SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque está siendo usado'
+			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -4275,7 +4244,7 @@ BEGIN
 			INSERT INTO asil.tbCentros(cent_Nombre, muni_Id, cent_Direccion, cent_UsuCreacion)
 			VALUES(@cent_Nombre, @muni_Id, @cent_Direccion, @cent_UsuCreacion)
 			
-			SELECT 'El centro ha sido insertado con éxito'
+			SELECT 'El centro ha sido insertado con ï¿½xito'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbCentros 
 						WHERE cent_Nombre = @cent_Nombre
@@ -4285,7 +4254,7 @@ BEGIN
 				SET cent_Estado = 1
 				WHERE cent_Nombre = @cent_Nombre
 
-				SELECT 'El centro ha sido insertado con éxito'
+				SELECT 'El centro ha sido insertado con ï¿½xito'
 			END
 		ELSE
 			SELECT 'El centro ya existe'
@@ -4354,7 +4323,7 @@ BEGIN
 	BEGIN TRY
 
 
-	IF NOT EXISTS (SELECT * FROM asil.tbInventarioPorCentro WHERE cent_Id = @cent_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones WHERE cent_Id = @cent_Id AND habi_Estado = 1)
 			BEGIN
 			UPDATE asil.tbCentros
 			SET cent_Estado = 0
@@ -4362,7 +4331,7 @@ BEGIN
 			SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque está siendo usado'
+			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -4524,7 +4493,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbProveedores_Delete
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbProveedores WHERE prov_Id = @prov_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbMedicamentos WHERE prov_Id = @prov_Id AND medi_Estado = 1)
 			BEGIN
 					UPDATE asil.tbProveedores
 					SET prov_Estado = 0
@@ -4532,7 +4501,7 @@ BEGIN
 					SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque está siendo usado'
+			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -4543,43 +4512,19 @@ GO
 
 -------------------------------------------------------------------------------------------------------------------------
 
+/*VISTA HABITACIONES*/
 CREATE OR ALTER VIEW asil.VW_tbHabitaciones
 AS
-	SELECT habi_Id,
-	       habi_Numero,
-		   t1.cate_Id,
-		   t4.cate_Nombre,
-		   t4.cate_Capacidad,
-		   t1.cent_Id,
-		   t5.cent_Nombre,
-		   habi_UsuCreacion,
-		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   habi_FechaCreacion,
-		   habi_UsuModificacion,
-		   habi_FechaModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre,
-		   habi_Estado
-		   FROM asil.tbHabitaciones t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.habi_UsuCreacion = T2.usua_Id
-		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.habi_UsuModificacion = t3.usua_Id INNER JOIN asil.tbCategoriasHabitaciones T4
-		   ON t1.cate_Id = t4.cate_Id INNER JOIN asil.tbCentros t5
-		   ON t1.cent_Id = t5.cent_Id
-GO
-
-/*LISTAR HABITACIONES DISPONIBLES SEGÚN EL CENTRO*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_ListDispo
-	@cent_Id	INT
-AS
-BEGIN
-
-	SELECT *
-	FROM asil.VW_tbHabitaciones habi
-	WHERE (SELECT COUNT(habiresi_Id)
-		FROM [asil].[tbHabitacionesXResidente]
-		WHERE habi_Id = habi.habi_Id) < habi.cate_Capacidad
-	AND cent_Id = @cent_Id
-END
+	SELECT [habi_Id], [habi_Numero],
+	hab.[cate_Id], cate.cate_Nombre,hab.[cent_Id],cent.cent_Nombre,
+	[habi_UsuCreacion],usu1.usua_NombreUsuario usuCrea,[habi_FechaCreacion],
+	[habi_UsuModificacion], usu2.usua_NombreUsuario usuModif,
+	[habi_Estado], [habi_FechaModificacion]
+	FROM [asil].[tbHabitaciones] hab INNER JOIN [asil].[tbCategoriasHabitaciones] cate
+	ON cate.cate_Id = hab.cate_Id INNER JOIN [asil].[tbCentros] cent 
+	ON cent.cent_Id = hab.cent_Id INNER JOIN [acce].[tbUsuarios] usu1
+	ON usu1.usua_Id = hab.habi_UsuCreacion LEFT JOIN acce.tbUsuarios usu2
+	ON usu2.usua_Id = hab.habi_UsuModificacion
 GO
 
 /*LISTAR HABITACIONES*/
@@ -4624,7 +4569,7 @@ BEGIN
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbHabitaciones 
 						WHERE  habi_Numero = @habi_Numero
-						AND habi_Estado = 0)
+						AND habi_Estado = 0  )
 			BEGIN
 				UPDATE asil.tbHabitaciones 
 				SET habi_Estado = 1
@@ -4644,7 +4589,7 @@ GO
 /* ACTUALIZAR HABITACIONES */
 
 
-CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Actulaizar
+CREATE OR ALTER PROCEDURE asil.UDP_tbHabitaciones_Actulaizar  
 		@habi_Id				INT,
 		@habi_Numero			INT,
 		@cate_Id				INT,
@@ -4693,12 +4638,12 @@ GO
 
 
 /*ELIMINAR HABITACION*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbHabitaciones_Delete 
 	 @habi_Id	INT
 AS
 BEGIN
 	BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM asil.tbHabitaciones WHERE habi_Id = @habi_Id)
+	IF NOT EXISTS (SELECT * FROM asil.tbHabitacionesXResidente WHERE habi_Id = @habi_Id and habiresi_Estado = 1)
 			BEGIN
 					UPDATE asil.tbHabitaciones
 					SET habi_Estado = 0
@@ -4706,85 +4651,10 @@ BEGIN
 					SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque está siendo usado'
+			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
 	END CATCH
 END
 GO
-
-
-CREATE OR ALTER   PROCEDURE [acce].[UDP_Login]
-	@usua_NombreUsuario Nvarchar(100),
-	@usua_Contrasena Nvarchar(Max)
-AS
-BEGIN
-
-        BEGIN TRY
-        Declare @Password Nvarchar(max) = (HASHBYTES('SHA2_512',@usua_Contrasena))
-        SELECT [usua_NombreUsuario],[usua_Contrasena] 
-		FROM    [acce].[tbUsuarios]    
-		WHERE   [usua_Contrasena] = @Password 
-        AND     [usua_NombreUsuario] = @usua_NombreUsuario
-
-        SELECT 1 as Proceso
-
-        END TRY
-        BEGIN CATCH
-
-        SELECT 0 as Proceso
-        END CATCH
-
-END
-GO
-
-
---[acce].[UDP_Login] 'df','sd'
-
---VISTAS PARA EL HISTORIAL DE PAGO
-
---CREATE OR ALTER   VIEW [asil].[VW_tbExpedientes2]
---AS
---	SELECT t1.expe_Id,
---		   t1.resi_Id,
---		   (t5.[resi_Nombres] + ' ' + t5.[resi_Apellidos]) AS resi_NombreCompleto,
---		   t5.resi_Estado,
---		   t1.tiposang_Id,
---		   t6.tiposang_Nombre,
---		   t1.expe_FechaApertura,
---		   t1.expe_Fotografia,
---		   t1.expe_UsuCreacion, 
---		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
---		   t1.expe_FechaCreacion, 
---	       t1.expe_UsuModificacion,
---		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
---		   t1.expe_FechaModificacion,
---		   t1.expe_Estado
---		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
---		   ON t1.expe_UsuCreacion = T2.usua_Id
---		   LEFT JOIN acce.tbUsuarios t3
---		   ON t1.expe_UsuModificacion = t3.usua_Id LEFT JOIN asil.tbResidentes t5
---		   ON t1.resi_Id = t5.resi_Id LEFT JOIN asil.tbTiposSangre t6
---		   ON t1.tiposang_Id = t6.tiposang_Id
---GO
-
-
-
-CREATE OR ALTER PROCEDURE asil.UDP_ListarResiPagan
-AS
-BEGIN
-BEGIN TRY
-    SELECT * FROM [asil].[VW_tbExpedientes]
-    WHERE [resi_Id] IN (SELECT [resi_Id] FROM [asil].[tbHistorialPagos])
-
-    SELECT 1
-END TRY
-
-BEGIN CATCH
-    SELECT 0
-END CATCH
-END
-GO
-
-asil.UDP_ListarResiPagan

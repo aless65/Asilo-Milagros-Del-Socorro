@@ -12,6 +12,6 @@ export interface Rol {
     usua_UsuModificacion?: number;
     cent_Id?: number;
     usua_UsuModificacion_Nombre?: string;
-
+    
     [key: string]: number | string | undefined;
 }
