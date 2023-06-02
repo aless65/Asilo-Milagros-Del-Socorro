@@ -232,7 +232,7 @@ export class CrearComponent implements OnInit {
           timerProgressBar: true,
           titleText: '¡Ha ocurrido en error inesperado!',
           icon: 'error',
-          background: '#f47171f0'
+          background: '#fff0f0f5'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
@@ -241,7 +241,7 @@ export class CrearComponent implements OnInit {
         Swal.fire({
           toast: true,
           position: 'top-end',
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,

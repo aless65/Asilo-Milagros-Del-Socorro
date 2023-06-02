@@ -224,7 +224,7 @@ export class CrearComponent implements OnInit {
       console.log(data.message);
       if (data.message == "El encargado ha sido insertado") {
         Swal.fire({
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,
@@ -284,14 +284,14 @@ export class CrearComponent implements OnInit {
           timerProgressBar: true,
           titleText: '¡Ha ocurrido en error inesperado!',
           icon: 'error',
-          background: '#f47171f0'
+          background: '#fff0f0f5'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
       }
       else if(data.message == "Exitoso"){
         Swal.fire({
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,

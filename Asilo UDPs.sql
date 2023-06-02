@@ -116,7 +116,7 @@ BEGIN
 			usua_FechaModificacion = GETDATE()
 		WHERE usua_Id = @usua_Id
 
-		SELECT 'El usuario ha sido editado con �xito'
+		SELECT 'El usuario ha sido editado con éxito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -131,11 +131,18 @@ CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_DELETE
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE acce.tbUsuarios
-		SET usua_Estado = 0
-		WHERE usua_Id = @usua_Id
+		IF @usua_Id = 1 
+			BEGIN
+				SELECT 'Este usuario no puede ser eliminado'
+			END
+		ELSE
+			BEGIN
+				UPDATE acce.tbUsuarios
+				SET usua_Estado = 0
+				WHERE usua_Id = @usua_Id
 
-		SELECT 'El usuario ha sido eliminado'
+				SELECT 'El usuario ha sido eliminado'
+			END
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -276,7 +283,7 @@ GO
 --				SELECT 'El rol ha sido eliminado'
 --			END
 --		ELSE
---			SELECT 'El rol no puede ser eliminado ya que est� siendo usado en otro registro'
+--			SELECT 'El rol no puede ser eliminado ya que está siendo usado en otro registro'
 --	END TRY
 --	BEGIN CATCH
 --		SELECT 'Ha ocurrido un error'
@@ -378,7 +385,7 @@ BEGIN
 			INSERT INTO [acce].[tbPantallas](pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
 			VALUES(@pant_Nombre, @pant_Url, @pant_Menu, @pant_Icon, @pant_UsuCreacion)
 			
-			SELECT 'La pantalla ha sido insertada con �xito'
+			SELECT 'La pantalla ha sido insertada con éxito'
 			END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
 						WHERE [pant_Nombre] = @pant_Nombre AND
@@ -388,7 +395,7 @@ BEGIN
 				SET [pant_Estado] = 1
 				WHERE  [pant_Nombre] = @pant_Nombre
 
-				SELECT 'La pantalla ha sido insertada con �xito'
+				SELECT 'La pantalla ha sido insertada con éxito'
 			END
 		ELSE
 			SELECT 'La pantalla ya existe'
@@ -422,7 +429,7 @@ BEGIN
 					[pant_UsuModificacion]= @pant_UsuModificacion,
 					[pant_FechaModificacion] = GETDATE()
 			WHERE 	[pant_Id] = @pant_Id
-			SELECT 'La pantalla ha sido editada con �xito'
+			SELECT 'La pantalla ha sido editada con éxito'
 		END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbPantallas]
 						WHERE @pant_Nombre = [pant_Nombre]
@@ -439,7 +446,7 @@ BEGIN
 				[pant_FechaModificacion] = GETDATE()
 			WHERE  [pant_Nombre] = @pant_Nombre
 
-			SELECT 'La pantalla ha sido editada con �xito'
+			SELECT 'La pantalla ha sido editada con éxito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -463,7 +470,7 @@ BEGIN
 				SELECT 'La pantalla ha sido eliminada'
 			END
 		ELSE
-			SELECT 'La pantalla no puede ser eliminada ya que est� siendo usada'
+			SELECT 'La pantalla no puede ser eliminada ya que está siendo usada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -538,7 +545,7 @@ BEGIN
 			INSERT INTO acce.tbPantallasPorRoles(role_Id,pant_Id,pantrole_UsuCreacion)
 			VALUES(@role_Id,@pant_Id,@pantrole_UsuCreacion)
 			
-			SELECT 'Operaci�n realizada con �xito'
+			SELECT 'Operación realizada con éxito'
 			END
 		ELSE IF EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
 						WHERE pant_Id = @pant_Id AND role_Id = @role_Id
@@ -548,7 +555,7 @@ BEGIN
 				SET [pantrole_Estado] = 1
 				WHERE pant_Id = @pant_Id AND role_Id = @role_Id
 
-				SELECT 'Operaci�n realizada con �xito'
+				SELECT 'Operación realizada con éxito'
 			END
 		ELSE
 			SELECT 'La pantalla x rol ya existe'
@@ -633,7 +640,7 @@ BEGIN
 			INSERT INTO [acce].[tbRoles](role_Nombre, role_UsuCreacion)
 			VALUES(@role_Nombre, @role_UsuCreacion)
 			
-			SELECT SCOPE_IDENTITY() AS CodeStatus, 'El rol ha sido insertado con �xito' AS MessageStatus
+			SELECT SCOPE_IDENTITY() AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
 			END
 		ELSE IF EXISTS (SELECT * FROM  [acce].[tbRoles]
 						WHERE role_Nombre = @role_Nombre
@@ -643,7 +650,7 @@ BEGIN
 				SET [role_Estado] = 1
 				WHERE [role_Nombre] = @role_Nombre
 
-				SELECT (SELECT role_Id FROM [acce].[tbRoles] WHERE [role_Nombre] = @role_Nombre) AS CodeStatus, 'El rol ha sido insertado con �xito' AS MessageStatus
+				SELECT (SELECT role_Id FROM [acce].[tbRoles] WHERE [role_Nombre] = @role_Nombre) AS CodeStatus, 'El rol ha sido insertado con éxito' AS MessageStatus
 			END
 		ELSE
 			SELECT 'El rol ya existe' AS MessageStatus
@@ -672,7 +679,7 @@ BEGIN
 			        [role_UsuModificacion] = @role_UsuModificacion,
 					[role_FechaModificacion] = GETDATE()
 			WHERE 	[role_Id] = @role_Id
-			SELECT 'El rol ha sido editado con �xito'
+			SELECT 'El rol ha sido editado con éxito'
 		END
 		ELSE IF EXISTS (SELECT * FROM [acce].[tbRoles]
 						WHERE @role_Nombre = role_Nombre
@@ -686,7 +693,7 @@ BEGIN
 				[role_FechaModificacion] = GETDATE()
 			WHERE role_Nombre = @role_Nombre
 
-			SELECT 'El rol ha sido editado con �xito'
+			SELECT 'El rol ha sido editado con éxito'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -710,19 +717,13 @@ BEGIN
 				SELECT 'El rol ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El rol no puede ser eliminado ya que est� siendo usado'
+			SELECT 'El rol no puede ser eliminado ya que está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
 GO
-
-
-
-
-
-
 
 --************ENFERMEDADES******************--
 
@@ -4417,7 +4418,11 @@ BEGIN
 						AND prov_Estado = 0)
 			BEGIN
 				UPDATE asil.tbProveedores 
-				SET prov_Estado = 1
+				SET prov_Estado = 1,
+					prov_CorreoElectronico = @prov_CorreoElectronico,
+					prov_Telefono = @prov_Telefono,
+					muni_Id = @muni_Id,
+					prov_Direccion = @prov_Direccion
 				WHERE prov_Nombre = @prov_Nombre
 
 				SELECT 1 as proceso

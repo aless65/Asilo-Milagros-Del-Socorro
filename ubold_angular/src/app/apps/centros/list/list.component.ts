@@ -124,7 +124,7 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: 'El registro no puede ser eliminado porque está siendo usado',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -195,14 +195,14 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: '¡Ha ocurrido en error inesperado!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
           }
           else if(response.message == "Exitoso"){
             Swal.fire({
-              title: 'Perfecto!',
+              title: '¡Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,
@@ -231,7 +231,7 @@ import Swal from 'sweetalert2';
             Swal.fire({
               toast: true,
               position: 'top-end',
-              title: 'Perfecto!',
+              title: '¡Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,

@@ -187,7 +187,7 @@ import { Select2Data } from 'ng-select2-component';
             Swal.fire({
               toast: true,
               position: 'top-end',
-              title: 'Perfecto!',
+              title: '¡Perfecto!',
               text: 'El registro se editó con éxito!',
               icon: 'success',
               showConfirmButton: false,
@@ -206,14 +206,14 @@ import { Select2Data } from 'ng-select2-component';
               timerProgressBar: true,
               titleText: '¡Ha ocurrido en error inesperado!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
           }
           else if(response.message == "Exitoso"){
             Swal.fire({
-              title: 'Perfecto!',
+              title: '¡Perfecto!',
               text: 'El registro se editó con éxito!',
               icon: 'success',
               showConfirmButton: false,
@@ -242,7 +242,7 @@ import { Select2Data } from 'ng-select2-component';
             Swal.fire({
               toast: true,
               position: 'top-end',
-              title: 'Perfecto!',
+              title: '¡Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,
@@ -260,7 +260,7 @@ import { Select2Data } from 'ng-select2-component';
               timerProgressBar: true,
               titleText: '¡Este usuario ya existe!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

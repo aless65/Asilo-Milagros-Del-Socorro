@@ -53,14 +53,6 @@ export class CrearComponent implements OnInit {
 
     });
 
-
-    
-
-   
-   
-    
-
-
     this.service2.getMunicipios().subscribe((response: any) => {
       let depaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
@@ -165,14 +157,14 @@ export class CrearComponent implements OnInit {
           timerProgressBar: true,
           titleText: '¡Ha ocurrido en error inesperado!',
           icon: 'error',
-          background: '#f47171f0'
+          background: '#fff0f0f5'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
       }
       else if(data.message == "Exitoso"){
         Swal.fire({
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,

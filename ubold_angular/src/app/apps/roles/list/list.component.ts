@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,11 +11,11 @@ import { Select2Data } from 'ng-select2-component';
 import Swal from 'sweetalert2';
 
 @Component({
-    selector: 'app-roles-list',
-    templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss'],
-  })
-  export class ListComponent implements OnInit {
+  selector: 'app-roles-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
+})
+export class ListComponent implements OnInit {
 
   pageTitle: BreadcrumbItem[] = [];
   roles: Rol[] = [];
@@ -27,27 +27,27 @@ import Swal from 'sweetalert2';
   selectedPantallas: any[] = [];
   selectedRoleId: number | undefined = 0;
 
-  
+
   @ViewChild('pant_Id', { static: true }) pant_Id: any;
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
   @ViewChild('deleteRolModal', { static: true }) deleteRolModal: any;
 
-  constructor (
+  constructor(
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    
+
   ) { }
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Inicio', path: '/' }, { label: 'Roles', path: '/', active: true }];
-   
+
     this._fetchData();
     if (this.esEditar) {
       this.fetchData();
-    } 
+    }
     // initialize advance table 
     this.initAdvancedTableData();
 
@@ -64,29 +64,29 @@ import Swal from 'sweetalert2';
         const esqueNombre: string = item.pant_Menu;
         const pantaId: string = item.pant_Id;
         const pantaNombre: string = item.pant_Nombre;
-    
+
         if (!esquemaLabels.includes(esqueNombre)) {
           esquemaLabels.push(esqueNombre);
           options[esqueNombre] = [];
         }
-  
+
         options[esqueNombre].push({
           value: pantaId,
           label: pantaNombre
         });
       });
-    
+
       this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
         label: esqueNombre,
         options: options[esqueNombre]
       }));
-    }); 
+    });
 
-    
+
 
     this.selectedPantallas = this.newRol.value.pant_Id;
 
-    
+
   }
   // convenience getter for easy access to form fields
   get form1() { return this.newRol.controls; }
@@ -96,13 +96,13 @@ import Swal from 'sweetalert2';
  * @param data data to be used in modal
  */
   openModal(isEditOrNew: string): void {
-    
-    if(isEditOrNew === "new"){
+
+    if (isEditOrNew === "new") {
       this.newRol.reset();
       this.esEditar = false;
-    } else{
+    } else {
       this.esEditar = true;
-     
+
     }
 
     this.activeModal.open(this.content, { centered: true });
@@ -110,34 +110,34 @@ import Swal from 'sweetalert2';
 
   openModalDelete(): void {
     this.activeModal.open(this.deleteRolModal, { centered: true, windowClass: 'delete-modal' });
-  }  
+  }
 
-  deleteRol(): void{
+  deleteRol(): void {
     console.log(this.selectedRol.role_Id, "llegas o no");
     this.service.deleteRoles(this.selectedRol.role_Id || 0).subscribe(
-     
-        (response: any) => {
-          console.log("se pudo:", response);
-          this._fetchData();
-          if(response.message == "El rol no puede ser eliminado ya que está siendo usado"){
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 1700,
-              timerProgressBar: true,
-              titleText: 'El rol no puede ser eliminado ya que está siendo usado',
-              icon: 'error',
-              background: '#f47171f0'
-            }).then(() => {
-              // Acción luego de cerrarse el toast
-            });
-          }
-        },
-        (error) => {
-          console.log("no se pudo:",error );
+
+      (response: any) => {
+        console.log("se pudo:", response);
+        this._fetchData();
+        if (response.message == "El rol no puede ser eliminado ya que está siendo usado") {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: 'El rol no puede ser eliminado ya que está siendo usado',
+            icon: 'warning',
+            background: '#f6f6baf2'
+          }).then(() => {
+            // Acción luego de cerrarse el toast
+          });
         }
-      )
+      },
+      (error) => {
+        console.log("no se pudo:", error);
+      }
+    )
     this._fetchData();
     this.activeModal.dismissAll('');
   }
@@ -159,7 +159,7 @@ import Swal from 'sweetalert2';
       });
       return;
     }
-  
+
     const rol: Rol = {
       role_Id: this.selectedRol?.role_Id || 0,
       role_Nombre: this.newRol.value.name,
@@ -167,28 +167,30 @@ import Swal from 'sweetalert2';
       role_UsuCreacion: 1,
       role_UsuModificacion: 1,
     };
-  
+
     console.log(rol);
-    if(this.esEditar){
+    if (this.esEditar) {
 
       this.service.editRoles(rol).subscribe(
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
-          this.fetchData(); 
+          this.fetchData();
           if (response.message == "El rol ha sido editado con éxito") {
             Swal.fire({
-              title: 'Perfecto!',
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,
               timer: 1850,
               timerProgressBar: true
             }).then(() => {
-              
+
             });
           }
-          else if(response.message == "El rol ya existe"){
+          else if (response.message == "El rol ya existe") {
             Swal.fire({
               toast: true,
               position: 'top-end',
@@ -197,7 +199,7 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: '¡El rol ya existe!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -208,28 +210,30 @@ import Swal from 'sweetalert2';
           console.log("no se pudo:", error);
         }
       )
-      
-    } else{
-      
+
+    } else {
+
       this.service.addRoles(rol).subscribe(
         (response: any) => {
-         
+
           console.log("se pudo:", response);
-         // console.log(rol);
+          // console.log(rol);
           this._fetchData();
           if (response.message == "El rol ha sido insertado con éxito") {
             Swal.fire({
-              title: 'Perfecto!',
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
               text: 'El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,
               timer: 1850,
               timerProgressBar: true
             }).then(() => {
-              
+
             });
           }
-          else if(response.message == "El rol ya existe"){
+          else if (response.message == "El rol ya existe") {
             Swal.fire({
               toast: true,
               position: 'top-end',
@@ -238,24 +242,24 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: '¡El rol ya existe!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fff0f0f5'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
           }
         },
         (error) => {
-         // console.log(rol);
+          // console.log(rol);
           console.log("no se pudo:", error);
         }
       )
-      
+
     }
 
     this.activeModal.dismissAll('');
   }
 
- 
+
   _fetchData(): void {
     this.service.getRoles().subscribe((response: any) => {
       this.roles = response.data;
@@ -269,69 +273,69 @@ import Swal from 'sweetalert2';
     if (this.selectedRol.role_Id) {
       this.service.getRolx(this.selectedRol.role_Id).subscribe((response: any) => {
         const pantIds: number[] = response.data.map((item: any) => item.pant_Id); // Extraer los valores de pant_Id
-  
-       // = response.data.map((item: any) => item.pant_Id); 
+
+        // = response.data.map((item: any) => item.pant_Id); 
         this.selectedPantallas = pantIds;
-  
+
         console.log(this.selectedPantallas, "en funcion"); // Verificar que se hayan asignado correctamente los valores
-  
+
         // Llenar el dropdown múltiple con los datos obtenidos
         this.fillDropdown();
-  
+
         // Actualizar los valores seleccionados en el dropdown múltiple
         this.setSelectedPantallas();
       });
     }
   }
-  
-  
+
+
   fillDropdown(): void {
     this.service.getPantallas().subscribe((response: any) => {
       let esquemaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-  
+
       response.data.forEach((item: any) => {
         const esqueNombre: string = item.pant_Menu;
         const pantaId: string = item.pant_Id;
         const pantaNombre: string = item.pant_Nombre;
-  
+
         if (!esquemaLabels.includes(esqueNombre)) {
           esquemaLabels.push(esqueNombre);
           options[esqueNombre] = [];
         }
-  
+
         options[esqueNombre].push({
           value: pantaId,
           label: pantaNombre,
           selected: this.selectedPantallas.includes(pantaId) // Establecer la propiedad selected según si está en selectedPantallas
         });
       });
-  
+
       this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
         label: esqueNombre,
         options: options[esqueNombre]
       }));
-  
+
       // Establecer los valores seleccionados en el dropdown múltiple
       this.setSelectedPantallas();
     });
   }
-  
+
   setSelectedPantallas(): void {
     if (this.selectedPantallas) {
       this.newRol.get('pant_Id')?.patchValue([...this.selectedPantallas]);
     }
   }
-  
+
 
 
   /**
    * initialize advance table columns
    */
   initAdvancedTableData(): void {
-    console.log(this.roles );
+    console.log(this.roles);
     this.columns = [
-     
+
       {
         name: 'role_Id',
         label: 'ID',
@@ -354,54 +358,54 @@ import Swal from 'sweetalert2';
   handleTableLoad(event: any): void {
     // product cell
     document.querySelectorAll('.edit').forEach((e) => {
-      e.addEventListener("click", () => {   
+      e.addEventListener("click", () => {
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
         this.fetchData();
         if (this.selectedRol) {
           this.selectedRoleId = this.selectedRol.role_Id;
-    
+
           this.service.getPantallas().subscribe((response: any) => {
             let esquemaLabels: string[] = [];
             let options: { [key: string]: any[] } = {};
-    
+
             response.data.forEach((item: any) => {
               const esqueNombre: string = item.pant_Menu;
               const pantaId: string = item.pant_Id;
               const pantaNombre: string = item.pant_Nombre;
-    
+
               if (!esquemaLabels.includes(esqueNombre)) {
                 esquemaLabels.push(esqueNombre);
                 options[esqueNombre] = [];
               }
-    
+
               options[esqueNombre].push({
                 value: pantaId,
                 label: pantaNombre
               });
             });
-    
+
             this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
               label: esqueNombre,
               options: options[esqueNombre]
             }));
-    
+
             this.newRol = this.fb.group({
               name: [this.selectedRol.role_Nombre || '', Validators.required],
               pant_Id: [[this.selectedPantallas]] // Set default values here
             });
-    
+
             this.openModal("edit");
           });
         }
-        
+
       });
     });
-    
-  
-    
+
+
+
     document.querySelectorAll('.delete').forEach((e) => {
-      e.addEventListener("click", () => {  
+      e.addEventListener("click", () => {
         const selectedId = Number(e.id);
         this.selectedRol = this.roles.find(rol => rol.role_Id === selectedId) || this.selectedRol;
         console.log(this.selectedRol);
@@ -440,10 +444,10 @@ import Swal from 'sweetalert2';
 * @param row Table row
 * @param term Search the value
 */
-matches(row: Rol, term: string) {
-  return (row.role_Id?.toString().includes(term) ||
-          row.role_Nombre?.toLowerCase().includes(term));
-}
+  matches(row: Rol, term: string) {
+    return (row.role_Id?.toString().includes(term) ||
+      row.role_Nombre?.toLowerCase().includes(term));
+  }
 
   /**
    * Search Method

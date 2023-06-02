@@ -128,17 +128,17 @@ import Swal from 'sweetalert2';
       },
       {
         name: 'prov_Telefono',
-        label: 'Telefono',
+        label: 'Teléfono',
         formatter: (proveedor: Proveedor) => proveedor.prov_Telefono
       },
       {
         name: 'prov_CorreoElectronico',
-        label: 'Correo Elecctronico',
+        label: 'Correo Electrónico',
         formatter: (proveedor: Proveedor) => proveedor.prov_CorreoElectronico
       },
       {
         name: 'Action',
-        label: 'Action',
+        label: 'Acciones',
         width: 82,
         formatter: this.proveedorActionFormatter.bind(this),
         sort: false

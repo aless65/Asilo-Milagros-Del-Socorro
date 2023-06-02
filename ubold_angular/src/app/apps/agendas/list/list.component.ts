@@ -203,7 +203,7 @@ export class ListComponent implements OnInit {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
-                        title: '¡Perfecto!',
+                        title: '¡¡Perfecto!',
                         text: 'La agenda ha sido eliminada',
                         icon: 'success',
                         showConfirmButton: false,

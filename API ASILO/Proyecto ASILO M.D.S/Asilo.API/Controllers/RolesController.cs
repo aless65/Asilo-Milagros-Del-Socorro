@@ -56,9 +56,6 @@ namespace Asilo.API.Controllers
             return Ok(update);
         }
 
-
-
-
         [HttpPut("Eliminar")]
         public IActionResult Delete(int id)
         {

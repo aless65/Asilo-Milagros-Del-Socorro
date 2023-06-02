@@ -90,7 +90,7 @@ GO
 --****************CREACION TABLA USUARIOS****************--
 CREATE TABLE acce.tbUsuarios(
 	usua_Id 				INT IDENTITY(1,1),
-	usua_NombreUsuario		NVARCHAR(100) NOT NULL,
+	usua_NombreUsuario		NVARCHAR(100) NOT NULL UNIQUE,
 	usua_Contrasena			NVARCHAR(MAX) NOT NULL,
 	usua_EsAdmin			BIT,
 	role_Id					INT,

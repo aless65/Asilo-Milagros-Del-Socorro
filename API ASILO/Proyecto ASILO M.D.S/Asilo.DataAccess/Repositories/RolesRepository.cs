@@ -27,7 +27,7 @@ namespace Asilo.DataAccess.Repositories
             if (result.MessageStatus == "El rol ha sido eliminado")
             {
                 var parametrosDelete = new DynamicParameters();
-                parametrosDelete.Add("@role_Id",id, DbType.Int32, ParameterDirection.Input);
+                parametrosDelete.Add("@role_Id", id, DbType.Int32, ParameterDirection.Input);
 
                 db.Query(ScriptsDataBase.UDP_Elimina_RolesXPantalla, parametrosDelete, commandType: CommandType.StoredProcedure);
             }
@@ -35,7 +35,7 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-       
+
 
         public VW_tbRoles Find(int? id)
         {
