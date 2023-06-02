@@ -7,7 +7,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Residente } from '../../Models';
 // import { CRMCUSTOMERS } from '../../crm/shared/data';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-residentes-list',
@@ -24,6 +24,7 @@ export class ListComponent implements OnInit {
   newContact!: FormGroup;
   age!: number | null;
   pageSizeOptions: number[] = [5, 10, 25, 50];
+  returnUrl: string = '/';
 
   @Output() residentesListado: EventEmitter<Residente[]> = new EventEmitter();
 
@@ -35,7 +36,8 @@ export class ListComponent implements OnInit {
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    private route: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +55,8 @@ export class ListComponent implements OnInit {
       phone: ['', Validators.required],
       location: ['', Validators.required]
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/edit';
   }
 
   // convenience getter for easy access to form fields
@@ -65,7 +69,7 @@ export class ListComponent implements OnInit {
  */
   openCreate(): void {
     this.residentesListado.emit(this.residentes);
-    this.route.navigate(['apps/residentes/create']);
+    this.router.navigate(['apps/residentes/create']);
   }
 
   openHistorial(id: number): void {
@@ -77,7 +81,7 @@ export class ListComponent implements OnInit {
       const historialData = historialExpediente;
   
       // Pass the data as parameters in the navigation function using 'state'
-      this.route.navigate(['apps/residentes/historial'], {
+      this.router.navigate(['apps/residentes/historial'], {
         state: {
           expedienteData: expedienteData,
           historialData: historialData
@@ -168,10 +172,13 @@ export class ListComponent implements OnInit {
       });
     })
 
-    document.querySelectorAll('.action-icon').forEach((e) => {
+    document.querySelectorAll('.edit').forEach((e) => {
       e.addEventListener("click", () => {
-        console.log('le dio');
-        console.log(this.residentes);
+        const residenteId = e.getAttribute('id');
+                console.log(residenteId);
+                if (residenteId) {
+                    this.router.navigate([`${this.returnUrl}/${residenteId}`]); // Modify the navigation path to include the id parameter
+                }
       });
     })
   }
@@ -190,10 +197,10 @@ export class ListComponent implements OnInit {
   }
 
   // action cell formatter
-  residenteActionFormatter(): any {
+  residenteActionFormatter(residente: Residente): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${residente.resi_Id}"> <i class="mdi mdi-square-edit-outline"></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${residente.resi_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
 

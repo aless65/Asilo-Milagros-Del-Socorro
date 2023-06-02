@@ -23,6 +23,11 @@ export class ServiceService {
     return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Listado`);
   }
 
+  
+  findResidentes(id: number) {
+    return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Find?id=${id}`);
+  }
+
   getAgendaDetalles(id: number) {
     return this.http.get<AgendaDetalle[]>(`${this.variableGlobal}Agenda/ListadoDetalles?id=${id}`);
   }

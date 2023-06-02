@@ -64,13 +64,12 @@ export class EditComponent implements OnInit {
   dietaModel: Dieta = {};
   historialPago: HistorialPago = {};
   maxId: number = 0;
-  isDatosPersonalesActive: boolean = true;
-  isEncargadoActive: boolean = false;
-  isExpedienteActive: boolean = false;
   isAdministracionActive: boolean = false;
   allValuesUndefinedOrNull!: boolean;
   allValuesUndefinedOrNullDieta: boolean = false;
   residentesFromList: Residente[] = [];
+  residenteId!: number;
+  estaciviResi!: number;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -125,6 +124,13 @@ export class EditComponent implements OnInit {
       listPlugin
     ]);
 
+
+    this.route.paramMap.subscribe(params => {
+      this.residenteId = Number(params.get('id'));
+      // Use the id parameter as needed
+    });
+
+
     // this.eventModal.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
     //   if (!this.isEditable) {
     //     agendadetalle.agendeta_Id = this.maxId + 1;
@@ -143,6 +149,14 @@ export class EditComponent implements OnInit {
     //     this.isEditable = false;
     //   }
     // });
+
+    this.resiService.findResidentes(this.residenteId).subscribe((response: any) => {
+        this.residente = response.data;
+        this.estaciviResi = response.data.estacivi_Id;
+        console.log(this.residente.estacivi_IdResi);
+        this.residente.resi_Nacimiento = new Date(this.residente.resi_Nacimiento || '').toISOString().substring(0, 10);
+    });
+
 
     function maxDateValidator(minDate: Date) {
       return (control: any): { [key: string]: any } | null => {
@@ -221,6 +235,8 @@ export class EditComponent implements OnInit {
         options: options
       },
       ];
+
+      this.residente.estacivi_IdResi =  this.estaciviResi;
     });
 
 
@@ -249,6 +265,8 @@ export class EditComponent implements OnInit {
         options: options
       },
       ];
+
+      console.log(this.enfermedad);
     });
 
     this.service.getMunicipios().subscribe((response: any) => {
@@ -452,8 +470,6 @@ export class EditComponent implements OnInit {
           this.activeWizard4 = 2
         }
       });
-
-      this.isDatosPersonalesActive = false;
     }
   }
 
@@ -464,7 +480,6 @@ export class EditComponent implements OnInit {
     if (this.allValuesUndefinedOrNull) {
       this.activeWizard4 = 3
       this.encargado.enca_Nombres = undefined;
-      this.isEncargadoActive = false;
       return;
     } else {
       if (this.encargadoForm.invalid) {
@@ -511,9 +526,6 @@ export class EditComponent implements OnInit {
             this.activeWizard4 = 3
           }
         });
-
-
-        this.isEncargadoActive = false;
       }
     }
 
@@ -597,8 +609,6 @@ export class EditComponent implements OnInit {
         });
       }
     })
-
-    this.isDatosPersonalesActive = false;
   }
 
   submitAdmin() {

@@ -1,7 +1,7 @@
 <!-- page title -->
 <app-page-title [breadcrumbItems]="pageTitle" title="Residentes"></app-page-title>
 
-<div class="row">
+<div class="row"  *ngIf="selectedResidente.expe_Fotografia">
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
