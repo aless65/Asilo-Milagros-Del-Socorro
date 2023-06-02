@@ -32,14 +32,14 @@ export class LayoutContainerComponent implements OnInit, AfterViewInit {
     // default settings
     this.configuredDemo = environment.demo;
 
-  /*   let isAdmin: boolean = false; // Asigna un valor por defecto a isAdmin
+    let isAdmin: boolean = false; // Asigna un valor por defecto a isAdmin
   let roleId: number = 2;
 
   // Lógica para determinar si el usuario es administrador y obtener el ID del rol del usuario
   // Asigna los valores correspondientes a las variables isAdmin y roleId
 
    // Llama al método getMenuItems del servicio MenuService para obtener los elementos del menú
-   this.menuService.getMenuItems(isAdmin, roleId).subscribe(
+  /* this.menuService.getMenuItems(isAdmin, roleId).subscribe(
     (menuItems: MenuItem[]) => {
       this.menuItems = menuItems;
     },

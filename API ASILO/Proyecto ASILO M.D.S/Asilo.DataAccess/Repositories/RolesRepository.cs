@@ -58,10 +58,10 @@ namespace Asilo.DataAccess.Repositories
             var parametros = new DynamicParameters();
             parametros.Add("@role_Nombre", item.role_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@role_UsuCreacion", item.role_UsuCreacion, DbType.Int32, ParameterDirection.Input);
-
+            
             result = db.QueryFirst<RequestStatus>(ScriptsDataBase.UDP_Inserta_Roles, parametros, commandType: CommandType.StoredProcedure);
 
-            if (result.MessageStatus == "El rol ha sido insertado con éxito")
+            if (result.MessageStatus == "El rol ha sido insertado con ?xito")
             {
                 foreach (var pantalla in item.role_Pantallas)
                 {
@@ -72,7 +72,7 @@ namespace Asilo.DataAccess.Repositories
 
                     var respuesta = db.QueryFirst<string>(ScriptsDataBase.UDP_Inserta_RolesXPantalla, parametros2, commandType: CommandType.StoredProcedure);
 
-                    if (respuesta != "Operación realizada con éxito")
+                    if (respuesta != "Operación realizada con exito")
                     {
                         result.MessageStatus = "Ha ocurrido un error en la asignación de pantallas";
                         break;
@@ -102,7 +102,7 @@ namespace Asilo.DataAccess.Repositories
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Roles, parametros, commandType: CommandType.StoredProcedure);
 
-            if (result.MessageStatus == "El rol ha sido editado con éxito")
+            if (result.MessageStatus == "El rol ha sido editado con exito")
             {
                 var parametrosDelete = new DynamicParameters();
                 parametrosDelete.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
@@ -118,7 +118,7 @@ namespace Asilo.DataAccess.Repositories
 
                     var respuesta = db.QueryFirst<string>(ScriptsDataBase.UDP_Inserta_RolesXPantalla, parametros2, commandType: CommandType.StoredProcedure);
 
-                    if (respuesta != "Operación realizada con éxito")
+                    if (respuesta != "Operación realizada con exito")
                     {
                         result.MessageStatus = "Ha ocurrido un error en la asignación de pantallas";
                         break;

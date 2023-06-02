@@ -121,11 +121,11 @@ import { Select2Data } from 'ng-select2-component';
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
-              timer: 1700,
+              timer: 2000,
               timerProgressBar: true,
               titleText: 'El registro no puede ser eliminado porque está siendo usado',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -181,8 +181,8 @@ import { Select2Data } from 'ng-select2-component';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Ya existe una habitación con ese numero!',
-              icon: 'error',
-              background: '#fff0f0f5'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -195,14 +195,16 @@ import { Select2Data } from 'ng-select2-component';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Ha ocurrido en error inesperado!',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
           }
           else if(response.message == "Exitoso"){
             Swal.fire({
+              toast: true,
+              position: 'top-end',
               title: 'Perfecto!',
               text: 'El registro se editó con éxito!',
               icon: 'success',
@@ -236,8 +238,8 @@ import { Select2Data } from 'ng-select2-component';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Ya existe una habitación con ese numero!',
-              icon: 'error',
-              background: '#fff0f0f5'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -250,8 +252,8 @@ import { Select2Data } from 'ng-select2-component';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Ha ocurrido en error inesperado!',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

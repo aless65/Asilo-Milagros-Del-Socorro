@@ -40,7 +40,10 @@
             <div class="row mb-3">
                 <label for="name" class="form-label">Nombre centro</label>
                 <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
-                    [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
+                     [ngClass]="{ 'is-valid': addCentro.submitted && form1.name.valid , 'is-invalid': addCentro.submitted && form1.name.invalid }">
+                     <div *ngIf="addCentro.submitted && form1.name.valid" class="valid-feedback">
+                        Completo!
+                      </div>
                 <div *ngIf="addCentro.submitted && form1.name.invalid " class="invalid-feedback">
                     Nombre requerido
                 </div>
@@ -53,7 +56,11 @@
             <div class="row mb-3">
                 <label class="col-form-label" for="muni_Id">Municipio</label>
                 <div class="col">
-                    <select2 id="muni_Id" [data]="municipio" formControlName="muni_Id" [minCountForSearch]="0"></select2>
+                    <select2 id="muni_Id" [data]="municipio" formControlName="muni_Id" [minCountForSearch]="0"
+                    [ngClass]="{ 'is-valid': addCentro.submitted && form1.muni_Id.valid , 'is-invalid': addCentro.submitted && form1.muni_Id.invalid }"></select2>
+                    <div *ngIf="addCentro.submitted && form1.muni_Id.valid" class="valid-feedback">
+                        Completo!
+                      </div>
                 </div>
             </div>
             <div *ngIf="newCentro?.get('muni_Id')?.invalid && newCentro?.get('muni_Id')?.touched" class="text-danger">
@@ -66,8 +73,12 @@
             <div class="row mb-3">
                 <label for="direccion" class="col-form-label">Dirección centro</label>
                 <div class="col">
-                    <input type="text" class="form-control" id="direccion" placeholder="Dirección" required formControlName="direccion" [ngClass]="{ 'is-invalid': addCentro.submitted && form1.name.invalid }">
-                    <div *ngIf="addCentro.submitted && form1.name.invalid" class="invalid-feedback">
+                    <input type="text" class="form-control" id="direccion" placeholder="Dirección" required formControlName="direccion" 
+                    [ngClass]="{ 'is-valid': addCentro.submitted && form1.direccion.valid ,'is-invalid': addCentro.submitted && form1.direccion.invalid }">
+                    <div *ngIf="addCentro.submitted && form1.direccion.valid" class="valid-feedback">
+                        Completo!
+                      </div>
+                    <div *ngIf="addCentro.submitted && form1.direccion.invalid" class="invalid-feedback">
                         Dirección requerido
                     </div>
                 </div>

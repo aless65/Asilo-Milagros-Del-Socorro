@@ -51,7 +51,7 @@ import Swal from 'sweetalert2';
     this.newCentro = this.formBuilder.group({
       name: ['', Validators.required],
       direccion: ['', Validators.required],
-      muni_Id: new FormControl('', Validators.required),
+      muni_Id: [0, Validators.required],
       
     });
    

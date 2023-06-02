@@ -60,12 +60,12 @@ VALUES ('apps-enfermedades', 'Enfermedades', 0,'/apps/enfermedades/list','Asilo'
 		('apps-residentes', 'Residentes', 0,'/apps/residentes/list','Asilo','users', 1)
 GO
 
-INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
 
-VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
+--VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
 
-INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
-VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+--VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
 
 
 
@@ -1005,16 +1005,16 @@ VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,1,'2012-02-25
 	  --********INSERT TABLA Proveedores ****************---
 INSERT INTO [asil].[tbProveedores](prov_Nombre, prov_CorreoElectronico, prov_Telefono, muni_Id, prov_Direccion, prov_UsuCreacion)
 VALUES
-  ('PharmaCorp', 'info@pharmacorp.com', '555-123-4567', '0501', '123 Main Street', 1),
-  ('MediSupplies', 'sales@medisupplies.com', '555-987-6543', '1805', '456 Elm Street', 1),
-  ('HealthPlus', 'info@healthplus.com', '555-789-0123', '1705', '789 Oak Avenue', 1),
-  ('MediWorld', 'sales@mediworld.com', '555-456-7890', '1605', '987 Pine Road', 1),
-  ('PharmaLink', 'info@pharmalink.com', '555-234-5678', '0201', '654 Cedar Lane', 1),
-  ('MediCare', 'sales@medicare.com', '555-876-5432', '1503', '321 Maple Avenue', 1),
-  ('HealthLine', 'info@healthline.com', '555-345-6789', '1802', '789 Oak Street', 1),
-  ('PharmaDirect', 'sales@pharmadirect.com', '555-678-9012', '1802', '456 Elm Road', 1),
-  ('MediPharm', 'info@medipharm.com', '555-901-2345', '0505', '123 Pine Lane', 1),
-  ('HealthCare', 'sales@healthcare.com', '555-789-0123', '1703', '987 Maple Street', 1);
+  ('PharmaCorp', 'info@pharmacorp.com', '5551234567', '0501', '123 Main Street', 1),
+  ('MediSupplies', 'sales@medisupplies.com', '555987-6543', '1805', '456 Elm Street', 1),
+  ('HealthPlus', 'info@healthplus.com', '5557890123', '1705', '789 Oak Avenue', 1),
+  ('MediWorld', 'sales@mediworld.com', '5554567890', '1605', '987 Pine Road', 1),
+  ('PharmaLink', 'info@pharmalink.com', '5552345678', '0201', '654 Cedar Lane', 1),
+  ('MediCare', 'sales@medicare.com', '5558765432', '1503', '321 Maple Avenue', 1),
+  ('HealthLine', 'info@healthline.com', '5553456789', '1802', '789 Oak Street', 1),
+  ('PharmaDirect', 'sales@pharmadirect.com', '5556789012', '1802', '456 Elm Road', 1),
+  ('MediPharm', 'info@medipharm.com', '5559012345', '0505', '123 Pine Lane', 1),
+  ('HealthCare', 'sales@healthcare.com', '5557890123', '1703', '987 Maple Street', 1);
 
 
 	  --********INSERT TABLA Tipo de Sangre ****************---

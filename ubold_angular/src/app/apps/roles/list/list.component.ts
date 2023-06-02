@@ -143,6 +143,7 @@ import Swal from 'sweetalert2';
   }
 
   submitForm(): void {
+    console.log(this.newRol.controls.pant_Id);
     if (this.newRol.invalid) {
       console.log(this.newRol.controls.pant_Id);
       Swal.fire({
@@ -153,7 +154,7 @@ import Swal from 'sweetalert2';
         timerProgressBar: true,
         titleText: '¡Llene todos los campos!',
         icon: 'warning',
-        background: '#f6f6baf2'
+        background: '#ffffff'
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
@@ -176,7 +177,7 @@ import Swal from 'sweetalert2';
           console.log("se pudo:", response);
           this._fetchData();
           this.fetchData(); 
-          if (response.message == "El rol ha sido editado con éxito") {
+          if (response.message == "El rol ha sido editado con exito") {
             Swal.fire({
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
@@ -197,7 +198,7 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: '¡El rol ya existe!',
               icon: 'error',
-              background: '#f47171f0'
+             
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -217,7 +218,7 @@ import Swal from 'sweetalert2';
           console.log("se pudo:", response);
          // console.log(rol);
           this._fetchData();
-          if (response.message == "El rol ha sido insertado con éxito") {
+          if (response.message == "El rol ha sido insertado con exito") {
             Swal.fire({
               title: 'Perfecto!',
               text: 'El registro se guardó con éxito!',
@@ -238,7 +239,7 @@ import Swal from 'sweetalert2';
               timerProgressBar: true,
               titleText: '¡El rol ya existe!',
               icon: 'error',
-              background: '#f47171f0'
+              background: '#fffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

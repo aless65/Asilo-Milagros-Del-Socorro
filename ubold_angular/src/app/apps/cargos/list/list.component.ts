@@ -76,16 +76,16 @@ import Swal from 'sweetalert2';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
-          if(response.message == "El cargo no puede ser eliminado ya que está siendo usado en otro registro"){
+          if(response.message == "El cargo no puede ser eliminado ya que est? siendo usado en otro registro"){
             Swal.fire({
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
-              timer: 1700,
+              timer: 2000,
               timerProgressBar: true,
               titleText: 'El cargo no puede ser eliminado ya que está siendo usado en otro registro',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -154,8 +154,8 @@ import Swal from 'sweetalert2';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡El cargo ya existe!',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
@@ -199,8 +199,8 @@ import Swal from 'sweetalert2';
               timer: 1700,
               timerProgressBar: true,
               titleText: '¡Este cargo ya existe!',
-              icon: 'error',
-              background: '#f47171f0'
+              icon: 'warning',
+              background: '#ffffff'
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

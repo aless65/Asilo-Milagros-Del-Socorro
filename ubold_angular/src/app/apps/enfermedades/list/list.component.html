@@ -37,7 +37,7 @@
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
-                    [ngClass]="{ 'is-invalid': addEnfermedad.submitted && form1.name.invalid }">
+                    [ngClass]="{ 'is-valid': addEnfermedad.submitted && form1.name.valid, 'is-invalid': addEnfermedad.submitted && form1.name.invalid }">
                 <div *ngIf="addEnfermedad.submitted && form1.name.invalid" class="valid-feedback">
                     completo!
                 </div>

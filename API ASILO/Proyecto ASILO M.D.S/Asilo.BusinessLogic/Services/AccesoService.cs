@@ -222,7 +222,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 var insert = _rolesRepository.Insert(item);
 
-                if (insert.MessageStatus == "El rol ha sido insertado con éxito")
+                if (insert.MessageStatus == "El rol ha sido insertado con exito")
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
                 else if (insert.MessageStatus == "El rol ya existe")
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Warning);
@@ -242,7 +242,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 var update = _rolesRepository.Update(item);
 
-                if (update.MessageStatus == "El rol ha sido editado con éxito")
+                if (update.MessageStatus == "El rol ha sido editado con exito")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
                 else if (update.MessageStatus == "El rol ya existe")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Warning);

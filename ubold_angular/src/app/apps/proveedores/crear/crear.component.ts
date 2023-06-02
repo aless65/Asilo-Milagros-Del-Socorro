@@ -20,14 +20,9 @@ export class CrearComponent implements OnInit {
   returnUrl: string = '/';
   pageTitle: BreadcrumbItem[] = [];
   validationGroup1!: FormGroup;
-  //estadoCivil: Select2Data = [];
- // cargos: Select2Data = [];
- // centros: Select2Data = [];
   municipio: Select2Data = [];
   usucrea2: number = 1;
   proveedor: Proveedor = new  Proveedor(); 
- // isFechaInvalida: boolean = false;
-
 
   constructor (
     private fb: FormBuilder,
@@ -39,9 +34,7 @@ export class CrearComponent implements OnInit {
 
     ngOnInit(): void {
     this.pageTitle = [{ label: 'Lista', path: '/' }, { label: 'Crear', path: '/', active: true }];
-    
-
-
+ 
     // initialize form config
     this.validationGroup1 = this.fb.group({
       Nombre: ['', Validators.required],
@@ -52,14 +45,6 @@ export class CrearComponent implements OnInit {
       usucrea: [0, Validators.required],
 
     });
-
-
-    
-
-   
-   
-    
-
 
     this.service2.getMunicipios().subscribe((response: any) => {
       let depaLabels: string[] = [];
@@ -89,16 +74,12 @@ export class CrearComponent implements OnInit {
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/proveedores/list';
 
-
   }
 
   // convenience getter for easy access to form fields
   get form1() { return this.validationGroup1.controls; }
-
-    
+ 
   validarYGuardar() {
-   // this.isFechaInvalida = false;
-   // console.log(this.empleado.empe_Nacimiento); // "2005-01-01"
     
      if (this.validationGroup1.invalid) {
       Swal.fire({
@@ -113,7 +94,6 @@ export class CrearComponent implements OnInit {
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
-      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
       console.log(this.usucrea2);
       Object.keys(this.validationGroup1.controls).forEach(field => {
         const control = this.validationGroup1.get(field);
@@ -132,13 +112,10 @@ export class CrearComponent implements OnInit {
     
   }
 
-
-  
   Guardar(){
     this.service.createProveedor(this.proveedor)
     .subscribe((data: any) => {
       console.log("GUARDAAA");
-     /* this.router.navigate([this.returnUrl]);*/
       console.log(this.proveedor );
       console.log(data.message);
 
@@ -150,8 +127,8 @@ export class CrearComponent implements OnInit {
           timer: 1700,
           timerProgressBar: true,
           titleText: '¡Ya existe un proveedor con ese nombre!',
-          icon: 'error',
-          background: '#fff0f0f5'
+          icon: 'warning',
+          background: '#ffffff'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
@@ -164,8 +141,8 @@ export class CrearComponent implements OnInit {
           timer: 1700,
           timerProgressBar: true,
           titleText: '¡Ha ocurrido en error inesperado!',
-          icon: 'error',
-          background: '#f47171f0'
+          icon: 'warning',
+          background: '#ffffff'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
