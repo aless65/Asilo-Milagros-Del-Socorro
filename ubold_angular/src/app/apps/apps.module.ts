@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { AppsRoutingModule } from './apps-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 
@@ -19,7 +18,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
   imports: [
     CommonModule,
     AppsRoutingModule,
-    PdfViewerModule,
     // NgToastModule,
     // ToastModule
   ]
