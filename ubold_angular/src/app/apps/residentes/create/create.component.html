@@ -438,19 +438,22 @@
                                     <div class="file-upload">
                                         <div class="image-preview" *ngIf="selectedImage">
                                             <img [src]="selectedImage" alt="Preview">
-                                            <div class="delete-container">
-                                                <button class="delete-button" (click)="deleteImage()">Eliminar</button>
-                                            </div>
                                         </div>
                                         <div class="input-container">
-                                            <label class="btn btn-blue rounded-pill" for="image">Agregar
-                                                fotografía</label>
+                                            <div class="btn-container botones">
+                                                <label class="btn btn-blue agregarimg rounded-pill" for="image">Agregar
+                                                    fotografía</label>
+                                                <label class="delete-label" *ngIf="selectedImage">
+                                                    <button class="btn btn-danger rounded-pill"
+                                                        (click)="deleteImage()">Eliminar</button>
+                                                </label>
+                                            </div>
                                             <input type="file" id="image" name="image" class="form-control-file"
-                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)"
-                                                >
+                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)">
                                         </div>
                                     </div>
                                 </div>
+
 
                             </div> <!-- end row -->
 
@@ -480,7 +483,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = 0"
+                                            (close)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = 0"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>
@@ -492,7 +495,7 @@
                                         <div *ngIf="validationWizard.submitted && form4.cent_Id.invalid"
                                             class="invalid-feedback">
                                             Centro requerido.
-                                        </div>  
+                                        </div>
                                     </div>
 
                                     <div class="row mb-3">

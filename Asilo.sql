@@ -395,10 +395,10 @@ GO
 CREATE TABLE asil.tbDietas
 (
 	diet_Id					INT IDENTITY,
-	diet_Desayuno			NVARCHAR(500) NOT NULL,
-	diet_Almuerzo			NVARCHAR(500) NOT NULL,
-	diet_Cena				NVARCHAR(500) NOT NULL,
-	diet_Merienda			NVARCHAR(500) NOT NULL,
+	diet_Desayuno			NVARCHAR(500),
+	diet_Almuerzo			NVARCHAR(500),
+	diet_Cena				NVARCHAR(500),
+	diet_Merienda			NVARCHAR(500),
 	diet_Restricciones		NVARCHAR(500),
 	diet_Observaciones		NVARCHAR(500),
 	

@@ -159,8 +159,7 @@
                         <span class="d-none d-sm-inline">Expediente</span>
                     </a>
                     <ng-template ngbNavContent>
-                        <form class="form-horizontal needs-validation" [formGroup]="profileForm" #profileWizard="ngForm"
-                            (ngSubmit)="profileForm.valid && activeWizard4 = 4">
+                        <form class="form-horizontal needs-validation" [formGroup]="profileForm" #profileWizard="ngForm">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="row mb-3">
@@ -218,16 +217,18 @@
                                     <div class="file-upload">
                                         <div class="image-preview" *ngIf="selectedImage">
                                             <img [src]="selectedImage" alt="Preview">
-                                            <div class="delete-container">
-                                                <button class="delete-button" (click)="deleteImage()">Eliminar</button>
-                                            </div>
                                         </div>
                                         <div class="input-container">
-                                            <label class="btn btn-blue rounded-pill" for="image">Agregar
-                                                fotografía</label>
+                                            <div class="btn-container botones">
+                                                <label class="btn btn-blue agregarimg rounded-pill" for="image">Agregar
+                                                    fotografía</label>
+                                                <label class="delete-label" *ngIf="selectedImage">
+                                                    <button class="btn btn-danger rounded-pill"
+                                                        (click)="deleteImage()">Eliminar</button>
+                                                </label>
+                                            </div>
                                             <input type="file" id="image" name="image" class="form-control-file"
-                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)"
-                                                >
+                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)">
                                         </div>
                                     </div>
                                 </div>
@@ -249,7 +250,7 @@
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="4">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2" [class.disabled]="!isAdministracionActive">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2" >
                         <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
                         <span class="d-none d-sm-inline">Administración</span>
                     </a>
@@ -260,7 +261,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = 0"
+                                            (close)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = 0;"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>
@@ -278,13 +279,13 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="diet_Id">Dieta</label>
                                         <select2 id="diet_Id" [data]="dieta" formControlName="diet_Id"
-                                            [class.col-md-12]="form4.diet_Id.value !== '2'"
-                                            [(ngModel)]="residente.diet_Id"
-                                            [class.col-md-10]="form4.diet_Id.value === '2'" [minCountForSearch]="0"
+                                            [class.col-md-12]="form4.diet_Id.value !== 2"
+                                            name="diet_Id"
+                                            [class.col-md-10]="form4.diet_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.diet_Id.invalid, 'is-valid': validationWizard.submitted && form4.diet_Id.valid }">
 
                                         </select2>
-                                        <button *ngIf="form4.diet_Id.value === '2'" type="button"
+                                        <button *ngIf="form4.diet_Id.value === 2" type="button"
                                             class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
                                             (click)="handleButtonClick('diet_Id')">
                                             <i class="mdi mdi-book-edit"></i>
@@ -303,7 +304,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="habi_Id">Habitación</label>
                                         <select2 id="habi_Id" [data]="habitacion" formControlName="habi_Id"
-                                            [minCountForSearch]="0" [(ngModel)]="residente.habi_Id"
+                                            [minCountForSearch]="0" [(ngModel)]="residente.habi_Id" name="habi_Id"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.habi_Id.invalid, 'is-valid': validationWizard.submitted && form4.habi_Id.valid }">
 
                                         </select2>
@@ -324,13 +325,13 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="agen_Id">Agenda</label>
                                         <select2 id="agen_Id" [data]="agenda" formControlName="agen_Id"
-                                            [class.col-md-12]="form4.agen_Id.value !== '2'"
-                                            [(ngModel)]="residente.agen_Id"
-                                            [class.col-md-10]="form4.agen_Id.value === '2'" [minCountForSearch]="0"
+                                            [class.col-md-12]="form4.agen_Id.value !== 2"
+                                            [(ngModel)]="residente.agen_Id" name="agen_Id"
+                                            [class.col-md-10]="form4.agen_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
 
                                         </select2>
-                                        <button *ngIf="form4.agen_Id.value === '2'" type="button"
+                                        <button *ngIf="form4.agen_Id.value === 2" type="button"
                                             class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
                                             (click)="handleButtonClick('agen_Id')">
                                             <i class="mdi mdi-book-edit"></i>
@@ -349,12 +350,12 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="empe_Id">Cuidado</label>
                                         <select2 id="empe_Id" [data]="cuidado" formControlName="empe_Id"
-                                            [class.col-md-12]="form4.empe_Id.value !== '2'"
-                                            [class.col-md-10]="form4.empe_Id.value === '2'" [minCountForSearch]="0"
+                                            [class.col-md-12]="form4.empe_Id.value !== 2"
+                                            [class.col-md-10]="form4.empe_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.empe_Id.invalid, 'is-valid': validationWizard.submitted && form4.empe_Id.valid }">
 
                                         </select2>
-                                        <button *ngIf="form4.empe_Id.value === '2'" type="button"
+                                        <button *ngIf="form4.empe_Id.value === 2" type="button"
                                             class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
                                             (click)="handleButtonClick('empe_Id')">
                                             <i class="mdi mdi-book-edit"></i>
@@ -414,39 +415,39 @@
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Desayuno:</label>
                                     <textarea class="form-control" placeholder="Desayuno..." name="desayuno"
-                                        id="desayuno" formControlName="desayuno" [(ngModel)]="dietaModel.diet_Desayuno">
+                                        id="desayuno" formControlName="desayuno" [(ngModel)]="residente.diet_Desayuno">
                                 </textarea>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Almuerzo:</label>
                                     <textarea class="form-control" placeholder="Almuerzo..." name="almuerzo"
-                                        id="almuerzo" formControlName="almuerzo" [(ngModel)]="dietaModel.diet_Almuerzo">
+                                        id="almuerzo" formControlName="almuerzo" [(ngModel)]="residente.diet_Almuerzo">
                                 </textarea>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Merienda:</label>
                                     <textarea class="form-control" placeholder="Merienda..." name="merienda"
-                                        id="merienda" formControlName="merienda" [(ngModel)]="dietaModel.diet_Merienda">
+                                        id="merienda" formControlName="merienda" [(ngModel)]="residente.diet_Merienda">
                                 </textarea>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Cena:</label>
                                     <textarea class="form-control" placeholder="Cena..." name="cena" id="cena"
-                                        formControlName="cena" [(ngModel)]="dietaModel.diet_Cena">
+                                        formControlName="cena" [(ngModel)]="residente.diet_Cena">
                                 </textarea>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Restricciones:</label>
                                     <textarea class="form-control" placeholder="Restricciones..."
                                         name="agendeta_Observaciones" id="restricciones" formControlName="restricciones"
-                                        [(ngModel)]="dietaModel.diet_Restricciones">
+                                        [(ngModel)]="residente.diet_Restricciones">
                                 </textarea>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label">Observaciones:</label>
                                     <textarea class="form-control" placeholder="Observaciones..." name="observaciones"
                                         id="observaciones" formControlName="observaciones"
-                                        [(ngModel)]="dietaModel.diet_Observaciones">
+                                        [(ngModel)]="residente.diet_Observaciones">
                                 </textarea>
                                 </div>
                             </div>
@@ -472,8 +473,8 @@
 
         </div> <!-- end #validationWizard-->
     </div> <!-- end card-body -->
-    <!-- <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)" (eventDeleted)="handleEventDelete($event)">
-    </app-residente-evento> -->
+    <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)" (eventDeleted)="handleEventDelete($event)">
+    </app-residente-evento>
 </div> <!-- end card-->
 
 <ng-template #personalizarDieta let-modal>
@@ -516,7 +517,7 @@
                     <label class="col-form-label" for="empe_Id">Asignar cuidador(a):</label>
                     <div class="col-md-9">
                         <select2 id="empe_Id" [data]="cuidador" formControlName="empe_Id" [minCountForSearch]="0"
-                            [(ngModel)]="residente.empe_Id"
+                            [(ngModel)]="residente.empe_Id" name="empe_Id" value="residente.empe_Id"
                             [ngClass]="{ 'is-invalid': cuidadoModal.submitted && formCuidado.empe_Id.invalid}">
                         </select2>
                         <div *ngIf="cuidadoModal.submitted && formCuidado.empe_Id.valid" class="valid-feedback">

@@ -18,6 +18,7 @@ namespace Asilo.Entities.Entities
         public int? expe_UsuModificacion { get; set; }
         public DateTime? expe_FechaModificacion { get; set; }
         public bool? expe_Estado { get; set; }
+        public int[] expe_Enfermedades { get; set; }
 
         public virtual tbUsuarios expe_UsuCreacionNavigation { get; set; }
         public virtual tbUsuarios expe_UsuModificacionNavigation { get; set; }

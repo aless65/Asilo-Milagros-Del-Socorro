@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Select2Data, Select2UpdateEvent } from 'ng-select2-component';
 import { ServiceService } from '../../Service/service.service';
+import { ServiceService as ServiceAgendas } from '../../agendas/service.service';
 import { ServiceService as ResidenteService } from 'src/app/apps/residentes/Service/service.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
@@ -17,7 +18,7 @@ import {
   Encargado, Expediente, Dieta,
   HistorialPago
 } from '../../Models';
-// import { CalendarEventComponent } from '../eventos/evento.component';
+import { CalendarEventComponent } from '../eventosEdit/eventosEdit.component';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListComponent } from '../../residentes/list/list.component';
@@ -70,11 +71,14 @@ export class EditComponent implements OnInit {
   residentesFromList: Residente[] = [];
   residenteId!: number;
   estaciviResi!: number;
+  // agendaId!: number;
+  habiId!: number;
+  centroOriginal!: number;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
-//   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
+  @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
   @ViewChild('residenteList', { static: true }) residenteList!: ListComponent;
   @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
@@ -98,6 +102,7 @@ export class EditComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private service: ServiceService,
+    private serviceAgendas: ServiceAgendas,
     private modalService: NgbModal,
     private router: Router,
     private resiService: ResidenteService,
@@ -131,30 +136,100 @@ export class EditComponent implements OnInit {
     });
 
 
-    // this.eventModal.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
-    //   if (!this.isEditable) {
-    //     agendadetalle.agendeta_Id = this.maxId + 1;
-    //     this.agendadetalle.push(agendadetalle);
-    //   } else {
+    this.eventModal.agendaDetalleSaved.subscribe((agendadetalle: AgendaDetalle) => {
+      if (!this.isEditable) {
+        agendadetalle.agendeta_Id = this.maxId + 1;
+        this.agendadetalle.push(agendadetalle);
+      } else {
 
-    //     const eventIndex = this.agendadetalle.findIndex((detalle) => detalle.agendeta_Id === agendadetalle.agendeta_Id);
+        const eventIndex = this.agendadetalle.findIndex((detalle) => detalle.agendeta_Id === agendadetalle.agendeta_Id);
 
-    //     this.agendadetalle[eventIndex].agendeta_HoraStart = agendadetalle.agendeta_HoraStart;
-    //     this.agendadetalle[eventIndex].agendeta_HoraEnd = agendadetalle.agendeta_HoraEnd;
-    //     this.agendadetalle[eventIndex].agendeta_Observaciones = agendadetalle.agendeta_Observaciones;
-    //     this.agendadetalle[eventIndex].acti_Id = agendadetalle.acti_Id;
-    //     this.agendadetalle[eventIndex].medi_Id = agendadetalle.medi_Id;
-    //     this.agendadetalle[eventIndex].acti_Class = agendadetalle.acti_Class;
+        this.agendadetalle[eventIndex].agendeta_HoraStart = agendadetalle.agendeta_HoraStart;
+        this.agendadetalle[eventIndex].agendeta_HoraEnd = agendadetalle.agendeta_HoraEnd;
+        this.agendadetalle[eventIndex].agendeta_Observaciones = agendadetalle.agendeta_Observaciones;
+        this.agendadetalle[eventIndex].acti_Id = agendadetalle.acti_Id;
+        this.agendadetalle[eventIndex].medi_Id = agendadetalle.medi_Id;
+        this.agendadetalle[eventIndex].acti_Class = agendadetalle.acti_Class;
 
-    //     this.isEditable = false;
-    //   }
-    // });
+        this.isEditable = false;
+      }
+    });
 
     this.resiService.findResidentes(this.residenteId).subscribe((response: any) => {
-        this.residente = response.data;
-        this.estaciviResi = response.data.estacivi_Id;
-        console.log(this.residente.estacivi_IdResi);
-        this.residente.resi_Nacimiento = new Date(this.residente.resi_Nacimiento || '').toISOString().substring(0, 10);
+      this.residente = response.data;
+      this.centroOriginal = response.data.cent_Id;
+      console.log(response.data, "data");
+      this.estaciviResi = response.data.estacivi_Id;
+      this.residente.resi_Nacimiento = new Date(this.residente.resi_Nacimiento || '').toISOString().substring(0, 10);
+      this.habiId = response.data.habi_Id;
+
+      // console.log(this.residente.cent_Id, "centro");
+      this.populateCuidadoresDisponibles(undefined, this.residente.cent_Id);
+
+      console.log(this.residente);
+
+      this.resiService.findExpedientes(this.residente.expe_Id || 0).subscribe((response: any) => {
+        this.expediente = response.data;
+        this.expediente.expe_Enfermedades = this.residente.resi_EnfermedadesIds?.split(',').map(Number);
+        this.expediente.expe_FechaApertura = new Date(this.expediente.expe_FechaApertura || '').toISOString().substring(0, 10);
+        this.selectedImage = this.expediente.expe_Fotografia || '';
+      });
+
+      if (this.residente.empe_Id === undefined || this.residente.empe_Id === null) {
+        this.validationWizardForm.get('empe_Id')?.setValue(1);
+      } else {
+        this.validationWizardForm.get('empe_Id')?.setValue(2);
+      }
+
+      if (this.residente.diet_Id === undefined || this.residente.diet_Id === null) {
+        this.validationWizardForm.get('diet_Id')?.setValue(1);
+      } else {
+        this.validationWizardForm.get('diet_Id')?.setValue(2);
+      }
+
+      if ((this.residente.agen_Id || 0) > 1) {
+        this.validationWizardForm.get('agen_Id')?.setValue(2);
+      }
+
+      this.resiService.getAgendaDetalles(this.residente.agen_Id || 0).subscribe((response: any) => {
+        const currentDate = new Date();
+        this.calendarEventsData = response.data.map((item: any) => ({
+          id: item.agendeta_Id,
+          title: item.acti_Nombre,
+          start: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraStart),
+          end: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraEnd),
+          classNames: [item.acti_Class]
+        }));
+
+        this.agendadetalle = response.data;
+
+        this.calendarOptions = {
+          themeSystem: 'bootstrap',
+          bootstrapFontAwesome: false,
+          buttonText: {
+          },
+          initialView: 'timeGridDay',
+          handleWindowResize: true,
+          headerToolbar: {
+            left: '',
+            center: '',
+            right: ''
+          },
+          events: [...this.calendarEventsData],
+          editable: true,
+          droppable: true, // this allows things to be dropped onto the calendar 
+          selectable: true,
+          dateClick: this.handleDateClick.bind(this),
+          eventClick: this.handleEventClick.bind(this),
+          drop: this.onDrop.bind(this),
+          eventDrop: this.onEventDrop.bind(this),
+          allDaySlot: false,
+          dayHeaderContent: 'Agenda',
+        }
+
+      });
+
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/list';
     });
 
 
@@ -236,7 +311,7 @@ export class EditComponent implements OnInit {
       },
       ];
 
-      this.residente.estacivi_IdResi =  this.estaciviResi;
+      this.residente.estacivi_IdResi = this.estaciviResi;
     });
 
 
@@ -265,8 +340,6 @@ export class EditComponent implements OnInit {
         options: options
       },
       ];
-
-      console.log(this.enfermedad);
     });
 
     this.service.getMunicipios().subscribe((response: any) => {
@@ -339,8 +412,8 @@ export class EditComponent implements OnInit {
       {
         label: 'Escoja un tipo de agenda',
         options: [
-          { value: '1', label: 'Estándar' },
-          { value: '2', label: 'Personalizada' },
+          { value: 1, label: 'Estándar' },
+          { value: 2, label: 'Personalizada' },
         ],
       },
     ];
@@ -349,8 +422,8 @@ export class EditComponent implements OnInit {
       {
         label: 'Escoja un tipo de dieta',
         options: [
-          { value: '1', label: 'Estándar' },
-          { value: '2', label: 'Personalizada' },
+          { value: 1, label: 'Estándar' },
+          { value: 2, label: 'Personalizada' },
         ],
       },
     ];
@@ -359,58 +432,12 @@ export class EditComponent implements OnInit {
       {
         label: 'Escoja un tipo de cuidado',
         options: [
-          { value: '1', label: 'Estándar' },
-          { value: '2', label: 'Atención especial' },
+          { value: 1, label: 'Estándar' },
+          { value: 2, label: 'Atención especial' },
         ],
       },
     ];
 
-    this.resiService.getAgendaDetalles(1).subscribe((response: any) => {
-      const currentDate = new Date();
-      this.calendarEventsData = response.data.map((item: any) => ({
-        id: item.agendeta_Id,
-        title: item.acti_Nombre,
-        start: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraStart),
-        end: new Date(currentDate.toDateString() + ' ' + item.agendeta_HoraEnd),
-        classNames: [item.acti_Class]
-      }));
-
-      this.agendadetalle = response.data;
-
-      this.calendarOptions = {
-        themeSystem: 'bootstrap',
-        bootstrapFontAwesome: false,
-        buttonText: {
-          // today: 'Today',
-          // month: 'Month',
-          // week: 'Week',
-          // day: 'Day',
-          // list: 'List',
-          // prev: 'Prev',
-          // next: 'Next'
-        },
-        initialView: 'timeGridDay',
-        handleWindowResize: true,
-        headerToolbar: {
-          left: '',
-          center: '',
-          right: ''
-        },
-        events: [...this.calendarEventsData],
-        editable: true,
-        droppable: true, // this allows things to be dropped onto the calendar 
-        selectable: true,
-        dateClick: this.handleDateClick.bind(this),
-        eventClick: this.handleEventClick.bind(this),
-        drop: this.onDrop.bind(this),
-        eventDrop: this.onEventDrop.bind(this),
-        allDaySlot: false,
-        dayHeaderContent: 'Agenda',
-      }
-
-    });
-
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/list';
   }
 
   handleAceptarClick() {
@@ -434,26 +461,13 @@ export class EditComponent implements OnInit {
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
-      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
-
-      // Object.keys(this.accountForm.controls).forEach(field => {
-      //   const control = this.accountForm.get(field);
-      //   if (control?.invalid) {
-      //     const errors = control.errors;
-      //     console.log(`Error en el campo ${field}:`, errors);
-      //   }
-      // })
     } else {
 
-      
 
-      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '').subscribe((response: any) => {
 
-        console.log(response);
+      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '', true, this.residenteId).subscribe((response: any) => {
 
         if (response.code === 200) {
-  
-          console.log("ps sí existe");
           Swal.fire({
             toast: true,
             position: 'top-end',
@@ -466,8 +480,24 @@ export class EditComponent implements OnInit {
           }).then(() => {
             // Action after the toast is closed
           });
-        } else{
-          this.activeWizard4 = 2
+        } else {
+          // this.activeWizard4 = 2
+          this.residente.resi_UsuModificacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
+          this.resiService.editResidentes(this.residente).subscribe((response: any) => {
+            if (response.code === 200) {
+              Swal.fire({
+                toast: true,
+                position: 'top-end',
+                title: '¡Perfecto!',
+                text: 'El registro se guardó con éxito!',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1850,
+                timerProgressBar: true
+              }).then(() => {
+              });
+            }
+          });
         }
       });
     }
@@ -556,33 +586,30 @@ export class EditComponent implements OnInit {
       //   }
       // })
     } else {
-      console.log(this.expediente);
-      console.log(this.profileForm.valid);
-      console.log(this.expediente.expe_Fotografia);
+      this.expediente.expe_UsuModificacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
+
+      if (!this.selectedImage?.toString().startsWith('https://')) {
+        this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
+          this.expediente.expe_Fotografia = response.data.url.toString();
+          this.functionInsert();
+        },
+          (error: any) => {
+            this.expediente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
+            this.functionInsert();
+          });
+      } else {
+        this.functionInsert();
+      }
+
+
     }
   }
 
   functionInsert() {
-    const combinedModels = {};
-
-    // Merge the properties of each model into the combinedModels object
-    Number(this.residente.agen_Id);
-    Number(this.residente.diet_Id);
-    this.residente.resi_UsuCreacion = 1;
-    this.residente.agen_Detalles = this.agendadetalle;
-    Object.assign(combinedModels, this.residente);
-    Object.assign(combinedModels, this.dietaModel);
-    Object.assign(combinedModels, this.encargado);
-    Object.assign(combinedModels, this.expediente);
-    Object.assign(combinedModels, this.historialPago);
-
-    console.log(this.residente.agen_Detalles);
-
-    console.log(combinedModels);
-
-    this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
+    this.resiService.editExpedientes(this.expediente).subscribe((response: any) => {
       console.log(response);
-      if (response.message === "Exitoso") {
+
+      if (response.code === 200) {
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -594,21 +621,8 @@ export class EditComponent implements OnInit {
           timerProgressBar: true
         }).then(() => {
         });
-        this.router.navigate([this.returnUrl]);
-      } else {
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          title: 'Perfecto!',
-          text: response.message,
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1850,
-          timerProgressBar: true
-        }).then(() => {
-        });
       }
-    })
+    });
   }
 
   submitAdmin() {
@@ -706,32 +720,38 @@ export class EditComponent implements OnInit {
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
-      // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
-
-      // Object.keys(this.profileForm.controls).forEach(field => {
-      //   const control = this.accountForm.get(field);
-      //   if (control?.invalid) {
-      //     const errors = control.errors;
-      //     console.log(`Error en el campo ${field}:`, errors);
-      //   }
-      // })
     } else {
+      const combinedModels = {};
+      console.log(this.residente);
+      // Merge the properties of each model into the combinedModels object
+      Number(this.residente.agen_Id);
+      Number(this.residente.diet_Id);
+      this.residente.resi_UsuCreacion = 1;
+      this.residente.agen_Detalles = this.agendadetalle;
+      Object.assign(combinedModels, this.residente);
 
-      if (canInsert) {
+      console.log(this.residente.agen_Detalles);
 
-        this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
-          console.log(response.data.url);
-          this.residente.expe_Fotografia = response.data.url.toString();
+      console.log(combinedModels);
 
-          this.functionInsert();
-        },
-          (error: any) => {
-            this.residente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
-            this.functionInsert();
-          }
-        );
+      this.resiService.editResidentesAdmin(combinedModels).subscribe((response: any) => {
+        console.log(response);
+      });
+      // if (canInsert) {
 
-      }
+      //   this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
+      //     console.log(response.data.url);
+      //     this.residente.expe_Fotografia = response.data.url.toString();
+
+      //     this.functionInsert();
+      //   },
+      //     (error: any) => {
+      //       this.residente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
+      //       this.functionInsert();
+      //     }
+      //   );
+
+      // }
     }
   }
 
@@ -771,9 +791,9 @@ export class EditComponent implements OnInit {
     this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
   }
 
-  populateCuidadoresDisponibles(selected: any) {
-    if (selected) {
-      this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
+  populateCuidadoresDisponibles(selected?: any, centro?: number) {
+    if (centro) {
+      this.service.getCuidadoresDisponibles(centro, this.residente.resi_Id || 0).subscribe((response: any) => {
         let options = response.data.map((item: any) => ({
           value: item.empe_Id,
           label: item.empe_NombreCompleto,
@@ -786,7 +806,8 @@ export class EditComponent implements OnInit {
         ];
       });
 
-      this.service.getHabitacionesDisponibles(selected.value).subscribe((response: any) => {
+      this.service.getHabitacionesDisponibles(centro, this.residenteId).subscribe((response: any) => {
+        console.log(response);
         let cateLabels: string[] = [];
         let options: { [key: string]: any[] } = {};
 
@@ -812,6 +833,61 @@ export class EditComponent implements OnInit {
         }));
       });
 
+
+      this.validationWizardForm.get('habi_Id')?.setValue(this.habiId.toString());
+
+      this.cuidadoForm.get('empe_Id')?.setValue(this.residente.empe_Id);
+    }
+
+    if (selected) {
+      this.service.getCuidadoresDisponibles(selected.value, this.residente.resi_Id || 0).subscribe((response: any) => {
+        let options = response.data.map((item: any) => ({
+          value: item.empe_Id,
+          label: item.empe_NombreCompleto,
+        }));
+
+        this.cuidador = [{
+          label: 'Escoja una opción',
+          options: options
+        },
+        ];
+      });
+
+      this.service.getHabitacionesDisponibles(selected.value, this.residenteId).subscribe((response: any) => {
+        console.log(response);
+        let cateLabels: string[] = [];
+        let options: { [key: string]: any[] } = {};
+
+        response.data.forEach((item: any) => {
+          const cateNombre: string = item.cate_Nombre;
+          const habiId: number = item.habi_Id;
+          const habiNumbero: number = item.habi_Numero;
+
+          if (!cateLabels.includes(cateNombre)) {
+            cateLabels.push(cateNombre);
+            options[cateNombre] = [];
+          }
+
+          options[cateNombre].push({
+            value: habiId,
+            label: habiNumbero.toString()
+          });
+        });
+
+        this.habitacion = cateLabels.map((cateNombre: string) => ({
+          label: cateNombre,
+          options: options[cateNombre]
+        }));
+      });
+
+      if (this.centroOriginal.toString() === selected.value.toString()) {
+        this.validationWizardForm.get('habi_Id')?.setValue(this.residente.habi_Id || 0);
+        this.cuidadoForm.get('empe_Id')?.setValue(this.residente.empe_Id);
+      } else {
+        this.validationWizardForm.get('habi_Id')?.setValue(0);
+        this.cuidadoForm.get('empe_Id')?.setValue(0);
+      }
+
     }
   }
 
@@ -821,7 +897,7 @@ export class EditComponent implements OnInit {
    * @param data data to be used in modal
    */
   openEventModal(title: string = "", data: any = {}): void {
-    // this.eventModal.openModal(title, data);
+    this.eventModal.openModal(title, data);
   }
 
   handleImageUpload(event: any): void {
@@ -982,11 +1058,15 @@ export class EditComponent implements OnInit {
 
       this.calendarEventsData = modifiedEvents;
     } else {
-      // Find the maximum id value in calendarEventsData
-      this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+      if (this.calendarEventsData.length === 0) {
+        newEvent.id = "1";
+      } else {
+        // Find the maximum id value in calendarEventsData
+        this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
 
-      // Set newEvent.id to maxId + 1
-      newEvent.id = String(this.maxId + 1);
+        // Set newEvent.id to maxId + 1
+        newEvent.id = String(this.maxId + 1);
+      }
 
       let nEvent = {
         id: newEvent.id,

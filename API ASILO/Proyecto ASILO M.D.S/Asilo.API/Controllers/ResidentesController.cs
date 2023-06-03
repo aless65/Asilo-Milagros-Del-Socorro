@@ -36,9 +36,9 @@ namespace Asilo.API.Controllers
         }
 
         [HttpGet("IdentidadExiste")]
-        public IActionResult IdentidadExiste(string resi_Identidad)
+        public IActionResult IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
         {
-            var list = _asiloServivce.IdentidadExisteResi(resi_Identidad);
+            var list = _asiloServivce.IdentidadExisteResi(resi_Identidad, isEdit, resi_Id);
             return Ok(list);
         }
 
@@ -77,6 +77,14 @@ namespace Asilo.API.Controllers
         public IActionResult InsertarPrincipal(VW_tbResidentes_Form resi)
         {
             //var item = _mapper.Map<VW_tbResidentes_Form>(resi);
+            var response = _asiloServivce.InsertarResidentesForm(resi);
+            return Ok(response);
+        }
+
+
+        [HttpPut("EditPrincipal")]
+        public IActionResult EditPrincipal(VW_tbResidentes_Form resi)
+        {
             var response = _asiloServivce.InsertarResidentesForm(resi);
             return Ok(response);
         }

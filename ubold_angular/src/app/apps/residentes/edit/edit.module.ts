@@ -7,13 +7,13 @@ import { EditRoutingModule } from './edit-routing.module';
 import { EditComponent } from './edit.component';
 import { Select2Module } from 'ng-select2-component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-// import { CalendarEventComponent } from '../eventos/evento.component';
+import { CalendarEventComponent } from '../eventosEdit/eventosEdit.component';
 
 
 @NgModule({
   declarations: [
     EditComponent,
-    // CalendarEventComponent
+    CalendarEventComponent
   ],
   imports: [
     CommonModule,

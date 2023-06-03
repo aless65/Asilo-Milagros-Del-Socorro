@@ -36,25 +36,23 @@
   object-fit: cover;
 }
 
-.delete-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
-  line-height: 1;
-  padding: 0;
+.botones {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 3;
-  /* Add z-index to ensure the delete button is on top */
+  margin-bottom: 10px;
+}
+
+.agregarimg {
+  margin-right: 5px;
+}
+
+.delete-label {
+  display: flex;
+  align-items: center;
+}
+
+.delete-label button {
+  margin-left: 5px;
 }
 
 ::ng-deep .modal-dialog {
@@ -84,4 +82,3 @@
   height: 100%;
   object-fit: cover;
 }
-

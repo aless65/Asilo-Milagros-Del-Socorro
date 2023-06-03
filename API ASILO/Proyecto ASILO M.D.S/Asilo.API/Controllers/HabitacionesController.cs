@@ -62,9 +62,9 @@ namespace Asilo.API.Controllers
         }
 
         [HttpGet("HabitacionesDisponibles")]
-        public IActionResult HabitacionesDisponibles(int cent_Id)
+        public IActionResult HabitacionesDisponibles(int cent_Id, int resi_Id)
         {
-            var list = _asiloServivce.ListadoHabitacionesDisponibles(cent_Id);
+            var list = _asiloServivce.ListadoHabitacionesDisponibles(cent_Id, resi_Id);
             return Ok(list);
         }
     }

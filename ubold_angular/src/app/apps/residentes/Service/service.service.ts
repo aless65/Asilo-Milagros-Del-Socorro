@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Residente, AgendaDetalle,
-         HistorialExpediente } from '../../Models';
+         HistorialExpediente, Expediente } from '../../Models';
 import { environment } from 'src/environments/environment';
 import { forkJoin } from 'rxjs';
 
@@ -28,6 +28,10 @@ export class ServiceService {
     return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Find?id=${id}`);
   }
 
+  findExpedientes(id: number) {
+    return this.http.get<Expediente[]>(`${this.variableGlobal}Expedientes/Find?id=${id}`);
+  }
+
   getAgendaDetalles(id: number) {
     return this.http.get<AgendaDetalle[]>(`${this.variableGlobal}Agenda/ListadoDetalles?id=${id}`);
   }
@@ -41,13 +45,25 @@ export class ServiceService {
     return this.http.post<any>(`${this.variableAPIimg}`, formData);
   }
 
-
   addResidentes(newResidenteForm: any) {
     return this.http.post<any>(`${this.variableGlobal}Residentes/InsertarPrincipal`, newResidenteForm);
   }
 
-  getIdentidadResidenteExiste(identidad: string) {
-    return this.http.get<any>(`${this.variableGlobal}Residentes/IdentidadExiste?resi_Identidad=${identidad}`);
+  editResidentes(editResidente: Residente) {
+    return this.http.put<any>(`${this.variableGlobal}Residentes/Editar`, editResidente);
+  }
+  
+  editResidentesAdmin(editResidente: Residente) {
+    return this.http.put<any>(`https://localhost:44371/api/Residentes/EditarPrincipal`, editResidente);
+  }
+
+
+  editExpedientes(editExpediente: Expediente) {
+    return this.http.put<any>(`${this.variableGlobal}Expedientes/Editar`, editExpediente);
+  }
+
+  getIdentidadResidenteExiste(identidad: string, isEdit: boolean, resi_Id: number) {
+    return this.http.get<any>(`${this.variableGlobal}Residentes/IdentidadExiste?resi_Identidad=${identidad}&isEdit=${isEdit}&resi_Id=${resi_Id}`);
   }
 
   getIdentidadEncargadoExiste(identidad: string) {

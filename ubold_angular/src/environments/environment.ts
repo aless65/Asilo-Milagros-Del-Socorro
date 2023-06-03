@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   demo: 'default',
   GOOGLE_MAPS_API_KEY: 'AIzaSyDpgQMpcfx1QU-8SM-ljcgjG4xrYtIYby4',
-  variableGlobal: 'https://localhost:44371/api/',
+  // variableGlobal: 'https://localhost:44371/api/',
+  variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/',
   imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409',
 };
 

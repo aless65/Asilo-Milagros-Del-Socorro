@@ -25,9 +25,6 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
 
   loggedInUser: any = {};
 
-  // aaaa = MENU_ITEMS;
-  aaaaa: MenuItem[] = [];
-
   menuItems: MenuItem[] = [];
 
   constructor (
@@ -47,14 +44,14 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    this.aaaaa = MENU_ITEMS;
-    console.log(this.aaaaa);
     this.initMenu();
     this.loggedInUser = this.authService.currentUser();
-    let isAdmin: boolean = false;
-    let roleId: number = 2;
 
-    this.menuService.getMenuItems(isAdmin, roleId).subscribe(
+    // const usuario = JSON.parse(localStorage.getItem('currentUser')!).data;
+    let isAdmin: boolean = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_EsAdmin;
+    let roleId: number =JSON.parse(localStorage.getItem('currentUser')!).data[0].role_Id;
+
+    this.menuService.getMenuItems(isAdmin || false, roleId).subscribe(
       (response: any) => {
         console.log(response.data);
         const apiData = response.data;

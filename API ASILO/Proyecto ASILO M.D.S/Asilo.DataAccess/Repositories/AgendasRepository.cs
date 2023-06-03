@@ -66,7 +66,7 @@ namespace Asilo.DataAccess.Repositories
 
             var eliminar = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Delete, parametersDelete, commandType: CommandType.StoredProcedure);
 
-            if(eliminar == "Se ha eliminado")
+            if (eliminar == "Se ha eliminado")
             {
 
                 foreach (var item in detalle)
@@ -99,7 +99,7 @@ namespace Asilo.DataAccess.Repositories
 
             return db.Query<VW_tbAgendas>(ScriptsDataBase.Agenda_List, null, commandType: CommandType.StoredProcedure);
         }
-      
+
 
         public RequestStatus Update(tbAgendas item)
         {

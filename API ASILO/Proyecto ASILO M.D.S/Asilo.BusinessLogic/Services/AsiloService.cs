@@ -647,12 +647,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id)
+        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id, int resi_Id)
         {
             var result = new ServiceResult();
             try
             {
-                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id);
+                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id, resi_Id);
                 return result.Ok(list);
             }
             catch (Exception e)
@@ -969,7 +969,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 var update = _expedientesRepository.Update(item);
 
-                if (update.MessageStatus == "El expediente ha sido editado exitosamente")
+                if (update.MessageStatus == "todo biennnn" || update.MessageStatus == "El expediente ha sido editado exitosamente")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
                 else
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
@@ -1157,12 +1157,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id)
+        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id, int resi_Id)
         {
             var result = new ServiceResult();
             try
             {
-                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id);
+                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id, resi_Id);
                 return result.Ok(list);
             }
             catch (Exception e)
@@ -1636,12 +1636,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult IdentidadExisteResi(string resi_Identidad)
+        public ServiceResult IdentidadExisteResi(string resi_Identidad, bool isEdit, int resi_Id)
         {
             var result = new ServiceResult();
             try
             {
-                var identidad = _residentesRepository.IdentidadExiste(resi_Identidad);
+                var identidad = _residentesRepository.IdentidadExiste(resi_Identidad, isEdit, resi_Id);
                 if (identidad.CodeStatus == 2)
                 {
                     return result.SetMessage("Ya existe", ServiceResultType.Success);
@@ -1752,6 +1752,28 @@ namespace Asilo.BusinessLogic.Services
             try
             {
                 var list = _residentesRepository.InsertPrincipal(item);
+                if (list.MessageStatus == "todo biennnn")
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage(list.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarResidentesForm(VW_tbResidentes_Form item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _residentesRepository.UpdatePrincipal(item);
                 if (list.MessageStatus == "todo biennnn")
                 {
                     return result.SetMessage("Exitoso", ServiceResultType.Success);

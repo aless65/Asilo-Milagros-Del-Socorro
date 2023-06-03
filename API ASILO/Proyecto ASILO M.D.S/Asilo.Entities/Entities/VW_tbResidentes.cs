@@ -22,15 +22,15 @@ namespace Asilo.Entities.Entities
         public string resi_Sexo { get; set; }
         public string SexoDes { get; set; }
         public int? diet_Id { get; set; }
-        public string diet_Desayuno { get; set; }
-        public string diet_Almuerzo { get; set; }
-        public string diet_Cena { get; set; }
-        public string empe_Nombres { get; set; }
-        public string empe_Apellidos { get; set; }
-        public string empe_NombreCompleto { get; set; }
-        public string diet_Merienda { get; set; }
-        public string diet_Observaciones { get; set; }
-        public string diet_Restricciones { get; set; }
+        public string? diet_Desayuno { get; set; }
+        public string? diet_Almuerzo { get; set; }
+        public string? diet_Cena { get; set; }
+        public string? empe_Nombres { get; set; }
+        public string? empe_Apellidos { get; set; }
+        public string? empe_NombreCompleto { get; set; }
+        public string? diet_Merienda { get; set; }
+        public string? diet_Observaciones { get; set; }
+        public string? diet_Restricciones { get; set; }
         public DateTime resi_FechaIngreso { get; set; }
         public int? empe_Id { get; set; }
         public int agen_Id { get; set; }
@@ -46,5 +46,7 @@ namespace Asilo.Entities.Entities
         public string expe_Fotografia { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string? resi_Enfermedades { get; set; }
+        public string? resi_EnfermedadesIds { get; set; }
+        public int habi_Id { get; set; }
     }
 }

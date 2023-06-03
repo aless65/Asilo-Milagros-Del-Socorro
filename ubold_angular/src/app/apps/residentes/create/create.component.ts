@@ -82,6 +82,7 @@ export class CreateComponent implements OnInit {
   calendarComponent!: FullCalendarComponent;
 
 
+
   accountForm!: FormGroup;
 
   encargadoForm!: FormGroup;
@@ -427,14 +428,14 @@ export class CreateComponent implements OnInit {
       // })
     } else {
 
-      
 
-      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '').subscribe((response: any) => {
+
+      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '', false, 0).subscribe((response: any) => {
 
         console.log(response);
 
         if (response.code === 200) {
-  
+
           console.log("ps sí existe");
           Swal.fire({
             toast: true,
@@ -448,7 +449,7 @@ export class CreateComponent implements OnInit {
           }).then(() => {
             // Action after the toast is closed
           });
-        } else{
+        } else {
           this.activeWizard4 = 2
         }
       });
@@ -763,7 +764,7 @@ export class CreateComponent implements OnInit {
 
   populateCuidadoresDisponibles(selected: any) {
     if (selected) {
-      this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
+      this.service.getCuidadoresDisponibles(selected.value, 0).subscribe((response: any) => {
         let options = response.data.map((item: any) => ({
           value: item.empe_Id,
           label: item.empe_NombreCompleto,
@@ -776,7 +777,7 @@ export class CreateComponent implements OnInit {
         ];
       });
 
-      this.service.getHabitacionesDisponibles(selected.value).subscribe((response: any) => {
+      this.service.getHabitacionesDisponibles(selected.value, 0).subscribe((response: any) => {
         let cateLabels: string[] = [];
         let options: { [key: string]: any[] } = {};
 
@@ -830,6 +831,7 @@ export class CreateComponent implements OnInit {
   deleteImage() {
     this.selectedImage = ''; // Clear the selectedImage variable to remove the image
   }
+
 
   openModal(event: Select2UpdateEvent, modal: string) {
     const selectedValue = event.value;
@@ -972,11 +974,15 @@ export class CreateComponent implements OnInit {
 
       this.calendarEventsData = modifiedEvents;
     } else {
-      // Find the maximum id value in calendarEventsData
-      this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+      if (this.calendarEventsData.length === 0) {
+        newEvent.id = "1";
+      } else {
+        // Find the maximum id value in calendarEventsData
+        this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
 
-      // Set newEvent.id to maxId + 1
-      newEvent.id = String(this.maxId + 1);
+        // Set newEvent.id to maxId + 1
+        newEvent.id = String(this.maxId + 1);
+      }
 
       let nEvent = {
         id: newEvent.id,

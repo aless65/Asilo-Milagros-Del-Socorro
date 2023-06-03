@@ -84,12 +84,12 @@ export class ServiceService {
   
   }
   
-  getCuidadoresDisponibles(id: number){
-    return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/CuidadoresDisponibles?cent_Id=${id}`);
+  getCuidadoresDisponibles(centro: number, residente: number){
+    return this.http.get<Empleados[]>(`${this.variableGlobal}Empleados/CuidadoresDisponibles?cent_Id=${centro}&resi_Id=${residente}`);
   }
   
-  getHabitacionesDisponibles(id: number){
-    return this.http.get<Habitacion[]>(`${this.variableGlobal}Habitaciones/HabitacionesDisponibles?cent_Id=${id}`);
+  getHabitacionesDisponibles(centro: number, residente: number){
+    return this.http.get<Habitacion[]>(`${this.variableGlobal}Habitaciones/HabitacionesDisponibles?cent_Id=${centro}&resi_Id=${residente}`);
   }
   
   getMetodosPago(){

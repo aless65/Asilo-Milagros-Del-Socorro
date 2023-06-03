@@ -89,7 +89,6 @@ namespace Asilo.DataAccess.Repositories
             parameters.Add("@resi_FechaIngreso", item.resi_FechaIngreso, DbType.Date, ParameterDirection.Input);
             parameters.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
-            parameters.Add("@resi_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@resi_UsuModificacion", item.resi_UsuModificacion, DbType.Int32, ParameterDirection.Input);
             var resultado = db.QueryFirst<int>(ScriptsDataBase.ActualizarResidentes, parameters, commandType: System.Data.CommandType.StoredProcedure);
             result.CodeStatus = resultado;
@@ -97,7 +96,7 @@ namespace Asilo.DataAccess.Repositories
         }
 
 
-        public RequestStatus IdentidadExiste(string resi_Identidad)
+        public RequestStatus IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
         {
             RequestStatus result = new RequestStatus();
 
@@ -105,6 +104,8 @@ namespace Asilo.DataAccess.Repositories
 
             var parameters = new DynamicParameters();
             parameters.Add("@resi_Identidad", resi_Identidad, DbType.String, ParameterDirection.Input);
+            parameters.Add("@isEdit", isEdit, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("@resi_Id", resi_Id, DbType.Int32, ParameterDirection.Input);
 
             result = db.QueryFirst<RequestStatus>(ScriptsDataBase.IdentidadExisteResi, parameters, commandType: CommandType.StoredProcedure);
 
@@ -220,6 +221,76 @@ namespace Asilo.DataAccess.Repositories
                 }
             }
 
+            return result;
+        }
+
+        public RequestStatus UpdatePrincipal(VW_tbResidentes_Form item)
+        {
+            RequestStatus result = new RequestStatus();
+
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@resi_Id", null, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@diet_Id", item.diet_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@diet_Desayuno", item.diet_Desayuno, DbType.String, ParameterDirection.Input);
+            parameters.Add("@diet_Almuerzo", item.diet_Almuerzo, DbType.String, ParameterDirection.Input);
+            parameters.Add("@diet_Cena", item.diet_Cena, DbType.String, ParameterDirection.Input);
+            parameters.Add("@diet_Merienda", item.diet_Merienda, DbType.String, ParameterDirection.Input);
+            parameters.Add("@diet_Restricciones", item.diet_Restricciones, DbType.String, ParameterDirection.Input);
+            parameters.Add("@diet_Observaciones", item.diet_Observaciones, DbType.String, ParameterDirection.Input);
+            parameters.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ResidentesFormEdit, parameters, commandType: CommandType.StoredProcedure);
+
+            if (result.CodeStatus == 1)
+            {
+
+                if (item.agen_Detalles != null && item.agen_Id != 1)
+                {
+
+                    var parametersDelete = new DynamicParameters();
+                    parametersDelete.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+
+                    var eliminar = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Delete, parametersDelete, commandType: CommandType.StoredProcedure);
+
+                    if (eliminar == "Se ha eliminado")
+                    {
+                        foreach (var detalle in item.agen_Detalles)
+                        {
+                            var parameters2 = new DynamicParameters();
+                            parameters2.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+                            parameters2.Add("@agendeta_HoraStart", detalle.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
+                            parameters2.Add("@agendeta_HoraEnd", detalle.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
+                            parameters2.Add("@acti_Id", detalle.acti_Id, DbType.Int32, ParameterDirection.Input);
+                            parameters2.Add("@medi_Id", detalle.medi_Id, DbType.Int32, ParameterDirection.Input);
+                            parameters2.Add("@agendeta_Observaciones", detalle.agendeta_Observaciones, DbType.String, ParameterDirection.Input);
+                            parameters2.Add("@agendeta_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+
+                            var respuesta = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Insert, parameters2, commandType: CommandType.StoredProcedure);
+
+                            if (respuesta == "Ha ocurrido un error")
+                            {
+                                result.MessageStatus = "Ha ocurrido un error al insertar los detalles de la agenda";
+                                break;
+                            }
+                            else
+                            {
+                                result.MessageStatus = "todo biennnn";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    result.MessageStatus = "todo biennnn";
+                }
+            }
+
             //RequestStatus reques = new()
             //{
             //    MessageStatus = result
@@ -227,6 +298,5 @@ namespace Asilo.DataAccess.Repositories
 
             return result;
         }
-
     }
 }

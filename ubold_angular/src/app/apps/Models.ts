@@ -74,6 +74,7 @@ export interface Residente {
     habi_Id?: number;
     agen_Detalles?: any;
     resi_Enfermedades?: string; 
+    resi_EnfermedadesIds?: string; 
     
     [key: string]: number | string | undefined | number[];
 }

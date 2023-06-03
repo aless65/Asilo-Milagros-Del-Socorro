@@ -36,7 +36,7 @@ export class EditComponent implements OnInit {
     isEditable: boolean = false;
     maxId: number = 0;
     agendadetalle: AgendaDetalle[] = [];
-    originalAgenda: AgendaDetalle[] = [];
+    originalAgenda: any;
 
     // @ViewChild('advancedTable') advancedTable: any;
     @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
@@ -100,7 +100,7 @@ export class EditComponent implements OnInit {
             }));
 
             this.agendadetalle = response.data;
-            this.originalAgenda = response.data.slice();
+            this.originalAgenda =JSON.parse(JSON.stringify(response.data));
 
             console.log(this.agendadetalle);
 
@@ -159,6 +159,7 @@ export class EditComponent implements OnInit {
      * @param arg EventClickArg
      */
     handleEventClick(arg: EventClickArg): void {
+        console.log("bajó");
         const event = arg.event;
         // const detalle = arg.event;
         this.event = { id: String(event.id), title: event.title, classNames: event.classNames, category: event.classNames[0] };
@@ -190,6 +191,7 @@ export class EditComponent implements OnInit {
    * on event drop between calendar
    */
     onEventDrop(arg: EventDropArg): void {
+        console.log("bajó");
         let modifiedEvents = [...this.calendarEventsData];
         const idx = modifiedEvents.findIndex((e: any) => e['id'].toString() === arg.event.id.toString());
 
@@ -291,12 +293,13 @@ export class EditComponent implements OnInit {
         } else { 
             console.log(this.agendadetalle, 'agenda detalle');
             console.log(this.originalAgenda, 'original agenda');
-            if(JSON.stringify(this.agendadetalle) === JSON.stringify(this.originalAgenda)){
+
+            if(JSON.stringify(this.agendadetalle) === this.originalAgenda){
                 Swal.fire({
                     toast: true,
                     position: 'top-end',
-                    title: '¡¡Perfecto!',
-                    text: 'La agenda ha sido actualizada',
+                    title: '¡Perfecto!',
+                    text: 'La agenda ha sido actualizadaaaa',
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1850,
@@ -313,7 +316,7 @@ export class EditComponent implements OnInit {
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
-                            title: '¡¡Perfecto!',
+                            title: '¡Perfecto!',
                             text: 'La agenda ha sido actualizada',
                             icon: 'success',
                             showConfirmButton: false,
@@ -329,5 +332,4 @@ export class EditComponent implements OnInit {
         }
     }
 }
-
 
