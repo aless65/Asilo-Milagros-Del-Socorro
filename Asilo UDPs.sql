@@ -3546,40 +3546,55 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Insert
 AS 
 BEGIN
 	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbMuertos
-						WHERE resi_Id = @resi_Id)
-			BEGIN
+		BEGIN TRANSACTION
+
+		IF NOT EXISTS (SELECT * FROM asil.tbMuertos WHERE resi_Id = @resi_Id)
+		BEGIN
+			-- Insertar la muerte
 			INSERT INTO asil.tbMuertos(resi_Id, muer_FechaYHora, muer_Descripcion, muer_UsuCreacion)
 			VALUES(@resi_Id, @muer_FechaYHora, @muer_Descripcion, @muer_UsuCreacion)
 			
+			-- Actualizar el estado del residente a 0
+			UPDATE asil.tbResidentes
+			SET resi_Estado = 0
+			WHERE resi_Id = @resi_Id
+			
 			SELECT 'La muerte ha sido insertada'
-			END
-		ELSE IF EXISTS (SELECT * FROM asil.tbMuertos 
-						WHERE resi_Id = @resi_Id
-						AND muer_Estado = 0)
-			BEGIN
-				UPDATE asil.tbMuertos 
-				SET    muer_Estado      = 1,
-					   muer_FechaYHora = @muer_FechaYHora,
-					   muer_Descripcion = @muer_Descripcion,
-					   muer_UsuCreacion = @muer_UsuCreacion
-				WHERE resi_Id = @resi_Id
+		END
+		ELSE IF EXISTS (SELECT * FROM asil.tbMuertos WHERE resi_Id = @resi_Id AND muer_Estado = 0)
+		BEGIN
+			-- Actualizar la muerte
+			UPDATE asil.tbMuertos 
+			SET muer_Estado = 1,
+				muer_FechaYHora = @muer_FechaYHora,
+				muer_Descripcion = @muer_Descripcion,
+				muer_UsuCreacion = @muer_UsuCreacion
+			WHERE resi_Id = @resi_Id
 
-				SELECT 'La muerte ha sido insertada'
-			END
+
+			SELECT 'La muerte ha sido insertada'
+		END
 		ELSE
-			SELECT 'ya existe'
+			SELECT 'Ya existe'
+
+		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION
+
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
 GO
 
 
+
+
 /*EDITAR MUERTOS*/
 CREATE OR ALTER PROCEDURE asil.UDP_asil_tbMuertos_Update
     @muer_Id                        INT,
+	@resi_Id                        INT,
 	@muer_FechaYHora				DATETIME,
 	@muer_Descripcion				NVARCHAR(500),
 	@muer_UsuModificacion			INT
@@ -3587,7 +3602,8 @@ AS
 BEGIN
 	BEGIN TRY
 		UPDATE  asil.tbMuertos
-			SET 	muer_FechaYHora = @muer_FechaYHora,
+			SET 	resi_Id = @resi_Id,
+			        muer_FechaYHora = @muer_FechaYHora,
 					muer_Descripcion = @muer_Descripcion,
 					muer_UsuModificacion = @muer_UsuModificacion,
 					muer_FechaModificacion = GETDATE()

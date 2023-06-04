@@ -1372,7 +1372,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 var insert = _muertosRepository.Insert(item);
 
-                if (insert.MessageStatus == "La muerte ha sido insertada")
+                if (insert.MessageStatus == "ha sido insertada")
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
                 else
                     return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
@@ -1391,6 +1391,8 @@ namespace Asilo.BusinessLogic.Services
                 var update = _muertosRepository.Update(item);
 
                 if (update.MessageStatus == "ha sido editado")
+                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                else if(update.MessageStatus == "ha sido editado")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
                 else
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Error);

@@ -68,6 +68,7 @@ namespace Asilo.DataAccess.Repositories
 
             var parametros = new DynamicParameters();
             parametros.Add("@muer_Id", item.muer_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@resi_Id", item.resi_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@muer_FechaYHora", item.muer_FechaYHora, DbType.DateTime, ParameterDirection.Input);
             parametros.Add("@muer_Descripcion", item.muer_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@muer_UsuModificacion", item.muer_UsuModificacion, DbType.Int32, ParameterDirection.Input);

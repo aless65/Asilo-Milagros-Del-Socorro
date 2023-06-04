@@ -1,0 +1,105 @@
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title="Muertos"></app-page-title>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="row justify-content-between mb-2">
+                <div class="col-12">
+                    <div>
+                        <!-- <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
+                                class="mdi mdi-cog"></i></button> -->
+                        <button type="button" class="btn btn-pink waves-effect waves-light mb-2"
+                            (click)="openModal('new')">Agregar</button>
+                    </div>
+                </div><!-- end col-->
+            </div>
+            <!-- customer table -->
+            <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="muertos"
+                [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                (search)="searchData($event)" [isSortable]="false"
+                tableClasses="table-centered table-nowrap table-hover">
+            </app-advanced-table>
+
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+</div>
+<!-- end row -->
+
+<!-- Modal -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">{{ esEditar ? 'Editar muerto' : 'Agregar muerto' }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="newMuerto" #addMuerto="ngForm" (ngSubmit)="submitForm()">
+            <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label for="validationCustom05" class="form-label">Residente:</label>
+                <select2 id="residente-values" placeholder="residente..." formControlName="residente" [data]="residente"
+                  [ngClass]="{ 'is-valid': addMuerto.submitted && form1.residente.valid , 'is-invalid': addMuerto.submitted && form1.residente.invalid }">
+                </select2>
+                <div *ngIf="addMuerto.submitted && form1.residente.valid" class="valid-feedback">
+                  Completo!
+                </div>
+                <div *ngIf="addMuerto.submitted && form1.residente.invalid" class="invalid-feedback">
+                  El residente es requerido.
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-sm-6">
+            <div class="mb-3">
+              <label for="name" class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="name" placeholder="Descripción" required formControlName="name"
+                [ngClass]="{ 'is-valid': addMuerto.submitted && form1.name.valid, 'is-invalid': addMuerto.submitted && form1.name.invalid }">
+              <div *ngIf="addMuerto.submitted && form1.name.invalid" class="valid-feedback">
+                Completo!
+              </div>
+              <div *ngIf="addMuerto.submitted && form1.name.invalid" class="invalid-feedback">
+                El nombre es requerido
+              </div>
+            </div>
+              </div>
+          
+            <div class="col-sm-6">
+            <div class="mb-3">
+              <label for="fechaHora" class="form-label">Fecha y Hora</label>
+              <input type="datetime-local" class="form-control" id="fechaHora" name="fechaHora" required formControlName="fechaHora"
+                [ngClass]="{ 'is-valid': addMuerto.submitted && form1.fechaHora.valid, 'is-invalid': addMuerto.submitted && form1.fechaHora.invalid }">
+              <div *ngIf="addMuerto.submitted && form1.fechaHora.invalid" class="valid-feedback">
+                Completo!
+              </div>
+              <div *ngIf="addMuerto.submitted && form1.fechaHora.invalid" class="invalid-feedback">
+                La fecha y hora son requeridas
+              </div>
+            </div>
+              </div>
+          
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
+              <button type="button" class="btn btn-outline-secondary waves-effect waves-light" (click)="modal.close('')">Cancelar</button>
+            </div>
+        </div>
+          </form>
+          
+    </div>
+</ng-template>
+
+<!-- Modal Delete -->
+<ng-template #deleteMuertoModal let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Eliminar Muerto</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <p>¿Realmente desea eliminar esta muerto?</p>
+        <div class="text-end">
+            <button type="button" (click)="deleteMuerto()" class="btn btn-danger waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-outline-secondary waves-effect waves-light"
+                (click)="modal.close('')">Cancelar</button>
+        </div>
+    </div>
+</ng-template>

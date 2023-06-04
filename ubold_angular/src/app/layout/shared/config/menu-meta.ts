@@ -73,6 +73,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/habitaciones/list',
     },
     {
+        key: 'apps-muertos',
+        label: 'Muertos',
+        isTitle: false,
+        icon: 'briefcase',
+        link: '/apps/muertos/list',
+    },
+    {
         key: 'apps-empleados',
         label: 'Empleados',
         isTitle: false,

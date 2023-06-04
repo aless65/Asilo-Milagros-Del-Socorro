@@ -36,6 +36,21 @@ export interface Cargos{
     carg_FechaModificacion?: string;
 }
 
+export interface Muerto{
+    muer_Id?: number;
+    resi_Id?: number;
+    resi_NombreCompleto?: string;
+    usua_UsuCreacion_Nombre?: string;
+    muer_FechaYHora?: string;
+    muer_Descripcion?: string;
+    muer_UsuCreacion?: number;
+    muer_FechaCreacion?: string;
+    muer_UsuModificacion?: number;
+    muer_FechaModificacion?: string;
+    usua_UsuModificacion_Nombre?: string;
+    muer_Estado?: string;
+}
+
 export interface Categoria{
     cate_Id?: number;
     cate_Nombre?: string;
