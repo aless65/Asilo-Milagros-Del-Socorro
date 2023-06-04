@@ -1,4 +1,5 @@
-import { Component, OnInit, } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+// import { QRCodeComponent } from 'ngx-qrcode';
 import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
@@ -7,6 +8,7 @@ import { ServiceService } from 'src/app/apps/residentes/Service/service.service'
 import { Router, ActivatedRoute } from '@angular/router';
 import pdfMake from "pdfmake/build/pdfmake";
 import { TDocumentDefinitions, Column, TableCell } from 'pdfmake/interfaces';
+import { saveAs } from 'file-saver';
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -21,6 +23,10 @@ export class HistorialComponent implements OnInit {
     pageTitle: BreadcrumbItem[] = [];
     expediente!: Residente;
     historialExpediente: HistorialExpediente[] = [];
+    title = 'app';
+    elementType = 'url';
+    value = 'Techiediaries';
+    docDefinition!: any;
 
     constructor(
         // private sanitizer: DomSanitizer,
@@ -28,7 +34,8 @@ export class HistorialComponent implements OnInit {
         // private fb: FormBuilder,
         private service: ServiceService,
         private route: Router,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private changeDetectorRef: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
@@ -71,14 +78,24 @@ export class HistorialComponent implements OnInit {
         });
     };
 
-
+    // private getPdfDownloadLink = (docDefinition: TDocumentDefinitions): Promise<string> => {
+    //     return new Promise((resolve) => {
+    //       const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    //       pdfDocGenerator.getBlob((blob) => {
+    //         const dataUrl = URL.createObjectURL(blob);
+    //         resolve(dataUrl);
+    //       });
+    //     });
+    //   }
 
     generatePdf = async () => {
         const imageDataUrl = await this.getDataUrl(this.expediente.expe_Fotografia || 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg');
         const backgroundDataUrl = await this.getDataUrl('https://i.ibb.co/8YqvgZM/3.png');
 
-        let docDefinition: TDocumentDefinitions =
+
+        this.docDefinition =
         {
+
             background: {
                 image: backgroundDataUrl,
                 width: 595.28,
@@ -103,8 +120,8 @@ export class HistorialComponent implements OnInit {
                             stack: [
                                 {
                                     text: this.expediente.cent_Nombre,
-                                    style: 'quote',
-                                    fontSize: 10,// Add margin: [top, right, bottom, left]
+                                    fontSize: 10,
+                                    margin: [0, 0, 200, 0]// Add margin: [top, right, bottom, left]
                                 },
                                 {
                                     margin: [0, 5, 0, 0],
@@ -145,7 +162,7 @@ export class HistorialComponent implements OnInit {
                     columnGap: 20,
                 },
                 {
-                    margin: [0, 35, 0, 35],
+                    margin: [0, 35, 0, 20],
                     canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1, lineColor: '#cccccc' }],
                 },
                 {
@@ -188,7 +205,7 @@ export class HistorialComponent implements OnInit {
                     bold: true,
                 },
                 subheader: {
-                    fontSize: 15,
+                    fontSize: 13,
                     bold: true
                 },
                 quote: {
@@ -198,15 +215,40 @@ export class HistorialComponent implements OnInit {
                     fontSize: 8
                 },
                 subheader2: {
-                    fontSize: 12,
+                    fontSize: 10,
                     italics: true
                 }
             }
         };
 
-        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-        pdfDocGenerator.getBlob((blob) => {
+        // const pdfDownloadLink = await this.getPdfDownloadLink(docDefinition);
+
+        // Generate the QR code
+        // this.qrcode.data = pdfDownloadLink;
+        // this.qrcode.generate();
+
+        const pdfDocGenerator = pdfMake.createPdf(this.docDefinition);
+        pdfDocGenerator.getBlob(async (blob) => {
             const dataUrl = URL.createObjectURL(blob);
+
+            console.log(blob);
+
+            // const formData = new FormData();
+            // formData.append('file', dataUrl, 'document.pdf');
+
+            this.service.getPDFUpload(blob);
+
+            // // Save the PDF file using file-saver library
+            // saveAs(blob, 'document.pdf');
+
+            // // Get the URL of the saved file
+            // const savedFileURL = URL.createObjectURL(blob);
+
+            // Store the URL in this.value
+            this.value = 'https://cdn.filestackcontent.com/4Wyk6TuuSA2YUs5wNwL0';
+
+            // console.log(savedFileURL);
+
             const iframe = document.createElement('iframe');
             iframe.src = dataUrl;
             iframe.style.width = '100%';
@@ -218,8 +260,22 @@ export class HistorialComponent implements OnInit {
 
             const historialContainer = document.getElementById('historialContainer');
             historialContainer?.appendChild(pdfContainer);
+
+            // Trigger change detection to ensure the value is updated in the component
+            this.changeDetectorRef.detectChanges();
         });
+
     }
 
+    // onQRCodeScanned(value: string) {
+    //     if (value === this.value) {
+    //       this.downloadPDF();
+    //     }
+    //   }
+
+    //   downloadPDF() {
+    //     const pdfDocGenerator = pdfMake.createPdf(this.docDefinition);
+    //     pdfDocGenerator.download('document.pdf');
+    //   }
 }
 

@@ -9,6 +9,7 @@ export const environment = {
   // variableGlobal: 'https://localhost:44371/api/',
   variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/',
   imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409',
+  fileUpload: 'https://www.filestackapi.com/api/store/S3?key=A4gFG8RRZSBmn5G6VIYCYz',
 };
 
 /*

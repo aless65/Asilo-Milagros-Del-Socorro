@@ -10,7 +10,7 @@ AS
 		   t1.role_Id,
 		   t2.role_Nombre, 
 		   t1.empe_Id,
-		   (SELECT t3.empe_Nombres + ' '+ empe_Apellidos) AS empe_NombreCompleto, 
+		   (SELECT t3.empe_Nombres + ' ' + empe_Apellidos) AS empe_NombreCompleto, 
 		   t1.usua_UsuCreacion, 
 		   t4.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
 		   t1.usua_FechaCreacion, 
@@ -1786,8 +1786,7 @@ BEGIN
 
 		IF NOT EXISTS (SELECT * FROM asil.tbResidentes WHERE agen_Id = @agen_Id) 
 			BEGIN
-				UPDATE asil.tbAgendas 
-				SET agen_Estado = 0
+				DELETE FROM asil.tbAgendas 
 				WHERE agen_Id = @agen_Id
 
 				SELECT 1 AS proceso
@@ -1860,6 +1859,7 @@ BEGIN
 	LEFT JOIN [asil].tbResidentes resi
 		ON empe.empe_Id = resi.empe_Id
 	WHERE resi.resi_Id = @resi_Id
+	AND empe.cent_Id = @cent_Id
 END
 GO
 
@@ -2072,7 +2072,46 @@ END
 GO
 
 /*EDITAR AGENDA DETALLES (OFICIAL)*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_EditOficial
+
+
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_EditOficial 
+	@agen_Id					INT,
+	@agendeta_HoraStart			NVARCHAR(5),
+	@agendeta_HoraEnd			NVARCHAR(5),
+	@acti_Id					INT,
+	@medi_Id					INT,
+	@agendeta_Observaciones		NVARCHAR(500),
+	@agendeta_UsuCreacion		INT
+	
+AS 
+BEGIN
+	BEGIN TRY
+		IF NOT EXISTS (SELECT *
+						FROM [asil].[tbAgendaDetalles]
+						WHERE [agen_Id] = @agen_Id
+						AND [agendeta_HoraStart] = @agendeta_HoraStart
+						AND [agendeta_HoraEnd] = @agendeta_HoraEnd
+						AND [acti_Id] = @acti_Id
+						AND ([medi_Id] = @medi_Id OR ([medi_Id] IS NULL AND @medi_Id IS NULL))
+						AND ([agendeta_Observaciones] = @agendeta_Observaciones OR ([agendeta_Observaciones] IS NULL AND @agendeta_Observaciones IS NULL)))
+			BEGIN
+				INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
+				VALUES(@agen_Id, @agendeta_HoraStart, @agendeta_HoraEnd, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
+
+				SELECT 1 AS CodeStatus
+			END
+		ELSE 
+			SELECT 1 AS CodeStatus
+
+	END TRY
+	BEGIN CATCH
+		SELECT 0 AS CodeStatus
+	END CATCH
+END
+GO
+
+/*INSERTAR AGENDA DETALLES*/
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Insert
 	@agen_Id					INT,
 	@agendeta_HoraStart			NVARCHAR(500),
 	@agendeta_HoraEnd			NVARCHAR(500),
@@ -2095,60 +2134,11 @@ BEGIN
 			BEGIN
 				INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
 				VALUES(@agen_Id, @agendeta_HoraStart, @agendeta_HoraEnd, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
-
-				SELECT 1 AS CodeStatus
-			END
-		ELSE
-			SELECT -2 AS CodeStatus
-
-	END TRY
-	BEGIN CATCH
-		SELECT 0 AS CodeStatus
-	END CATCH
-END
-GO
-
-
-/*INSERTAR AGENDA DETALLES*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbAgendaDetalles_Insert
-	@agen_Id					INT,
-	@agendeta_HoraStart			NVARCHAR(500),
-	@agendeta_HoraEnd			NVARCHAR(500),
-	@acti_Id					INT,
-	@medi_Id					INT,
-	@agendeta_Observaciones		NVARCHAR(500),
-	@agendeta_UsuCreacion		INT
-	
-AS 
-BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbAgendaDetalles
-						WHERE agen_Id = @agen_Id AND
-						       agendeta_HoraStart = @agendeta_HoraStart)
-			BEGIN
-			INSERT INTO asil.tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones,agendeta_UsuCreacion)
-			VALUES(@agen_Id, @agendeta_HoraStart, @agendeta_HoraEnd, @acti_Id, @medi_Id,@agendeta_Observaciones,@agendeta_UsuCreacion)
 			
 			SELECT 'El detalle de agenda ha sido insertado'
 			END
-		ELSE IF EXISTS (SELECT * FROM asil.tbAgendaDetalles 
-						WHERE agen_Id = @agen_Id AND
-						agendeta_HoraStart = @agendeta_HoraStart)
-			BEGIN
-				UPDATE asil.tbAgendaDetalles 
-				SET    agendeta_Estado      = 1,
-				       acti_Id = @acti_Id,
-					   medi_Id = @medi_Id,
-					   agendeta_HoraEnd = @agendeta_HoraEnd,
-					   agendeta_Observaciones = @agendeta_Observaciones,
-					   agendeta_UsuCreacion = @agendeta_UsuCreacion
-				WHERE agen_Id = @agen_Id AND
-					  agendeta_HoraStart = @agendeta_HoraStart
-
-				SELECT 'El detalle de agenda ha sido insertado'
-			END
 		ELSE
-			SELECT 'Este detalle ya existe en la agenda'
+			SELECT 'El detalle de agenda ha sido insertado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2489,6 +2479,85 @@ AS
 BEGIN
 	BEGIN TRANSACTION 
 		BEGIN TRY
+			IF @agen_Id > 1
+				BEGIN
+					IF (SELECT agen_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id) > 1
+						BEGIN
+							SET @agen_Id = (SELECT agen_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
+						END
+					ELSE
+						BEGIN
+					
+							INSERT INTO [asil].[tbAgendas](agen_Nombre, agen_UsuCreacion)
+							VALUES ((SELECT resi_Nombres + ' ' + resi_Apellidos FROM asil.VW_tbResidentes WHERE resi_Id = @resi_Id), @resi_UsuCreacion)
+
+							SET @agen_Id = SCOPE_IDENTITY()
+						END
+				END
+			ELSE
+				BEGIN
+				IF (SELECT agen_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id) > 1
+						BEGIN
+
+							SET @agen_Id = (SELECT agen_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
+
+							UPDATE [asil].tbResidentes
+							SET agen_Id = 1 
+							WHERE agen_Id = @agen_Id
+
+							DELETE FROM [asil].[tbAgendas]
+							WHERE agen_Id = @agen_Id
+
+							DELETE FROM [asil].[tbAgendaDetalles]
+							WHERE agen_Id = @agen_Id
+
+							SET @agen_Id = 1
+						END
+				END
+
+
+			IF @diet_Id > 1
+				BEGIN
+					IF (SELECT diet_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id) IS NOT NULL
+						BEGIN
+							SET @diet_Id = (SELECT diet_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
+						END
+					ELSE
+						BEGIN
+							INSERT INTO [asil].[tbDietas]([diet_UsuCreacion])
+							VALUES (@resi_UsuCreacion)
+
+							SET @diet_Id = SCOPE_IDENTITY()
+						END
+				END
+			ELSE
+				BEGIN
+				IF (SELECT diet_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id) IS NOT NULL
+						BEGIN
+
+							SET @diet_Id = (SELECT diet_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
+
+							UPDATE [asil].tbResidentes
+							SET diet_Id = NULL
+							WHERE diet_Id = @diet_Id
+
+							DELETE FROM [asil].[tbDietas]
+							WHERE diet_Id = @diet_Id
+
+							SET @diet_Id = NULL
+						END
+
+				ELSE
+				BEGIN
+					SET @diet_Id = NULL
+
+					UPDATE [asil].tbResidentes
+					SET diet_Id = NULL
+				END
+			END
+
+
+				
 			UPDATE [asil].[tbDietas]
 			SET	[diet_Desayuno] = @diet_Desayuno,
 				[diet_Almuerzo] = @diet_Almuerzo, 
@@ -2510,10 +2579,12 @@ BEGIN
 			WHERE resi_Id = @resi_Id
 
 			UPDATE [asil].[tbHabitacionesXResidente]
-			SET [habi_Id] = @habi_Id
+			SET [habi_Id] = @habi_Id,
+				habiresi_UsuModificacion = @resi_UsuCreacion,
+				habiresi_FechaModificacion = GETDATE()
 			WHERE resi_Id = @resi_Id
 
-			SELECT 1 AS CodeStatus, 'todo biennnn' AS MessageStatus
+			SELECT 1 AS CodeStatus, @agen_Id AS MessageStatus
 
 			COMMIT TRAN
 		END TRY 
@@ -3721,6 +3792,7 @@ SELECT *
 	LEFT JOIN [asil].[tbHabitacionesXResidente] habiresi
 		ON habi.habi_Id = habiresi.habi_Id
 	WHERE habiresi.resi_Id = @resi_Id
+	AND habi.cent_Id = @cent_Id
 END
 GO
 

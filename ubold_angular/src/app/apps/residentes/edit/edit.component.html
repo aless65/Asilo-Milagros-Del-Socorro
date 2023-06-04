@@ -141,13 +141,18 @@
 
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
-                            <ul class="list-inline mb-0 wizard mt-3">
-
-                                <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary"
-                                        (click)="submitResidente()">Siguiente</button>
-                                </li>
-                            </ul>
+                            <br>
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitResidente()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
 
                         </form>
 
@@ -235,16 +240,17 @@
 
                             </div> <!-- end row -->
 
-                            <ul class="list-inline mb-0 wizard">
-                                <li class="previous list-inline-item">
-                                    <button class="btn btn-secondary" (click)="activeWizard4 = 2"
-                                        type="button">Anterior</button>
-                                </li>
-                                <li class="next list-inline-item float-end">
-                                    <button type="submit" (click)="submitExpediente()"
-                                        class="btn btn-secondary">Siguiente</button>
-                                </li>
-                            </ul>
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitExpediente()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
 
                         </form>
                     </ng-template>
@@ -261,7 +267,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (close)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = 0;"
+                                            (close)="populateCuidadoresDisponibles(selectRef.option);"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>
@@ -325,7 +331,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="agen_Id">Agenda</label>
                                         <select2 id="agen_Id" [data]="agenda" formControlName="agen_Id"
-                                            [class.col-md-12]="form4.agen_Id.value !== 2"
+                                            [class.col-md-12]="form4.agen_Id.value !== 2" name="agen_Id"
                                             [(ngModel)]="residente.agen_Id" name="agen_Id"
                                             [class.col-md-10]="form4.agen_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
@@ -373,17 +379,19 @@
 
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
-
-                            <ul class="list-inline mb-0 wizard">
-                                <li class="previous list-inline-item">
-                                    <button class="btn btn-secondary" type="button"
-                                        (click)="activeWizard4 = 3">Anterior</button>
-                                </li>
-                                <li class="next list-inline-item float-end">
-                                    <button type="submit" class="btn btn-secondary"
-                                        (click)="submitAdmin()">Guardar</button>
-                                </li>
-                            </ul>
+                            
+                            
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitAdmin()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
 
                         </form>
                     </ng-template>
@@ -517,7 +525,7 @@
                     <label class="col-form-label" for="empe_Id">Asignar cuidador(a):</label>
                     <div class="col-md-9">
                         <select2 id="empe_Id" [data]="cuidador" formControlName="empe_Id" [minCountForSearch]="0"
-                            [(ngModel)]="residente.empe_Id" name="empe_Id" value="residente.empe_Id"
+                            [(ngModel)]="residente.empe_Id" name="empe_Id"
                             [ngClass]="{ 'is-invalid': cuidadoModal.submitted && formCuidado.empe_Id.invalid}">
                         </select2>
                         <div *ngIf="cuidadoModal.submitted && formCuidado.empe_Id.valid" class="valid-feedback">
@@ -534,61 +542,6 @@
             <div class="text-end">
                 <button type="submit" class="btn btn-success waves-effect waves-light me-1"
                     (click)="handleAceptarClick()">Aceptar</button>
-                <button type="button" class="btn btn-danger waves-effect waves-light"
-                    (click)="modal.close('')">Cerrar</button>
-            </div>
-        </form>
-    </div>
-</ng-template>
-
-
-<ng-template #confirmarCuidadoPersonalizado let-modal>
-    <div class="modal-header bg-light">
-        <h4 class="modal-title" id="myCenterModalLabel">Confirmar Pago</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
-    </div>
-    <div class="modal-body p-4">
-        <form [formGroup]="confirmarCuidadoForm" #confirmarWizard="ngForm">
-            <div class="row mb-3">
-                <div class="col-6">
-                    <label class="col-form-label" for="pago_Fecha">Fecha: </label>
-                    <input type="date" class="form-control" formControlName="pago_Fecha"
-                        [(ngModel)]="historialPago.pago_Fecha" name="pago_Fecha"
-                        value="historialPago.pago_Fecha | date:'yyyy-MM-dd'"
-                        [ngClass]="{ 'is-invalid': confirmarWizard.submitted && formCuidadoConfirm.pago_Fecha.invalid, 'is-valid': confirmarWizard.submitted && formCuidadoConfirm.pago_Fecha.valid }">
-
-                    <div *ngIf="confirmarWizard.submitted && formCuidadoConfirm.pago_Fecha.valid"
-                        class="valid-feedback">
-                        ¡Completo!
-                    </div>
-
-                    <div *ngIf="confirmarWizard.submitted && formCuidadoConfirm.pago_Fecha.invalid"
-                        class="invalid-feedback">
-                        Fecha requerida.
-                    </div>
-                </div>
-                <div class="col-6">
-                    <label class="col-form-label" for="meto_Id">Método de Pago: </label>
-                    <select2 id="meto_Id" [data]="metodopago" [minCountForSearch]="0" formControlName="meto_Id"
-                        [(ngModel)]="historialPago.meto_Id"
-                        [ngClass]="{ 'is-invalid': confirmarWizard.submitted && formCuidadoConfirm.meto_Id.invalid, 'is-valid': confirmarWizard.submitted && formCuidadoConfirm.meto_Id.valid }">
-
-                    </select2>
-
-                    <div *ngIf="confirmarWizard.submitted && formCuidadoConfirm.meto_Id.valid" class="valid-feedback">
-                        ¡Completo!
-                    </div>
-
-                    <div *ngIf="confirmarWizard.submitted && formCuidadoConfirm.meto_Id.invalid"
-                        class="invalid-feedback">
-                        Fecha requerida.
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-end">
-                <button type="submit" class="btn btn-success waves-effect waves-light me-1"
-                    (click)="submitConfirmar()">Confirmar</button>
                 <button type="button" class="btn btn-danger waves-effect waves-light"
                     (click)="modal.close('')">Cerrar</button>
             </div>

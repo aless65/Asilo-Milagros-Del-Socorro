@@ -230,11 +230,12 @@ namespace Asilo.DataAccess.Repositories
 
             var parameters = new DynamicParameters();
 
-            parameters.Add("@resi_Id", null, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@resi_Id", item.resi_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@cent_Id", item.cent_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@diet_Id", item.diet_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@resi_UsuCreacion", item.resi_UsuCreacion, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@diet_Desayuno", item.diet_Desayuno, DbType.String, ParameterDirection.Input);
             parameters.Add("@diet_Almuerzo", item.diet_Almuerzo, DbType.String, ParameterDirection.Input);
             parameters.Add("@diet_Cena", item.diet_Cena, DbType.String, ParameterDirection.Input);
@@ -260,10 +261,11 @@ namespace Asilo.DataAccess.Repositories
 
                     if (eliminar == "Se ha eliminado")
                     {
+                        int id = int.Parse(result.MessageStatus);
                         foreach (var detalle in item.agen_Detalles)
                         {
                             var parameters2 = new DynamicParameters();
-                            parameters2.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+                            parameters2.Add("@agen_Id", id, DbType.Int32, ParameterDirection.Input);
                             parameters2.Add("@agendeta_HoraStart", detalle.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
                             parameters2.Add("@agendeta_HoraEnd", detalle.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
                             parameters2.Add("@acti_Id", detalle.acti_Id, DbType.Int32, ParameterDirection.Input);

@@ -16,7 +16,7 @@ import listPlugin from '@fullcalendar/list';
 import {
   AgendaDetalle, Residente,
   Encargado, Expediente, Dieta,
-  HistorialPago
+  HistorialPago, ResidenteEdit,
 } from '../../Models';
 import { CalendarEventComponent } from '../eventosEdit/eventosEdit.component';
 import Swal from 'sweetalert2';
@@ -80,7 +80,6 @@ export class EditComponent implements OnInit {
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
   @ViewChild('residenteList', { static: true }) residenteList!: ListComponent;
-  @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
   calendarComponent!: FullCalendarComponent;
 
@@ -94,8 +93,6 @@ export class EditComponent implements OnInit {
   validationWizardForm!: FormGroup;
 
   cuidadoForm!: FormGroup;
-
-  confirmarCuidadoForm!: FormGroup;
 
   dietaForm!: FormGroup;
 
@@ -187,9 +184,6 @@ export class EditComponent implements OnInit {
         this.validationWizardForm.get('diet_Id')?.setValue(2);
       }
 
-      if ((this.residente.agen_Id || 0) > 1) {
-        this.validationWizardForm.get('agen_Id')?.setValue(2);
-      }
 
       this.resiService.getAgendaDetalles(this.residente.agen_Id || 0).subscribe((response: any) => {
         const currentDate = new Date();
@@ -281,22 +275,25 @@ export class EditComponent implements OnInit {
       habi_Id: ['', Validators.required],
     });
 
+
+    if ((this.residente.agen_Id || 0) > 1) {
+      console.log(this.residente.agen_Id);
+      this.validationWizardForm.get('agen_Id')?.setValue(2);
+    } else {
+      this.validationWizardForm.get('agen_Id')?.setValue(1);
+    }
+
     this.cuidadoForm = this.fb.group({
       empe_Id: ['', Validators.required],
     });
 
-    this.confirmarCuidadoForm = this.fb.group({
-      pago_Fecha: ['', Validators.required],
-      meto_Id: ['', Validators.required],
-    });
-
     this.dietaForm = this.fb.group({
-      desayuno: [''],
-      almuerzo: [''],
-      cena: [''],
-      merienda: [''],
-      restricciones: [''],
-      observaciones: [''],
+      desayuno: [this.residente.diet_Desayuno],
+      almuerzo: [this.residente.diet_Almuerzo],
+      cena: [this.residente.diet_Cena],
+      merienda: [this.residente.diet_Merienda],
+      restricciones: [this.residente.diet_Restricciones],
+      observaciones: [this.residente.diet_Observaciones],
     });
 
     this.service.getEstadosCiviles().subscribe((response: any) => {
@@ -443,7 +440,6 @@ export class EditComponent implements OnInit {
   handleAceptarClick() {
     if (this.formCuidado.empe_Id.valid) {
       this.modalService.dismissAll('');
-      this.openConfirmacion();
     }
   }
 
@@ -655,10 +651,16 @@ export class EditComponent implements OnInit {
       }
     }
 
-    if (this.residente.diet_Id?.toString() === "2") {
-      const formValues = this.dietaForm.value;
-      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+    if (this.validationWizardForm.get("empe_Id")?.value.toString() === "2") {
+      console.log(this.dietaForm.value);
+      // const formValues = this.dietaForm.value;
+      // this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       console.log("dieta");
+      const dietFields = ['diet_Desayuno', 'diet_Almuerzo', 'diet_Cena', 'Restricciones', 'diet_Observaciones'];
+
+      if (dietFields.every(field => this.residente[field] === undefined || this.residente[field] === null)) {
+        this.allValuesUndefinedOrNullDieta = true;
+      }
 
       if (this.allValuesUndefinedOrNullDieta) {
         canInsert = false;
@@ -678,13 +680,13 @@ export class EditComponent implements OnInit {
       }
     }
 
-    if (this.form4.empe_Id.value === "2") {
-      const formValues = this.confirmarCuidadoForm.value;
-      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '' || value === 0);
+    if (this.form4.empe_Id.value === 2) {
+      // const formValues = this.validationWizardForm.value; /** */
+      // let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '' || value === 0);
 
       console.log("cuidado");
 
-      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm || this.historialPago.meto_Id === undefined || this.historialPago.meto_Id === null || this.historialPago.meto_Id === 0) {
+      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '')) {
         canInsert = false;
 
         Swal.fire({
@@ -721,37 +723,60 @@ export class EditComponent implements OnInit {
         // Acción luego de cerrarse el toast
       });
     } else {
-      const combinedModels = {};
-      console.log(this.residente);
-      // Merge the properties of each model into the combinedModels object
-      Number(this.residente.agen_Id);
-      Number(this.residente.diet_Id);
-      this.residente.resi_UsuCreacion = 1;
-      this.residente.agen_Detalles = this.agendadetalle;
-      Object.assign(combinedModels, this.residente);
+      if (canInsert) {
+        const combinedModels: any = {};
+        console.log(this.cuidadoForm.get("empe_Id")?.value, 'cuidado form');
+        console.log(this.residente.empe_Id, "residente");
+        // Merge the properties of each model into the combinedModels object
+        if (this.validationWizardForm.get("empe_Id")?.value > 1) {
+          this.residente.empe_Id = this.cuidadoForm.get("empe_Id")?.value;
+        } else {
+          this.residente.empe_Id = undefined;
+        }
+        this.residente.diet_Id = this.validationWizardForm.get("diet_Id")?.value;
+        Number(this.residente.agen_Id);
+        Number(this.residente.diet_Id);
+        this.residente.resi_UsuCreacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
+        this.residente.resi_UsuModificacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
+        this.residente.agen_Detalles = this.agendadetalle;
+        Object.assign(combinedModels, this.residente);
 
-      console.log(this.residente.agen_Detalles);
-
-      console.log(combinedModels);
-
-      this.resiService.editResidentesAdmin(combinedModels).subscribe((response: any) => {
-        console.log(response);
-      });
-      // if (canInsert) {
-
-      //   this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
-      //     console.log(response.data.url);
-      //     this.residente.expe_Fotografia = response.data.url.toString();
-
-      //     this.functionInsert();
-      //   },
-      //     (error: any) => {
-      //       this.residente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
-      //       this.functionInsert();
-      //     }
-      //   );
-
-      // }
+        console.log(this.residente.agen_Detalles);
+        // console.log(sendData, "en component")
+        this.resiService.editResidentesAdmin(combinedModels).subscribe(
+          (response: any) => {
+            console.log(response);
+            if (response.code === 200) {
+              Swal.fire({
+                toast: true,
+                position: 'top-end',
+                title: '¡Perfecto!',
+                text: 'El registro se guardó con éxito!',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1850,
+                timerProgressBar: true
+              }).then(() => {
+              });
+            } else {
+              Swal.fire({
+                toast: true,
+                position: 'top-end',
+                title: 'uy!',
+                text: response.message,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1850,
+                timerProgressBar: true
+              }).then(() => {
+              });
+            }
+          },
+          (error: any) => {
+            console.log('Error:', error);
+          }
+        );
+      }
     }
   }
 
@@ -777,18 +802,6 @@ export class EditComponent implements OnInit {
       this.selectedValueDieta = 'papa';
       this.goesBackDieta = true;
     }
-  }
-
-  submitConfirmar() {
-    console.log(this.historialPago);
-    if (this.confirmarCuidadoForm.valid) {
-      console.log(this.historialPago, "entró");
-      this.modalService.dismissAll();
-    }
-  }
-
-  openConfirmacion() {
-    this.modalService.open(this.confirmarCuidadoPersonalizado, { centered: true });
   }
 
   populateCuidadoresDisponibles(selected?: any, centro?: number) {
@@ -840,7 +853,8 @@ export class EditComponent implements OnInit {
     }
 
     if (selected) {
-      this.service.getCuidadoresDisponibles(selected.value, this.residente.resi_Id || 0).subscribe((response: any) => {
+      this.service.getCuidadoresDisponibles(selected.value, this.residenteId).subscribe((response: any) => {
+        console.log(response, 'cambio centro');
         let options = response.data.map((item: any) => ({
           value: item.empe_Id,
           label: item.empe_NombreCompleto,
@@ -882,7 +896,7 @@ export class EditComponent implements OnInit {
 
       if (this.centroOriginal.toString() === selected.value.toString()) {
         this.validationWizardForm.get('habi_Id')?.setValue(this.residente.habi_Id || 0);
-        this.cuidadoForm.get('empe_Id')?.setValue(this.residente.empe_Id);
+        this.cuidadoForm.get('empe_Id')?.setValue(this.residente.empe_Id || 0);
       } else {
         this.validationWizardForm.get('habi_Id')?.setValue(0);
         this.cuidadoForm.get('empe_Id')?.setValue(0);
@@ -946,6 +960,10 @@ export class EditComponent implements OnInit {
     }
     this.goesBackDieta = false;
     return this.selectedValueDieta;
+  }
+
+  goBackList() {
+    this.router.navigate([this.returnUrl]);
   }
 
   goBack() {
@@ -1107,26 +1125,6 @@ export class EditComponent implements OnInit {
   get form3() { return this.profileForm.controls; }
   get form4() { return this.validationWizardForm.controls; }
   get formCuidado() { return this.cuidadoForm.controls; }
-  get formCuidadoConfirm() { return this.confirmarCuidadoForm.controls; }
   get formDieta() { return this.dietaForm.controls; }
-
-  // goes to next wizard
-  // gotoNext(): void {
-  //   if (this.accountForm.valid) {
-  //     if(this.encargadoForm.valid || this.allValuesUndefinedOrNull){
-
-  //       if (this.profileForm.valid) {
-  //         this.activeWizard4 = 4;
-  //       } else{
-  //         this.activeWizard4 = 3;
-  //       }
-  //     }
-
-  //     else {
-  //       this.activeWizard4 = 2;
-  //     }
-  //   }
-
-  // }
 
 }

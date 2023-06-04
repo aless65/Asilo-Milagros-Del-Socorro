@@ -85,7 +85,7 @@ namespace Asilo.API.Controllers
         [HttpPut("EditPrincipal")]
         public IActionResult EditPrincipal(VW_tbResidentes_Form resi)
         {
-            var response = _asiloServivce.InsertarResidentesForm(resi);
+            var response = _asiloServivce.EditarResidentesForm(resi);
             return Ok(response);
         }
     }

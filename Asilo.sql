@@ -469,8 +469,8 @@ CREATE TABLE asil.tbAgendaDetalles
 (
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
-	agendeta_HoraStart			NVARCHAR(500) NOT NULL,
-	agendeta_HoraEnd			NVARCHAR(500),
+	agendeta_HoraStart			VARCHAR(5) NOT NULL,
+	agendeta_HoraEnd			VARCHAR(5),
 	acti_Id						INT,
 	medi_Id						INT,
 	agendeta_Observaciones		NVARCHAR(500),
@@ -983,6 +983,18 @@ VALUES('Habitación Individual',1,1,1),
 	  ('Habitación Triple',3,0,1),
 	  ('Habitación cuádruple',1,4,1)
 GO
+
+
+ --********INSERT TABLA CATEGORIAS HABITACIONES****************---
+INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
+VALUES('100',1,1,1),
+	  ('100',2,2,1),
+	  ('100',1,3,1),
+	  ('100',1,4,1),
+	  ('101',3,2,1),
+	  ('101',1,4,1)
+
+
 --********INSERT TABLA CARGOS****************---
 INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
 VALUES('Gerente',1),
@@ -999,6 +1011,9 @@ VALUES('Gerente',1),
 	  ('Médico especializado en geriatría',1)
 GO
 	  --********INSERT TABLA DIETA ****************---
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES('', '','','',1);
+
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
 VALUES('Leche descremada,cereales integrales', 'Fruta,legumbre,Carne poco grasa','patata y verduras,queso','Yogurt poco azucarado',1);
 
@@ -1032,17 +1047,23 @@ GO
 
 	  --********INSERT TABLA Residente ****************---
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,1,'2010-10-05',1);
+VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,2,1,'2010-10-05',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,1,'2010-02-25',1);
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',4,3,1,'2010-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',3,1,1,'2012-02-25',1);
+VALUES('Karla Elisa', 'Ramirez', '8596796123546',1,'1970-11-12','F',3,4,1,'2012-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,1,'2012-02-25',1);
+VALUES('Elisa', 'Maradiaga', '8596256152354',1,'1970-11-12','F',2,5,1,'2012-02-25',1);
 
+
+INSERT INTO asil.tbHabitacionesXResidente(habi_Id, resi_Id, habiresi_UsuCreacion)
+VALUES (1, 1, 1),
+	   (6, 2, 1),
+	   (3, 3, 1),
+	   (2, 4, 1)
 
 	  --********INSERT TABLA Proveedores ****************---
 INSERT INTO [asil].[tbProveedores](prov_Nombre, prov_CorreoElectronico, prov_Telefono, muni_Id, prov_Direccion, prov_UsuCreacion)
@@ -1120,10 +1141,10 @@ VALUES
 
 --********INSERT TABLA Agendas Detalles****************---
 INSERT INTO [asil].tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones, agendeta_UsuCreacion)
-VALUES (1, '09:00:00', '10:30:00', 2, null,  null, 1),
-	   (1, '12:00:00', '13:30:00', 3, null,  null, 1),
-	   (1, '18:00:00', '19:30:00', 4, null,  null, 1),
-	   (1, '15:20:00', '15:45:00', 6, null,  'no todos tienen q ir jejejej', 1)
+VALUES (1, '09:00', '10:30', 2, null,  null, 1),
+	   (1, '12:00', '13:30', 3, null,  null, 1),
+	   (1, '18:00', '19:30', 4, null,  null, 1),
+	   (1, '15:20', '15:45', 6, null,  'no todos tienen q ir jejejej', 1)
 
 
 --********INSERT TABLA Medicamentos****************---
@@ -1182,15 +1203,6 @@ GO
 
 
 
-
- --********INSERT TABLA CATEGORIAS HABITACIONES****************---
-INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
-VALUES('100',1,1,1),
-	  ('100',2,2,1),
-	  ('100',1,3,1),
-	  ('100',1,4,1),
-	  ('101',3,2,1),
-	  ('101',1,4,1)
 
 
   INSERT INTO [acce].[tbPantallasPorRoles](role_Id,pant_Id,pantrole_UsuCreacion)

@@ -7,6 +7,7 @@ import { AdvancedTableModule } from 'src/app/shared/advanced-table/advanced-tabl
 import { PageTitleModule } from 'src/app/shared/page-title/page-title.module';
 import { HistorialRoutingModule } from './historial-routing.module';
 import { HistorialComponent } from './historial.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { HistorialComponent } from './historial.component';
     PageTitleModule,
     HistorialRoutingModule,
     NgbPaginationModule,
+    NgxQRCodeModule,
   ]
 })
 export class HistorialModule { }

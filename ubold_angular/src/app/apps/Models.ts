@@ -58,25 +58,43 @@ export interface Residente {
     cent_Nombre?: string;
     sexoDes?: string;
     diet_Id?: number;
-    resi_FechaIngreso?: string;
+    resi_FechaIngreso?: string | null;
     empe_Id?: number;
     agen_Id?: number;
-    resi_Nacimiento?: string;
+    resi_Nacimiento?: string | null;
     expe_Id?: number,
     expe_Fotografia?: string;
-    expe_FechaApertura?: string;
+    expe_FechaApertura?: string | null;
     resi_UsuCreacion?: number;
     usuCrea?: string;
     resi_UsuModificacion?: number;
     usuModif?: string;
-    resi_FechaCreacion?: string;
-    resi_FechaModificacion?: string;
+    resi_FechaCreacion?: string | null;
+    resi_FechaModificacion?: string | null;
     habi_Id?: number;
     agen_Detalles?: any;
     resi_Enfermedades?: string; 
     resi_EnfermedadesIds?: string; 
     
-    [key: string]: number | string | undefined | number[];
+    [key: string]: number | string | undefined | number[] | null;
+}
+
+export interface ResidenteEdit {
+    resi_Id?: number;
+    cent_Id?: number;
+    diet_Id?: number;
+    diet_Desayuno?: string;
+    diet_Almuerzo?: string;
+    diet_Cena?: string;
+    diet_Merienda?: string;
+    diet_Restricciones?: string;
+    diet_Observaciones?: string;
+    empe_Id?: number;
+    agen_Id?: number;
+    resi_UsuCreacion?: number;
+    resi_UsuModificacion?: number;
+    habi_Id?: number;
+    agen_Detalles?: any;
 }
 
 export interface Encargado {
