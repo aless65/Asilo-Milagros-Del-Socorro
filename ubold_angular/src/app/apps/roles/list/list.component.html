@@ -9,7 +9,7 @@
                     <div>
                         <!-- <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
                                 class="mdi mdi-cog"></i></button> -->
-                        <button type="button" class="btn btn-danger waves-effect waves-light mb-2"
+                        <button type="button" class="btn btn-pink waves-effect waves-light mb-2"
                             (click)="openModal('new')">Agregar</button>
                     </div>
                 </div><!-- end col-->
@@ -34,31 +34,35 @@
     </div>
     <div class="modal-body p-4">
         <form [formGroup]="newRol" #addRol="ngForm" (ngSubmit)="submitForm()">
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
+            <div class="row">
+              <div class="col-sm-8 mx-auto text-center"> <!-- Agregando las clases mx-auto y text-center -->
+                <div class="mb-3">
+                  <label for="name" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
                     [ngClass]="{ 'is-invalid': addRol.submitted && form1.name.invalid }">
-                <div *ngIf="addRol.submitted && form1.name.invalid " class="invalid-feedback">
+                  <div *ngIf="addRol.submitted && form1.name.invalid" class="invalid-feedback">
                     Nombre requerido
+                  </div>
                 </div>
+              </div>
             </div>
-
-            <div class="row mb-3">
-                <label class="col-md-3 col-form-label" for="pant_Id">Pantallas</label>
-                <div class="col-md-9">
-                    <select2 [data]="pantalla" formControllerName="pant_Id" id="pant_Id" multiple="true" #selectRef (update)="pant_Id = selectRef.value">
-                    </select2>
-                    
-                    
-                </div>
+          
+            <div class="col-sm-12 mx-auto text-center">
+              <div class="row mb-3">
+                <label class="col-md-3 col-form-label mx-auto text-center" for="pant_Id">Pantallas</label>
+                <select2 [data]="pantalla" [value]="pant_Id" formControlName="pant_Id" id="pant_Id" name="pant_Id"
+                  placeholder="Pantalla.." multiple="true" #selectRef (update)="pant_Id = selectRef.value">
+                </select2>
+              </div>
             </div>
-
+          
             <div class="text-end">
-                <button type="submit" class="btn btn-success waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
-                <button type="button" class="btn btn-danger waves-effect waves-light"
-                    (click)="modal.close('')">Cancelar</button>
+              <button type="submit" class="btn btn-success waves-effect waves-light me-1"
+                [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
+              <button type="button" class="btn btn-danger waves-effect waves-light" (click)="modal.close('')">Cancelar</button>
             </div>
-        </form>
+          </form>
+          
     </div>
 </ng-template>
 

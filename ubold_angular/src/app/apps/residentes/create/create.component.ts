@@ -12,11 +12,16 @@ import interactionPlugin, { DateClickArg, Draggable } from '@fullcalendar/intera
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { AgendaDetalle, Residente,
-         Encargado, Expediente, Dieta,
-         HistorialPago } from '../../Models';
+import {
+  AgendaDetalle, Residente,
+  Encargado, Expediente, Dieta,
+  HistorialPago
+} from '../../Models';
 import { CalendarEventComponent } from '../eventos/evento.component';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ListComponent } from '../../residentes/list/list.component';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-residentes-create',
@@ -25,6 +30,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateComponent implements OnInit {
 
+  returnUrl: string = '/';
   pageTitle: BreadcrumbItem[] = [];
   activeWizard1: number = 1;
   activeWizard2: number = 1;
@@ -64,14 +70,18 @@ export class CreateComponent implements OnInit {
   isAdministracionActive: boolean = false;
   allValuesUndefinedOrNull!: boolean;
   allValuesUndefinedOrNullDieta: boolean = false;
+  residentesFromList: Residente[] = [];
+  selectedImageFile!: File;
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
   @ViewChild('personalizarCuidado', { static: true }) personalizarCuidado: any;
   @ViewChild('eventModal', { static: true }) eventModal!: CalendarEventComponent;
+  @ViewChild('residenteList', { static: true }) residenteList!: ListComponent;
   @ViewChild('confirmarCuidadoPersonalizado', { static: true }) confirmarCuidadoPersonalizado: any;
   @ViewChild('calendar')
   calendarComponent!: FullCalendarComponent;
+
 
 
   accountForm!: FormGroup;
@@ -89,20 +99,22 @@ export class CreateComponent implements OnInit {
   dietaForm!: FormGroup;
 
 
-
   constructor(private fb: FormBuilder,
     private service: ServiceService,
     private modalService: NgbModal,
-    private resiService: ResidenteService) { }
+    private router: Router,
+    private resiService: ResidenteService,
+    private route: ActivatedRoute) { }
 
   selectedImage: string | ArrayBuffer | null = null;
+  base64Image: any;
 
   // ngOnInit() {
   // }
-  
+
 
   ngOnInit(): void {
-    this.pageTitle = [{ label: 'Residentes', path: '/' }, { label: 'Nuevo', path: '/', active: true }];
+    this.pageTitle = [{ label: 'Residentes', path: '/apps/residentes/list' }, { label: 'Nuevo', path: '/', active: true }];
 
     this.expediente.expe_FechaApertura = new Date().toISOString().substring(0, 10);
     this.historialPago.pago_Fecha = new Date().toISOString().substring(0, 10);
@@ -144,20 +156,10 @@ export class CreateComponent implements OnInit {
       };
     }
 
-    // function minDateValidator(minDate: Date) {
-    //   return (control: any): { [key: string]: any } | null => {
-    //     const selectedDate = new Date(control.value);
-    //     if (selectedDate >= minDate) {
-    //       return { 'minDate': true };
-    //     }
-    //     return null;
-    //   };
-    // }
-
     this.accountForm = this.fb.group({
       resi_Nombres: ['', Validators.required],
       resi_Apellidos: ['', Validators.required],
-      resi_Identidad: ['',  [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
+      resi_Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13), Validators.minLength(13)]],
       resi_Nacimiento: ['', [Validators.required, maxDateValidator(new Date(1959, 0, 1))]],
       estacivi_Id: ['', Validators.required],
       resi_Sexo: ['', Validators.required],
@@ -359,8 +361,6 @@ export class CreateComponent implements OnInit {
 
       this.agendadetalle = response.data;
 
-      console.log(this.agendadetalle);
-
       this.calendarOptions = {
         themeSystem: 'bootstrap',
         bootstrapFontAwesome: false,
@@ -387,10 +387,14 @@ export class CreateComponent implements OnInit {
         dateClick: this.handleDateClick.bind(this),
         eventClick: this.handleEventClick.bind(this),
         drop: this.onDrop.bind(this),
-        eventDrop: this.onEventDrop.bind(this)
+        eventDrop: this.onEventDrop.bind(this),
+        allDaySlot: false,
+        dayHeaderContent: 'Agenda',
       }
-      console.log(this.calendarEventsData);
+
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/list';
   }
 
   handleAceptarClick() {
@@ -400,7 +404,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  submitResidente(){
+  submitResidente() {
     if (this.accountForm.invalid) {
       Swal.fire({
         toast: true,
@@ -416,15 +420,41 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.accountForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
+      // Object.keys(this.accountForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
+    } else {
+
+
+
+      this.resiService.getIdentidadResidenteExiste(this.residente.resi_Identidad || '', false, 0).subscribe((response: any) => {
+
+        console.log(response);
+
+        if (response.code === 200) {
+
+          console.log("ps sí existe");
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: '¡Ya existe un residente con este número de identidad!',
+            icon: 'warning',
+            background: '#f6f6baf2'
+          }).then(() => {
+            // Action after the toast is closed
+          });
+        } else {
+          this.activeWizard4 = 2
         }
-      })
-    } else{
-      console.log(this.residente);
+      });
+
       this.isDatosPersonalesActive = false;
     }
   }
@@ -432,13 +462,13 @@ export class CreateComponent implements OnInit {
   submitEncargado() {
     const formValues = this.encargadoForm.value;
     this.allValuesUndefinedOrNull = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-    
+
     if (this.allValuesUndefinedOrNull) {
-      // All values are undefined or null, perform the desired action here
-      console.log('All values are undefined or null', this.encargado, this.allValuesUndefinedOrNull);
+      this.activeWizard4 = 3
+      this.encargado.enca_Nombres = undefined;
       this.isEncargadoActive = false;
       return;
-    } else{
+    } else {
       if (this.encargadoForm.invalid) {
         Swal.fire({
           toast: true,
@@ -452,24 +482,47 @@ export class CreateComponent implements OnInit {
         }).then(() => {
           // Action after the toast is closed
         });
-    
-        Object.keys(this.encargadoForm.controls).forEach(field => {
-          const control = this.encargadoForm.get(field);
-          if (control?.invalid) {
-            const errors = control.errors;
-            console.log(`Error en el campo ${field}:`, errors);
-          }
-        });
+
+        // Object.keys(this.encargadoForm.controls).forEach(field => {
+        //   const control = this.encargadoForm.get(field);
+        //   if (control?.invalid) {
+        //     const errors = control.errors;
+        //     console.log(`Error en el campo ${field}:`, errors);
+        //   }
+        // });
 
         this.allValuesUndefinedOrNull = false;
       } else {
-        console.log(this.encargado);
+
+        this.resiService.getIdentidadEncargadoExiste(this.encargado.enca_Identidad || '').subscribe((response: any) => {
+
+          if (response.code === 200) {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Ya existe un encargado con este número de identidad!',
+              icon: 'warning',
+              background: '#f6f6baf2'
+            }).then(() => {
+              // Action after the toast is closed
+            });
+          } else {
+            this.activeWizard4 = 3
+          }
+        });
+
+
         this.isEncargadoActive = false;
       }
     }
+
+
   }
 
-   submitExpediente(){
+  submitExpediente() {
     if (this.profileForm.invalid) {
       Swal.fire({
         toast: true,
@@ -485,47 +538,86 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.accountForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
-        }
-      })
-    } else{
-      // this.service.getMetodosPago().subscribe((response: any) => {
-      //   let options = response.data.map((item: any) => ({
-      //     value: item.meto_Id,
-      //     label: item.meto_Nombre
-      //   }));
-  
-      //   this.metodopago = [{
-      //     label: 'Escoja un método de pago',
-      //     options: options
-      //   },
-      //   ];
-      // });
+      // Object.keys(this.accountForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
+    } else {
       console.log(this.expediente);
       console.log(this.profileForm.valid);
-      const expe_Fotografia = this.expediente.expe_Fotografia?.toString() ?? '';
-      this.resiService.getImageUpload(expe_Fotografia);
-
-      // this.profileForm.valid = true;
+      console.log(this.expediente.expe_Fotografia);
     }
   }
-  
-  submitAdmin(){
+
+  functionInsert() {
+    const combinedModels = {};
+
+    // Merge the properties of each model into the combinedModels object
+    Number(this.residente.agen_Id);
+    Number(this.residente.diet_Id);
+    this.residente.resi_UsuCreacion = 1;
+    this.residente.agen_Detalles = this.agendadetalle;
+    Object.assign(combinedModels, this.residente);
+    Object.assign(combinedModels, this.dietaModel);
+    Object.assign(combinedModels, this.encargado);
+    Object.assign(combinedModels, this.expediente);
+    Object.assign(combinedModels, this.historialPago);
+
+    console.log(this.residente.agen_Detalles);
+
+    console.log(combinedModels);
+
+    this.resiService.addResidentes(combinedModels).subscribe((response: any) => {
+      console.log(response);
+      if (response.message === "Exitoso") {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: '¡Perfecto!',
+          text: 'El registro se guardó con éxito!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1850,
+          timerProgressBar: true
+        }).then(() => {
+        });
+        this.router.navigate([this.returnUrl]);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: 'Perfecto!',
+          text: response.message,
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1850,
+          timerProgressBar: true
+        }).then(() => {
+        });
+      }
+    })
+
+    this.isDatosPersonalesActive = false;
+  }
+
+  submitAdmin() {
+    let canInsert = true;
+
     const agendaVaciaONull = this.agendadetalle;
     this.allValuesUndefinedOrNullDieta = Object.values(agendaVaciaONull).every(value => value === undefined || value === null);
     console.log(this.allValuesUndefinedOrNullDieta);
 
-    if(this.allValuesUndefinedOrNullDieta){
+    if (this.allValuesUndefinedOrNullDieta) {
       const formValues = this.dietaForm.value;
       this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-      console.log("dieta");
 
-      if(this.allValuesUndefinedOrNullDieta){
-        console.log("dieta2");
+      if (this.allValuesUndefinedOrNullDieta) {
+        canInsert = false;
+        console.log("es la agenda");
+
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -539,15 +631,16 @@ export class CreateComponent implements OnInit {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
-    
-    if(this.residente.diet_Id?.toString() === "2"){
+    }
+
+    if (this.residente.diet_Id?.toString() === "2") {
       const formValues = this.dietaForm.value;
       this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       console.log("dieta");
 
-      if(this.allValuesUndefinedOrNullDieta){
-        console.log("dieta2");
+      if (this.allValuesUndefinedOrNullDieta) {
+        canInsert = false;
+
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -561,16 +654,17 @@ export class CreateComponent implements OnInit {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
+    }
 
-    if(this.form4.empe_Id.value === "2"){
+    if (this.form4.empe_Id.value === "2") {
       const formValues = this.confirmarCuidadoForm.value;
-      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '');
-      // console.log('dieta form', this.dietaForm);
-      // console.log('booleano', this.allValuesUndefinedOrNullDieta);
+      let valuesConfirm = Object.values(formValues).every(value => value === undefined || value === null || value === '' || value === 0);
+
       console.log("cuidado");
 
-      if((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm ){
+      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '') || valuesConfirm || this.historialPago.meto_Id === undefined || this.historialPago.meto_Id === null || this.historialPago.meto_Id === 0) {
+        canInsert = false;
+
         Swal.fire({
           toast: true,
           position: 'top-end',
@@ -580,14 +674,18 @@ export class CreateComponent implements OnInit {
           titleText: '¡Debe completar todos los pasos de la atención especial!',
           icon: 'warning',
           background: '#f6f6baf2',
-          
+
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
       }
-    } 
+    } else {
+      this.residente.empe_Id = undefined;
+    }
 
-    if (this.profileForm.invalid) {
+    if (this.validationWizardForm.invalid) {
+      canInsert = false;
+
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -602,28 +700,38 @@ export class CreateComponent implements OnInit {
       });
       // El formulario tiene errores de validación, pues mostrar un mensaje de error o alguna cosa ombe... aquí
 
-      Object.keys(this.profileForm.controls).forEach(field => {
-        const control = this.accountForm.get(field);
-        if (control?.invalid) {
-          const errors = control.errors;
-          console.log(`Error en el campo ${field}:`, errors);
-        }
-      })
-    } else{
-      
-      if(!this.allValuesUndefinedOrNullDieta){
-        console.log(this.residente);
-        console.log(this.dietaModel);
-        this.isDatosPersonalesActive = false;
+      // Object.keys(this.profileForm.controls).forEach(field => {
+      //   const control = this.accountForm.get(field);
+      //   if (control?.invalid) {
+      //     const errors = control.errors;
+      //     console.log(`Error en el campo ${field}:`, errors);
+      //   }
+      // })
+    } else {
+
+      if (canInsert) {
+
+        this.resiService.getImageUpload(this.base64Image).subscribe((response: any) => {
+          console.log(response.data.url);
+          this.residente.expe_Fotografia = response.data.url.toString();
+
+          this.functionInsert();
+        },
+          (error: any) => {
+            this.residente.expe_Fotografia = 'https://i.ibb.co/Wn8HrLm/blank-profile-picture.jpg';
+            this.functionInsert();
+          }
+        );
+
       }
     }
   }
 
-  submitDieta(){
+  submitDieta() {
     const formValues = this.dietaForm.value;
     this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
 
-    if(this.allValuesUndefinedOrNullDieta){
+    if (this.allValuesUndefinedOrNullDieta) {
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -636,19 +744,19 @@ export class CreateComponent implements OnInit {
       }).then(() => {
         // Acción luego de cerrarse el toast
       });
-    } else{
+    } else {
       console.log(this.dietaModel);
       this.selectedValueDieta = 'papa';
       this.goesBackDieta = true;
     }
   }
 
-  submitConfirmar(){
+  submitConfirmar() {
     console.log(this.historialPago);
-     if(this.confirmarCuidadoForm.valid){
+    if (this.confirmarCuidadoForm.valid) {
       console.log(this.historialPago, "entró");
       this.modalService.dismissAll();
-     }
+    }
   }
 
   openConfirmacion() {
@@ -657,7 +765,7 @@ export class CreateComponent implements OnInit {
 
   populateCuidadoresDisponibles(selected: any) {
     if (selected) {
-      this.service.getCuidadoresDisponibles(selected.value).subscribe((response: any) => {
+      this.service.getCuidadoresDisponibles(selected.value, 0).subscribe((response: any) => {
         let options = response.data.map((item: any) => ({
           value: item.empe_Id,
           label: item.empe_NombreCompleto,
@@ -670,7 +778,7 @@ export class CreateComponent implements OnInit {
         ];
       });
 
-      this.service.getHabitacionesDisponibles(selected.value).subscribe((response: any) => {
+      this.service.getHabitacionesDisponibles(selected.value, 0).subscribe((response: any) => {
         let cateLabels: string[] = [];
         let options: { [key: string]: any[] } = {};
 
@@ -711,17 +819,21 @@ export class CreateComponent implements OnInit {
   handleImageUpload(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      this.selectedImageFile = file;
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result;
+        this.base64Image = (reader.result as string)?.split(',')[1];
       };
       reader.readAsDataURL(file);
     }
   }
 
+
   deleteImage() {
     this.selectedImage = ''; // Clear the selectedImage variable to remove the image
   }
+
 
   openModal(event: Select2UpdateEvent, modal: string) {
     const selectedValue = event.value;
@@ -760,12 +872,6 @@ export class CreateComponent implements OnInit {
     this.selectedValueDieta = 'papa';
     this.goesBackDieta = true;
   }
-
-  // goBackDieta() {
-  //   this.selectedValueDieta = 'papa';
-  //   this.goesBackDieta = true;
-  //   return this.selectedValueDieta;
-  // }
 
   handleButtonClick(modal: string) {
     if (modal === 'agen_Id') {
@@ -870,11 +976,15 @@ export class CreateComponent implements OnInit {
 
       this.calendarEventsData = modifiedEvents;
     } else {
-      // Find the maximum id value in calendarEventsData
-      this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
+      if (this.calendarEventsData.length === 0) {
+        newEvent.id = "1";
+      } else {
+        // Find the maximum id value in calendarEventsData
+        this.maxId = Math.max(...this.calendarEventsData.map((event) => Number(event.id)));
 
-      // Set newEvent.id to maxId + 1
-      newEvent.id = String(this.maxId + 1);
+        // Set newEvent.id to maxId + 1
+        newEvent.id = String(this.maxId + 1);
+      }
 
       let nEvent = {
         id: newEvent.id,
@@ -929,7 +1039,7 @@ export class CreateComponent implements OnInit {
   //         this.activeWizard4 = 3;
   //       }
   //     }
-      
+
   //     else {
   //       this.activeWizard4 = 2;
   //     }

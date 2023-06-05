@@ -22,5 +22,6 @@ namespace Asilo.API.Models
         public string usua_UsuModificacion_Nombre { get; set; }
         public DateTime? expe_FechaModificacion { get; set; }
         public bool expe_Estado { get; set; }
+        public int[] expe_Enfermedades { get; set; }
     }
 }

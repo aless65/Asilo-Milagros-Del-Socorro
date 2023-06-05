@@ -12,6 +12,7 @@ namespace Asilo.Entities.Entities
         public int habi_Numero { get; set; }
         public int cate_Id { get; set; }
         public string cate_Nombre { get; set; }
+        public int cate_Capacidad { get; set; }
         public int cent_Id { get; set; }
         public string cent_Nombre { get; set; }
         public int habi_UsuCreacion { get; set; }

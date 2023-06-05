@@ -118,9 +118,46 @@ namespace Asilo.DataAccess.Repositories
             parametros.Add("@tiposang_Id", item.tiposang_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@expe_FechaApertura", item.expe_FechaApertura, DbType.Date, ParameterDirection.Input);
             parametros.Add("@expe_Fotografia", item.expe_Fotografia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@expe_QRCode", item.expe_QRCode, DbType.String, ParameterDirection.Input);
             parametros.Add("@expe_UsuModificacion", item.expe_UsuModificacion, DbType.Int32, ParameterDirection.Input);
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Expedientes, parametros, commandType: CommandType.StoredProcedure);
+
+            var param = new DynamicParameters();
+            param.Add("@expe_Id", item.expe_Id, DbType.Int32, ParameterDirection.Input);
+            var respuestaDelete = db.QueryFirst<int>(ScriptsDataBase.UDP_Elimina_EnfermedadesXResidente, param, commandType: CommandType.StoredProcedure);
+
+            if (result.MessageStatus == "El expediente ha sido editado exitosamente")
+            {
+                string[] ids = result.MessageStatus.Split("||", StringSplitOptions.RemoveEmptyEntries);
+
+                if (item.expe_Enfermedades != null)
+                {
+                    foreach (var enfermedad in item.expe_Enfermedades)
+                    {
+                        var parameters2 = new DynamicParameters();
+                        parameters2.Add("@resi_Id", respuestaDelete, DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@enfe_Id", enfermedad, DbType.Int32, ParameterDirection.Input);
+                        parameters2.Add("@enferesi_UsuCreacion", item.expe_UsuModificacion, DbType.Int32, ParameterDirection.Input);
+
+                        var respuesta = db.QueryFirst<string>(ScriptsDataBase.UDP_Inserta_EnfermedadesXResidente, parameters2, commandType: CommandType.StoredProcedure);
+
+                        if (respuesta == "Ha ocurrido un error")
+                        {
+                            result.MessageStatus = "Ha ocurrido un error en la asignación de enfermedades";
+                            break;
+                        }
+                        else
+                        {
+                            result.MessageStatus = "todo biennnn";
+                        }
+                    }
+                }
+                else
+                {
+                    result.MessageStatus = "todo biennnn";
+                }
+            }
 
 
             return result;

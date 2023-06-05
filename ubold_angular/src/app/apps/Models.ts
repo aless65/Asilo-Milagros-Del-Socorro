@@ -6,6 +6,25 @@ export interface EstadoCivil {
     [key: string]: number | string | undefined ;
 }
 
+
+export interface Usuario {
+    usua_Id?: number;
+    usua_NombreUsuario?: string; 
+    usua_Contrasena?: string;
+    usua_EsAdmin?: string;
+    role_Id?: number;
+    role_Nombre?: string;
+    empe_NombreCompleto?: string;
+    empe_Id?:number;
+    usua_UsuCreacion?: number;
+    usua_UsuCreacion_Nombre?: string;
+    usua_UsuModificacion?: number;
+    cent_Id?: number;
+    usua_UsuModificacion_Nombre?: string;
+
+    [key: string]: number | string | undefined;
+}
+
 export interface Cargos{
     carg_Id?: number;
     carg_Nombre?: string;
@@ -17,6 +36,15 @@ export interface Cargos{
     carg_FechaModificacion?: string;
 }
 
+export interface Categoria{
+    cate_Id?: number;
+    cate_Nombre?: string;
+    cate_Capacidad?: number;
+    cate_Climatizacion?: string;
+    cate_UsuCreacion?: number;
+    cate_UsuModificacion?:number;
+}
+
 export interface Residente {
     resi_Id?: number;
     resi_Nombres?: string;
@@ -24,27 +52,50 @@ export interface Residente {
     resi_Identidad?: string;
     tiposang_Id?: number;
     tiposang_Nombre?: string;
-    estacivi_Id?: number;
+    estacivi_IdResi?: number;
     resi_Sexo?: string;
     cent_Id?: number;
     cent_Nombre?: string;
     sexoDes?: string;
     diet_Id?: number;
-    resi_FechaIngreso?: string;
+    resi_FechaIngreso?: string | null;
     empe_Id?: number;
     agen_Id?: number;
-    resi_Nacimiento?: string;
+    resi_Nacimiento?: string | null;
+    expe_Id?: number,
     expe_Fotografia?: string;
     expe_FechaApertura?: string;
+    expe_QRCode?: string | null;
     resi_UsuCreacion?: number;
     usuCrea?: string;
     resi_UsuModificacion?: number;
     usuModif?: string;
-    resi_FechaCreacion?: string;
-    resi_FechaModificacion?: string;
+    resi_FechaCreacion?: string | null;
+    resi_FechaModificacion?: string | null;
     habi_Id?: number;
+    agen_Detalles?: any;
+    resi_Enfermedades?: string; 
+    resi_EnfermedadesIds?: string; 
+    
+    [key: string]: number | string | undefined | number[] | null;
+}
 
-    [key: string]: number | string | undefined | number[];
+export interface ResidenteEdit {
+    resi_Id?: number;
+    cent_Id?: number;
+    diet_Id?: number;
+    diet_Desayuno?: string;
+    diet_Almuerzo?: string;
+    diet_Cena?: string;
+    diet_Merienda?: string;
+    diet_Restricciones?: string;
+    diet_Observaciones?: string;
+    empe_Id?: number;
+    agen_Id?: number;
+    resi_UsuCreacion?: number;
+    resi_UsuModificacion?: number;
+    habi_Id?: number;
+    agen_Detalles?: any;
 }
 
 export interface Encargado {
@@ -215,6 +266,7 @@ export interface Centro {
 }
 
 export interface AgendaDetalle {
+    agen_Id?: number;
     agendeta_Id?: number;
     agendeta_HoraStart?: string;
     agendeta_HoraEnd?: string;
@@ -226,6 +278,13 @@ export interface AgendaDetalle {
     agendeta_Observaciones?: string;
     agendeta_UsuCreacion?: number;
     agendeta_UsuModificacion?: number;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface Agenda {
+    agen_Id?: number;
+    agen_Nombre?: string;
 
     [key: string]: number | string | undefined;
 }
@@ -247,15 +306,16 @@ export interface Medicamento {
 
 export interface Habitacion {
     habi_Id?: number;
-    habi_Numero?: number;
+    habi_Numero?: number; 
     cate_Id?: number;
+    cate_Nombre?: string;
+    cent_Id?: number;
+    cent_Nombre?: string;
     habi_UsuCreacion?: number;
-    usua_UsuCreacion_Nombre?: string;
-    habi_FechaCreacion?: string;
+    usuCrea?: string;
     habi_UsuModificacion?: number;
-    usua_UsuModificacion_Nombre?: string;
-    habi_FechaModificacion?: string;
-
+    usuModif?: string;
+    
     [key: string]: number | string | undefined;
 }
 
@@ -283,6 +343,16 @@ export interface HistorialPago {
     resi_Id?: number;
     meto_Id?: number;
     pago_Fecha?: string;
+
+    [key: string]: number | string | undefined;
+}
+
+export interface HistorialExpediente {
+    expe_Id?: number;
+    histexpe_Observaciones?: string;
+    empe_Id?: number;
+    empe_NombreCompleto?: string;
+    histexpe_FechaActualizacion?: string;
 
     [key: string]: number | string | undefined;
 }

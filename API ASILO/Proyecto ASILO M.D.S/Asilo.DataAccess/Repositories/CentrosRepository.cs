@@ -63,6 +63,15 @@ namespace Asilo.DataAccess.Repositories
             return db.Query<VW_tbCentros>(ScriptsDataBase.CentroList, null, commandType: CommandType.StoredProcedure);
         }
 
+        public IEnumerable<GraficaCentros> Grafica()
+        {
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            return db.Query<GraficaCentros>(ScriptsDataBase.GraficaEnfemedadXCentros, null, commandType: CommandType.StoredProcedure);
+        }
+
         public RequestStatus Update(tbCentros item)
         {
             RequestStatus result = new RequestStatus();

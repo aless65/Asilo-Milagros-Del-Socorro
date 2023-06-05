@@ -4,10 +4,14 @@ using Asilo.Entities.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Asilo.API.Controllers
 {
@@ -30,6 +34,21 @@ namespace Asilo.API.Controllers
             var list = _asiloServivce.FindResidentes(id);
             return Ok(list);
         }
+
+        [HttpGet("FindEncargado")]
+        public IActionResult FindEnca(int id)
+        {
+            var list = _asiloServivce.FindResidentesEnca(id);
+            return Ok(list);
+        }
+
+        [HttpGet("IdentidadExiste")]
+        public IActionResult IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
+        {
+            var list = _asiloServivce.IdentidadExisteResi(resi_Identidad, isEdit, resi_Id);
+            return Ok(list);
+        }
+
         [HttpGet("Listado")]
         public IActionResult Index()
         {
@@ -58,6 +77,23 @@ namespace Asilo.API.Controllers
         {
             var result = _asiloServivce.EliminarResidentes(id);
             return Ok(result);
+        }
+
+
+        [HttpPost("InsertarPrincipal")]
+        public IActionResult InsertarPrincipal(VW_tbResidentes_Form resi)
+        {
+            //var item = _mapper.Map<VW_tbResidentes_Form>(resi);
+            var response = _asiloServivce.InsertarResidentesForm(resi);
+            return Ok(response);
+        }
+
+
+        [HttpPut("EditPrincipal")]
+        public IActionResult EditPrincipal(VW_tbResidentes_Form resi)
+        {
+            var response = _asiloServivce.EditarResidentesForm(resi);
+            return Ok(response);
         }
     }
 }

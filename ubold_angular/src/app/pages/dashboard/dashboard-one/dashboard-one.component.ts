@@ -5,6 +5,8 @@ import { StatisticsCard1 } from 'src/app/shared/widget/statistics-card/statistic
 import { ChartOptions } from '../../charts/apex/apex-chart.model';
 import { RevenueHistory, UserBalance } from './dashboard-one.model';
 import { REVENUEHISTORYDATA, USERBALANCEDATA } from './data';
+import {  ServiceService } from '../../../apps/Service/service.service';
+import { ApexAxisChartSeries } from 'ng-apexcharts';
 
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
@@ -15,6 +17,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   readonly month_list = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   readonly DELIMITER = " ";
 
+
+  
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
@@ -50,10 +54,14 @@ export class DashboardOneComponent implements OnInit {
   salesAnalyticsChart!: Partial<ChartOptions>;
   userBalanceData: UserBalance[] = [];
   revenueHistoryData: RevenueHistory[] = [];
+  datos: any;
+  labels: any;
+  columns: any;
 
   date!: NgbDateStruct;
 
-  constructor (private calendar: NgbCalendar) { }
+  constructor (private calendar: NgbCalendar,
+               private service: ServiceService,) { }
 
   ngOnInit(): void {
     this.date = this.calendar.getToday();
@@ -61,6 +69,8 @@ export class DashboardOneComponent implements OnInit {
     this.initChart();
     this._fetchUserBalanceData();
     this._fetchRevenueHistoryData();
+
+    
   }
 
   /**
@@ -122,6 +132,94 @@ export class DashboardOneComponent implements OnInit {
    * initialize charts
    */
   initChart(): void {
+    this.service.getGrafica().subscribe((response: any) => {
+      const datos = response.data;
+      
+      // Extract unique labels
+      const uniqueLabels = [...new Set(datos
+        .filter((item: { labels?: string }) => item.labels !== undefined && item.labels !== '')
+        .map((item: { labels: string }) => item.labels))];
+      
+      // Extract unique centro names
+      const uniqueCentros = [...new Set(datos.map((item: { name?: string }) => item.name))];
+      
+      // Initialize the series array
+      const series: ApexAxisChartSeries = (uniqueCentros as string[]).map(name => {
+        const data = datos
+          .filter((item: { name?: string }) => item.name === name)
+          .map((item: { data: number }) => item.data);
+        return {
+          name: name,
+          type: 'column',
+          data: data
+        };
+      });
+      
+      console.log(series);
+
+      // this.columns = series;
+      // this.labels = uniqueLabels;
+
+      this.salesAnalyticsChart = {
+      
+        series: series,
+        visibleSeries: [0],
+        chart: {
+          height: 378,
+          type: 'line',
+          offsetY: 10,
+          toolbar: {
+            show: false,
+          }
+        },
+        stroke: {
+          width: [2, 3],
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '50%',
+          },
+        },
+        colors: ['#1abc9c', '#4a81d4', '#d49d4a', '#4ad49d', '#d44ac6', '#4ad49d'],
+        dataLabels: {
+          enabled: false,
+          enabledOnSeries: [1],
+        },
+        labels: uniqueLabels as string[],
+        xaxis: {
+          type: 'category',
+        },
+        legend: {
+          offsetY: 7,
+        },
+        grid: {
+          padding: {
+            bottom: 20,
+          },
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'light',
+            type: 'horizontal',
+            shadeIntensity: 0.25,
+            gradientToColors: undefined,
+            inverseColors: true,
+            opacityFrom: 0.75,
+            opacityTo: 0.75,
+            stops: [0, 0, 0],
+          },
+        },
+        yaxis: [
+          {
+            title: {
+              text: 'Residentes con la enfermedad',
+            },
+          },
+        ],
+      }
+    });
+    
     this._fetchChartStatistics();
     this.revenuChart = {
       series: [68],
@@ -141,92 +239,7 @@ export class DashboardOneComponent implements OnInit {
 
     };
 
-    this.salesAnalyticsChart = {
-      series: [
-        {
-          name: 'Revenue',
-          type: 'column',
-          data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160]
-        },
-        {
-          name: 'Sales',
-          type: 'line',
-          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
-        }
-      ],
-      chart: {
-        height: 378,
-        type: 'line',
-        offsetY: 10,
-        toolbar: {
-          show: false,
-        }
-      },
-      stroke: {
-        width: [2, 3],
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: '50%',
-        },
-      },
-      colors: ['#1abc9c', '#4a81d4'],
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1],
-      },
-      labels: [
-        '01/01/2001',
-        '02/01/2001',
-        '03/01/2001',
-        '04/01/2001',
-        '05/01/2001',
-        '06/01/2001',
-        '07/01/2001',
-        '08/01/2001',
-        '09/01/2001',
-        '10/01/2001',
-        '11/01/2001',
-        '12/01/2001',
-      ],
-      xaxis: {
-        type: 'datetime',
-      },
-      legend: {
-        offsetY: 7,
-      },
-      grid: {
-        padding: {
-          bottom: 20,
-        },
-      },
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'light',
-          type: 'horizontal',
-          shadeIntensity: 0.25,
-          gradientToColors: undefined,
-          inverseColors: true,
-          opacityFrom: 0.75,
-          opacityTo: 0.75,
-          stops: [0, 0, 0],
-        },
-      },
-      yaxis: [
-        {
-          title: {
-            text: 'Net Revenue',
-          },
-        },
-        {
-          opposite: true,
-          title: {
-            text: 'Number of Sales',
-          },
-        },
-      ],
-    }
+    
   }
 
   /**

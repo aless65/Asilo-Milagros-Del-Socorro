@@ -35,6 +35,34 @@
 <!-- end row-->
 
 <div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body pb-2">
+                <div class="float-end d-none d-md-inline-block">
+                    <div class="btn-group mb-2">
+                        <button type="button" class="btn btn-xs btn-light" i18n>Today</button>
+                        <button type="button" class="btn btn-xs btn-light" i18n>Weekly</button>
+                        <button type="button" class="btn btn-xs btn-secondary" i18n>Monthly</button>
+                    </div>
+                </div>
+
+                <h4 class="header-title mb-3" i18n>Enfermedades por centro</h4>
+
+                <div dir="ltr">
+                    <div id="sales-analytics" class="mt-4">
+                        <apx-chart class="apex-charts" [series]="salesAnalyticsChart.series!"
+                            [chart]="salesAnalyticsChart.chart!" [plotOptions]="salesAnalyticsChart.plotOptions!"
+                            [dataLabels]="salesAnalyticsChart.dataLabels!" [yaxis]="salesAnalyticsChart.yaxis!"
+                            [legend]="salesAnalyticsChart.legend!" [grid]="salesAnalyticsChart.grid!"
+                            [fill]="salesAnalyticsChart.fill!" [colors]="salesAnalyticsChart.colors!"
+                            [labels]="salesAnalyticsChart.labels!" [xaxis]="salesAnalyticsChart.xaxis!"
+                            [stroke]="salesAnalyticsChart.stroke!"></apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
     <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
@@ -77,34 +105,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </div> <!-- end card -->
-    </div> <!-- end col-->
-
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-body pb-2">
-                <div class="float-end d-none d-md-inline-block">
-                    <div class="btn-group mb-2">
-                        <button type="button" class="btn btn-xs btn-light" i18n>Today</button>
-                        <button type="button" class="btn btn-xs btn-light" i18n>Weekly</button>
-                        <button type="button" class="btn btn-xs btn-secondary" i18n>Monthly</button>
-                    </div>
-                </div>
-
-                <h4 class="header-title mb-3" i18n>Sales Analytics</h4>
-
-                <div dir="ltr">
-                    <div id="sales-analytics" class="mt-4">
-                        <apx-chart class="apex-charts" [series]="salesAnalyticsChart.series!"
-                            [chart]="salesAnalyticsChart.chart!" [plotOptions]="salesAnalyticsChart.plotOptions!"
-                            [dataLabels]="salesAnalyticsChart.dataLabels!" [yaxis]="salesAnalyticsChart.yaxis!"
-                            [legend]="salesAnalyticsChart.legend!" [grid]="salesAnalyticsChart.grid!"
-                            [fill]="salesAnalyticsChart.fill!" [colors]="salesAnalyticsChart.colors!"
-                            [labels]="salesAnalyticsChart.labels!" [xaxis]="salesAnalyticsChart.xaxis!"
-                            [stroke]="salesAnalyticsChart.stroke!"></apx-chart>
-                    </div>
                 </div>
             </div>
         </div> <!-- end card -->

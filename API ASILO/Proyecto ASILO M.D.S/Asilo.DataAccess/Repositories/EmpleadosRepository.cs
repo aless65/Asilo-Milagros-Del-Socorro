@@ -98,11 +98,12 @@ namespace Asilo.DataAccess.Repositories
             return result;
         }
 
-        public IEnumerable<VW_tbEmpleados> ListCuidadoresDisponibles(int cent_Id)
+        public IEnumerable<VW_tbEmpleados> ListCuidadoresDisponibles(int cent_Id, int resi_Id)
         {
             using var db = new SqlConnection(AsiloContext.ConnectionString);
             var parametros = new DynamicParameters();
-            parametros.Add("cent_Id", cent_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@cent_Id", cent_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@resi_Id", resi_Id, DbType.Int32, ParameterDirection.Input);
             return db.Query<VW_tbEmpleados>(ScriptsDataBase.EmpleadosListCuidadoresDisponibles, parametros, commandType: CommandType.StoredProcedure);
         }
 

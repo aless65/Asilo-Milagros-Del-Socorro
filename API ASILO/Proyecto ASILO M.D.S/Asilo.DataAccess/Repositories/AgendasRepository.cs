@@ -55,6 +55,43 @@ namespace Asilo.DataAccess.Repositories
             return reques;
         }
 
+        public RequestStatus EditDetalles(tbAgendaDetalles[] detalle)
+        {
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parametersDelete = new DynamicParameters();
+            parametersDelete.Add("@agen_Id", detalle[0].agen_Id, DbType.Int32, ParameterDirection.Input);
+
+            var eliminar = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Delete, parametersDelete, commandType: CommandType.StoredProcedure);
+
+            if (eliminar == "Se ha eliminado")
+            {
+
+                foreach (var item in detalle)
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+                    parameters.Add("@agendeta_HoraStart", item.agendeta_HoraStart, DbType.String, ParameterDirection.Input);
+                    parameters.Add("@agendeta_HoraEnd", item.agendeta_HoraEnd, DbType.String, ParameterDirection.Input);
+                    parameters.Add("@acti_Id", item.acti_Id, DbType.Int32, ParameterDirection.Input);
+                    parameters.Add("@medi_Id", item.medi_Id, DbType.Int32, ParameterDirection.Input);
+                    parameters.Add("@agendeta_Observaciones", item.agendeta_Observaciones, DbType.String, ParameterDirection.Input);
+                    parameters.Add("@agendeta_UsuCreacion", item.agendeta_UsuCreacion, DbType.Int32, ParameterDirection.Input);
+                    result.CodeStatus = db.QueryFirst<int>(ScriptsDataBase.AgendaDetalle_Insert, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result.CodeStatus == 0)
+                    {
+                        result.MessageStatus = "Ha ocurrido un error";
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public IEnumerable<VW_tbAgendas> List()
         {
             using var db = new SqlConnection(AsiloContext.ConnectionString);
@@ -62,7 +99,7 @@ namespace Asilo.DataAccess.Repositories
 
             return db.Query<VW_tbAgendas>(ScriptsDataBase.Agenda_List, null, commandType: CommandType.StoredProcedure);
         }
-      
+
 
         public RequestStatus Update(tbAgendas item)
         {

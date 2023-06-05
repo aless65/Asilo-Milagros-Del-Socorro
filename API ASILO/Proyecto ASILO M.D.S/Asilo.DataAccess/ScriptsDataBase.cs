@@ -61,6 +61,8 @@ namespace Asilo.DataAccess
         public static string EliminarAgenda = "asil.UPD_tbAgendas_Eliminar";
 
         public static string AgendaDetalle_List = "asil.UDP_asil_tbAgendaDetalles_List";
+        public static string AgendaDetalle_Insert = "asil.UDP_asil_tbAgendaDetalles_EditOficial";
+        public static string AgendaDetalle_Delete = "asil.UDP_asil_tbAgendaDetalles_Delete";
         #endregion
 
         #region Cargos
@@ -80,6 +82,8 @@ namespace Asilo.DataAccess
         public static string AgregarCentro= "asil.UDP_asil_tbCentros_Insert";
         public static string ActualizarCentro = "asil.UDP_asil_tbCentros_Update";
         public static string EliminarCentro = "asil.UDP_asil_tbCentros_Delete";
+
+        public static string GraficaEnfemedadXCentros = "asil.UDP_GraficaEnfermedadesXCentro";
         #endregion
 
         #region Dietas
@@ -119,6 +123,8 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Encargados = "asil.UDP_asil_tbEncargados_Find";
         public static string UDP_Edita_Encargados = "asil.UDP_asil_tbEncargados_Update";
         public static string UDP_Elimina_Encargados = "asil.UDP_asil_tbEncargados_Delete";
+
+        public static string IdentidadExisteEnca = "asil.confirmarIdentidadRepetidaEnca";
         #endregion
 
         #region Enfermedades
@@ -127,6 +133,9 @@ namespace Asilo.DataAccess
         public static string UDP_Find_Enfermedades = "asil.UDP_asil_VW_tbEnfermedades_Find";
         public static string UDP_Edita_Enfermedades = "asil.UDP_asil_tbEnfermedades_Update";
         public static string UDP_Elimina_Enfermedades = "asil.UDP_asil_tbEnfermedades_Delete";
+
+        public static string UDP_Inserta_EnfermedadesXResidente = "asil.UDP_asil_tbEnfermedadesXResidente_Insert";
+        public static string UDP_Elimina_EnfermedadesXResidente = "asil.UDP_asil_tbEnfermedadesXResidente_Delete";
         #endregion
 
         #region Expedientes
@@ -203,9 +212,15 @@ namespace Asilo.DataAccess
         public static string ActualizarResidentes = "asil.UDP_tbResidentes_Actualizar";
         public static string EliminarResidentes = "asil.UPD_tbResidentes_Eliminar";
 
+        public static string ResidentesForm = "asil.UDP_tbResidentes_InsertPrincipal";
+        public static string ResidentesFormEdit = "asil.UDP_tbResidentes_EditarPrincipal";
+        public static string IdentidadExisteResi = "asil.confirmarIdentidadRepetidaResi";
+        public static string ResidentesFindEnca = "asil.UDP_asil_tbResidentes_FindEncargados";
+
         #endregion
 
         #region Tipos de sangre
+        public static string UDP_Lista_TiposSangre = "asil.UDP_asil_tbTiposSangre_List";
 
         #endregion
     }

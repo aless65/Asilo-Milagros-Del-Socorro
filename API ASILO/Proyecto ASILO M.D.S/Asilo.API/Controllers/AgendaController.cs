@@ -67,5 +67,13 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        [HttpPost("InsertarDetalles")]
+        public IActionResult InsertarDetalles(AgendaDetallesViewModel[] agenda)
+        {
+            var item = _mapper.Map<tbAgendaDetalles[]>(agenda);
+            var response = _asiloServivce.InsertarAgendaDetalles(item);
+            return Ok(response);
+        }
+
     }
 }

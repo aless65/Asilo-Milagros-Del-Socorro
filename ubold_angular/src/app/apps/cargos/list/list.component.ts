@@ -6,7 +6,7 @@ import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Cargo } from '../Models';
 import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-cargos-list',
@@ -76,6 +76,20 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
         (response: any) => {
           console.log("se pudo:", response);
           this._fetchData();
+          if(response.message == "El cargo no puede ser eliminado ya que está siendo usado en otro registro"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'El cargo no puede ser eliminado ya que está siendo usado en otro registro',
+              icon: 'error',
+              background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -88,7 +102,18 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
   submitForm(): void {
     if(this.newCargo.invalid){
       console.log("pipi");
-      
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1700,
+        timerProgressBar: true,
+        titleText: '¡Llene todos los campos!',
+        icon: 'warning',
+        background: '#f6f6baf2'
+      }).then(() => {
+        // Acción luego de cerrarse el toast
+      });
       return;
     }
 
@@ -106,6 +131,36 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
           console.log("se pudo:", response);
           console.log(cargo.carg_Nombre);
           this._fetchData();
+          if (response.message == "El cargo ha sido editado") {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+              
+            });
+           
+          }
+          else if(response.message == "El cargo ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡El cargo ya existe!',
+              icon: 'error',
+              background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+
         },
         (error) => {
           console.log("no se pudo error:", error);
@@ -123,6 +178,34 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
           // this.showSuccess();
           console.log("se pudo:", response);
           this._fetchData();
+          if (response.message == "El cargo ha sido insertado") {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: 'El registro se guardó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
+          }
+          else if(response.message == "Este cargo ya existe"){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: '¡Este cargo ya existe!',
+              icon: 'error',
+              background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          }
+
         },
         (error) => {
           console.log("no se pudo:", error);
@@ -214,15 +297,15 @@ import { ServiceService } from 'src/app/apps/cargos/Service/service.service';
       <div class="table-user">
       <a href="javascript:void(0);" class="customer text-body fw-semibold" id="${cargo.carg_Id}">${cargo.carg_Nombre}</a>
       </div>
-      `
+      ` 
     );
   }
 
   // action cell formatter
   cargoActionFormatter(cargo: Cargo): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;" ></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${cargo.carg_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
 

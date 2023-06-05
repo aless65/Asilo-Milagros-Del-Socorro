@@ -46,7 +46,7 @@ export class EditarComponent implements OnInit {
       Nombre: ['', Validators.required],
       Muni: [0, Validators.required],
       Direccion: ['', Validators.required],
-      Telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      Telefono: ['', [Validators.required, Validators.pattern('^[0-9-]+$')]],
       Correo: ['', Validators.required],
       usucrea: [0, Validators.required],
 
@@ -163,14 +163,16 @@ export class EditarComponent implements OnInit {
           timerProgressBar: true,
           titleText: '¡Ha ocurrido en error inesperado!',
           icon: 'error',
-          background: '#f47171f0'
+          background: '#fff0f0f5'
         }).then(() => {
           // Acción luego de cerrarse el toast
         });
       }
       else if(data.message == "Exitoso"){
         Swal.fire({
-          title: 'Perfecto!',
+          toast: true,
+          position: 'top-end',
+          title: '¡Perfecto!',
           text: 'El registro se editó con éxito!',
           icon: 'success',
           showConfirmButton: false,

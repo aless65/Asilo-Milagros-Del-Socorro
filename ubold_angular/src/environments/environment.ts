@@ -6,10 +6,10 @@ export const environment = {
   production: false,
   demo: 'default',
   GOOGLE_MAPS_API_KEY: 'AIzaSyDpgQMpcfx1QU-8SM-ljcgjG4xrYtIYby4',
-  /*variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/',*/
-  imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409&image=',
-  variableGlobal: 'https://localhost:44371/api/',
- 
+  // variableGlobal: 'https://localhost:44371/api/',
+  variableGlobal: 'http://asilomilagrosdelsocorro.somee.com/api/',
+  imgAPI: 'https://api.imgbb.com/1/upload?key=5fdb101c8d071dddc932322c98123409',
+  fileUpload: 'https://www.filestackapi.com/api/store/S3?key=A4gFG8RRZSBmn5G6VIYCYz',
 };
 
 /*

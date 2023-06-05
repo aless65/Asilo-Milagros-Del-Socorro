@@ -9,6 +9,7 @@ namespace Asilo.Entities.Entities
     public partial class VW_tbPantallas
     {
         public int pant_Id { get; set; }
+        public string pant_key { get; set; }
         public string pant_Nombre { get; set; }
         public string pant_Url { get; set; }
         public string pant_Menu { get; set; }

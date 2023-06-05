@@ -37,6 +37,13 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("IdentidadExiste")]
+        public IActionResult IdentidadExiste(string enca_Identidad)
+        {
+            var list = _asiloServivce.IdentidadExisteEnca(enca_Identidad);
+            return Ok(list);
+        }
+
         [HttpPost("Insertar")]
         public IActionResult Insert(EncargadosViewModel encargado)
         {

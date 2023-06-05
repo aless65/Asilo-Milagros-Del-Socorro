@@ -199,7 +199,7 @@ export class EditarComponent implements OnInit {
       console.log(data.message);
       if (data.message == "El encargado ha sido editado exitosamente") {
         Swal.fire({
-          title: 'Perfecto!',
+          title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
           showConfirmButton: false,

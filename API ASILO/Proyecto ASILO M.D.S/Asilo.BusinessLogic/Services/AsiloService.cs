@@ -103,12 +103,43 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
+
         public ServiceResult InsertarAgendas(tbAgendas item)
         {
             ServiceResult result = new ServiceResult();
             try
             {
                 var list = _agendasRepository.Insert(item);
+                if (list.CodeStatus > 0)
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else if (list.CodeStatus == -2)
+                {
+                    return result.SetMessage("YaExiste", ServiceResultType.Conflict);
+                }
+                else if (list.CodeStatus == 0)
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+                else
+                {
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult InsertarAgendaDetalles(tbAgendaDetalles[] item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _agendasRepository.EditDetalles(item);
                 if (list.CodeStatus > 0)
                 {
                     return result.SetMessage("Exitoso", ServiceResultType.Success);
@@ -175,7 +206,7 @@ namespace Asilo.BusinessLogic.Services
                 {
                     return result.SetMessage("Registro eliminado", ServiceResultType.Success);
                 }
-                else if (delete.MessageStatus == "La agenda no puede ser eliminada porque está siendo usada")
+                else if (delete.CodeStatus == -2)
                 {
                     return result.SetMessage("no se pudo", ServiceResultType.Warning);
                 }
@@ -307,6 +338,20 @@ namespace Asilo.BusinessLogic.Services
             try
             {
                 var list = _centrosRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult Grafica()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _centrosRepository.Grafica();
                 return result.Ok(list);
             }
             catch (Exception e)
@@ -715,12 +760,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id)
+        public ServiceResult ListadoCuidadoresDisponibles(int cent_Id, int resi_Id)
         {
             var result = new ServiceResult();
             try
             {
-                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id);
+                var list = _empleadosRepository.ListCuidadoresDisponibles(cent_Id, resi_Id);
                 return result.Ok(list);
             }
             catch (Exception e)
@@ -753,6 +798,28 @@ namespace Asilo.BusinessLogic.Services
             {
                 var encargado = _encargadosRepository.Find(id);
                 return result.Ok(encargado);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult IdentidadExisteEnca(string enca_Identidad)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var identidad = _encargadosRepository.IdentidadExiste(enca_Identidad);
+
+                if (identidad.CodeStatus == 2)
+                {
+                    return result.SetMessage("Ya existe", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage("No existe", ServiceResultType.Error);
+                }
             }
             catch (Exception e)
             {
@@ -1015,7 +1082,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 var update = _expedientesRepository.Update(item);
 
-                if (update.MessageStatus == "El expediente ha sido editado exitosamente")
+                if (update.MessageStatus == "todo biennnn" || update.MessageStatus == "El expediente ha sido editado exitosamente")
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
                 else
                     return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
@@ -1203,12 +1270,12 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
-        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id)
+        public ServiceResult ListadoHabitacionesDisponibles(int cent_Id, int resi_Id)
         {
             var result = new ServiceResult();
             try
             {
-                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id);
+                var list = _habitacionesRepository.ListHabitacionesDisponibles(cent_Id, resi_Id);
                 return result.Ok(list);
             }
             catch (Exception e)
@@ -1682,6 +1749,41 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult FindResidentesEnca(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _residentesRepository.FindEnca(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult IdentidadExisteResi(string resi_Identidad, bool isEdit, int resi_Id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var identidad = _residentesRepository.IdentidadExiste(resi_Identidad, isEdit, resi_Id);
+                if (identidad.CodeStatus == 2)
+                {
+                    return result.SetMessage("Ya existe", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage("No existe", ServiceResultType.Error);
+                }
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         public ServiceResult InsertarResidentes(tbResidentes item)
         {
             ServiceResult result = new ServiceResult();
@@ -1770,10 +1872,66 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(ex.Message);
             }
         }
+
+        public ServiceResult InsertarResidentesForm(VW_tbResidentes_Form item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _residentesRepository.InsertPrincipal(item);
+                if (list.MessageStatus == "todo biennnn")
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage(list.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
+
+        public ServiceResult EditarResidentesForm(VW_tbResidentes_Form item)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var list = _residentesRepository.UpdatePrincipal(item);
+                if (list.MessageStatus == "todo biennnn")
+                {
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                }
+                else
+                {
+                    return result.SetMessage(list.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception xe)
+            {
+
+                return result.Error(xe.Message);
+            }
+        }
         #endregion
 
         #region Tipos de sangre
-
+        public ServiceResult ListadoTiposSangre()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _tiposSangreRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
         #endregion
     }
 }

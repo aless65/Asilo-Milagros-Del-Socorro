@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,13 +7,15 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Residente } from '../../Models';
 // import { CRMCUSTOMERS } from '../../crm/shared/data';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-residentes-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
+
 export class ListComponent implements OnInit {
 
   pageTitle: BreadcrumbItem[] = [];
@@ -22,16 +24,22 @@ export class ListComponent implements OnInit {
   selectedResidente!: Residente;
   newContact!: FormGroup;
   age!: number | null;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
+  returnUrl: string = '/';
+
+  @Output() residentesListado: EventEmitter<Residente[]> = new EventEmitter();
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
+  @ViewChild('deleteResidenteModal', { static: true }) deleteResidenteModal: any;
 
   constructor(
     private sanitizer: DomSanitizer,
     public activeModal: NgbModal,
     private fb: FormBuilder,
     private service: ServiceService,
-    private route: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +57,8 @@ export class ListComponent implements OnInit {
       phone: ['', Validators.required],
       location: ['', Validators.required]
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/apps/residentes/edit';
   }
 
   // convenience getter for easy access to form fields
@@ -60,9 +70,61 @@ export class ListComponent implements OnInit {
  * @param data data to be used in modal
  */
   openCreate(): void {
-    this.route.navigate(['apps/residentes/create']);
+    this.residentesListado.emit(this.residentes);
+    this.router.navigate(['apps/residentes/create']);
   }
 
+  openHistorial(id: number): void {
+    this.service.FindExpediente(id).subscribe(([expediente, historialExpediente]) => {
+  
+      // Assign the obtained data to variables
+      // For example:
+      const expedienteData = expediente;
+      const historialData = historialExpediente;
+  
+      // Pass the data as parameters in the navigation function using 'state'
+      this.router.navigate(['apps/residentes/historial'], {
+        state: {
+          expedienteData: expedienteData,
+          historialData: historialData
+        }
+      });
+
+      localStorage.setItem('expedienteData', JSON.stringify(expedienteData));
+      localStorage.setItem('historialData', JSON.stringify(historialData));
+
+    });
+  }
+  
+  openModalDelete(): void {
+    this.activeModal.open(this.deleteResidenteModal, { centered: true, windowClass: 'delete-modal' });
+  }  
+
+  deleteEmpleado(): void{
+    this.service.deleteResidentes(this.selectedResidente.resi_Id || 0).subscribe(
+        (response: any) => {
+          if(response.code === 200){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: 'El registro se eliminó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
+          }
+          this._fetchData();
+        },
+        (error) => {
+        }
+      )
+    this._fetchData();
+    this.activeModal.dismissAll('');
+  }
+  
   /**
    * fetch contact list
    */
@@ -134,16 +196,32 @@ export class ListComponent implements OnInit {
     // product cell
     document.querySelectorAll('.residente').forEach((e) => {
       e.addEventListener("click", () => {
-        this.selectedResidente = this.residentes[Number(e.id) - 1]
+        const id = e.getAttribute("id");
+        const residente = this.residentes.find((r) => r.resi_Id?.toString() === id);
+    
+        if (residente) {
+          this.selectedResidente = residente;
+          this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+        }
+      });
+    });
 
-        this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+    document.querySelectorAll('.edit').forEach((e) => {
+      e.addEventListener("click", () => {
+        const residenteId = e.getAttribute('id');
+                console.log(residenteId);
+                if (residenteId) {
+                    this.router.navigate([`${this.returnUrl}/${residenteId}`]); // Modify the navigation path to include the id parameter
+                }
       });
     })
 
-    document.querySelectorAll('.action-icon').forEach((e) => {
-      e.addEventListener("click", () => {
-        console.log('le dio');
-        console.log(this.residentes);
+    document.querySelectorAll('.delete').forEach((e) => {
+      e.addEventListener("click", () => {  
+        const selectedId = Number(e.id);
+        this.selectedResidente = this.residentes.find(resi => resi.resi_Id === selectedId) || this.selectedResidente;
+        
+        this.openModalDelete();
       });
     })
   }
@@ -162,10 +240,10 @@ export class ListComponent implements OnInit {
   }
 
   // action cell formatter
-  residenteActionFormatter(): any {
+  residenteActionFormatter(residente: Residente): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${residente.resi_Id}"> <i class="mdi mdi-square-edit-outline"></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${residente.resi_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
 

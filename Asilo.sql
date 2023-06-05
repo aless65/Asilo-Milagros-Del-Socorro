@@ -27,11 +27,17 @@ GO
 --***********CREACION TABLA PANTALLAS*****************---
 CREATE TABLE acce.tbPantallas(
 	pant_Id					INT IDENTITY,
-	pant_Nombre				NVARCHAR(100) NOT NULL,
-	pant_Url				NVARCHAR(300) NOT NULL,
-	pant_Menu				NVARCHAR(300) NOT NULL,
-	pant_Icon				NVARCHAR(80) NOT NULL,
-	pant_UsuCreacion		INT NOT NULL,
+	pant_key                NVARCHAR(100),
+	pant_Nombre				NVARCHAR(100),
+	pant_Url				NVARCHAR(300),
+	pant_Menu				NVARCHAR(300),
+	pant_Icon				NVARCHAR(80),
+	pant_isTitle            Bit,
+	collapsed               bit,
+    badgeVariant            NVARCHAR(255),
+    badgeText               NVARCHAR(255),
+    parentKey               NVARCHAR(255),
+	pant_UsuCreacion		INT,
 	pant_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_pant_FechaCreacion DEFAULT(GETDATE()),
 	pant_UsuModificacion	INT,
 	pant_FechaModificacion	DATETIME,
@@ -40,18 +46,33 @@ CREATE TABLE acce.tbPantallas(
 );
 GO
 
-INSERT INTO acce.tbPantallas(pant_Nombre, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
-VALUES ('usuarios', '/acceso/usuarios', 'acceso', 'ic_user', 1),
-       ('roles', '/acceso/roles', 'acceso', 'ic_kanban', 1),
-       ('enfermedades', '/asilo/enfermedades', 'asilo', 'ic_user', 1),
-	   ('centros', '/asilo/centros', 'asilo', 'ic_user', 1),
-	   ('cargos', '/asilo/cargos', 'asilo', 'ic_calendar', 1),
-	   ('habitaciones', '/asilo/habitaciones', 'asilo', 'ic_banking', 1),
-	   ('empleados', '/asilo/empleados', 'asilo', 'ic_booking', 1),
-	   ('proveedores', '/asilo/proveedores', 'asilo', 'ic_ecommerce', 1),
-	   ('residentes', '/asilo/residentes','asilo', 'ic_blog', 1)
-	   
+INSERT INTO acce.tbPantallas(pant_key,pant_Nombre,pant_isTitle, pant_Url, pant_Menu, pant_Icon, pant_UsuCreacion)
+VALUES	('inicio', 'Inicio', 1,NULL,NULL,NULL, 1),
+        ('ds-dashboard-1', 'Dashboard', 0,'/dashboard-1','Inicio','home', 1),
+		('acceso', 'Acceso', 1,NULL,NULL,NULL, 1),
+        ('apps-usuarios', 'Usuarios', 0,'/apps/usuarios/list','Acceso','user', 1),
+	    ('apps-roles', 'Roles', 0,'/apps/roles/list','Acceso','airplay', 1),
+		('asilo', 'Asilo', 1,NULL,NULL,NULL, 1),
+		('apps-residentes', 'Residentes', 0,'/apps/residentes/list','Asilo','users', 1),
+		('apps-agendas', 'Agendas', 0,'/apps/agendas/list','Asilo','calendar', 1),
+		('apps-historialPagos', 'Historial de Pagos', 0,'/apps/histoarialPagos/list','Asilo','credit-card', 1),
+		('apps-enfermedades', 'Enfermedades', 0,'/apps/enfermedades/list','Asilo','activity', 1),
+		('apps-medicamentos', 'Medicamentos', 0,'/apps/medicamentos/list','Asilo','package', 1),
+		('apps-centros', 'Centros', 0,'/apps/centros/list','Asilo','trello', 1),
+		('apps-cargos', 'Cargos', 0,'/apps/cargos/list','Asilo','shield', 1),
+		('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
+		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','users', 1),
+		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','user-check', 1),
+		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1)
 GO
+
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+
+--VALUES ('dashboards', 'Dashboards', 1,'/dashboard-1',Null, 'airplay', 1,1, 'success', '4', NULL);
+
+--INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle, pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
+--VALUES ('ds-dashboard-1', 'Dashboard 1', 1, '/dashboard-1', NULL, NULL,1,0, NULL, NULL, 'dashboards');
+
 
 
 
@@ -75,7 +96,7 @@ GO
 --****************CREACION TABLA USUARIOS****************--
 CREATE TABLE acce.tbUsuarios(
 	usua_Id 				INT IDENTITY(1,1),
-	usua_NombreUsuario		NVARCHAR(100) NOT NULL,
+	usua_NombreUsuario		NVARCHAR(100) NOT NULL UNIQUE,
 	usua_Contrasena			NVARCHAR(MAX) NOT NULL,
 	usua_EsAdmin			BIT,
 	role_Id					INT,
@@ -374,10 +395,10 @@ GO
 CREATE TABLE asil.tbDietas
 (
 	diet_Id					INT IDENTITY,
-	diet_Desayuno			NVARCHAR(500) NOT NULL,
-	diet_Almuerzo			NVARCHAR(500) NOT NULL,
-	diet_Cena				NVARCHAR(500) NOT NULL,
-	diet_Merienda			NVARCHAR(500) NOT NULL,
+	diet_Desayuno			NVARCHAR(500),
+	diet_Almuerzo			NVARCHAR(500),
+	diet_Cena				NVARCHAR(500),
+	diet_Merienda			NVARCHAR(500),
 	diet_Restricciones		NVARCHAR(500),
 	diet_Observaciones		NVARCHAR(500),
 	
@@ -448,8 +469,8 @@ CREATE TABLE asil.tbAgendaDetalles
 (
 	agendeta_Id					INT IDENTITY,
 	agen_Id						INT NOT NULL,
-	agendeta_HoraStart			NVARCHAR(500) NOT NULL,
-	agendeta_HoraEnd			NVARCHAR(500),
+	agendeta_HoraStart			VARCHAR(5) NOT NULL,
+	agendeta_HoraEnd			VARCHAR(5),
 	acti_Id						INT,
 	medi_Id						INT,
 	agendeta_Observaciones		NVARCHAR(500),
@@ -617,6 +638,7 @@ CREATE TABLE asil.tbExpedientes
 	tiposang_Id				INT NOT NULL,
 	expe_FechaApertura		DATE NOT NULL,
 	expe_Fotografia			NVARCHAR(500),
+	expe_QRCode				NVARCHAR(MAX),
 	
 	expe_UsuCreacion		INT NOT NULL,
 	expe_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_expe_FechaCreacion DEFAULT(GETDATE()),
@@ -1227,6 +1249,33 @@ VALUES('Habitación Individual',1,1,1),
 	  ('Habitación Triple',3,0,1),
 	  ('Habitación cuádruple',1,4,1)
 GO
+
+
+ --********INSERT TABLA CATEGORIAS HABITACIONES****************---
+INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
+VALUES
+  ('100', 1, 1, 1),
+  ('100', 2, 2, 1),
+  ('100', 1, 3, 1),
+  ('100', 1, 4, 1),
+  ('101', 3, 2, 1),
+  ('101', 1, 4, 1),
+  ('102', 2, 3, 1),
+  ('102', 2, 4, 1),
+  ('103', 1, 1, 1),
+  ('103', 3, 2, 1),
+  ('104', 1, 2, 1),
+  ('104', 2, 3, 1),
+  ('105', 2, 4, 1),
+  ('105', 3, 1, 1),
+  ('106', 1, 3, 1),
+  ('106', 1, 4, 1),
+  ('107', 2, 2, 1),
+  ('107', 3, 1, 1),
+  ('108', 1, 1, 1),
+  ('108', 2, 3, 1);
+
+
 --********INSERT TABLA CARGOS****************---
 INSERT INTO asil.tbCargos(carg_Nombre, carg_UsuCreacion)
 VALUES('Gerente',1),
@@ -1243,6 +1292,9 @@ VALUES('Gerente',1),
 	  ('Médico especializado en geriatría',1)
 GO
 	  --********INSERT TABLA DIETA ****************---
+INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
+VALUES('', '','','',1);
+
 INSERT INTO asil.tbDietas(diet_Desayuno, diet_Almuerzo, diet_Cena, diet_Merienda, diet_UsuCreacion)
 VALUES('Leche descremada,cereales integrales', 'Fruta,legumbre,Carne poco grasa','patata y verduras,queso','Yogurt poco azucarado',1);
 
@@ -1276,17 +1328,23 @@ GO
 
 	  --********INSERT TABLA Residente ****************---
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,1,1,'2010-10-05',1);
+VALUES('Lourdes Darleny', 'Rodriguez', '0102036515786',1,'1975-12-05','F',1,2,1,'2010-10-05',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',1,2,1,'2010-02-25',1);
+VALUES('Maria Lucero', 'Ramirez', '4528796123541',1,'1970-12-02','F',4,3,1,'2010-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Karla Elisa', 'Ramirez', '859679612354',1,'1970-11-12','F',3,1,1,'2012-02-25',1);
+VALUES('Karla Elisa', 'Ramirez', '8596796123546',1,'1970-11-12','F',3,4,1,'2012-02-25',1);
 GO
 INSERT INTO asil.tbResidentes(resi_Nombres, resi_Apellidos, resi_Identidad, estacivi_Id, resi_Nacimiento, resi_Sexo, cent_Id, diet_Id,[agen_Id], resi_FechaIngreso, resi_UsuCreacion)
-VALUES('Elisa', 'Maradiaga', '859625612354',1,'1970-11-12','F',2,1,1,'2012-02-25',1);
+VALUES('Elisa', 'Maradiaga', '8596256152354',1,'1970-11-12','F',2,5,1,'2012-02-25',1);
 
+
+INSERT INTO asil.tbHabitacionesXResidente(habi_Id, resi_Id, habiresi_UsuCreacion)
+VALUES (1, 1, 1),
+	   (6, 2, 1),
+	   (3, 3, 1),
+	   (2, 4, 1)
 
 	  --********INSERT TABLA Proveedores ****************---
 INSERT INTO [asil].[tbProveedores](prov_Nombre, prov_CorreoElectronico, prov_Telefono, muni_Id, prov_Direccion, prov_UsuCreacion)
@@ -1364,10 +1422,10 @@ VALUES
 
 --********INSERT TABLA Agendas Detalles****************---
 INSERT INTO [asil].tbAgendaDetalles(agen_Id, agendeta_HoraStart, agendeta_HoraEnd, acti_Id, medi_Id,agendeta_Observaciones, agendeta_UsuCreacion)
-VALUES (1, '09:00:00', '10:30:00', 2, null,  null, 1),
-	   (1, '12:00:00', '13:30:00', 3, null,  null, 1),
-	   (1, '18:00:00', '19:30:00', 4, null,  null, 1),
-	   (1, '15:20:00', '15:45:00', 6, null,  'no todos tienen q ir jejejej', 1)
+VALUES (1, '09:00', '10:30', 2, null,  null, 1),
+	   (1, '12:00', '13:30', 3, null,  null, 1),
+	   (1, '18:00', '19:30', 4, null,  null, 1),
+	   (1, '15:20', '15:45', 6, null,  'no todos tienen q ir jejejej', 1)
 
 
 --********INSERT TABLA Medicamentos****************---
@@ -1427,11 +1485,14 @@ GO
 
 
 
- --********INSERT TABLA CATEGORIAS HABITACIONES****************---
-INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
-VALUES('100',1,1,1),
-	  ('100',2,2,1),
-	  ('100',1,3,1),
-	  ('100',1,4,1),
-	  ('101',3,2,1),
-	  ('101',1,4,1)
+
+  INSERT INTO [acce].[tbPantallasPorRoles](role_Id,pant_Id,pantrole_UsuCreacion)
+  VALUES(1,2,1),
+        (1,4,1),
+		(1,5,1),
+		(2,6,1),
+		(1,7,1),
+		(1,8,1),
+		(2,9,1),
+		(2,10,1),
+		(2,11,1)

@@ -17,8 +17,7 @@
                         <span class="d-none d-sm-inline">Datos Personales</span>
                     </a>
                     <ng-template ngbNavContent>
-                        <form class="form-horizontal" [formGroup]="accountForm" #accountWizard="ngForm"
-                            (ngSubmit)="accountForm.valid && activeWizard4 = 2">
+                        <form class="form-horizontal" [formGroup]="accountForm" #accountWizard="ngForm">
                             <div class="row">
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="mb-3">
@@ -41,7 +40,7 @@
                                         <label class="col-form-label" for="resi_Identidad">
                                             Identidad</label>
                                         <input type="text" id="resi_Identidad" name="resi_Identidad"
-                                            class="form-control" value="123456789" formControlName="resi_Identidad"
+                                            class="form-control" formControlName="resi_Identidad"
                                             [(ngModel)]="residente.resi_Identidad"
                                             [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid , 'is-valid': accountWizard.submitted && form1.resi_Identidad.valid }">
 
@@ -99,7 +98,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [(ngModel)]="residente.estacivi_Id" [minCountForSearch]="0"
+                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
                                         </select2>
 
@@ -163,8 +162,7 @@
                     </a>
                     <ng-template ngbNavContent>
                         <form class="form-horizontal needs-validation" [formGroup]="encargadoForm"
-                            #encargadoWizard="ngForm"
-                            (ngSubmit)="(encargadoForm.valid || allValuesUndefinedOrNull) && activeWizard4 = 3">
+                            #encargadoWizard="ngForm">
                             <div class="row">
                                 <div class="col-5" style="margin-left: 5%;">
                                     <div class="mb-3">
@@ -173,7 +171,7 @@
                                             formControlName="enca_Nombres" required [(ngModel)]="encargado.enca_Nombres"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nombres.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Nombres.valid && allValuesUndefinedOrNull}">
 
-                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nombres.valid && allValuesUndefinedOrNull"
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nombres.valid"
                                             class="valid-feedback">
                                             ¡Completo!
                                         </div>
@@ -190,7 +188,7 @@
                                             value="123456789" formControlName="enca_Identidad"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Identidad.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Identidad.valid && allValuesUndefinedOrNull }">
 
-                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Identidad.valid && allValuesUndefinedOrNull"
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Identidad.valid"
                                             class="valid-feedback">
                                             ¡Completo!
                                         </div>
@@ -208,7 +206,7 @@
                                             formControlName="enca_Nacimiento"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.enca_Nacimiento.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Nacimiento.valid && allValuesUndefinedOrNull }">
 
-                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nacimiento.valid && allValuesUndefinedOrNull"
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Nacimiento.valid"
                                             class="valid-feedback">
                                             ¡Completo!
                                         </div>
@@ -226,7 +224,7 @@
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.muni_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.muni_Id.valid && allValuesUndefinedOrNull }">
                                         </select2>
 
-                                        <div *ngIf="encargadoWizard.submitted && form2.muni_Id.valid && allValuesUndefinedOrNull"
+                                        <div *ngIf="encargadoWizard.submitted && form2.muni_Id.valid"
                                             class="valid-feedback">
                                             ¡Completo!
                                         </div>
@@ -244,7 +242,7 @@
                                             [ngClass]="{'is-invalid': encargadoWizard.submitted && form2.enca_Telefono.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.enca_Telefono.valid && allValuesUndefinedOrNull }">
 
 
-                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Telefono.valid && allValuesUndefinedOrNull"
+                                        <div *ngIf="encargadoWizard.submitted && form2.enca_Telefono.valid"
                                             class="valid-feedback">
                                             ¡Completo!
                                         </div>
@@ -280,7 +278,7 @@
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
                                         <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
-                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_Id"
+                                            [minCountForSearch]="0" [(ngModel)]="encargado.estacivi_IdEnca"
                                             [ngClass]="{ 'is-invalid': encargadoWizard.submitted && form2.estacivi_Id.invalid && !allValuesUndefinedOrNull, 'is-valid': encargadoWizard.submitted && form2.estacivi_Id.valid && !allValuesUndefinedOrNull}">
                                         </select2>
 
@@ -440,19 +438,22 @@
                                     <div class="file-upload">
                                         <div class="image-preview" *ngIf="selectedImage">
                                             <img [src]="selectedImage" alt="Preview">
-                                            <div class="delete-container">
-                                                <button class="delete-button" (click)="deleteImage()">Eliminar</button>
-                                            </div>
                                         </div>
                                         <div class="input-container">
-                                            <label class="btn btn-blue rounded-pill" for="image">Agregar
-                                                fotografía</label>
+                                            <div class="btn-container botones">
+                                                <label class="btn btn-blue agregarimg rounded-pill" for="image">Agregar
+                                                    fotografía</label>
+                                                <label class="delete-label" *ngIf="selectedImage">
+                                                    <button class="btn btn-danger rounded-pill"
+                                                        (click)="deleteImage()">Eliminar</button>
+                                                </label>
+                                            </div>
                                             <input type="file" id="image" name="image" class="form-control-file"
-                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)"
-                                                [(ngModel)]="expediente.expe_Fotografia">
+                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)">
                                         </div>
                                     </div>
                                 </div>
+
 
                             </div> <!-- end row -->
 
@@ -482,7 +483,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
                                         <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
-                                            (update)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined"
+                                            (close)="populateCuidadoresDisponibles(selectRef.option); residente.empe_Id = undefined; residente.habi_Id = 0"
                                             formControlName="cent_Id" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
                                         </select2>
@@ -503,7 +504,6 @@
                                             [class.col-md-12]="form4.diet_Id.value !== '2'"
                                             [(ngModel)]="residente.diet_Id"
                                             [class.col-md-10]="form4.diet_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openDieta($event, residente.diet_Id || 0)"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.diet_Id.invalid, 'is-valid': validationWizard.submitted && form4.diet_Id.valid }">
 
                                         </select2>
@@ -550,7 +550,6 @@
                                             [class.col-md-12]="form4.agen_Id.value !== '2'"
                                             [(ngModel)]="residente.agen_Id"
                                             [class.col-md-10]="form4.agen_Id.value === '2'" [minCountForSearch]="0"
-                                            (update)="openAgenda($event, residente.agen_Id || 0)"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
 
                                         </select2>

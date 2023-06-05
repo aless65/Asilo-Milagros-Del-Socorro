@@ -1,0 +1,116 @@
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title="Medicamentos"></app-page-title>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="row justify-content-between mb-2">
+                <div class="col-12">
+                    <div>
+                        <!-- <button type="button" class="btn btn-success waves-effect waves-light mb-2 float-end"><i
+                                class="mdi mdi-cog"></i></button> -->
+                        <button type="button" class="btn btn-pink waves-effect waves-light mb-2"
+                            (click)="openModal('new')">Agregar</button>
+                    </div>
+                </div><!-- end col-->
+            </div>
+            <!-- customer table -->
+            <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="medicamentos"
+                [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                (search)="searchData($event)" [isSortable]="false"
+                tableClasses="table-centered table-nowrap table-hover">
+            </app-advanced-table>
+
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+</div>
+<!-- end row -->
+
+<!-- Modal -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">{{ esEditar ? 'Editar medicamento' : 'Agregar medicamento' }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        
+        <form [formGroup]="newMedicamento" #addMedicamento="ngForm" (ngSubmit)="submitForm()">
+            <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name"  placeholder="Nombre" required formControlName="name"
+                    [ngClass]="{ 'is-invalid': addMedicamento.submitted && form1.name.invalid }" >
+                <div *ngIf="addMedicamento.submitted && form1.name.invalid" class="valid-feedback">
+                    completo!
+                </div>
+                <div *ngIf="addMedicamento.submitted && form1.name.invalid" class="invalid-feedback">
+                    El nombre es requerido
+                </div>
+            </div>
+        </div>
+
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="validationCustom05" class="form-label">Proveedor:</label>
+                  
+                    <select2 id="Proveedor" placeholder="Proveedor..." formControlName="Proveedor" name="Proveedor"  [minCountForSearch]="0" [data]="proveedores" 
+                    [ngClass]="{ 'is-valid': addMedicamento.submitted && form1.Proveedor.valid , 'is-invalid': addMedicamento.submitted && form1.Proveedor.invalid }">
+                    </select2>
+
+                    <div *ngIf="addMedicamento.submitted && form1.Proveedor.invalid" class="valid-feedback">
+                         Completo!
+                    </div>
+
+                    <div *ngIf="addMedicamento.submitted && form1.Proveedor.invalid" class="invalid-feedback">
+                        El proveedor es requerido.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="validationCustom05" class="form-label">Centro:</label>
+                  
+                    <select2 id="Centro"  placeholder="centro..." formControlName="Centro"  [minCountForSearch]="0" [data]="centros" name="Centro"
+                    [ngClass]="{ 'is-valid': addMedicamento.submitted && form1.Centro.valid , 'is-invalid': addMedicamento.submitted && form1.Centro.invalid }">
+                    </select2>
+
+                    <div *ngIf="addMedicamento.submitted && form1.Centro.invalid" class="valid-feedback">
+                         Completo!
+                    </div>
+
+                    <div *ngIf="addMedicamento.submitted && form1.Centro.invalid" class="invalid-feedback">
+                        El centro es requerido.
+                    </div>
+                </div>
+            </div>
+            
+            
+
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary waves-effect waves-light me-1" [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
+                <button type="button" class="btn btn-outline-secondary waves-effect waves-light"
+                    (click)="modal.close('')">Cancelar</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Modal Delete -->
+<ng-template #deleteMedicamentoModal let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Eliminar medicamento</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <p>¿Realmente desea eliminar este medicamento?</p>
+        <div class="text-end">
+            <button type="button" (click)="deleteMedicamento()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-danger waves-effect waves-light"
+                (click)="modal.close('')">Cancelar</button>
+        </div>
+    </div>
+</ng-template>

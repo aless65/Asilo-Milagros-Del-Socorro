@@ -2,17 +2,17 @@
     <div class="row mb-2">
         <div class="col-12 col-sm-6" *ngIf="pageSizeOptions.length">
             <div class="text-center text-sm-start">
-                <label class="form-label me-1">Show
+                <label class="form-label me-1">Mostrar
                     <select class="form-select form-select-sm  w-auto ms-1 me-1 d-inline" name="pageSize"
                         id="event-category" required [(ngModel)]="service.pageSize" (ngModelChange)="paginate()">
                         <option *ngFor="let option of pageSizeOptions" [value]="option">{{option}}</option>
                     </select>
-                    entries</label>
+                    resultados</label>
             </div>
         </div><!-- end col-->
         <div class="col-12" [class.col-sm-6]="pageSizeOptions.length">
             <div class="d-flex align-items-center justify-content-center justify-content-sm-end">
-                <label class="d-inline">Search:
+                <label class="d-inline">Buscar:
                     <input type="text" name="searchTerm" class="form-control form-control-sm d-inline w-auto ms-1"
                         aria-controls="advanced-table" [(ngModel)]="service.searchTerm" (ngModelChange)="searchData()">
                 </label>
@@ -75,8 +75,8 @@
     <div class="d-flex flex-wrap justify-content-center align-items-center justify-content-md-between mt-2"
         *ngIf="pagination">
         <div>
-            Showing {{service.startIndex }} to
-            {{service.endIndex}} of {{service.totalRecords}} entries
+            Mostrando {{service.startIndex }} -
+            {{service.endIndex}} de {{service.totalRecords}} resultados
         </div>
         <ngb-pagination class="pagination-rounded custom-pagination" [collectionSize]="service.totalRecords"
             [(page)]="service.page" [maxSize]="3" [rotate]="true" [pageSize]="service.pageSize"

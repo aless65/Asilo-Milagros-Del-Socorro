@@ -1,0 +1,583 @@
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title="Editar Residente"></app-page-title>
+
+<div class="card">
+    <div class="card-body">
+
+
+        <div id="validationWizard">
+
+            <ul ngbNav #validationWizard="ngbNav" [(activeId)]="activeWizard4"
+                class="nav-pills nav-justified bg-light form-wizard-header mb-4">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink class="rounded-0 pt-2">
+                        <i class="mdi mdi-account-circle me-1"></i>
+                        <span class="d-none d-sm-inline">Datos Personales</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <form class="form-horizontal" [formGroup]="accountForm" #accountWizard="ngForm">
+                            <div class="row">
+                                <div class="col-5" style="margin-left: 5%;">
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="resi_Nombres">Nombres</label>
+                                        <input type="text" class="form-control" id="resi_Nombres"
+                                            [(ngModel)]="residente.resi_Nombres" required formControlName="resi_Nombres"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nombres.invalid, 'is-valid': accountWizard.submitted && form1.resi_Nombres.valid}">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nombres.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nombres.invalid"
+                                            class="invalid-feedback">
+                                            Nombres requeridos.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="resi_Identidad">
+                                            Identidad</label>
+                                        <input type="text" id="resi_Identidad" name="resi_Identidad"
+                                            class="form-control" formControlName="resi_Identidad"
+                                            [(ngModel)]="residente.resi_Identidad"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Identidad.invalid , 'is-valid': accountWizard.submitted && form1.resi_Identidad.valid }">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Identidad.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Identidad.invalid"
+                                            class="invalid-feedback">
+                                            Identidad requerida.
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="resi_Nacimiento">
+                                            Fecha de Nacimiento</label>
+                                        <input type="date" id="resi_Nacimiento" name="resi_Nacimiento"
+                                            [(ngModel)]="residente.resi_Nacimiento" class="form-control"
+                                            value="123456789" formControlName="resi_Nacimiento"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Nacimiento.invalid , 'is-valid': accountWizard.submitted && form1.resi_Nacimiento.valid }">
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nacimiento.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Nacimiento.invalid"
+                                            class="invalid-feedback">
+                                            El residente debe tener al menos 65 años.
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                                <div class="col-5" style="margin-left: 5%;">
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="resi_Apellidos">Apellidos</label>
+                                        <input type="text" class="form-control" id="resi_Apellidos"
+                                            formControlName="resi_Apellidos" required
+                                            [(ngModel)]="residente.resi_Apellidos"
+                                            [ngClass]="{ 'is-invalid': accountWizard.submitted && form1.resi_Apellidos.invalid, 'is-valid': accountWizard.submitted && form1.resi_Apellidos.valid}">
+
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Apellidos.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.resi_Apellidos.invalid"
+                                            class="invalid-feedback">
+                                            Apellidos requeridos.
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="col-form-label" for="estacivi_Id">
+                                            Estado Civil</label>
+                                        <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
+                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0"
+                                            name="estacivi_Id"
+                                            [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
+                                        </select2>
+
+                                        <div *ngIf="accountWizard.submitted && form1.estacivi_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+
+                                        <div *ngIf="accountWizard.submitted && form1.estacivi_Id.invalid"
+                                            class="invalid-feedback">
+                                            Estado civil requerido.
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <!-- <label class="col-form-label mb-1" for="confirm4">Sexo</label> -->
+
+                                        <label for="Sexo" class="form-label">Sexo</label>
+                                        <div class="radio-group">
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="sexo"
+                                                required value="F" [(ngModel)]="residente.resi_Sexo"
+                                                formControlName="resi_Sexo"
+                                                [ngClass]="{ 'is-valid': accountWizard.submitted && form1.resi_Sexo.valid , 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
+                                            Femenino
+
+                                            <input type="radio" class="form-check-input" id="Sexo" placeholder="Sexo"
+                                                value="M" required [(ngModel)]="residente.resi_Sexo"
+                                                formControlName="resi_Sexo" style="margin-left: 15px;"
+                                                [ngClass]="{ 'is-valid': accountWizard.submitted && form1.resi_Sexo.valid , 'is-invalid': accountWizard.submitted && form1.resi_Sexo.invalid }">
+                                            Masculino
+
+                                            <div *ngIf="accountWizard.submitted && form1.resi_Sexo.valid"
+                                                class="valid-feedback">
+                                                ¡Completo!
+                                            </div>
+                                            <div *ngIf="accountWizard.submitted && form1.resi_Sexo.invalid"
+                                                class="invalid-feedback">
+                                                Sexo es requerido.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                            <br>
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitResidente()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </ng-template>
+                </li>
+
+
+                <li [ngbNavItem]="5">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                        <i class="mdi mdi-account-supervisor-circle me-1"></i>
+                        <span class="d-none d-sm-inline">Encargado(s)</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-8">
+                                    <div class="card" *ngFor="let encargado of encargados">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h4 class="mt-0 mb-2"> {{ encargado.nombreCompleto }}</h4>
+                                                <p class="mb-0"><i class="mdi mdi-family-tree"></i> {{ encargado.pare_Nombre }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-cellphone-android"></i> {{ encargado.enca_Telefono }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-gender-male-female"></i> {{ encargado.enca_SexoDesc }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-sign-direction"></i> {{ encargado.enca_Direccion }}, {{ encargado.muni_Nombre }}</p>
+                                            </div>
+                                            <a href="javascript: void(0);" class="btn btn-info">Editar</a>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-template>
+                </li>
+
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                        <i class="mdi mdi-face-profile me-1"></i>
+                        <span class="d-none d-sm-inline">Expediente</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <form class="form-horizontal needs-validation" [formGroup]="profileForm"
+                            #profileWizard="ngForm">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row mb-3">
+                                        <label class="col-md-3 col-form-label" for="tiposang_Id">Tipo de Sangre</label>
+                                        <div class="col-md-9">
+                                            <select2 id="tiposang_Id" [data]="tipoSangre" formControlName="tiposang_Id"
+                                                [minCountForSearch]="0" [(ngModel)]="expediente.tiposang_Id"
+                                                name="tiposang_Id"
+                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.tiposang_Id.invalid, 'is-valid': profileWizard.submitted && form3.tiposang_Id.valid }">
+                                            </select2>
+
+                                            <div *ngIf="profileWizard.submitted && form3.tiposang_Id.valid"
+                                                class="valid-feedback">
+                                                ¡Completo!
+                                            </div>
+                                            <div *ngIf="profileWizard.submitted && form3.tiposang_Id.invalid"
+                                                class="invalid-feedback">
+                                                Tipo de sangre requerido.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-md-3 col-form-label" for="expe_FechaApertura">Apertura</label>
+                                        <div class="col-md-9">
+                                            <input type="date" id="expe_FechaApertura" name="expe_FechaApertura"
+                                                value="expediente.expe_FechaApertura | date:'yyyy-MM-dd'"
+                                                class="form-control" formControlName="expe_FechaApertura"
+                                                [(ngModel)]="expediente.expe_FechaApertura"
+                                                [ngClass]="{ 'is-invalid': profileWizard.submitted && form3.expe_FechaApertura.invalid, 'is-valid': profileWizard.submitted && form3.expe_FechaApertura.valid }">
+                                        </div>
+
+                                        <div *ngIf="profileWizard.submitted && form3.expe_FechaApertura.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="profileWizard.submitted && form3.expe_FechaApertura.invalid"
+                                            class="invalid-feedback">
+                                            Fecha requerida.
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-3 col-form-label"
+                                            for="expe_Enfermedades">Enfermedades</label>
+                                        <div class="col-md-9">
+                                            <select2 [data]="enfermedad" id="expe_Enfermedades" multiple="true" #enfe_Id
+                                                formControlName="expe_Enfermedades" [minCountForSearch]="0"
+                                                [(ngModel)]="expediente.expe_Enfermedades">
+                                            </select2>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+
+                                <div class="col-6 mb-3">
+                                    <div class="file-upload">
+                                        <div class="image-preview" *ngIf="selectedImage">
+                                            <img [src]="selectedImage" alt="Preview">
+                                        </div>
+                                        <div class="input-container">
+                                            <div class="btn-container botones">
+                                                <label class="btn btn-blue agregarimg rounded-pill" for="image">Agregar
+                                                    fotografía</label>
+                                                <label class="delete-label" *ngIf="selectedImage">
+                                                    <button class="btn btn-danger rounded-pill"
+                                                        (click)="deleteImage()">Eliminar</button>
+                                                </label>
+                                            </div>
+                                            <input type="file" id="image" name="image" class="form-control-file"
+                                                formControlName="expe_Fotografia" (change)="handleImageUpload($event)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> <!-- end row -->
+
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitExpediente()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </ng-template>
+                </li>
+
+                <li [ngbNavItem]="4">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                        <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
+                        <span class="d-none d-sm-inline">Administración</span>
+                    </a>
+                    <ng-template ngbNavContent *ngIf="selectedValueAgenda !== '2' && selectedValueDieta!== '2'">
+                        <form class="form-horizontal" [formGroup]="validationWizardForm" #validationWizard="ngForm">
+                            <div class="row mb-4">
+                                <div class="col-5" style="margin-left: 5%;">
+                                    <div class="row mb-3">
+                                        <label class="col-md-5 col-form-label" for="cent_Id">Centro</label>
+                                        <select2 id="cent_Id" [data]="centro" #selectRef [(ngModel)]="residente.cent_Id"
+                                            (close)="populateCuidadoresDisponibles(selectRef.option);"
+                                            formControlName="cent_Id" [minCountForSearch]="0"
+                                            [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.cent_Id.invalid, 'is-valid': validationWizard.submitted && form4.cent_Id.valid }">
+                                        </select2>
+
+                                        <div *ngIf="validationWizard.submitted && form4.cent_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="validationWizard.submitted && form4.cent_Id.invalid"
+                                            class="invalid-feedback">
+                                            Centro requerido.
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-5 col-form-label" for="diet_Id">Dieta</label>
+                                        <select2 id="diet_Id" [data]="dieta" formControlName="diet_Id"
+                                            [class.col-md-12]="form4.diet_Id.value !== 2" name="diet_Id"
+                                            [class.col-md-10]="form4.diet_Id.value === 2" [minCountForSearch]="0"
+                                            [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.diet_Id.invalid, 'is-valid': validationWizard.submitted && form4.diet_Id.valid }">
+
+                                        </select2>
+                                        <button *ngIf="form4.diet_Id.value === 2" type="button"
+                                            class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
+                                            (click)="handleButtonClick('diet_Id')">
+                                            <i class="mdi mdi-book-edit"></i>
+                                        </button>
+
+                                        <div *ngIf="validationWizard.submitted && form4.diet_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="validationWizard.submitted && form4.diet_Id.invalid"
+                                            class="invalid-feedback">
+                                            Dieta requerida.
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-5 col-form-label" for="habi_Id">Habitación</label>
+                                        <select2 id="habi_Id" [data]="habitacion" formControlName="habi_Id"
+                                            [minCountForSearch]="0" [(ngModel)]="residente.habi_Id" name="habi_Id"
+                                            [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.habi_Id.invalid, 'is-valid': validationWizard.submitted && form4.habi_Id.valid }">
+
+                                        </select2>
+
+                                        <div *ngIf="validationWizard.submitted && form4.habi_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="validationWizard.submitted && form4.habi_Id.invalid"
+                                            class="invalid-feedback">
+                                            Habitación requerida.
+                                        </div>
+                                    </div>
+
+                                </div> <!-- end col -->
+                                <div class="col-5" style="margin-left: 5%;">
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-5 col-form-label" for="agen_Id">Agenda</label>
+                                        <select2 id="agen_Id" [data]="agenda" formControlName="agen_Id"
+                                            [class.col-md-12]="form4.agen_Id.value !== 2" name="agen_Id" name="agen_Id"
+                                            [class.col-md-10]="form4.agen_Id.value === 2" [minCountForSearch]="0"
+                                            [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
+
+                                        </select2>
+                                        <button *ngIf="form4.agen_Id.value === 2" type="button"
+                                            class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
+                                            (click)="handleButtonClick('agen_Id')">
+                                            <i class="mdi mdi-book-edit"></i>
+                                        </button>
+
+                                        <div *ngIf="validationWizard.submitted && form4.agen_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="validationWizard.submitted && form4.agen_Id.invalid"
+                                            class="invalid-feedback">
+                                            Agenda requerida.
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label class="col-md-5 col-form-label" for="empe_Id">Cuidado</label>
+                                        <select2 id="empe_Id" [data]="cuidado" formControlName="empe_Id"
+                                            [class.col-md-12]="form4.empe_Id.value !== 2"
+                                            [class.col-md-10]="form4.empe_Id.value === 2" [minCountForSearch]="0"
+                                            [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.empe_Id.invalid, 'is-valid': validationWizard.submitted && form4.empe_Id.valid }">
+
+                                        </select2>
+                                        <button *ngIf="form4.empe_Id.value === 2" type="button"
+                                            class="btn btn-sm btn-blue d-flex align-items-center justify-content-center col-md-2"
+                                            (click)="handleButtonClick('empe_Id')">
+                                            <i class="mdi mdi-book-edit"></i>
+                                        </button>
+
+                                        <div *ngIf="validationWizard.submitted && form4.empe_Id.valid"
+                                            class="valid-feedback">
+                                            ¡Completo!
+                                        </div>
+                                        <div *ngIf="validationWizard.submitted && form4.empe_Id.invalid"
+                                            class="invalid-feedback">
+                                            Cuidado requerido.
+                                        </div>
+                                    </div>
+
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+
+
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitAdmin()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBackList()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </ng-template>
+                    <ng-template ngbNavContent *ngIf="selectedValueAgenda === '2'">
+                        <div class="row">
+                            <div class="col-3">
+                                <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
+                                    <i class="mdi mdi-arrow-left"></i> Regresar
+                                </a>
+                                <button class="btn btn-lg font-16 btn-primary w-100 ellipsis" id="btn-new-event"
+                                    (click)="createNewEvent()">
+                                    <i class="mdi mdi-plus-circle-outline"></i> Agregar Actividad
+                                </button>
+                            </div>
+                            <div class="col-9">
+                                <div id="calendar">
+                                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template ngbNavContent *ngIf="selectedValueDieta === '2'">
+                        <form [formGroup]="dietaForm">
+                            <div class="row">
+                                <!-- <a class="position-relative top-0 start-0 mt-3 ml-3" (click)="goBack()">
+                                    <i class="mdi mdi-arrow-left"></i> Regresar
+                                </a> -->
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Desayuno:</label>
+                                    <textarea class="form-control" placeholder="Desayuno..." name="desayuno"
+                                        id="desayuno" formControlName="desayuno" [(ngModel)]="residente.diet_Desayuno">
+                                </textarea>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Almuerzo:</label>
+                                    <textarea class="form-control" placeholder="Almuerzo..." name="almuerzo"
+                                        id="almuerzo" formControlName="almuerzo" [(ngModel)]="residente.diet_Almuerzo">
+                                </textarea>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Merienda:</label>
+                                    <textarea class="form-control" placeholder="Merienda..." name="merienda"
+                                        id="merienda" formControlName="merienda" [(ngModel)]="residente.diet_Merienda">
+                                </textarea>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Cena:</label>
+                                    <textarea class="form-control" placeholder="Cena..." name="cena" id="cena"
+                                        formControlName="cena" [(ngModel)]="residente.diet_Cena">
+                                </textarea>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Restricciones:</label>
+                                    <textarea class="form-control" placeholder="Restricciones..."
+                                        name="agendeta_Observaciones" id="restricciones" formControlName="restricciones"
+                                        [(ngModel)]="residente.diet_Restricciones">
+                                </textarea>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Observaciones:</label>
+                                    <textarea class="form-control" placeholder="Observaciones..." name="observaciones"
+                                        id="observaciones" formControlName="observaciones"
+                                        [(ngModel)]="residente.diet_Observaciones">
+                                </textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" type="submit" (click)="submitDieta()"
+                                            style="margin-right: 5px;">Guardar</button>
+                                        <button class="btn btn-outline-secondary waves-effect waves-light" type="button"
+                                            (click)="goBack()">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </ng-template>
+
+                </li>
+            </ul>
+
+            <div [ngbNavOutlet]="validationWizard"></div>
+
+        </div> <!-- end #validationWizard-->
+    </div> <!-- end card-body -->
+    <app-residente-evento #eventModal (eventSaved)="handleEventSave($event)" (eventDeleted)="handleEventDelete($event)">
+    </app-residente-evento>
+</div> <!-- end card-->
+
+<ng-template #personalizarDieta let-modal>
+    <div class="modal-content">
+        <div class="modal-header bg-light">
+            <h4 class="modal-title" id="myCenterModalLabel">Personalizar Dieta</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+        </div>
+        <div class="modal-body p-4">
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #personalizarCuidado let-modal>
+    <div class="modal-header bg-light">
+        <h4 class="modal-title" id="myCenterModalLabel">Personalizar Cuidado</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="cuidadoForm" #cuidadoModal="ngForm">
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <div class="image-container">
+                        <img src="https://i.ibb.co/MpcHmwS/38a415492985340aea03bc5744ae2304-tattooed-old-man-character-by-vexels.png"
+                            alt="Profile Image">
+                    </div>
+                </div>
+                <div class="col-md-8 col-12 mb-4">
+                    <p>Este "paquete" de cuidado personalizado garantiza que siempre haya un profesional de la salud a
+                        la
+                        disposición del residente para atender sus
+                        necesidades médicas, administrar medicamentos y brindarle la asistencia necesaria en todo
+                        momento.
+                    </p>
+                    <p>Para acceder a este nivel de cuidado, se requiere una tarifa mensual de <strong>5,000
+                            lempiras</strong>.
+                        Con un plazo de 15 días para pagar después de la fecha establecida, en caso de atrasos o
+                        inconvenientes.</p>
+                    <label class="col-form-label" for="empe_Id">Asignar cuidador(a):</label>
+                    <div class="col-md-9">
+                        <select2 id="empe_Id" [data]="cuidador" formControlName="empe_Id" [minCountForSearch]="0"
+                            [(ngModel)]="residente.empe_Id" name="empe_Id"
+                            [ngClass]="{ 'is-invalid': cuidadoModal.submitted && formCuidado.empe_Id.invalid}">
+                        </select2>
+                        <div *ngIf="cuidadoModal.submitted && formCuidado.empe_Id.valid" class="valid-feedback">
+                            Completo!
+                        </div>
+                        <div *ngIf="cuidadoModal.submitted && formCuidado.empe_Id.invalid" class="invalid-feedback">
+                            Debe escoger un empleado
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success waves-effect waves-light me-1"
+                    (click)="handleAceptarClick()">Aceptar</button>
+                <button type="button" class="btn btn-danger waves-effect waves-light"
+                    (click)="modal.close('')">Cerrar</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

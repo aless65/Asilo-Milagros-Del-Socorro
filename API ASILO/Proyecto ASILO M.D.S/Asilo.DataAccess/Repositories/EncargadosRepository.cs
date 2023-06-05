@@ -36,6 +36,20 @@ namespace Asilo.DataAccess.Repositories
             return db.QueryFirst<VW_tbEncargados>(ScriptsDataBase.UDP_Find_Encargados, parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public RequestStatus IdentidadExiste(string enca_Identidad)
+        {
+            RequestStatus result = new RequestStatus();
+
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@enca_Identidad", enca_Identidad, DbType.String, ParameterDirection.Input);
+
+            result = db.QueryFirst<RequestStatus>(ScriptsDataBase.IdentidadExisteEnca, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
+
         public RequestStatus Insert(tbEncargados item)
         {
             RequestStatus result = new RequestStatus();
