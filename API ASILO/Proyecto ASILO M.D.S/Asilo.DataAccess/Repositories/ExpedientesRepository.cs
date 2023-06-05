@@ -118,6 +118,7 @@ namespace Asilo.DataAccess.Repositories
             parametros.Add("@tiposang_Id", item.tiposang_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@expe_FechaApertura", item.expe_FechaApertura, DbType.Date, ParameterDirection.Input);
             parametros.Add("@expe_Fotografia", item.expe_Fotografia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@expe_QRCode", item.expe_QRCode, DbType.String, ParameterDirection.Input);
             parametros.Add("@expe_UsuModificacion", item.expe_UsuModificacion, DbType.Int32, ParameterDirection.Input);
 
             result.MessageStatus = db.QueryFirst<string>(ScriptsDataBase.UDP_Edita_Expedientes, parametros, commandType: CommandType.StoredProcedure);

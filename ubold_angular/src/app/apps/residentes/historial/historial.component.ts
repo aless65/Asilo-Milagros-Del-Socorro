@@ -3,7 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewCh
 import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Residente, HistorialExpediente } from '../../Models';
+import { Residente, HistorialExpediente, Expediente } from '../../Models';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import pdfMake from "pdfmake/build/pdfmake";
@@ -116,12 +116,13 @@ export class HistorialComponent implements OnInit {
                             fit: [110, 120],
                         },
                         {
-                            width: 325,
+                            width: 250,
                             stack: [
                                 {
                                     text: this.expediente.cent_Nombre,
                                     fontSize: 10,
-                                    margin: [0, 0, 200, 0]// Add margin: [top, right, bottom, left]
+                                    // width: 75,
+                                    margin: [0, 0, 100, 0]// Add margin: [top, right, bottom, left]
                                 },
                                 {
                                     margin: [0, 5, 0, 0],
@@ -158,6 +159,11 @@ export class HistorialComponent implements OnInit {
                                 }
                             ]
                         },
+                        {
+                            width: 75,
+                            qr: this.value,
+                            margin: [0, 7, 0, 0],
+                        }
                     ] as Column[],
                     columnGap: 20,
                 },
@@ -231,21 +237,16 @@ export class HistorialComponent implements OnInit {
         pdfDocGenerator.getBlob(async (blob) => {
             const dataUrl = URL.createObjectURL(blob);
 
-            console.log(blob);
-
-            // const formData = new FormData();
-            // formData.append('file', dataUrl, 'document.pdf');
-
-            this.service.getPDFUpload(blob);
-
-            // // Save the PDF file using file-saver library
-            // saveAs(blob, 'document.pdf');
-
-            // // Get the URL of the saved file
-            // const savedFileURL = URL.createObjectURL(blob);
-
-            // Store the URL in this.value
-            this.value = 'https://cdn.filestackcontent.com/4Wyk6TuuSA2YUs5wNwL0';
+             /*IMPORTANTE */
+             this.service.getPDFUpload(blob).subscribe(
+                (response: any) => {
+                  this.value = response.url;
+                  this.expediente.expe_QRCode = response.url;
+                },
+                (error: any) => {
+                  console.error(error);
+                }
+              );
 
             // console.log(savedFileURL);
 

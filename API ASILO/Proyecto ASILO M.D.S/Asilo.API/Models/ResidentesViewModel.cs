@@ -11,6 +11,7 @@ namespace Asilo.API.Models
         public string? resi_Nombres { get; set; }
         public string? resi_Apellidos { get; set; }
         public string? resi_Identidad { get; set; }
+        public int? estacivi_Id { get; set; }
         public int? estacivi_IdResi { get; set; }
         public DateTime? resi_Nacimiento { get; set; }
         public string? resi_Sexo { get; set; }
@@ -34,6 +35,7 @@ namespace Asilo.API.Models
         public int? tiposang_Id { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string? expe_Fotografia { get; set; }
+        public string? expe_QRCode { get; set; }
         public int[]? expe_Enfermedades { get; set; }
         public string? diet_Desayuno { get; set; }
         public string? diet_Almuerzo { get; set; }

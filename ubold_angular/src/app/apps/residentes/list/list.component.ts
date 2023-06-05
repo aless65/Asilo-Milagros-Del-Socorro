@@ -8,6 +8,7 @@ import { Residente } from '../../Models';
 // import { CRMCUSTOMERS } from '../../crm/shared/data';
 import { ServiceService } from 'src/app/apps/residentes/Service/service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-residentes-list',
@@ -30,6 +31,7 @@ export class ListComponent implements OnInit {
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
+  @ViewChild('deleteResidenteModal', { static: true }) deleteResidenteModal: any;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -94,6 +96,35 @@ export class ListComponent implements OnInit {
     });
   }
   
+  openModalDelete(): void {
+    this.activeModal.open(this.deleteResidenteModal, { centered: true, windowClass: 'delete-modal' });
+  }  
+
+  deleteEmpleado(): void{
+    this.service.deleteResidentes(this.selectedResidente.resi_Id || 0).subscribe(
+        (response: any) => {
+          if(response.code === 200){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: 'El registro se eliminó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
+          }
+          this._fetchData();
+        },
+        (error) => {
+          console.log("no se pudo:", error);
+        }
+      )
+    this._fetchData();
+    this.activeModal.dismissAll('');
+  }
   
   /**
    * fetch contact list
@@ -166,11 +197,15 @@ export class ListComponent implements OnInit {
     // product cell
     document.querySelectorAll('.residente').forEach((e) => {
       e.addEventListener("click", () => {
-        this.selectedResidente = this.residentes[Number(e.id) - 1]
-
-        this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+        const id = e.getAttribute("id");
+        const residente = this.residentes.find((r) => r.resi_Id?.toString() === id);
+    
+        if (residente) {
+          this.selectedResidente = residente;
+          this.age = this.calculateAge(this.selectedResidente.resi_Nacimiento || '');
+        }
       });
-    })
+    });
 
     document.querySelectorAll('.edit').forEach((e) => {
       e.addEventListener("click", () => {
@@ -179,6 +214,15 @@ export class ListComponent implements OnInit {
                 if (residenteId) {
                     this.router.navigate([`${this.returnUrl}/${residenteId}`]); // Modify the navigation path to include the id parameter
                 }
+      });
+    })
+
+    document.querySelectorAll('.delete').forEach((e) => {
+      e.addEventListener("click", () => {  
+        const selectedId = Number(e.id);
+        this.selectedResidente = this.residentes.find(resi => resi.resi_Id === selectedId) || this.selectedResidente;
+        
+        this.openModalDelete();
       });
     })
   }

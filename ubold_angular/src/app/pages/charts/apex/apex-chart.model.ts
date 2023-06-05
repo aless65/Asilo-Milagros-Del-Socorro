@@ -3,6 +3,7 @@ import { ApexNonAxisChartSeries, ApexChart, ApexPlotOptions, ApexAxisChartSeries
 export interface ChartOptions {
     series: ApexAxisChartSeries | ApexNonAxisChartSeries;
     chart: ApexChart;
+    visibleSeries: number[],
     plotOptions: ApexPlotOptions;
     labels: string[];
     colors: string[];

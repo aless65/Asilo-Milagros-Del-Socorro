@@ -150,10 +150,31 @@ export class DashboardOneComponent implements OnInit {
         },
         {
           name: 'Sales',
-          type: 'line',
+          type: 'column',
           data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
-        }
+        },
+        {
+          name: 'Revenue',
+          type: 'column',
+          data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160]
+        },
+        {
+          name: 'Sales',
+          type: 'column',
+          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
+        },
+        {
+          name: 'Revenue',
+          type: 'column',
+          data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160]
+        },
+        {
+          name: 'Sales',
+          type: 'column',
+          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
+        },
       ],
+      visibleSeries: [0],
       chart: {
         height: 378,
         type: 'line',
@@ -172,7 +193,7 @@ export class DashboardOneComponent implements OnInit {
       },
       colors: ['#1abc9c', '#4a81d4'],
       dataLabels: {
-        enabled: true,
+        enabled: false,
         enabledOnSeries: [1],
       },
       labels: [
@@ -216,13 +237,7 @@ export class DashboardOneComponent implements OnInit {
       yaxis: [
         {
           title: {
-            text: 'Net Revenue',
-          },
-        },
-        {
-          opposite: true,
-          title: {
-            text: 'Number of Sales',
+            text: 'Residentes con la enfermedad',
           },
         },
       ],

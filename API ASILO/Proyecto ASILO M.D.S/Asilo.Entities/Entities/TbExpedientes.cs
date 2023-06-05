@@ -13,6 +13,7 @@ namespace Asilo.Entities.Entities
         public int tiposang_Id { get; set; }
         public DateTime expe_FechaApertura { get; set; }
         public string expe_Fotografia { get; set; }
+        public string? expe_QRCode { get; set; }
         public int expe_UsuCreacion { get; set; }
         public DateTime expe_FechaCreacion { get; set; }
         public int? expe_UsuModificacion { get; set; }

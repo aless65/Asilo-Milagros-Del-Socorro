@@ -638,6 +638,7 @@ CREATE TABLE asil.tbExpedientes
 	tiposang_Id				INT NOT NULL,
 	expe_FechaApertura		DATE NOT NULL,
 	expe_Fotografia			NVARCHAR(500),
+	expe_QRCode				NVARCHAR(MAX),
 	
 	expe_UsuCreacion		INT NOT NULL,
 	expe_FechaCreacion		DATETIME NOT NULL CONSTRAINT DF_expe_FechaCreacion DEFAULT(GETDATE()),
@@ -987,12 +988,27 @@ GO
 
  --********INSERT TABLA CATEGORIAS HABITACIONES****************---
 INSERT INTO asil.tbHabitaciones(habi_Numero, cate_Id, cent_Id, habi_UsuCreacion)
-VALUES('100',1,1,1),
-	  ('100',2,2,1),
-	  ('100',1,3,1),
-	  ('100',1,4,1),
-	  ('101',3,2,1),
-	  ('101',1,4,1)
+VALUES
+  ('100', 1, 1, 1),
+  ('100', 2, 2, 1),
+  ('100', 1, 3, 1),
+  ('100', 1, 4, 1),
+  ('101', 3, 2, 1),
+  ('101', 1, 4, 1),
+  ('102', 2, 3, 1),
+  ('102', 2, 4, 1),
+  ('103', 1, 1, 1),
+  ('103', 3, 2, 1),
+  ('104', 1, 2, 1),
+  ('104', 2, 3, 1),
+  ('105', 2, 4, 1),
+  ('105', 3, 1, 1),
+  ('106', 1, 3, 1),
+  ('106', 1, 4, 1),
+  ('107', 2, 2, 1),
+  ('107', 3, 1, 1),
+  ('108', 1, 1, 1),
+  ('108', 2, 3, 1);
 
 
 --********INSERT TABLA CARGOS****************---

@@ -62,14 +62,7 @@ export class ServiceService {
     });
 
 
-    return this.http.post<any>(this.variableFileUpload, formData, { headers: headers }).subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
+    return this.http.post<any>(this.variableFileUpload, formData, { headers: headers });
   }
 
 
@@ -81,11 +74,19 @@ export class ServiceService {
     return this.http.put<any>(`${this.variableGlobal}Residentes/Editar`, editResidente);
   }
 
-  editResidentesAdmin(editResidente: ResidenteEdit) {
-    console.log(editResidente, "en service");
-    return this.http.put<any>(`https://localhost:44371/api/Residentes/EditPrincipal`, editResidente);
+  deleteResidentes(id: number) {
+    return this.http.put<any>(`${this.variableGlobal}Residentes/Eliminar?id=${id}`, null);
   }
 
+  // editResidentesAdmin(editResidente: ResidenteEdit) {
+  //   console.log(editResidente, "en service");
+  //   return this.http.put<any>(`https://localhost:44371/api/Residentes/EditPrincipal`, editResidente);
+  // }
+
+  editResidentesAdmin(editResidente: ResidenteEdit) {
+    console.log(editResidente, "en service");
+    return this.http.put<any>(`${this.variableGlobal}Residentes/EditPrincipal`, editResidente);
+  }
 
   editExpedientes(editExpediente: Expediente) {
     return this.http.put<any>(`${this.variableGlobal}Expedientes/Editar`, editExpediente);

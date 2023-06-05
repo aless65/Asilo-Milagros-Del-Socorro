@@ -44,6 +44,7 @@ namespace Asilo.Entities.Entities
         public bool resi_Estado { get; set; }
         public int expe_Id { get; set; }
         public string expe_Fotografia { get; set; }
+        public string? expe_QRCode { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string? resi_Enfermedades { get; set; }
         public string? resi_EnfermedadesIds { get; set; }

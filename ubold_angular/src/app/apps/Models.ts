@@ -64,7 +64,8 @@ export interface Residente {
     resi_Nacimiento?: string | null;
     expe_Id?: number,
     expe_Fotografia?: string;
-    expe_FechaApertura?: string | null;
+    expe_FechaApertura?: string;
+    expe_QRCode?: string | null;
     resi_UsuCreacion?: number;
     usuCrea?: string;
     resi_UsuModificacion?: number;

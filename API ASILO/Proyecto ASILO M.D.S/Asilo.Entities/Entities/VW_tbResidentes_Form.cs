@@ -35,6 +35,7 @@ namespace Asilo.Entities.Entities
         public int? tiposang_Id { get; set; }
         public DateTime? expe_FechaApertura { get; set; }
         public string expe_Fotografia { get; set; }
+        public string? expe_QRCode { get; set; }
         public int[]? expe_Enfermedades { get; set; }
         public string? diet_Desayuno { get; set; }
         public string? diet_Almuerzo { get; set; }

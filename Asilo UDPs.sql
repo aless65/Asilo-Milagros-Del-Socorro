@@ -859,9 +859,35 @@ BEGIN
 END
 GO
 
+/*Gráfica enfermedades según el centro*/
+CREATE OR ALTER PROCEDURE asil.UDP_GraficaEnfermedadesXCentro
+AS
+BEGIN
+	SELECT COUNT(t1.resi_Id) AS 'data',
+       t2.enfe_Nombre AS labels,
+       t3.cent_Nombre AS 'name'
+	FROM asil.tbEnfermedadesXResidente t1
+	LEFT JOIN asil.tbEnfermedades t2 ON t1.enfe_Id = t2.enfe_Id
+	LEFT JOIN asil.VW_tbResidentes t3 ON t1.resi_Id = t3.resi_Id
+	LEFT JOIN asil.tbCentros t4 ON t3.cent_Id = t4.cent_Id
+	GROUP BY t3.cent_Nombre, t1.enfe_Id, t2.enfe_Nombre, t3.cent_Id
+
+	UNION
+
+	SELECT 0 AS 'data',
+		   '' AS labels,
+		   c.cent_Nombre AS 'name'
+	FROM asil.tbCentros c
+	WHERE c.cent_Id NOT IN (
+		SELECT t3.cent_Id
+		FROM asil.tbEnfermedadesXResidente t1
+		LEFT JOIN asil.VW_tbResidentes t3 ON t1.resi_Id = t3.resi_Id
+	)
+	ORDER BY 'name' ASC, 'data' DESC;
+END
 
 --************ACTIVIDADES******************--
-
+GO
 /*VISTA ACTIVIDADES*/
 CREATE OR ALTER VIEW asil.VW_tbActividades
 AS
@@ -2224,7 +2250,7 @@ AS
 	[resi_UsuModificacion], usu2.usua_NombreUsuario usuModif, [resi_FechaModificacion],
 	[resi_Estado],
 	expe_Id,
-	expe.expe_Fotografia, expe_FechaApertura, t6.habi_Id
+	expe.expe_Fotografia, expe_QRCode, expe_FechaApertura, t6.habi_Id
 	FROM [asil].[tbResidentes] res INNER JOIN gral.tbEstadosCiviles esci
 	ON esci.estacivi_Id = res.estacivi_Id LEFT JOIN asil.tbDietas dit
 	ON dit.diet_Id = res.diet_Id LEFT JOIN ASIL.tbEmpleados empe
@@ -2460,7 +2486,7 @@ BEGIN
 END
 GO
 
-/*INSERTAR FORMULARIO RESIDENTES*/
+/*EDITAR FORMULARIO RESIDENTES*/
   CREATE OR ALTER PROCEDURE asil.UDP_tbResidentes_EditarPrincipal
 	@resi_Id				INT,
 	@cent_Id				INT,
@@ -2777,20 +2803,37 @@ CREATE OR ALTER PROCEDURE asil.UPD_tbResidentes_Eliminar
 	@resi_Id	INT
 AS
 BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
-			BEGIN
-				UPDATE asil.tbResidentes 
-				SET resi_Estado = 0
-				WHERE resi_Id = @resi_Id
-				SELECT 1 AS proceso
-			END
-		ELSE
-			SELECT 'El registro del Residente no puede ser eliminado porque estï¿½ siendo usado'
-	END TRY
-	BEGIN CATCH
-		SELECT 0
-	END CATCH
+
+	BEGIN TRANSACTION
+		BEGIN TRY
+			UPDATE asil.tbEncargados
+			SET enca_Estado = 0
+			WHERE resi_Id = @resi_Id
+
+			UPDATE asil.tbResidentes 
+			SET resi_Estado = 0,
+			    empe_Id = NULL
+			WHERE resi_Id = @resi_Id
+
+			UPDATE asil.tbAgendas
+			SET agen_Estado = 0
+			WHERE agen_Id = (SELECT agen_Id FROM asil.tbResidentes WHERE resi_Id = @resi_Id)
+			AND agen_Id != 1
+
+			DELETE FROM [asil].[tbHabitacionesXResidente]
+			WHERE resi_Id = @resi_Id
+
+			UPDATE asil.tbExpedientes 
+			SET expe_Estado = 0
+			WHERE resi_Id = @resi_Id
+
+			SELECT 1 AS proceso
+		COMMIT TRAN
+		END TRY 
+		BEGIN CATCH
+			ROLLBACK TRAN
+			SELECT 2 AS CodeStatus, 'Transaction rolled back. Error: ' + ERROR_MESSAGE() AS MessageStatus
+		END CATCH 
 END
 GO
 
@@ -3570,6 +3613,7 @@ CREATE OR ALTER PROCEDURE asil.UDP_asil_tbExpedientes_Update
 	@tiposang_Id				INT,
 	@expe_FechaApertura			DATE,
 	@expe_Fotografia			NVARCHAR(500),
+	@expe_QRCode				NVARCHAR(MAX),
 	@expe_UsuModificacion		INT
 AS
 BEGIN
@@ -3578,6 +3622,7 @@ BEGIN
 			SET 	tiposang_Id = @tiposang_Id,
 					expe_FechaApertura = @expe_FechaApertura,
 					expe_Fotografia = @expe_Fotografia,
+					expe_QRCode = @expe_QRCode,
 					expe_UsuModificacion = @expe_UsuModificacion,
 					[expe_FechaModificacion] = GETDATE()
 			WHERE 	expe_Id = @expe_Id
@@ -3606,7 +3651,7 @@ BEGIN
 				SELECT 'El expediente ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El expediente no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'El expediente no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'

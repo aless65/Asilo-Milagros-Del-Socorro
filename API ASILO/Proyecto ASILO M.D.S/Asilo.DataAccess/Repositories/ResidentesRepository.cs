@@ -251,17 +251,17 @@ namespace Asilo.DataAccess.Repositories
             if (result.CodeStatus == 1)
             {
 
-                if (item.agen_Detalles != null && item.agen_Id != 1)
+                if (item.agen_Detalles.Length != 0 && item.agen_Id != 1)
                 {
+                    int id = int.Parse(result.MessageStatus);
 
                     var parametersDelete = new DynamicParameters();
-                    parametersDelete.Add("@agen_Id", item.agen_Id, DbType.Int32, ParameterDirection.Input);
+                    parametersDelete.Add("@agen_Id", id, DbType.Int32, ParameterDirection.Input);
 
                     var eliminar = db.QueryFirst<string>(ScriptsDataBase.AgendaDetalle_Delete, parametersDelete, commandType: CommandType.StoredProcedure);
 
                     if (eliminar == "Se ha eliminado")
                     {
-                        int id = int.Parse(result.MessageStatus);
                         foreach (var detalle in item.agen_Detalles)
                         {
                             var parameters2 = new DynamicParameters();

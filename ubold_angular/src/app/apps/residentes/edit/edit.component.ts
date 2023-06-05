@@ -59,6 +59,7 @@ export class EditComponent implements OnInit {
   goesBack: boolean = false;
   goesBackDieta: boolean = false;
   agendadetalle: AgendaDetalle[] = [];
+  originalAgenda: any;
   residente: Residente = {};
   encargado: Encargado = {};
   expediente: Expediente = {};
@@ -184,6 +185,13 @@ export class EditComponent implements OnInit {
         this.validationWizardForm.get('diet_Id')?.setValue(2);
       }
 
+      if ((this.residente.agen_Id || 0) > 1) {
+        console.log(this.residente.agen_Id);
+        this.validationWizardForm.get('agen_Id')?.setValue(2);
+      } else {
+        this.validationWizardForm.get('agen_Id')?.setValue(1);
+      }
+
 
       this.resiService.getAgendaDetalles(this.residente.agen_Id || 0).subscribe((response: any) => {
         const currentDate = new Date();
@@ -196,6 +204,7 @@ export class EditComponent implements OnInit {
         }));
 
         this.agendadetalle = response.data;
+        this.originalAgenda = JSON.parse(JSON.stringify(response.data));
 
         this.calendarOptions = {
           themeSystem: 'bootstrap',
@@ -275,16 +284,8 @@ export class EditComponent implements OnInit {
       habi_Id: ['', Validators.required],
     });
 
-
-    if ((this.residente.agen_Id || 0) > 1) {
-      console.log(this.residente.agen_Id);
-      this.validationWizardForm.get('agen_Id')?.setValue(2);
-    } else {
-      this.validationWizardForm.get('agen_Id')?.setValue(1);
-    }
-
     this.cuidadoForm = this.fb.group({
-      empe_Id: ['', Validators.required],
+      empe_Id: [this.residente.empe_Id, Validators.required],
     });
 
     this.dietaForm = this.fb.group({
@@ -478,8 +479,10 @@ export class EditComponent implements OnInit {
           });
         } else {
           // this.activeWizard4 = 2
+          console.log("entra");
           this.residente.resi_UsuModificacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
           this.resiService.editResidentes(this.residente).subscribe((response: any) => {
+            console.log("entra", response);
             if (response.code === 200) {
               Swal.fire({
                 toast: true,
@@ -629,12 +632,13 @@ export class EditComponent implements OnInit {
     console.log(this.allValuesUndefinedOrNullDieta);
 
     if (this.allValuesUndefinedOrNullDieta) {
-      const formValues = this.dietaForm.value;
-      this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
+      // const formValues = this.dietaForm.value;
+      // this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
 
-      if (this.allValuesUndefinedOrNullDieta) {
+      if (this.agendadetalle.length === 0 && this.validationWizardForm.get('agen_Id')?.value != 1) {
         canInsert = false;
         console.log("es la agenda");
+        this.allValuesUndefinedOrNullDieta = false;
 
         Swal.fire({
           toast: true,
@@ -651,15 +655,17 @@ export class EditComponent implements OnInit {
       }
     }
 
-    if (this.validationWizardForm.get("empe_Id")?.value.toString() === "2") {
+    if (this.validationWizardForm.get("diet_Id")?.value.toString() === "2") {
       console.log(this.dietaForm.value);
       // const formValues = this.dietaForm.value;
       // this.allValuesUndefinedOrNullDieta = Object.values(formValues).every(value => value === undefined || value === null || value === '');
       console.log("dieta");
-      const dietFields = ['diet_Desayuno', 'diet_Almuerzo', 'diet_Cena', 'Restricciones', 'diet_Observaciones'];
+      const dietFields = ['diet_Desayuno', 'diet_Almuerzo', 'diet_Cena', 'diet_Restricciones', 'diet_Observaciones'];
 
-      if (dietFields.every(field => this.residente[field] === undefined || this.residente[field] === null)) {
+      if (dietFields.every(field => this.residente[field] === undefined || this.residente[field] === null || this.residente[field] === '')) {
         this.allValuesUndefinedOrNullDieta = true;
+      } else{
+        this.allValuesUndefinedOrNullDieta = false;
       }
 
       if (this.allValuesUndefinedOrNullDieta) {
@@ -686,7 +692,7 @@ export class EditComponent implements OnInit {
 
       console.log("cuidado");
 
-      if ((this.residente.empe_Id === undefined || this.residente.empe_Id?.toString() === '')) {
+      if (this.cuidadoForm.get("empe_Id")?.value === null || this.cuidadoForm.get("empe_Id")?.value === undefined || this.cuidadoForm.get("empe_Id")?.value === 0) {
         canInsert = false;
 
         Swal.fire({
@@ -724,16 +730,11 @@ export class EditComponent implements OnInit {
       });
     } else {
       if (canInsert) {
+
         const combinedModels: any = {};
-        console.log(this.cuidadoForm.get("empe_Id")?.value, 'cuidado form');
-        console.log(this.residente.empe_Id, "residente");
         // Merge the properties of each model into the combinedModels object
-        if (this.validationWizardForm.get("empe_Id")?.value > 1) {
-          this.residente.empe_Id = this.cuidadoForm.get("empe_Id")?.value;
-        } else {
-          this.residente.empe_Id = undefined;
-        }
-        this.residente.diet_Id = this.validationWizardForm.get("diet_Id")?.value;
+       
+
         Number(this.residente.agen_Id);
         Number(this.residente.diet_Id);
         this.residente.resi_UsuCreacion = JSON.parse(localStorage.getItem('currentUser')!).data[0].usua_Id;
@@ -741,7 +742,21 @@ export class EditComponent implements OnInit {
         this.residente.agen_Detalles = this.agendadetalle;
         Object.assign(combinedModels, this.residente);
 
-        console.log(this.residente.agen_Detalles);
+        if (JSON.stringify(this.agendadetalle) === JSON.stringify(this.originalAgenda)) {
+          console.log("son lo mismito")
+          combinedModels.agen_Detalles = [];
+        }
+
+        if (this.validationWizardForm.get("empe_Id")?.value > 1) {
+          combinedModels.empe_Id = this.cuidadoForm.get("empe_Id")?.value;
+        } else {
+          combinedModels.empe_Id = undefined;
+        }
+        
+        combinedModels.diet_Id = this.validationWizardForm.get("diet_Id")?.value;
+        combinedModels.agen_Id = this.validationWizardForm.get("agen_Id")?.value;
+
+        console.log(combinedModels);
         // console.log(sendData, "en component")
         this.resiService.editResidentesAdmin(combinedModels).subscribe(
           (response: any) => {
