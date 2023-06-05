@@ -14,7 +14,6 @@ namespace Asilo.API.Models
         public decimal dona_Cantidad { get; set; }
         public int dona_UsuCreacion { get; set; }
         public DateTime dona_Fecha { get; set; }
-        public int dona_UsuCreacion { get; set; }
         public string usua_UsuCreacion_Nombre { get; set; }
         public DateTime dona_FechaCreacion { get; set; }
         public int? dona_UsuModificacion { get; set; }
