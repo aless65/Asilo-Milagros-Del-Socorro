@@ -429,6 +429,20 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult ListadoDonacionesComunes()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _donacionesRepository.Listar();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         public ServiceResult FindDonaciones(int id)
         {
             var result = new ServiceResult();
@@ -443,6 +457,36 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult FindDonacionesDetalles(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _donacionesRepository.Find2(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+
+        public ServiceResult DonacionesCentro(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var dona = _donacionesRepository.DonacionesCentro(id);
+                return result.Ok(dona);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+
         public ServiceResult InsertDonaciones(tbDonaciones item)
         {
             var result = new ServiceResult();
@@ -450,16 +494,53 @@ namespace Asilo.BusinessLogic.Services
             {
                 var insert = _donacionesRepository.Insert(item);
 
-                if (insert.MessageStatus == "Ha ocurrido un error")
-                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Error);
+                if (insert.CodeStatus > 0)
+                    return result.SetMessage("Exitoso" + insert.CodeStatus, ServiceResultType.Success);
                 else
-                    return result.SetMessage(insert.MessageStatus, ServiceResultType.Success);
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
             }
             catch (Exception e)
             {
                 return result.Error(e.Message);
             }
         }
+
+        public ServiceResult InsertDetallesDonas(tbDonacionesDetalles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _donacionesRepository.InsertarDetails(item);
+
+                if (insert.CodeStatus > 0 )
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                else
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult InsertDetallesDescrip(tbDonacionesDetalles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var insert = _donacionesRepository.InsertarDetailsDescip(item);
+
+                if (insert.CodeStatus > 0)
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                else
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
 
         public ServiceResult UpdateDonaciones(tbDonaciones item)
         {
@@ -468,10 +549,10 @@ namespace Asilo.BusinessLogic.Services
             {
                 var update = _donacionesRepository.Update(item);
 
-                if (update.MessageStatus == "La donación ha sido editada exitosamente")
-                    return result.SetMessage(update.MessageStatus, ServiceResultType.Success);
+                if (update.CodeStatus == 1)
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
                 else
-                    return result.SetMessage(update.MessageStatus, ServiceResultType.Error);
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
             }
             catch (Exception e)
             {
@@ -490,6 +571,24 @@ namespace Asilo.BusinessLogic.Services
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Success);
                 else
                     return result.SetMessage(delete.MessageStatus, ServiceResultType.Error);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
+        public ServiceResult DeleteDonacionesDetails(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var delete = _donacionesRepository.DeleteDetails(id);
+
+                if (delete.CodeStatus > 0)
+                    return result.SetMessage("Exitoso", ServiceResultType.Success);
+                else
+                    return result.SetMessage("ErrorInespero", ServiceResultType.Error);
             }
             catch (Exception e)
             {

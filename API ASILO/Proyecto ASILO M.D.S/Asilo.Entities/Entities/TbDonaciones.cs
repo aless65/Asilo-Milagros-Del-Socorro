@@ -8,10 +8,18 @@ namespace Asilo.Entities.Entities
 {
     public partial class tbDonaciones
     {
+        public tbDonaciones()
+        {
+            tbDonacionesDetalles = new HashSet<tbDonacionesDetalles>();
+            tbDonacionesXCentro = new HashSet<tbDonacionesXCentro>();
+        }
+
         public int dona_Id { get; set; }
-        public string dona_NombreDonante { get; set; }
-        public decimal dona_Cantidad { get; set; }
+        public int[] cent_Id { get; set; }
+        
         public DateTime dona_Fecha { get; set; }
+        public string dona_QueEs { get; set; }
+        public string dona_NombreDonante { get; set; }
         public int dona_UsuCreacion { get; set; }
         public DateTime dona_FechaCreacion { get; set; }
         public int? dona_UsuModificacion { get; set; }
@@ -20,5 +28,7 @@ namespace Asilo.Entities.Entities
 
         public virtual tbUsuarios dona_UsuCreacionNavigation { get; set; }
         public virtual tbUsuarios dona_UsuModificacionNavigation { get; set; }
+        public virtual ICollection<tbDonacionesDetalles> tbDonacionesDetalles { get; set; }
+        public virtual ICollection<tbDonacionesXCentro> tbDonacionesXCentro { get; set; }
     }
 }

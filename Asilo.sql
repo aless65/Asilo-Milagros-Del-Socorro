@@ -704,6 +704,24 @@ CREATE TABLE asil.tbCategoriaDonaciones(
 
 GO
 
+
+INSERT INTO asil.tbCategoriaDonaciones ([cado_NombreCategoria])
+VALUES ('Ayuda económica');
+GO
+INSERT INTO asil.tbCategoriaDonaciones ([cado_NombreCategoria])
+VALUES ('Alimentos no perecederos');
+GO
+INSERT INTO asil.tbCategoriaDonaciones ([cado_NombreCategoria])
+VALUES ('Artículos de higiene personal');
+GO
+INSERT INTO asil.tbCategoriaDonaciones ([cado_NombreCategoria])
+VALUES ('Ropa y ropa de cama');
+GO
+INSERT INTO asil.tbCategoriaDonaciones ([cado_NombreCategoria])
+VALUES ('Material médico y suministros');
+GO
+
+
 CREATE TABLE asil.tbDonacionesComunes(
 	doco_Id						INT IDENTITY PRIMARY KEY,
 	doco_Nombre					NVARCHAR(300) NOT NULL,
@@ -712,6 +730,250 @@ CREATE TABLE asil.tbDonacionesComunes(
 );
 
 GO
+
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lempiras',1);
+GO
+
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra de Arroz',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra de Pasta ',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra de Harina',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra de Avena',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lata frijoles',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lata garbanzos',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lata lentejas',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Sopa enlatada',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lata Vegetales',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Lata Frutas',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bolsa Leche en polvo',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra Aceite vegetal',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Caja de Galletas o crackers',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra Azúcar',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Libra Sal',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote Café',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Botella Agua',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquetes de botellas de Agua',2);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Caja Barras de granola',2);
+GO
+
+
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquete papel higiénico',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquete toallas de papel',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquete pañuelos desechables',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote jabón de manos líquido',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Caja de jabón en barra',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote Champú',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Pasta de dientes',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Cepillos de dientes',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote enjuague bucal',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote desodorante',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote crema corporal',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquetes compresas para incontinencia',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Paquete pañales para adultos',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('paquete toallitas húmedas para adultos',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Cepillos para el cabello',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Cortauñas',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Limas de uñas',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bastones de algodón',3);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote desinfectante de manos',3);
+GO
+
+
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Camisetas de manga corta',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Camisas de botones',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Pantalones de tela o mezclilla',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Faldas ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Vestidos',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Suéteres ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Abrigos ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Calzoncillos',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Zapatillas ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Gorros ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Sábanas',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Fundas de almohada',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Mantas ',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Colchas',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Edredones ligeros',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Almohadas',4);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Almohada impermeables',4);
+GO
+
+
+
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Vendajes estériles caja',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Guantes médicos desechables caja',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Mascarillas quirúrgicas caja',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Batas desechables',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Gorros desechables',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Protectores faciales o gafas de seguridad',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote de Algodón',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Termómetro',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Rollod de Esparadrapo ',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Jeringa',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Agujas desechables',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Caja de gasas estériles',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Caja de Toallitas desinfectantes',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote de Solución salina',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Sillas de ruedas',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('bastones para caminar',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Colchones antiescaras',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote de Cloro',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Bote de detergente',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Escoba',5);
+GO
+INSERT INTO asil.tbDonacionesComunes([doco_Nombre], [cado_Id])
+VALUES ('Trapeador',5);
+GO
+
+
+
+
 
 
 CREATE TABLE asil.tbDonaciones
@@ -738,8 +1000,8 @@ CREATE TABLE asil.tbDonacionesDetalles(
 	dona_Id						INT NOT NULL,
 	doco_Id						INT,
 	deto_Cantidad				INT,
-	deto_CantidadDinero			DECIMAL (18,2),
 	deto_Descripcion			NVARCHAR(MAX),
+	deto_Estado					BIT DEFAULT 1,
 	CONSTRAINT FK_asil_tbDonacionesDetalles_doco_Id_tbDonacionesComunes								FOREIGN KEY(doco_Id) 					REFERENCES asil.tbDonacionesComunes(doco_Id),
 	CONSTRAINT FK_asil_tbDonacionesDetalles_dona_Id_tbDonaciones									FOREIGN KEY(dona_Id) 					REFERENCES asil.tbDonaciones(dona_Id),
 
@@ -752,17 +1014,20 @@ CREATE TABLE asil.tbDonacionesXCentro
 	donacent_Id						INT IDENTITY,
 	dona_Id							INT NOT NULL,
 	cent_Id							INT NOT NULL,
-	
 	donacent_UsuCreacion			INT NOT NULL,
 	donacent_FechaCreacion			DATETIME NOT NULL CONSTRAINT DF_donacent_FechaCreacion DEFAULT(GETDATE()),
 	donacent_UsuModificacion		INT,
 	donacent_FechaModificacion		DATETIME,
 	donacent_Estado					BIT NOT NULL CONSTRAINT DF_donacent_Estado DEFAULT(1)
-	CONSTRAINT PK_asil_tbDonaciones_donacent_Id													PRIMARY KEY(dona_Id),
-	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_donacent_UsuCreacion_usua_Id  				FOREIGN KEY(donacent_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
-	CONSTRAINT FK_asil_tbDonaciones_acce_tbUsuarios_donacent_UsuModificacion_usua_Id  			FOREIGN KEY(donacent_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id)
+	CONSTRAINT PK_asil_tbDonacionesXcentro_donacent_Id													PRIMARY KEY(donacent_Id),
+	CONSTRAINT FK_asil_tbDonacionesXcentro_acce_tbUsuarios_donacent_UsuCreacion_usua_Id  				FOREIGN KEY(donacent_UsuCreacion) 			REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbDonacionesXcentro_acce_tbUsuarios_donacent_UsuModificacion_usua_Id  			FOREIGN KEY(donacent_UsuModificacion) 		REFERENCES acce.tbUsuarios(usua_Id),
+	CONSTRAINT FK_asil_tbDonacionesXCentro_tbDonaciones_dona_Id 										FOREIGN KEY(dona_Id) 						REFERENCES  asil.tbDonaciones(dona_Id),
+    CONSTRAINT FK_asil_tbDonacionesXCentro_tbCentros_cent_Id											FOREIGN KEY(cent_Id) 						REFERENCES  asil.tbCentros(cent_Id)
+
 );
 GO
+
 
 --****************************************************************************************************************************************************
 

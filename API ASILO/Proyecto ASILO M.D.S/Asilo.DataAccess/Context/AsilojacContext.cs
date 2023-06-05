@@ -20,6 +20,8 @@ namespace Asilo.DataAccess.Context
         {
         }
 
+        public virtual DbSet<VW_DonacionesDetalles> VW_DonacionesDetalles { get; set; }
+        public virtual DbSet<VW_DonacionesaComunes> VW_DonacionesaComunes { get; set; }
         public virtual DbSet<VW_tbActividades> VW_tbActividades { get; set; }
         public virtual DbSet<VW_tbAgendaDetalles> VW_tbAgendaDetalles { get; set; }
         public virtual DbSet<VW_tbAgendas> VW_tbAgendas { get; set; }
@@ -51,11 +53,14 @@ namespace Asilo.DataAccess.Context
         public virtual DbSet<tbAgendaDetalles> tbAgendaDetalles { get; set; }
         public virtual DbSet<tbAgendas> tbAgendas { get; set; }
         public virtual DbSet<tbCargos> tbCargos { get; set; }
+        public virtual DbSet<tbCategoriaDonaciones> tbCategoriaDonaciones { get; set; }
         public virtual DbSet<tbCategoriasHabitaciones> tbCategoriasHabitaciones { get; set; }
         public virtual DbSet<tbCentros> tbCentros { get; set; }
         public virtual DbSet<tbDepartamentos> tbDepartamentos { get; set; }
         public virtual DbSet<tbDietas> tbDietas { get; set; }
         public virtual DbSet<tbDonaciones> tbDonaciones { get; set; }
+        public virtual DbSet<tbDonacionesComunes> tbDonacionesComunes { get; set; }
+        public virtual DbSet<tbDonacionesDetalles> tbDonacionesDetalles { get; set; }
         public virtual DbSet<tbDonacionesXCentro> tbDonacionesXCentro { get; set; }
         public virtual DbSet<tbEmpleados> tbEmpleados { get; set; }
         public virtual DbSet<tbEncargados> tbEncargados { get; set; }
@@ -84,6 +89,32 @@ namespace Asilo.DataAccess.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<VW_DonacionesDetalles>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_DonacionesDetalles", "asil");
+
+                entity.Property(e => e.doco_Nombre).HasMaxLength(300);
+
+                entity.Property(e => e.dona_NombreDonante).HasMaxLength(400);
+            });
+
+            modelBuilder.Entity<VW_DonacionesaComunes>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_DonacionesaComunes", "asil");
+
+                entity.Property(e => e.cado_NombreCategoria)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.doco_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(300);
+            });
 
             modelBuilder.Entity<VW_tbActividades>(entity =>
             {
@@ -280,7 +311,7 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToView("VW_tbDonaciones", "asil");
 
-                entity.Property(e => e.dona_Cantidad).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.dona_Fecha).HasColumnType("date");
 
                 entity.Property(e => e.dona_FechaCreacion).HasColumnType("datetime");
 
@@ -289,6 +320,15 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.dona_NombreDonante)
                     .IsRequired()
                     .HasMaxLength(400);
+
+                entity.Property(e => e.dona_QueEs)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.esDescrip)
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.usua_UsuCreacion_Nombre).HasMaxLength(100);
 
@@ -320,6 +360,10 @@ namespace Asilo.DataAccess.Context
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
+                entity.Property(e => e.depa_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.Property(e => e.empe_Apellidos)
                     .IsRequired()
                     .HasMaxLength(200);
@@ -330,7 +374,7 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.empe_Direccion)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.empe_FechaCreacion).HasColumnType("datetime");
 
@@ -1086,6 +1130,18 @@ namespace Asilo.DataAccess.Context
                     .HasConstraintName("FK_asil_tbCargos_acce_tbUsuarios_carg_UsuModificacion_usua_Id");
             });
 
+            modelBuilder.Entity<tbCategoriaDonaciones>(entity =>
+            {
+                entity.HasKey(e => e.cado_Id)
+                    .HasName("PK__tbCatego__DC16FB2E9D15C697");
+
+                entity.ToTable("tbCategoriaDonaciones", "asil");
+
+                entity.Property(e => e.cado_NombreCategoria)
+                    .IsRequired()
+                    .HasMaxLength(200);
+            });
+
             modelBuilder.Entity<tbCategoriasHabitaciones>(entity =>
             {
                 entity.HasKey(e => e.cate_Id)
@@ -1268,8 +1324,6 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToTable("tbDonaciones", "asil");
 
-                entity.Property(e => e.dona_Cantidad).HasColumnType("decimal(18, 2)");
-
                 entity.Property(e => e.dona_Estado)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -1286,6 +1340,11 @@ namespace Asilo.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(400);
 
+                entity.Property(e => e.dona_QueEs)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
                 entity.HasOne(d => d.dona_UsuCreacionNavigation)
                     .WithMany(p => p.tbDonacionesdona_UsuCreacionNavigation)
                     .HasForeignKey(d => d.dona_UsuCreacion)
@@ -1298,14 +1357,51 @@ namespace Asilo.DataAccess.Context
                     .HasConstraintName("FK_asil_tbDonaciones_acce_tbUsuarios_dona_UsuModificacion_usua_Id");
             });
 
+            modelBuilder.Entity<tbDonacionesComunes>(entity =>
+            {
+                entity.HasKey(e => e.doco_Id)
+                    .HasName("PK__tbDonaci__077655FBC3CC5D15");
+
+                entity.ToTable("tbDonacionesComunes", "asil");
+
+                entity.Property(e => e.doco_Nombre)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.HasOne(d => d.cado)
+                    .WithMany(p => p.tbDonacionesComunes)
+                    .HasForeignKey(d => d.cado_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbDonacionesComunes_cado_Id_CategoriasDonaciones");
+            });
+
+            modelBuilder.Entity<tbDonacionesDetalles>(entity =>
+            {
+                entity.HasKey(e => e.deto_Id)
+                    .HasName("PK__tbDonaci__FEAE3F5462532762");
+
+                entity.ToTable("tbDonacionesDetalles", "asil");
+
+                entity.Property(e => e.deto_Estado).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.doco)
+                    .WithMany(p => p.tbDonacionesDetalles)
+                    .HasForeignKey(d => d.doco_Id)
+                    .HasConstraintName("FK_asil_tbDonacionesDetalles_doco_Id_tbDonacionesComunes");
+
+                entity.HasOne(d => d.dona)
+                    .WithMany(p => p.tbDonacionesDetalles)
+                    .HasForeignKey(d => d.dona_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbDonacionesDetalles_dona_Id_tbDonaciones");
+            });
+
             modelBuilder.Entity<tbDonacionesXCentro>(entity =>
             {
-                entity.HasKey(e => e.dona_Id)
-                    .HasName("PK_asil_tbDonaciones_donacent_Id");
+                entity.HasKey(e => e.donacent_Id)
+                    .HasName("PK_asil_tbDonacionesXcentro_donacent_Id");
 
                 entity.ToTable("tbDonacionesXCentro", "asil");
-
-                entity.Property(e => e.dona_Id).ValueGeneratedNever();
 
                 entity.Property(e => e.donacent_Estado)
                     .IsRequired()
@@ -1317,18 +1413,28 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.donacent_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.donacent_Id).ValueGeneratedOnAdd();
+                entity.HasOne(d => d.cent)
+                    .WithMany(p => p.tbDonacionesXCentro)
+                    .HasForeignKey(d => d.cent_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbDonacionesXCentro_tbCentros_cent_Id");
+
+                entity.HasOne(d => d.dona)
+                    .WithMany(p => p.tbDonacionesXCentro)
+                    .HasForeignKey(d => d.dona_Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asil_tbDonacionesXCentro_tbDonaciones_dona_Id");
 
                 entity.HasOne(d => d.donacent_UsuCreacionNavigation)
                     .WithMany(p => p.tbDonacionesXCentrodonacent_UsuCreacionNavigation)
                     .HasForeignKey(d => d.donacent_UsuCreacion)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_asil_tbDonaciones_acce_tbUsuarios_donacent_UsuCreacion_usua_Id");
+                    .HasConstraintName("FK_asil_tbDonacionesXcentro_acce_tbUsuarios_donacent_UsuCreacion_usua_Id");
 
                 entity.HasOne(d => d.donacent_UsuModificacionNavigation)
                     .WithMany(p => p.tbDonacionesXCentrodonacent_UsuModificacionNavigation)
                     .HasForeignKey(d => d.donacent_UsuModificacion)
-                    .HasConstraintName("FK_asil_tbDonaciones_acce_tbUsuarios_donacent_UsuModificacion_usua_Id");
+                    .HasConstraintName("FK_asil_tbDonacionesXcentro_acce_tbUsuarios_donacent_UsuModificacion_usua_Id");
             });
 
             modelBuilder.Entity<tbEmpleados>(entity =>

@@ -46,6 +46,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[asil].[tbCategoriaDonaciones]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[asil].[tbCategoriasHabitaciones]",
          "ObjectType": 0
       },
@@ -59,6 +63,14 @@
       },
       {
          "Name": "[asil].[tbDonaciones]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbDonacionesComunes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[asil].[tbDonacionesDetalles]",
          "ObjectType": 0
       },
       {
@@ -146,7 +158,27 @@
          "ObjectType": 0
       },
       {
+         "Name": "[acce].[VW_tbPantallas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbPantallasPorRoles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbRoles]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[acce].[VW_tbUsuarios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_DonacionesaComunes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[asil].[VW_DonacionesDetalles]",
          "ObjectType": 3
       },
       {

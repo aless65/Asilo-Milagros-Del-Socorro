@@ -87,6 +87,13 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/histoarialPagos/list',
     },
     {
+        key: 'apps-donaciones',
+        label: 'Donaciones',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/donaciones/list',
+    },
+    {
         key: 'apps-proveedores',
         label: 'Proveedores',
         isTitle: false,

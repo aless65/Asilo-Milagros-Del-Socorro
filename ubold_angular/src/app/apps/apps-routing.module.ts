@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
   { path: 'encargados', loadChildren: () => import('./encargados/encargados.module').then(m => m.EncargadosModule) },
   { path: 'histoarialPagos', loadChildren: () => import('./historialPagos/historialPago.module').then(m => m.HistorialPagoModule) },
+  { path: 'donaciones', loadChildren: () => import('./donaciones/donaciones.module').then(m => m.DonacionesModule) },
 
 
   { path: 'residentes', loadChildren: () => import('./residentes/residentes.module').then(m => m.ResidentesModule) },

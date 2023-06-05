@@ -21,6 +21,7 @@ namespace Asilo.Entities.Entities
         public string muni_Id { get; set; }
         public string muni_Nombre { get; set; }
         public string depa_Id { get; set; }
+        public string depa_Nombre { get; set; }
         public string empe_Direccion { get; set; }
         public string empe_Telefono { get; set; }
         public string empe_Correo { get; set; }
