@@ -7,10 +7,10 @@ import { NgbSortableHeaderDirective, SortEvent } from './sortable.directive';
 export interface Column {
   name: string;
   label: string;
-  formatter: (a: any) => any | string;
+  formatter: (a: any) => any | string | number;
   sort?: boolean;
   width?: number;
-
+  
 }
 
 

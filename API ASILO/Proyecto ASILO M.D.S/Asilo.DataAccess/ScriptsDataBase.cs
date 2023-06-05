@@ -93,9 +93,18 @@ namespace Asilo.DataAccess
         #region Donaciones
         public static string UDP_Lista_Donaciones = "asil.UDP_asil_tbDonaciones_List";
         public static string UDP_Inserta_Donaciones = "asil.UDP_asil_tbDonaciones_Insert";
-        public static string UDP_Find_Donaciones = "asil.UDP_asil_VW_tbDonaciones_Find";
+        public static string UDP_Find_Donaciones = "asil.UDP_asil_tbDonaciones_Find ";
         public static string UDP_Edita_Donaciones = "asil.UDP_asil_tbDonaciones_Update";
         public static string UDP_Elimina_Donaciones = "asil.UDP_asil_tbDonaciones_Delete";
+
+        public static string InsertarDetallesDona = "asil.UDP_tbDonacionesDetalles";
+        public static string InsertarDonacionesXPorcentro = "asil.UDP_tbDonacionesXCentroInsert";
+        public static string ListarDonacionesComunes = "asil.UDP_ListarDonacionesComunes";
+        public static string DetallesXdonacion = "asil.UDP_DetallesXdonacion";
+        public static string EliminarDetailsDona = "asil.UDP_EliminarDetails";
+        public static string InsertarDetailDescript = "asil.agregarDetailDescript";
+        public static string DonacionesCentroslist = "asil.UDP_CentrosXDonacion";
+
         #endregion
 
         #region Empleados

@@ -101,6 +101,22 @@ const MENU_ITEMS: MenuItem[] = [
         link: '/apps/encargados/list',
     },
     {
+
+        key: 'apps-historialPagos',
+        label: 'Historial de Pagos',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/histoarialPagos/list',
+    },
+    {
+        key: 'apps-donaciones',
+        label: 'Donaciones',
+        isTitle: false,
+        icon: 'activity',
+        link: '/apps/donaciones/list',
+    },
+    {
+
         key: 'apps-proveedores',
         label: 'Proveedores',
         isTitle: false,

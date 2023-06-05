@@ -40,3 +40,8 @@ dato importante: si doco_Id es vacio o nulo, entonces mostrar descripcion.
 Si es admin entonces que eliga a los centros a los que va hacer esa misma donacion, si no, entonces solo una.
 
 no puede personalizar cada una de las donaciones que hara para cada centro, seria mucho relajo.
+
+
+
+AGREGAR TODOS LOS NUEVOS UDP AL MANUAL, Y DOS VISTAS MAS, ACTUALIZAR LAS VISTAS QUE ALTERE. TAMBIEN RECORDAR AGREGAR AL ENTITIES LO DEL CENTRO.
+Y EN DONACIONES POR CENTRO AGREGAR EN EL ENTITIES EL NOMBRE

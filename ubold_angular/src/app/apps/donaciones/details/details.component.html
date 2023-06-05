@@ -1,1 +1,101 @@
 <p>details works!</p>
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title=""></app-page-title>
+<div class="row">
+    <div class="col-12">
+        <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Detalles</h4>
+
+        <div class="card-content transparent-card">
+            <div class="card-body">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <form class="d-flex flex-wrap align-items-center">
+                            <label for="inputPassword2" class="visually-hidden">Buscar</label>
+                            <div class="me-3">
+                              
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-lg-end my-1 my-lg-0">
+                            <a [routerLink]="['../list']" class="btn btn-outline-secondary waves-effect waves-light mb-2">Volver</a>
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-bg-image">
+            <div class="card-body">
+                <div class="row" >
+                    <h4 class="mb-4 text-center"> Nombre del donante: <span class="text-muted me-2">{{ donacion.dona_NombreDonante }}</span></h4>
+                    <div class="col-md-6 order-md-1 flex-column">
+                        <div>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                doanante: {{donacion.esDescrip}}</p>  
+                        </div>
+                    </div>
+                    <div class="col-md-6 order-md-1 flex-column">
+                        <div>
+                            <p class="text-muted text-center"><i class="mdi mdi-checkbox-marked-circle-outline h6 text-primary me-2"></i>
+                                Fecha de Donación: {{ donacion.dia }} de {{ donacion.mesNombre }} de {{ donacion.ayo }}</p>
+                           
+                        </div>
+                    </div>
+                   
+                      
+                    
+                </div>
+                <!-- end row -->
+                <div class="table-responsive mt-4" style="margin-top: 20px;">
+                    <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Centros a los que se donó:</h4>
+                    <table class="table table-bordered table-centered mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Centro Id</th>
+                          <th>Centro Nombre</th>
+                          <th>Fecha Donación</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of centros; let i = index">
+                          <td>{{ item.cent_Id }}</td>
+                          <td>{{ item.cent_Nombre }}</td>
+                          <td>{{ donacion.dona_Fecha }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                <div class="table-responsive mt-4" style="margin-top: 20px;"> 
+                    <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Auditoría</h4>                   
+                    <table class="table table-bordered table-centered mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Usuario Creador</th>
+                                <th>Fecha Creación</th>
+                                <th>Usuario Modificador</th>
+                                <th>Fecha Modificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{donacion.usua_UsuCreacion_Nombre}}</td>
+                                <td>{{donacion.dona_FechaCreacion}}</td>
+                                <td>{{donacion.usua_UsuModificacion_Nombre}}</td>
+                                <td>{{donacion.dona_FechaModificacion}}</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->

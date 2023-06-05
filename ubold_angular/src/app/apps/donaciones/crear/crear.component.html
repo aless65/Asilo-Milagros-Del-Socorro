@@ -1,1 +1,242 @@
-<p>crear works!</p>
+<!-- page title -->
+<app-page-title [breadcrumbItems]="pageTitle" title=""></app-page-title>
+<div class="row">
+    <div class="col-12">
+        <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Registrar Donación</h4>
+
+        <div class="card-content transparent-card">
+            <div class="card-body">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                       
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-lg-end my-1 my-lg-0">
+                            <a [routerLink]="['../list']" class="btn btn-outline-secondary waves-effect waves-light mb-2">Volver</a>
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="border p-3 mt-4 mt-lg-0 rounded">
+                            <h4 class="header-title mb-3">Registro de Donación</h4>
+
+                            <div class="row">
+                                <form class="needs-validation" [formGroup]="validationGroup1" #validate1="ngForm">
+                      
+                                    <div class="col-sm-12 ">
+                                        
+                                        <label for="validationCustom02" class="form-label"> Donante: </label>
+                                        <div class="mb-3">
+                                        <input type="radio" class="form-check-input" id="Es" required value="P" 
+                                        formControlName="Es"  [disabled]="guardarDisabled"
+                                        [ngClass]="{ 'is-valid': validate1.submitted && form1.Es.valid , 'is-invalid': validate1.submitted && form1.Es.invalid }" > Particular
+                                
+                                      <input type="radio" class="form-check-input" id="Es"   required  value="I"
+                                        formControlName="Es" [disabled]="guardarDisabled"
+                                        [ngClass]="{ 'is-valid': validate1.submitted && form1.Es.valid , 'is-invalid': validate1.submitted && form1.Es.invalid }" > Institución
+
+                                        <input type="radio" class="form-check-input" id="Es" required value="O" 
+                                        formControlName="Es"  [disabled]="guardarDisabled" 
+                                        [ngClass]="{ 'is-valid': validate1.submitted && form1.Es.valid , 'is-invalid': validate1.submitted && form1.Es.invalid }" > Otro...
+                                       
+                                        <div *ngIf="validate1.submitted && form1.Es.valid" class="valid-feedback">
+                                        Completo!
+                                        </div>
+                                        <div *ngIf="validate1.submitted && form1.Es.invalid" class="invalid-feedback">
+                                        El campo Es es requerido.
+                                        </div>
+                                       </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                       
+                                        <label for="validationCustom02" class="form-label"> Nombre del Donante:</label>
+                                        <div class="mb-3">
+                                        <input type="text" class="form-control" id="validationCustom01" placeholder="nombre"
+                                        required  formControlName="Nombre"  [disabled]="guardarDisabled"
+                                            [ngClass]="{ 'is-valid': validate1.submitted && form1.Nombre.valid , 'is-invalid': validate1.submitted && form1.Nombre.invalid }">
+                                        <div *ngIf="validate1.submitted && form1.Nombre.valid" class="valid-feedback" >
+                                            completo!
+                                        </div>
+                
+                                        <div *ngIf="validate1.submitted && form1.Nombre.invalid" class="invalid-feedback">
+                                            El nombre es requerido
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="col-sm-12">
+                                        
+                                        <label for="validationCustom02" class="form-label">Fecha de la Donación:</label>
+                                        <div class="mb-3">
+                                        <input type="date" class="form-control" id="validationCustom04" placeholder="fecha" required 
+                                        formControlName="Fecha" 
+                                        [ngClass]="{ 'is-valid': validate1.submitted && form1.Fecha.valid , 
+                                                    'is-invalid': validate1.submitted && form1.Fecha.invalid || isFechaInvalida }"
+                                       min="2023-01-01" [disabled]="guardarDisabled" [max]="currentDate"> <!-- Establece la fecha máxima como "2004-12-31" -->
+                                      <div *ngIf="validate1.submitted && form1.Fecha.valid" class="valid-feedback">
+                                        Completo!
+                                      </div>
+                                      <div *ngIf="validate1.submitted && form1.Fecha.invalid" class="invalid-feedback">
+                                        La fecha es requerida.
+                                      </div>
+                                    </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                       
+                                            <label for="validationCustom05" class="form-label">Centro:</label>
+                                            <div class="mb-3">
+
+                                              
+                                            <select2 id="cent_Id"   placeholder="centro..."  [value]="cent_Id" multiple="true" 
+                                            formControlName="cent_Id"  [minCountForSearch]="0"  [data]="centros" name="cent_Id"   #selectRef (update)="cent_Id = selectRef.value"
+                                            [ngClass]="{ 'is-valid': validate1.submitted && form1.cent_Id.valid , 'is-invalid': validate1.submitted && form1.cent_Id.invalid }"
+                                            [disabled]="guardarDisabled">
+                                                </select2>
+                
+                                           
+                                              <div *ngIf="validate1.submitted && form1.cent_Id.invalid" class="invalid-feedback">
+                                                El Centro es requerido.
+                                              </div>
+                                        </div>
+                                     </div>
+                                     <label></label>
+                        
+                                     <div class="text-center">
+                                        
+                                         <button class="btn btn-primary"  type="submit" (click)="validarYGuardar()" [disabled]="guardarDisabled">GUARDAR</button>
+                                     </div>
+             
+                                </form>
+                            </div>
+                            <!-- end table-responsive -->
+                        </div>
+
+                   
+                    </div> <!-- end col -->
+                    <div class="col-lg-8">
+                        <div class="table-responsive">
+                            
+                            <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="Donaciones"
+                            [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                            (search)="searchData($event)" [isSortable]="false"
+                            tableClasses="table-centered table-nowrap table-hover">
+                        </app-advanced-table>
+
+                        </div> <!-- end table-responsive-->
+
+                        <!-- Add note input-->
+                        <div class="mt-3">
+                            <form  class="needs-validation" [formGroup]="detalles2" #validate2="ngForm" > 
+                            <label for="example-textarea" class="form-label">Otros insumos:</label>
+                            <div class="input-group mt-3">
+                                <textarea class="form-control"  id="validationCustom01" required formControlName="descripcion"
+                                [ngClass]="{ 'is-valid': validate2.submitted && form2.descripcion.valid , 'is-invalid': validate2.submitted && form2.descripcion.invalid }"
+                                placeholder="Descripción.."></textarea>
+                                <div *ngIf="validate2.submitted && form2.descripcion.valid" class="valid-feedback" >
+                                    completo!
+                                </div>
+                
+                                <div *ngIf="validate2.submitted && form2.descripcion.invalid" class="invalid-feedback">
+                                    El campo no puede ir vacio
+                                </div>
+                                <button class="btn btn-success" id="btn-guardarForm" type="submit" (click)="GuardarConDescripcion()">Agregar</button>
+                            </div>
+                        </form>
+                        </div>            
+
+                        <!-- action buttons-->
+                      
+                    </div>
+                    <!-- end col -->
+
+                </div> <!-- end row -->
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3 text-center">Insumos agregados: </h5>
+
+                <div class="row">            
+                            <div class="table-responsive">
+                            
+                                <app-advanced-table #advancedTable2 (handleTableLoad)="handleTable2Load($event)" [tableData]="donacionesDetails"
+                                [columns]="columns2" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
+                                (search)="searchData2($event)" [isSortable]="false"
+                                tableClasses="table-centered table-nowrap table-hover">
+                                 </app-advanced-table>
+    
+                            </div> <!-- end table-responsive-->         
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #agregarCantidad let-modal>
+   
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center" id="modalLabel">Agregando insumos</h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <form  class="needs-validation" [formGroup]="detalles" #validate="ngForm">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <label class="d-block">Cantidad:</label>
+              <input type="text" class="form-control mx-auto" style="width: 200px;" id="validationCustom01" placeholder="cantidad"
+                required  formControlName="cantidad"  
+                    [ngClass]="{ 'is-valid': validate.submitted && form.cantidad.valid , 'is-invalid': validate.submitted && form.cantidad.invalid }">
+                <div *ngIf="validate.submitted && form.cantidad.valid" class="valid-feedback" >
+                    completo!
+                </div>
+
+                <div *ngIf="validate.submitted && form.cantidad.invalid" class="invalid-feedback">
+                    La cantidad es requerida
+                </div>
+              </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <div class="d-flex justify-content-center">
+                      <button class="btn btn-primary mx-2" type="submit" (click)="GuardarConCantidad()">Agregar</button>
+                      <button type="button" class="btn btn-outline-secondary mx-2" aria-label="Close" (click)="modal.dismiss('Cross click')">Cancelar</button>
+                    </div>
+                  </div>
+                  
+                  
+                  
+          </div>
+        </form>
+        </div>
+      </div>
+    
+  </ng-template>
+  
+  

@@ -10,6 +10,7 @@ namespace Asilo.Entities.Entities
     {
         public tbCentros()
         {
+            tbDonacionesXCentro = new HashSet<tbDonacionesXCentro>();
             tbEmpleados = new HashSet<tbEmpleados>();
             tbHabitaciones = new HashSet<tbHabitaciones>();
             tbInventarioPorCentro = new HashSet<tbInventarioPorCentro>();
@@ -29,6 +30,7 @@ namespace Asilo.Entities.Entities
         public virtual tbUsuarios cent_UsuCreacionNavigation { get; set; }
         public virtual tbUsuarios cent_UsuModificacionNavigation { get; set; }
         public virtual tbMunicipios muni { get; set; }
+        public virtual ICollection<tbDonacionesXCentro> tbDonacionesXCentro { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
         public virtual ICollection<tbHabitaciones> tbHabitaciones { get; set; }
         public virtual ICollection<tbInventarioPorCentro> tbInventarioPorCentro { get; set; }

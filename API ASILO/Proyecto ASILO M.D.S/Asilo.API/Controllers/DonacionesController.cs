@@ -30,10 +30,32 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("ListadoDonacionesComunes")]
+        public IActionResult List()
+        {
+            var list = _asiloServivce.ListadoDonacionesComunes();
+            return Ok(list);
+        }
+
         [HttpGet("Find")]
         public IActionResult Find(int id)
         {
             var list = _asiloServivce.FindDonaciones(id);
+            return Ok(list);
+        }
+
+
+        [HttpGet("FindDetalles")]
+        public IActionResult Find2(int id)
+        {
+            var list = _asiloServivce.FindDonacionesDetalles(id);
+            return Ok(list);
+        }
+
+        [HttpGet("DonacionesCentros")]
+        public IActionResult donacionesCent(int id)
+        {
+            var list = _asiloServivce.DonacionesCentro(id);
             return Ok(list);
         }
 
@@ -42,6 +64,25 @@ namespace Asilo.API.Controllers
         {
             var item = _mapper.Map<tbDonaciones>(donacion);
             var insert = _asiloServivce.InsertDonaciones(item);
+
+            return Ok(insert);
+        }
+
+
+        [HttpPost("InsertarDetails")]
+        public IActionResult InsertDetails(DonacionesDetallesViewModel donacion)
+        {
+            var item = _mapper.Map<tbDonacionesDetalles>(donacion);
+            var insert = _asiloServivce.InsertDetallesDonas(item);
+
+            return Ok(insert);
+        }
+
+        [HttpPost("InsertarDetailsDescrp")]
+        public IActionResult InsertDetailsDescrip(DonacionesDetallesViewModel donacion)
+        {
+            var item = _mapper.Map<tbDonacionesDetalles>(donacion);
+            var insert = _asiloServivce.InsertDetallesDescrip(item);
 
             return Ok(insert);
         }
@@ -59,6 +100,14 @@ namespace Asilo.API.Controllers
         public IActionResult Delete(int id)
         {
             var delete = _asiloServivce.DeleteDonaciones(id);
+
+            return Ok(delete);
+        }
+
+        [HttpPut("EliminaDetailr")]
+        public IActionResult DeleteDetail(int id)
+        {
+            var delete = _asiloServivce.DeleteDonacionesDetails(id);
 
             return Ok(delete);
         }
