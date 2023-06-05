@@ -238,15 +238,15 @@ export class HistorialComponent implements OnInit {
             const dataUrl = URL.createObjectURL(blob);
 
              /*IMPORTANTE */
-            //  this.service.getPDFUpload(blob).subscribe(
-            //     (response: any) => {
-            //       this.value = response.url;
-            //       this.expediente.expe_QRCode = response.url;
-            //     },
-            //     (error: any) => {
-            //       console.error(error);
-            //     }
-            //   );
+             this.service.getPDFUpload(blob).subscribe(
+                (response: any) => {
+                  this.value = response.url;
+                  this.expediente.expe_QRCode = response.url;
+                },
+                (error: any) => {
+                  console.error(error);
+                }
+              );
 
             // console.log(savedFileURL);
 

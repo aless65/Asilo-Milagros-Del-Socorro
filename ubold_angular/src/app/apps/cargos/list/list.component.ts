@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
   selectedCargo!: Cargo;
   esEditar!: boolean;
   newCargo!: FormGroup;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
@@ -86,6 +87,18 @@ import Swal from 'sweetalert2';
               titleText: 'El cargo no puede ser eliminado ya que está siendo usado en otro registro',
               icon: 'error',
               background: '#fff0f0f5'
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
+          } else if(response.code === 200){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: 'El cargo ha sido eliminado con éxito',
+              icon: 'success',
             }).then(() => {
               // Acción luego de cerrarse el toast
             });

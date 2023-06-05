@@ -60,7 +60,7 @@ VALUES	('inicio', 'Inicio', 1,NULL,NULL,NULL, 1),
 		('apps-medicamentos', 'Medicamentos', 0,'/apps/medicamentos/list','Asilo','package', 1),
 		('apps-centros', 'Centros', 0,'/apps/centros/list','Asilo','trello', 1),
 		('apps-cargos', 'Cargos', 0,'/apps/cargos/list','Asilo','shield', 1),
-		('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
+		--('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
 		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','users', 1),
 		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','user-check', 1),
 		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1)

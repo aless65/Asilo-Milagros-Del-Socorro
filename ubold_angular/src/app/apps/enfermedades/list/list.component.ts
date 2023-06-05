@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
   selectedEnfermedad!: Enfermedad;
   esEditar!: boolean;
   newEnfermedad!: FormGroup;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
@@ -89,7 +90,20 @@ import Swal from 'sweetalert2';
             }).then(() => {
               // Acción luego de cerrarse el toast
             });
+          } else if(response.code === 200){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: 'El registro se eliminó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
           }
+          this._fetchData();
         },
         (error) => {
           console.log("no se pudo:", error);

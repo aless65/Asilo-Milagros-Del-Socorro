@@ -76,7 +76,8 @@ import Swal from 'sweetalert2';
   deleteEmpleado(): void{
     this.service.deleteEmpleados(this.selectedEmpleado.empe_Id || 0).subscribe(
         (response: any) => {
-          if(response.code === 200){
+          console.log(response);
+          if(response.code === 500){
             Swal.fire({
               toast: true,
               position: 'top-end',
@@ -184,12 +185,12 @@ import Swal from 'sweetalert2';
   // action de los botones iconos
   empleadoActionFormatter(empleado: Empleados): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      `<a class="edit action-icon empleado" id="${empleado.empe_Id}" role="button">
+      `<a class="edit action-icon empleado" style="color: #6658dd;" id="${empleado.empe_Id}" role="button">
         <i class="mdi mdi-square-edit-outline"></i>
       </a>
-      <a href="javascript:void(0);" class="delete action-icon" id="${empleado.empe_Id}"> <i class="mdi mdi-delete"></i></a>
+      <a href="javascript:void(0);" class="delete action-icon" style="color: #9f100e;" id="${empleado.empe_Id}"> <i class="mdi mdi-delete"></i></a>
 
-      <a class="details action-icon details" id="${empleado.empe_Id}"> <i class="bi bi-list-task"></i> </a>
+      <a class="details action-icon details" id="${empleado.empe_Id}"> <i class="bi bi-list-task" style="color: #0e9d9f;"></i> </a>
       `
     );
   }

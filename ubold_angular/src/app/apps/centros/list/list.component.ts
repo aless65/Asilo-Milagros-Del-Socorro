@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
   esEditar!: boolean;
   newCentro!: FormGroup;
   municipio: Select2Data = [];
+  pageSizeOptions: number[] = [5, 10, 25, 50];
   
   
   formatter = (result: string) => result.toUpperCase();
@@ -113,9 +114,8 @@ import Swal from 'sweetalert2';
   deleteCentro(): void{
     this.service.deleteCentros(this.selectedCentro.cent_Id || 0).subscribe(
         (response: any) => {
-          console.log("si si si:", response);
           this._fetchData();
-       if(response.message == "El registro no puede ser eliminado porque está siendo usado"){
+       if(response.code == 500){
             Swal.fire({
               toast: true,
               position: 'top-end',
@@ -179,7 +179,7 @@ import Swal from 'sweetalert2';
               showConfirmButton: false,
               timer: 1700,
               timerProgressBar: true,
-              titleText: '¡Ya existe un encargado con esa identidad!',
+              titleText: '¡El centro ya existe!',
               icon: 'error',
               background: '#fff0f0f5'
             }).then(() => {
@@ -202,8 +202,10 @@ import Swal from 'sweetalert2';
           }
           else if(response.message == "Exitoso"){
             Swal.fire({
+              toast: true,
+              position: 'top-end',
               title: '¡Perfecto!',
-              text: 'El registro se guardó con éxito!',
+              text: '¡El registro se guardó con éxito!',
               icon: 'success',
               showConfirmButton: false,
               timer: 1850,

@@ -851,7 +851,7 @@ BEGIN
 				SELECT 'La enfermedad ha sido eliminada'
 			END
 		ELSE
-			SELECT 'La enfermedad no puede ser eliminada ya que estï¿½ siendo usada en otro registro'
+			SELECT 'La enfermedad no puede ser eliminada ya que está siendo usada en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1171,7 +1171,7 @@ BEGIN
 		SELECT 'La categoria ha sido eliminada'
 		END
 		ELSE
-			SELECT 'La categoria no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'La categoria no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1326,7 +1326,7 @@ BEGIN
 				SELECT 'El medicamento ha sido eliminado'
 			END
 		ELSE
-			SELECT 'El medicamento no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'El medicamento no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1471,7 +1471,7 @@ BEGIN
 		SELECT 'El cargo ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El cargo no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'El cargo no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -1679,7 +1679,7 @@ BEGIN
 		SELECT 'La dieta ha sido eliminada'
 		END
 		ELSE
-			SELECT 'La dieta no puede ser eliminada ya que estï¿½ siendo usado en otro registro'
+			SELECT 'La dieta no puede ser eliminada ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -2985,7 +2985,7 @@ BEGIN
 		SELECT 'El parentesco ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El parentesco no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'El parentesco no puede ser eliminado ya que está siendo usado en otro registro'
 
 	END TRY
 	BEGIN CATCH
@@ -3358,7 +3358,7 @@ BEGIN
 		SELECT 'El tipo de sangre ha sido eliminado'
 		END
 		ELSE
-			SELECT 'El tipo de sangre no puede ser eliminado ya que estï¿½ siendo usado en otro registro'
+			SELECT 'El tipo de sangre no puede ser eliminado ya que está siendo usado en otro registro'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
@@ -4509,7 +4509,7 @@ BEGIN
 				SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -4583,7 +4583,7 @@ BEGIN
 			INSERT INTO asil.tbCentros(cent_Nombre, muni_Id, cent_Direccion, cent_UsuCreacion)
 			VALUES(@cent_Nombre, @muni_Id, @cent_Direccion, @cent_UsuCreacion)
 			
-			SELECT 'El centro ha sido insertado con ï¿½xito'
+			SELECT 'El centro ha sido insertado con éxito'
 			END
 		ELSE IF EXISTS (SELECT * FROM asil.tbCentros 
 						WHERE cent_Nombre = @cent_Nombre
@@ -4593,7 +4593,7 @@ BEGIN
 				SET cent_Estado = 1
 				WHERE cent_Nombre = @cent_Nombre
 
-				SELECT 'El centro ha sido insertado con ï¿½xito'
+				SELECT 'El centro ha sido insertado con éxito'
 			END
 		ELSE
 			SELECT 'El centro ya existe'
@@ -4670,7 +4670,7 @@ BEGIN
 			SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -4844,7 +4844,7 @@ BEGIN
 					SELECT 1 AS proceso
 			END
 		ELSE
-			SELECT 'El registro no puede ser eliminado porque estï¿½ siendo usado'
+			SELECT 'El registro no puede ser eliminado porque está siendo usado'
 	END TRY
 	BEGIN CATCH
 		SELECT 0
@@ -5049,7 +5049,7 @@ GO
 --	       t1.expe_UsuModificacion,
 --		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
 --		   t1.expe_FechaModificacion,
---		   t1.expe_Estado
+--		   t1.expe_Estadoï¿½xito
 --		   FROM asil.tbExpedientes t1 LEFT JOIN acce.tbUsuarios t2
 --		   ON t1.expe_UsuCreacion = T2.usua_Id
 --		   LEFT JOIN acce.tbUsuarios t3

@@ -455,8 +455,8 @@ export class ListComponent implements OnInit {
   // action cell formatter
   rolActionFormatter(rol: Rol): any {
     return this.sanitizer.bypassSecurityTrustHtml(
-      ` <a href="javascript:void(0);" class="edit action-icon" id="${rol.role_Id}"> <i class="mdi mdi-square-edit-outline" ></i></a>
-        <a href="javascript:void(0);" class="delete action-icon" id="${rol.role_Id}"> <i class="mdi mdi-delete"></i></a>`
+      ` <a href="javascript:void(0);" class="edit action-icon" id="${rol.role_Id}"> <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"></i></a>
+        <a href="javascript:void(0);" class="delete action-icon" id="${rol.role_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
 

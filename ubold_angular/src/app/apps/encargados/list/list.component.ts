@@ -166,9 +166,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   empleadoActionFormatter(encargado: Encargado): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `<a class="edit action-icon encargado" id="${encargado.enca_Id}" role="button">
-        <i class="mdi mdi-square-edit-outline"></i>
+        <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"></i>
       </a>
-      <a href="javascript:void(0);" class="delete action-icon" id="${encargado.enca_Id}"> <i class="mdi mdi-delete"></i></a>`
+      <a href="javascript:void(0);" class="delete action-icon" id="${encargado.enca_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
     );
   }
   

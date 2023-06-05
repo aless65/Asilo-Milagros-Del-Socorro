@@ -57,9 +57,9 @@
             </div> -->
           
             <div class="text-end">
-              <button type="submit" class="btn btn-success waves-effect waves-light me-1"
+              <button type="submit" class="btn btn-primary waves-effect waves-light me-1"
                 [innerText]="esEditar ? 'Editar' : 'Agregar'"></button>
-              <button type="button" class="btn btn-danger waves-effect waves-light" (click)="modal.close('')">Cancelar</button>
+              <button type="button" class="btn btn-outline-secondary waves-effect waves-light" (click)="modal.close('')">Cancelar</button>
             </div>
           </form>
           
@@ -75,8 +75,8 @@
     <div class="modal-body p-4">
         <p>¿Realmente desea eliminar este rol?</p>
         <div class="text-end">
-            <button type="button" (click)="deleteRol()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
-            <button type="button" class="btn btn-danger waves-effect waves-light"
+            <button type="button" (click)="deleteRol()" class="btn btn-danger waves-effect waves-light me-1">Eliminar</button>
+            <button type="button" class="btn btn-outline-secondary waves-effect waves-light"
                 (click)="modal.close('')">Cancelar</button>
         </div>
     </div>

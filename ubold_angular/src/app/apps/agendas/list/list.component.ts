@@ -151,10 +151,10 @@ export class ListComponent implements OnInit {
     // action 
     agendaActionFormatter(agenda: Agenda): any {
         return this.sanitizer.bypassSecurityTrustHtml(
-            `<a class="edit action-icon agenda" id="${agenda.agen_Id}" role="button">
-        <i class="mdi mdi-square-edit-outline"></i>
+            `<a class="edit action-icon agenda"  id="${agenda.agen_Id}" role="button">
+        <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"></i>
       </a>
-      <a href="javascript:void(0);" class="delete action-icon" id="${agenda.agen_Id}"> <i class="mdi mdi-delete"></i></a>`
+      <a href="javascript:void(0);" class="delete action-icon" id="${agenda.agen_Id}"> <i class="mdi mdi-delete" style="color: #9f100e;"></i></a>`
         );
     }
 

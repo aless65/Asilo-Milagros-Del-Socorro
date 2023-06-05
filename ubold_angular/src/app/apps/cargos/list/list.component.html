@@ -17,7 +17,7 @@
             <!-- customer table -->
             <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="cargos"
                 [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
-                (search)="searchData($event)" [isSortable]="false"
+                (search)="searchData($event)" [isSortable]="false" [pageSizeOptions]="pageSizeOptions"
                 tableClasses="table-centered table-nowrap table-hover">
             </app-advanced-table>
 

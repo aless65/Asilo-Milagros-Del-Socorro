@@ -29,6 +29,7 @@ import { Select2Data } from 'ng-select2-component';
   categorias: Select2Data = [];
   centros: Select2Data = [];
   soloNumeros: boolean = false;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
@@ -303,9 +304,19 @@ import { Select2Data } from 'ng-select2-component';
         formatter: (habitacion: Habitacion) => habitacion.habi_Id
       },
       {
+        name: 'habi_Numero',
+        label: 'Número',
+        formatter: (habitacion: Habitacion) => habitacion.habi_Numero
+      },
+      {
         name: 'cate_Nombre',
         label: 'Categoria',
         formatter: (habitacion: Habitacion) => habitacion.cate_Nombre
+      },
+      {
+        name: 'cent_Nombre',
+        label: 'Centro',
+        formatter: (habitacion: Habitacion) => habitacion.cent_Nombre
       },
       {
         name: 'Action',

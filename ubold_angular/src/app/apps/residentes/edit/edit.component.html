@@ -180,7 +180,7 @@
                                                 <p class="mb-0"><i class="mdi mdi-gender-male-female"></i> {{ encargado.enca_SexoDesc }}</p>
                                                 <p class="mb-0"><i class="mdi mdi-sign-direction"></i> {{ encargado.enca_Direccion }}, {{ encargado.muni_Nombre }}</p>
                                             </div>
-                                            <a href="javascript: void(0);" class="btn btn-info">Editar</a>
+                                            <a href="javascript: void(0);" class="btn btn-info" [routerLink]="['/apps/encargados/editar']" [queryParams]="{ id: encargado.enca_Id }">Editar</a>
                                         </div>
                                         <hr>
                                     </div>

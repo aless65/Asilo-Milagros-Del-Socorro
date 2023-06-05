@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Encargado } from '../Model';
@@ -37,7 +37,8 @@ export class EditarComponent implements OnInit {
     private service: ServiceServiceE,
     private service2: ServiceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
@@ -51,13 +52,13 @@ export class EditarComponent implements OnInit {
       Apellido: ['', Validators.required],
       Identidad: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(13)]],
       Sexo: ['', Validators.required],
-      estacivi_Id: [0, Validators.required],
+      estacivi_Id: ['', Validators.required],
       Fecha: ['', Validators.required],
       Muni: [0, Validators.required],
       Direccion: ['', Validators.required],
       Telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       parentesco: [0, Validators.required],
-      residente: [0, Validators.required],
+      residente: ['', Validators.required],
       usucrea: [0, Validators.required],
 
     });
@@ -74,10 +75,32 @@ export class EditarComponent implements OnInit {
         options: optionsEstados
         },
       ];
-      console.log(this.estadoCivil);
+    
+      // console.log(this.encargado.estacivi_Id, 'id');
+      // this.validationGroup1.get('estacivi_Id')?.setValue(this.encargado.estacivi_Id);
+      this.changeDetectorRef.detectChanges();
     });
 
-
+    this.route.queryParams.subscribe(params => {
+      const residenteId = params['id'];
+      if(residenteId){
+        localStorage.removeItem('ID2');
+        this.service.getEncargadosId(residenteId)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.encargado = data.data;
+    
+          const fecha = data.data.enca_Nacimiento;
+          const fechaObjeto = new Date(fecha);
+          const fechaFormateada = fechaObjeto.toISOString().split('T')[0];
+    
+          console.log(fechaFormateada);
+          this.encargado.enca_Nacimiento = fechaFormateada; // Asignar la fecha formateada al campo empe_Nacimiento
+        });
+        // aqui estoy utilizando el ID del residente 
+        console.log(residenteId, "recibo el Id");
+      }
+    });
 
   
     this.service2.getParentescos().subscribe((response: any) => {
@@ -229,21 +252,26 @@ export class EditarComponent implements OnInit {
   Editar() {
     const id: number | undefined = isNaN(parseInt(localStorage.getItem("ID2") ?? '', 10)) ? undefined : parseInt(localStorage.getItem("ID2") ?? '', 10);
     console.log(id);
+
+    if(id){
   
-    this.service.getEncargadosId(id)
-      .subscribe((data: any) => {
-        console.log(data);
-        this.encargado = data.data;
-  
-        const fecha = data.data.enca_Nacimiento;
-        const fechaObjeto = new Date(fecha);
-        const fechaFormateada = fechaObjeto.toISOString().split('T')[0];
-  
-        console.log(fechaFormateada);
-  
-        this.encargado.enca_Nacimiento = fechaFormateada; // Asignar la fecha formateada al campo empe_Nacimiento
-      });
+      this.service.getEncargadosId(id)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.encargado = data.data;
+    
+          const fecha = data.data.enca_Nacimiento;
+          const fechaObjeto = new Date(fecha);
+          const fechaFormateada = fechaObjeto.toISOString().split('T')[0];
+    
+          console.log(fechaFormateada);
+          // this.validationGroup1.get('estacivi_Id')?.setValue(this.encargado.estacivi_Id);
+          // this.validationGroup1.get('residente')?.setValue(this.encargado.resi_Id);
+          this.encargado.enca_Nacimiento = fechaFormateada; // Asignar la fecha formateada al campo empe_Nacimiento
+        });
+    }
   }
+  
   
 
    Volver(){

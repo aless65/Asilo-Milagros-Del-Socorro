@@ -28,6 +28,7 @@ import { Select2Data } from 'ng-select2-component';
   newMedicamento!: FormGroup;
   proveedores: Select2Data = [];
   centros: Select2Data = [];
+  pageSizeOptions: number[] = [5, 10, 25, 50];
   //soloNumeros: boolean = false;
 
   @ViewChild('advancedTable') advancedTable: any;

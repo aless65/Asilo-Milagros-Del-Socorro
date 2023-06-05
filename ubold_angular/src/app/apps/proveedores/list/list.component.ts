@@ -25,6 +25,7 @@ import Swal from 'sweetalert2';
   newProveedor!: FormGroup;
   returnUrl: string = '/';
   selectedProveedor!: Proveedor;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @ViewChild('advancedTable') advancedTable: any;
   @ViewChild('content', { static: true }) content: any;
