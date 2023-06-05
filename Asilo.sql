@@ -63,8 +63,13 @@ VALUES	('inicio', 'Inicio', 1,NULL,NULL,NULL, 1),
 		('apps-habitaciones', 'Habitaciones', 0,'/apps/habitaciones/list','Asilo','briefcase', 1),
 		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','users', 1),
 		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','user-check', 1),
-		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1)
+		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1),
+		('apps-donaciones', 'Donaciones', 0,'/apps/donaciones/list','Asilo','user-check', 1)
+
+
 GO
+
+
 
 --INSERT INTO acce.tbPantallas (pant_key, pant_Nombre, pant_isTitle,pant_Url,pant_Menu, pant_Icon,pant_UsuCreacion, collapsed, badgeVariant, badgeText, parentKey)
 

@@ -4108,187 +4108,359 @@ GO
 
 
 
---************DONACIONES******************--
+--
+
+
+--***********************************************************************************************DONACIONES******************--
+	 /* NUEVO */
+
+CREATE OR ALTER VIEW asil.VW_DonacionesaComunes
+AS
+SELECT co.[doco_Id], co.[doco_Nombre], co.[cado_Id], ca.[cado_NombreCategoria]
+FROM [asil].[tbDonacionesComunes] co
+INNER JOIN [asil].[tbCategoriaDonaciones] ca ON co.cado_Id = ca.cado_Id
+
+GO
+
+
+	 /* NUEVO */
+
+CREATE OR ALTER PROCEDURE asil.UDP_ListarDonacionesComunes
+AS
+BEGIN
+
+BEGIN TRY
+	SELECT*FROM [asil].VW_DonacionesaComunes
+END TRY
+
+BEGIN CATCH
+	SELECT 0
+END CATCH
+
+END
+GO
+
+
+
+	 /* NUEVO */
 
 /*Vista donaciones*/
-CREATE OR ALTER VIEW asil.VW_tbDonaciones
-AS
-	SELECT t1.dona_Id,
-		   t1.dona_NombreDonante,
-		   t1.[dona_Fecha],
-		   t1.[dona_QueEs],
-		    CASE WHEN [dona_QueEs] = 'P' THEN 'Particular'
-			WHEN [dona_QueEs] = 'I' THEN 'Institución'
-			WHEN [dona_QueEs] = 'O' THEN 'Otros'
-			END AS esDescrip,
-		   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
-		   t1.dona_FechaCreacion, 
-	       t1.dona_UsuModificacion,
-		   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
-		   t1.dona_FechaModificacion,
-		   t1.dona_Estado
-		   FROM asil.tbDonaciones t1 LEFT JOIN acce.tbUsuarios t2
-		   ON t1.dona_UsuCreacion = T2.usua_Id
-		   LEFT JOIN acce.tbUsuarios t3
-		   ON t1.dona_UsuModificacion = t3.usua_Id 
-		/*   LEFT JOIN [asil].[tbDonacionesDetalles] dote ON t1.dona_Id = dote.[dona_Id]
-		   LEFT JOIN [asil].[tbDonacionesComunes] doco ON  doco.[doco_Id] = dote.doco_Id 
-		   LEFT JOIN [asil].[tbCategoriaDonaciones] cado ON doco.[cado_Id] = cado.[cado_Id]*/
-GO
+	CREATE OR ALTER VIEW asil.VW_tbDonaciones
+	AS
+		SELECT t1.dona_Id,
+			   t1.dona_NombreDonante,
+			   t1.[dona_Fecha],
+			   t1.[dona_QueEs],
+				CASE WHEN [dona_QueEs] = 'P' THEN 'Particular'
+				WHEN [dona_QueEs] = 'I' THEN 'Institución'
+				WHEN [dona_QueEs] = 'O' THEN 'Otros'
+				END AS esDescrip,
+			   t1.dona_UsuCreacion,
+			   t2.usua_NombreUsuario AS usua_UsuCreacion_Nombre,
+			   t1.dona_FechaCreacion, 
+			   t1.dona_UsuModificacion,
+			   t3.usua_NombreUsuario AS usua_UsuModificacion_Nombre, 
+			   t1.dona_FechaModificacion,
+			   t1.dona_Estado
+			   FROM asil.tbDonaciones t1 LEFT JOIN acce.tbUsuarios t2
+			   ON t1.dona_UsuCreacion = T2.usua_Id
+			   LEFT JOIN acce.tbUsuarios t3
+			   ON t1.dona_UsuModificacion = t3.usua_Id 
+			/*   LEFT JOIN [asil].[tbDonacionesDetalles] dote ON t1.dona_Id = dote.[dona_Id]
+			   LEFT JOIN [asil].[tbDonacionesComunes] doco ON  doco.[doco_Id] = dote.doco_Id 
+			   LEFT JOIN [asil].[tbCategoriaDonaciones] cado ON doco.[cado_Id] = cado.[cado_Id]*/
+	GO
 
 
 
 
 /*Listar donaciones*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_List
+	CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_List
+	AS
+	BEGIN
+		SELECT * FROM asil.VW_tbDonaciones
+		WHERE dona_Estado = 1
+	END
+	GO
+
+
+
+
+		 /* NUEVO */
+
+	/*Insertar donaciones*/
+	CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Insert
+		@dona_NombreDonante		NVARCHAR(400),
+		@dona_Fecha				DATE,
+		@dona_QueEs				CHAR(1),
+		@dona_UsuCreacion		INT
+	AS 
+	BEGIN
+	
+		BEGIN TRY
+
+			INSERT INTO asil.tbDonaciones(dona_NombreDonante,dona_QueEs, dona_Fecha, dona_UsuCreacion)
+				VALUES(@dona_NombreDonante,@dona_QueEs,@dona_Fecha,@dona_UsuCreacion)
+
+				SELECT SCOPE_IDENTITY()
+	
+		END TRY
+		BEGIN CATCH
+			SELECT 0
+		END CATCH 
+	END
+	GO
+
+	asil.UDP_asil_tbDonaciones_Insert 'Fundación para el adulto mayor', '2023-06-01','I',1
+
+	SELECT*FROM asil.VW_tbDonaciones
+
+	GO
+
+
+
+	 /* NUEVO */
+
+	CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesDetalles
+		@dona_Id				INT, 
+		@doco_Id				INT, 
+		@deto_Cantidad			INT 
+	AS
+	BEGIN
+		BEGIN TRY
+			IF NOT EXISTS (
+				SELECT * FROM [asil].[tbDonacionesDetalles] 
+				WHERE dona_Id = @dona_Id AND doco_Id = @doco_Id 
+			)
+			BEGIN
+				INSERT INTO [asil].[tbDonacionesDetalles] (dona_Id, doco_Id, deto_Cantidad)
+				VALUES (@dona_Id, @doco_Id, @deto_Cantidad);
+
+				SELECT 1;
+			END
+
+			ELSE IF EXISTS (
+				SELECT * FROM [asil].[tbDonacionesDetalles] 
+				WHERE dona_Id = @dona_Id AND doco_Id = @doco_Id 
+			)
+			BEGIN
+				UPDATE [asil].[tbDonacionesDetalles] 
+				SET [deto_Cantidad] = deto_Cantidad + @deto_Cantidad
+				WHERE dona_Id = @dona_Id AND doco_Id = @doco_Id;
+
+				SELECT 1;
+			END
+		
+		END TRY
+		BEGIN CATCH
+			SELECT 0;
+		END CATCH;
+	END;
+	GO
+
+	/* nuevo*/
+	CREATE OR ALTER PROCEDURE asil.agregarDetailDescript
+	@dona_Id		INT,
+	@deto_Descripcion		NVARCHAR(MAX)
+
+	AS
+	BEGIN
+
+		BEGIN TRY
+
+			IF NOT EXISTS (
+				SELECT * FROM [asil].[tbDonacionesDetalles] 
+				WHERE dona_Id = @dona_Id AND deto_Descripcion = @deto_Descripcion 
+			)
+			BEGIN
+				INSERT INTO [asil].[tbDonacionesDetalles] (dona_Id, deto_Descripcion)
+				VALUES (@dona_Id, @deto_Descripcion);
+
+				SELECT 1;
+			END
+			     IF EXISTS (
+				SELECT * FROM [asil].[tbDonacionesDetalles] 
+				WHERE dona_Id = @dona_Id AND deto_Descripcion = @deto_Descripcion AND [deto_Estado] = 0
+			)
+			BEGIN
+				UPDATE [asil].[tbDonacionesDetalles] 
+				SET [deto_Estado] = 1 
+				WHERE dona_Id = @dona_Id AND deto_Descripcion = @deto_Descripcion;
+
+				SELECT 1;
+			END;
+		END TRY
+			
+		BEGIN CATCH
+			SELECT 0
+		END CATCH
+
+	END
+	GO
+
+
+
+	SELECT*FROM [asil].[tbDonaciones]
+	select*from [asil].[tbDonacionesXCentro]
+	select*from [asil].[tbDonacionesDetalles]
+
+	EXEC asil.UDP_tbDonacionesDetalles 1, 2, 4
+	select*from [asil].[tbDonacionesDetalles]
+	GO
+
+		 /* NUEVO */
+
+	CREATE OR ALTER VIEW asil.VW_DonacionesDetalles
+	AS
+	SELECT 
+	[deto_Id], dote.[dona_Id], dona.dona_NombreDonante,dote.[doco_Id],doco.doco_Nombre ,[deto_Cantidad], [deto_Descripcion], [deto_Estado]
+	FROM [asil].[tbDonacionesDetalles] dote LEFT JOIN [asil].[tbDonacionesComunes] doco
+	ON dote.doco_Id = doco.doco_Id LEFT JOIN [asil].[tbDonaciones] dona
+	ON dote.dona_Id = dona.dona_Id
+
+	GO
+
+		 /* NUEVO */
+
+	CREATE OR ALTER PROCEDURE asil.UDP_DetallesXdonacion
+	@dona_Id		INT
+	AS
+	BEGIN
+		BEGIN TRY
+			SELECT*FROM asil.VW_DonacionesDetalles WHERE dona_Id = @dona_Id
+		END TRY
+		BEGIN CATCH
+
+		END CATCH
+	END
+	GO
+
+asil.UDP_DetallesXdonacion 1
+
+GO
+
+/* NUEVO */
+
+CREATE OR ALTER PROCEDURE asil.UDP_CentrosXDonacion
+@dona_Id		INT
+
+	AS
+	BEGIN
+BEGIN TRY
+		SELECT doce.[cent_Id], [cent_Nombre] FROM [asil].[tbDonacionesXCentro] doce
+		INNER JOIN [asil].[tbCentros] cent ON doce.cent_Id = cent.cent_Id
+		WHERE doce.dona_Id = @dona_Id
+END TRY
+
+BEGIN CATCH
+		SELECT 0
+END CATCH
+
+END
+GO
+
+--asil.UDP_CentrosXDonacion 1
+
+
+ /* NUEVO */
+
+ CREATE OR ALTER PROCEDURE asil.UDP_EliminarDetails
+	@deto_Id INT
 AS
 BEGIN
-	SELECT * FROM asil.VW_tbDonaciones
-	WHERE dona_Estado = 1
+
+	BEGIN TRY
+		DELETE FROM [asil].[tbDonacionesDetalles] WHERE [deto_Id] = @deto_Id
+		SELECT 1
+	END TRY
+
+BEGIN CATCH
+	SELECT 0
+END CATCH
 END
+
 GO
 
 
 
+	CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesXCentroInsert
+	@dona_Id					INT,
+	@cent_Id					INT,
+	@donacent_UsuCreacion		INT
+	AS
+	BEGIN
+		BEGIN TRY
+			IF NOT EXISTS (SELECT*FROM[asil].[tbDonacionesXCentro] WHERE dona_Id = @dona_Id AND  cent_Id = @cent_Id )
+			BEGIN
+			INSERT INTO asil.tbDonacionesXCentro(dona_Id,cent_Id,donacent_UsuCreacion)
+			VALUES ( @dona_Id, @cent_Id, @donacent_UsuCreacion)
+			SELECT 1
+			END
 
+			ELSE IF EXISTS (SELECT*FROM asil.tbDonacionesXCentro WHERE dona_Id = @dona_Id AND cent_Id = @cent_Id AND donacent_Estado = 0)
 
-/*Insertar donaciones*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Insert
-	@dona_NombreDonante		NVARCHAR(400),
-	@dona_Fecha				DATE,
-	@dona_QueEs				CHAR(1),
-	@dona_UsuCreacion		INT
-AS 
-BEGIN
-	
-	BEGIN TRY
+			BEGIN
+			UPDATE asil.tbDonacionesXCentro SET donacent_Estado =1 WHERE dona_Id = @dona_Id AND cent_Id = @cent_Id
+			SELECT 1
+			END
 
-		INSERT INTO asil.tbDonaciones(dona_NombreDonante,dona_QueEs, dona_Fecha, dona_UsuCreacion)
-			VALUES(@dona_NombreDonante,@dona_QueEs,@dona_Fecha,@dona_UsuCreacion)
-
-			SELECT SCOPE_IDENTITY()
-
-	END TRY
+			ELSE IF EXISTS (SELECT*FROM asil.tbDonacionesXCentro WHERE dona_Id = @dona_Id AND cent_Id = @cent_Id AND donacent_Estado = 1)
+			BEGIN
+			UPDATE asil.tbDonacionesXCentro SET cent_Id = @cent_Id, dona_Id = @dona_Id WHERE dona_Id = @dona_Id AND cent_Id = @cent_Id
+			SELECT 1
+				
+			END		
+		END TRY
 	BEGIN CATCH
 		SELECT 0
-	END CATCH 
-END
-GO
-
-
-
-
-CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesDetalles
-@dona_Id					INT, 
-@doco_Id					INT, 
-@deto_Cantidad				INT, 
-@deto_Descripcion			NVARCHAR(MAX),
-@deto_CantidadDinero		DECIMAL(18,2)
-AS
-BEGIN
- BEGIN TRY
-	INSERT INTO [asil].[tbDonacionesDetalles]
-	VALUES(@dona_Id,@doco_Id,@deto_Cantidad,@deto_Descripcion,@deto_CantidadDinero)
-
-	SELECT 1
- END TRY
-
- BEGIN CATCH
- SELECT 0
- END CATCH
-
-
-END
-GO
-
-
---CREATE OR ALTER PROCEDURE asil.UDP_tbDonacionesXCentroInsert
---@dona_Id					INT,
---@cent_Id					INT,
---@donacent_UsuCreacion		INT
---AS
---BEGIN
---	BEGIN TRY
---		IF NOT EXISTS (SELECT*FROM)
-
---END
---GO
-
-
-
-
-/*CREATE OR ALTER PROCEDURE acce.UDP_acce_tbPantallasPorRoles_Insert 
-	@role_Id               INT, 
-	@pant_Id               INT, 
-	@pantrole_UsuCreacion  INT
-AS
-BEGIN
-	BEGIN TRY
-		IF NOT EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
-						WHERE pant_Id = @pant_Id AND role_Id = @role_Id)
-			BEGIN
-			INSERT INTO acce.tbPantallasPorRoles(role_Id,pant_Id,pantrole_UsuCreacion)
-			VALUES(@role_Id,@pant_Id,@pantrole_UsuCreacion)
-			
-			SELECT 'Operación realizada con éxito'
-			END
-		ELSE IF EXISTS (SELECT * FROM acce.tbPantallasPorRoles 
-						WHERE pant_Id = @pant_Id AND role_Id = @role_Id
-						AND pantrole_Estado = 0)
-			BEGIN
-				UPDATE [acce].[tbPantallasPorRoles]
-				SET [pantrole_Estado] = 1
-				WHERE pant_Id = @pant_Id AND role_Id = @role_Id
-
-				SELECT 'Operación realizada con éxito'
-			END
-		ELSE
-			SELECT 'La pantalla x rol ya existe'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
 	END CATCH
-END
-GO*/
 
+	END
+	GO
 
+	--asil.UDP_tbDonacionesXCentroInsert 1,1, 1
+	--asil.UDP_tbDonacionesXCentroInsert 1,2, 1
+	SELECT*FROM asil.tbDonaciones
+	SELECT*FROM asil.tbDonacionesXCentro
+	GO
 
 /*Find donaciones*/
-CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Find 
-	@dona_Id	INT
-AS
-BEGIN
-	SELECT * FROM asil.VW_tbDonaciones
-	WHERE dona_Id = @dona_Id
-END
-GO
+	CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Find 
+		@dona_Id	INT
+	AS
+	BEGIN
+		SELECT * FROM asil.VW_tbDonaciones
+		WHERE dona_Id = @dona_Id
+	END
+	GO
 
 
 /*Editar donaciones*/
---CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Update
---	@dona_Id					INT,
---	@dona_NombreDonante			NVARCHAR(300),
---	@dona_Cantidad				DECIMAL(18,2),
---	@dona_Fecha					DATE,
---	@dona_UsuModificacion		INT
---AS
---BEGIN
---	BEGIN TRY
---		UPDATE asil.tbDonaciones
---			SET 	dona_NombreDonante = @dona_NombreDonante,
---					dona_Cantidad = @dona_Cantidad,
---					dona_Fecha = @dona_Fecha,
---					dona_UsuModificacion = @dona_UsuModificacion,
---					[dona_FechaModificacion] = GETDATE()
---			WHERE 	dona_Id = @dona_Id
+CREATE OR ALTER PROCEDURE asil.UDP_asil_tbDonaciones_Update
+	@dona_Id					INT,
+	@dona_NombreDonante			NVARCHAR(300),
+	@dona_Fecha					DATE,
+	@dona_QueEs					CHAR(1),
+	@dona_UsuModificacion		INT
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE asil.tbDonaciones
+			SET 	dona_NombreDonante = @dona_NombreDonante,
+					dona_QueEs = @dona_QueEs,
+					dona_Fecha = @dona_Fecha,
+					dona_UsuModificacion = @dona_UsuModificacion,
+					[dona_FechaModificacion] = GETDATE()
+			WHERE 	dona_Id = @dona_Id
 
---			SELECT 'La donaciï¿½n ha sido editada exitosamente'
---	END TRY
---	BEGIN CATCH
---		SELECT 'Ha ocurrido un error'
---	END CATCH
---END
---GO
+			SELECT 1
+	END TRY
+	BEGIN CATCH
+		SELECT 0
+	END CATCH
+END
+GO
+
 
 
 /*Eliminar donaciones*/
@@ -4301,13 +4473,14 @@ BEGIN
 				SET dona_Estado = 0
 				WHERE dona_Id = @dona_Id
 
-				SELECT 'La donaciï¿½n ha sido eliminada'
+				SELECT 'La donación ha sido eliminada'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'
 	END CATCH
 END
 GO
+--***********************************************************************************************DONACIONES******************--
 
 
 --************ESTADOS CIVILES******************--
