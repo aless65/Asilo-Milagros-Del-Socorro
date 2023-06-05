@@ -179,8 +179,9 @@ export class EditarComponent implements OnInit {
           timer: 1850,
           timerProgressBar: true
         }).then(() => {
-           this.router.navigate([this.returnUrl]);
+          
         });
+        this.router.navigate([this.returnUrl]);
       }
     })
    }

@@ -100,29 +100,48 @@ GO
 
 /*Editar usuarios*/
 CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_UPDATE
-	@usua_Id					INT,
-	@usua_EsAdmin				BIT,
-	@role_Id					INT,
-	@empe_Id					INT,
-	@usua_UsuModificacion		INT
+    @usua_Id                  INT,
+    @usua_EsAdmin             BIT,
+    @usua_Contrasena          NVARCHAR(MAX),
+    @role_Id                  INT,
+    @empe_Id                  INT,
+    @usua_UsuModificacion     INT
 AS
 BEGIN
-	BEGIN TRY
-		UPDATE acce.tbUsuarios
-		SET usua_EsAdmin = @usua_EsAdmin,
-			role_Id = @role_Id,
-			empe_Id = @empe_Id,
-			usua_UsuModificacion = @usua_UsuModificacion,
-			usua_FechaModificacion = GETDATE()
-		WHERE usua_Id = @usua_Id
+    BEGIN TRY
+        DECLARE @password NVARCHAR(MAX) = (SELECT HASHBYTES('Sha2_512', @usua_Contrasena));
+        
+        IF @usua_Contrasena = ''
+        BEGIN
+            UPDATE acce.tbUsuarios
+            SET usua_EsAdmin = @usua_EsAdmin,
+                role_Id = @role_Id,
+                empe_Id = @empe_Id,
+                usua_UsuModificacion = @usua_UsuModificacion,
+                usua_FechaModificacion = GETDATE()
+            WHERE usua_Id = @usua_Id
 
-		SELECT 'El usuario ha sido editado con éxito'
-	END TRY
-	BEGIN CATCH
-		SELECT 'Ha ocurrido un error'
-	END CATCH
+            SELECT 'El usuario ha sido editado con éxito'
+        END
+        ELSE
+        BEGIN
+            UPDATE acce.tbUsuarios
+            SET usua_EsAdmin = @usua_EsAdmin,
+                usua_Contrasena = @password,
+                role_Id = @role_Id,
+                empe_Id = @empe_Id,
+                usua_UsuModificacion = @usua_UsuModificacion,
+                usua_FechaModificacion = GETDATE()
+            WHERE usua_Id = @usua_Id
+
+            SELECT 'El usuario ha sido editado con éxito'
+        END
+    END TRY
+    BEGIN CATCH
+        SELECT 'Ha ocurrido un error'
+    END CATCH
 END
-GO
+go
 
 
 /*Eliminar usuarios*/
@@ -131,11 +150,16 @@ CREATE OR ALTER PROCEDURE acce.UDP_acce_tbUsuarios_DELETE
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE acce.tbUsuarios
-		SET usua_Estado = 0
-		WHERE usua_Id = @usua_Id
+		IF @usua_Id > 1
+			BEGIN
+				UPDATE acce.tbUsuarios
+				SET usua_Estado = 0
+				WHERE usua_Id = @usua_Id
 
-		SELECT 'El usuario ha sido eliminado'
+				SELECT 'El usuario ha sido eliminado'
+			END
+		ELSE
+			SELECT 'El administrador no puede ser eliminado'
 	END TRY
 	BEGIN CATCH
 		SELECT 'Ha ocurrido un error'

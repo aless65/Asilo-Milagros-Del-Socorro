@@ -233,6 +233,8 @@ export class EditarComponent implements OnInit {
       }
       else if(data.message == "Exitoso"){
         Swal.fire({
+          toast: true,
+          position: 'top-end',
           title: '¡Perfecto!',
           text: 'El registro se editó con éxito!',
           icon: 'success',
@@ -240,8 +242,8 @@ export class EditarComponent implements OnInit {
           timer: 1850,
           timerProgressBar: true
         }).then(() => {
-           this.router.navigate([this.returnUrl]);
         });
+        this.router.navigate([this.returnUrl]);
       }
     })
    }

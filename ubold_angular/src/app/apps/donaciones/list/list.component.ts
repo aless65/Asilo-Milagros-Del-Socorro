@@ -24,6 +24,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   newEmppleado!: FormGroup;
   returnUrl: string = '/';
   details: string = '/';
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   selectedEmpleado!: Donaciones;
 
@@ -155,10 +156,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   empleadoActionFormatter(donacion: Donaciones): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `<a class="edit action-icon donacion" id="${donacion.dona_Id}" role="button">
-        <i class="mdi mdi-square-edit-outline"></i>
+        <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"
+        ></i>
       </a>
 
-      <a class="details action-icon details" id="${donacion.dona_Id}"> <i class="bi bi-list-task"></i> </a>
+      <a class="details action-icon details" id="${donacion.dona_Id}"> <i class="bi bi-list-task" style="color: #0e9d9f;"></i> </a>
       `
     );
   }

@@ -222,6 +222,8 @@ export class EditarComponent implements OnInit {
       console.log(data.message);
       if (data.message == "El encargado ha sido editado exitosamente") {
         Swal.fire({
+          toast: true,
+          position: 'top-end',
           title: '¡Perfecto!',
           text: 'El registro se guardó con éxito!',
           icon: 'success',
@@ -229,8 +231,8 @@ export class EditarComponent implements OnInit {
           timer: 1850,
           timerProgressBar: true
         }).then(() => {
-          this.router.navigate([this.returnUrl]);
         });
+        this.router.navigate([this.returnUrl]);
       } else if (data.message == "Ya existe un encargado con este número de identidad") {
         Swal.fire({
           toast: true,

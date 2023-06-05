@@ -50,11 +50,6 @@ namespace Asilo.DataAccess.Repositories
         }
 
         public RequestStatus Insert(tbRoles item)
-        {
-            throw new NotImplementedException();
-        }
-
-        /* public RequestStatus Insert(tbRoles item)
          {
              RequestStatus result = new RequestStatus();
 
@@ -86,7 +81,7 @@ namespace Asilo.DataAccess.Repositories
              }
 
              return result;
-         }*/
+         }
 
         public IEnumerable<VW_tbRoles> List()
         {
@@ -94,12 +89,8 @@ namespace Asilo.DataAccess.Repositories
             return db.Query<VW_tbRoles>(ScriptsDataBase.UDP_Lista_Roles, null, commandType: CommandType.StoredProcedure);
         }
 
-        public RequestStatus Update(tbRoles item)
-        {
-            throw new NotImplementedException();
-        }
 
-        /* public RequestStatus Update(tbRoles item)
+        public RequestStatus Update(tbRoles item)
          {
              RequestStatus result = new RequestStatus();
 
@@ -137,6 +128,6 @@ namespace Asilo.DataAccess.Repositories
              }
 
              return result;
-         }*/
+         }
     }
 }

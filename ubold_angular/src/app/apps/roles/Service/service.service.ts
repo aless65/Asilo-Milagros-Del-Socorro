@@ -20,7 +20,7 @@ export class ServiceService {
   }
   
   editRoles(editRol: Rol){
-    return this.http.put<Rol[]>(`${this.variableGlobal}api/Roles/Editar`, editRol);
+    return this.http.put<Rol[]>(`${this.variableGlobal}Roles/Editar`, editRol);
   }
 
   deleteRoles(id: number){

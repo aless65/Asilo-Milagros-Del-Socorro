@@ -75,18 +75,33 @@ import Swal from 'sweetalert2';
       (response: any) => {
         console.log("se pudo:", response);
         this._fetchData();
-        /*Swal.fire({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 1700,
-          timerProgressBar: true,
-          titleText: response.message, // Mostrar la respuesta JSON en la alerta
-          icon: 'warning',
-          background: '#f6f6baf2'
-        }).then(() => {
-          // Acción luego de cerrarse el toast
-        });*/
+        if(response.code === 200){
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            title: '¡Perfecto!',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: '¡El registro ha sido eliminado!', // Mostrar la respuesta JSON en la alerta
+            icon: 'success',
+          }).then(() => {
+
+          });
+        } else{
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            titleText: '¡El proveedor no puede ser eliminado ya que está siendo usado en otro registro!', // Mostrar la respuesta JSON en la alerta
+            icon: 'warning',
+          }).then(() => {
+
+          });
+            
+        }
   
       },
       (error) => {
@@ -181,9 +196,10 @@ import Swal from 'sweetalert2';
   proveedorActionFormatter(proveedor: Proveedor): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `<a class="edit action-icon proveedor" id="${proveedor.prov_Id}" role="button">
-        <i class="mdi mdi-square-edit-outline"></i>
+        <i class="mdi mdi-square-edit-outline" style="color: #6658dd;"></i>
       </a>
-      <a href="javascript:void(0);" class="delete action-icon" id="${proveedor.prov_Id}"> <i class="mdi mdi-delete"></i></a>`
+      <a href="javascript:void(0);" class="delete action-icon" style="color: #9f100e;"
+      id="${proveedor.prov_Id}"> <i class="mdi mdi-delete"></i></a>`
     );
   }
   

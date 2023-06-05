@@ -9,7 +9,8 @@ import { MegaMenuItem } from '../models/mega-menu.model';
 import { NotificationItem } from '../models/notification.model';
 import { ProfileOptionItem } from '../models/profileoption.model';
 import { SearchResultItem, SearchUserItem } from '../models/search.model';
-
+import { Usuario } from './Model';
+import { Console } from 'console';
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
@@ -29,7 +30,11 @@ export class TopbarComponent implements OnInit {
   searchResults: SearchResultItem[] = [];
   searchUsers: SearchUserItem[] = [];
 
-  loggedInUser: any = {};
+  loggedInUser: any | undefined;
+  usuario: Usuario = {};
+
+
+
   topnavCollapsed: boolean = false;
 
   // output events
@@ -53,6 +58,8 @@ export class TopbarComponent implements OnInit {
     this._fetchProfileOptions();
 
     this.loggedInUser = this.authService.currentUser();
+    this.usuario = this.loggedInUser.data[0];
+    console.log(this.loggedInUser.data[0], "HOLAAA");
 
     document.addEventListener('fullscreenchange', this.exitHandler);
     document.addEventListener("webkitfullscreenchange", this.exitHandler);
@@ -268,23 +275,9 @@ export class TopbarComponent implements OnInit {
    */
   _fetchProfileOptions(): void {
     this.profileOptions = [
+
       {
-        label: 'My Account',
-        icon: 'fe-user',
-        redirectTo: '/apps/contacts/profile',
-      },
-      {
-        label: 'Settings',
-        icon: 'fe-settings',
-        redirectTo: '[]',
-      },
-      {
-        label: 'Lock Screen',
-        icon: 'fe-lock',
-        redirectTo: '/auth/lock-screen',
-      },
-      {
-        label: 'Logout',
+        label: 'Cerrar Sesión',
         icon: 'fe-log-out',
         redirectTo: '/auth/logout',
       }

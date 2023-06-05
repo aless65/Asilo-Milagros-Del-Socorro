@@ -28,7 +28,8 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
   menuItems: MenuItem[] = [];
 
   constructor (
-    router: Router,
+    // router: Router,
+    private router: Router,
     private authService: AuthenticationService,
     private eventService: EventService,
     private menuService: ServiceService) {
@@ -70,7 +71,15 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
         }
 
         this.menuItems = MENU_ITEMS;
-        console.log(MENU_ITEMS);
+
+        // Validar el acceso a la pantalla actual
+        // const currentUrl = window.location.pathname; // Obtener la URL actual
+        // const menuItem = this.menuItems.find(item => item.link === currentUrl); // Buscar la pantalla en el menú
+
+        // if (!menuItem) {
+        //   // Si la pantalla actual no está en el menú, redirigir a una página de error
+        //   this.router.navigate(['../dashboard-1']);
+        // }
 
       },
       (error: any) => {

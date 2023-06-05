@@ -26,6 +26,7 @@ import Swal from 'sweetalert2';
   newEmppleado!: FormGroup;
   returnUrl: string = '/';
   details: string = '/';
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   selectedEmpleado!: Empleados;
 

@@ -58,7 +58,7 @@ import { Select2Data } from 'ng-select2-component';
       rol: new FormControl('', Validators.required),
       empleado: new FormControl('', Validators.required),
       admin: [this.isAdmin],
-      contra:['', Validators.required],
+      contra:[''],
     });
     //this.soloNumeros = true; // Habilitar solo números
     this.service.getRol().subscribe((response: any) => {
@@ -112,6 +112,7 @@ import { Select2Data } from 'ng-select2-component';
 
     this.activeModal.open(this.content, { centered: true });
   }
+  
 
   openModalDelete(): void {
     this.activeModal.open(this.deleteUsuarioModal, { centered: true, windowClass: 'delete-modal' });
@@ -138,6 +139,18 @@ import { Select2Data } from 'ng-select2-component';
               // Acción luego de cerrarse el toast
             });
             return;
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1700,
+              timerProgressBar: true,
+              titleText: response.message,
+              icon: 'success',
+            }).then(() => {
+              // Acción luego de cerrarse el toast
+            });
           }
         },
         (error) => {
@@ -177,13 +190,15 @@ import { Select2Data } from 'ng-select2-component';
       usua_UsuCreacion: 1,
       usua_UsuModificacion: 1,
     }
+    console.log(usuario.usua_Id,'usuario id');
     if(this.esEditar){
-
+       console.log('editar')
+       console.log(usuario)
       this.service.editUsuarios(usuario).subscribe(
         (response: any) => {
-          console.log("se pudo:", response);
+          console.log(response,'hola');
           this._fetchData();
-          
+          console.log('editar')
           if(response.message == "El usuario ha sido editado con éxito"){
             Swal.fire({
               toast: true,
@@ -212,22 +227,11 @@ import { Select2Data } from 'ng-select2-component';
               // Acción luego de cerrarse el toast
             });
           }
-          else if(response.message == "Exitoso"){
-            Swal.fire({
-              title: '¡Perfecto!',
-              text: 'El registro se editó con éxito!',
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 1850,
-              timerProgressBar: true
-            }).then(() => {
-               
-            });
-          }
+          
           
         },
         (error) => {
-          console.log("no se pudo:", error);
+          console.log("no se pudo: AQUII", error);
         }
       )
       
@@ -358,10 +362,10 @@ import { Select2Data } from 'ng-select2-component';
         if (this.selectedUsuario) {
           this.newUsuario = this.fb.group({
             name: [this.selectedUsuario.usua_NombreUsuario || '', Validators.required],
-            contra:[this.selectedUsuario.usua_Contrasena || '', Validators.required],
+            contra:[''],
             rol: [this.selectedUsuario.role_Id || '', Validators.required],
             empleado: [this.selectedUsuario.empe_Id || '', Validators.required],
-            admin: [this.selectedUsuario.usua_EsAdmin || ''],
+            admin: [this.selectedUsuario.usua_EsAdmin || false],
             
           });
           this.openModal("edit");
@@ -376,7 +380,7 @@ import { Select2Data } from 'ng-select2-component';
         if (this.selectedUsuario) {
           this.newUsuario= this.fb.group({
             name: [this.selectedUsuario.usua_NombreUsuario || '', Validators.required],
-            contra:[this.selectedUsuario.usua_Contrasena || '', Validators.required],
+            contra:[this.selectedUsuario.usua_Contrasena],
             rol: [this.selectedUsuario.role_Id || '', Validators.required],
             empleado: [this.selectedUsuario.empe_Id || '', Validators.required],
             adminCheckbox: [this.selectedUsuario.usua_EsAdmin || ''],
@@ -438,4 +442,3 @@ matches(row: Usuario, term: string) {
 
 
 }
-

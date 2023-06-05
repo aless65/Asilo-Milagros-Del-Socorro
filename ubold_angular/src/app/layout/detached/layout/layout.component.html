@@ -3,7 +3,7 @@
     <app-topbar (settingsButtonClicked)="onSettingsButtonClicked()" (mobileMenuButtonClicked)="onToggleMobileMenu()"
         layoutType="detached"></app-topbar>
     <!-- left side bar-->
-    <app-left-sidebar [includeUserProfile]="showSidebarUserInfo">
+    <app-left-sidebar >
     </app-left-sidebar>
 
     <div class="content-page" *ngIf="reRender">

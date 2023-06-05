@@ -216,7 +216,7 @@ export class CrearComponent implements OnInit {
   empleadoActionFormatter(donacion: DonacionesComunes): any {
     return this.sanitizer.bypassSecurityTrustHtml(
       `<a class="cantidad action-icon " id="${donacion.doco_Id}" role="button">
-      <i class="bi bi-plus-circle text-success"></i>
+      <i class="bi bi-plus-circle text-success" ></i>
       </a>
       `
     );
@@ -459,6 +459,11 @@ export class CrearComponent implements OnInit {
         formatter: (donacion: DonacionesDetalles) => donacion.deto_Cantidad
       },
       {
+        name: 'deto_Descripcion',
+        label: 'Otros Insumos',
+        formatter: (donacion: DonacionesDetalles) => donacion.deto_Descripcion
+      },
+      {
         name: 'Action',
         label: 'Eliminar',
         width: 82,
@@ -476,7 +481,6 @@ export class CrearComponent implements OnInit {
         this.eliminarDetail(detoId);
       });
     });
-
 
     
   }

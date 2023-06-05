@@ -8,6 +8,7 @@ import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { Encargado } from '../Model';
 import { ServiceServiceE } from 'src/app/apps/encargados/service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // import { ToastModule } from 'primeng/toast';
 // import { MessageService } from 'primeng/api';
@@ -73,7 +74,20 @@ import { ActivatedRoute, Router } from '@angular/router';
     this.service.deleteEncargadoss(this.selectedEncargado.enca_Id || 0).subscribe(
         (response: any) => {
           console.log("se pudo:", response);
-          this._fetchData();
+          if(response.code === 200){
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              title: '¡Perfecto!',
+              text: '¡El registro se eliminó con éxito!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1850,
+              timerProgressBar: true
+            }).then(() => {
+            });
+            this._fetchData();
+          }
         },
         (error) => {
           console.log("no se pudo:", error);

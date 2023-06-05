@@ -16,6 +16,8 @@ namespace Asilo.Entities.Entities
 
         public int role_Id { get; set; }
         public string role_Nombre { get; set; }
+
+        public int[] role_Pantallas { get; set; }
         public int role_UsuCreacion { get; set; }
         public DateTime role_FechaCreacion { get; set; }
         public int? role_UsuModificacion { get; set; }

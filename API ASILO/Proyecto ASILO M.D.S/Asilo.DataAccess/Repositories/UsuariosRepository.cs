@@ -63,7 +63,7 @@ namespace Asilo.DataAccess.Repositories
 
         public IEnumerable<VW_tbUsuarios> Login(string usuario, string contrasena)
         {
-            using var db = new SqlConnection(AsiloContext.ConnectionString); 
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
             var parametros = new DynamicParameters();
             parametros.Add("@usua_NombreUsuario", usuario, DbType.String, ParameterDirection.Input);
             parametros.Add("@usua_Contrasena", contrasena, DbType.String, ParameterDirection.Input);
@@ -81,6 +81,7 @@ namespace Asilo.DataAccess.Repositories
             var parametros = new DynamicParameters();
             parametros.Add("@usua_Id", item.usua_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_EsAdmin", item.usua_EsAdmin, DbType.Boolean, ParameterDirection.Input);
+            parametros.Add("@usua_Contrasena", item.usua_Contrasena, DbType.String, ParameterDirection.Input);
             parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@empe_Id", item.empe_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_UsuModificacion", item.usua_UsuModificacion, DbType.Int32, ParameterDirection.Input);
@@ -90,5 +91,6 @@ namespace Asilo.DataAccess.Repositories
 
             return result;
         }
+
     }
 }

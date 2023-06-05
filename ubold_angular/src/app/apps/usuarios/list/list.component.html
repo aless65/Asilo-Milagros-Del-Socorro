@@ -1,5 +1,31 @@
 <!-- page title -->
-<app-page-title [breadcrumbItems]="pageTitle" title="Usuarios"></app-page-title>
+<app-page-title [breadcrumbItems]="pageTitle" ></app-page-title>
+
+<div class="row">
+    <div class="col-12">
+        <h4 class="text-uppercase custom-bg-color p-2 mt-0 mb-3 text-center">Usuarios</h4>
+
+        <div class="card-content transparent-card">
+            <div class="card-body">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <form class="d-flex flex-wrap align-items-center">
+                            <div class="me-3">
+                                
+                            </div>
+                         
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-lg-end my-1 my-lg-0">
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+
 
 <div class="row">
     <div class="card">
@@ -40,7 +66,7 @@
                 <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name"  placeholder="Nombre" required formControlName="name"
-                    [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.name.invalid }">
+                    [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.name.invalid }" [readonly]="esEditar">
                 <div *ngIf="addUsuarios.submitted && form1.name.invalid" class="valid-feedback">
                     completo!
                 </div>
@@ -54,13 +80,14 @@
         <div class="col-sm-6">
             <div class="mb-3">
             <label for="contra" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="contra"  placeholder="Contraseña" required formControlName="contra"
-                [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.contra.invalid }">
+            <input type="password" class="form-control" id="contra"  placeholder="Contraseña" formControlName="contra"
+            [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.name.invalid }" [required]="!esEditar">
+
             <div *ngIf="addUsuarios.submitted && form1.contra.invalid" class="valid-feedback">
                 completo!
             </div>
             <div *ngIf="addUsuarios.submitted && form1.contra.invalid" class="invalid-feedback">
-                La contraseña es requerido
+                El nombre es requerido
             </div>
         </div>
     </div>
@@ -104,8 +131,7 @@
             <div class="col-sm-6 mt-4"> <!-- Añadido "mt-3" para ajustar el espacio debajo -->
                 <div class="mb-3">
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="adminCheckbox" name="adminCheckbox" formControlName="admin"
-                      [ngClass]="{ 'is-invalid': addUsuarios.submitted && form1.admin.invalid }">
+                    <input type="checkbox" class="form-check-input" id="adminCheckbox" name="adminCheckbox" formControlName="admin" >
                     <label class="form-check-label" for="adminCheckbox">Es Admin</label>
                   </div>
                 </div>
