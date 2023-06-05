@@ -72,9 +72,9 @@ export class EditComponent implements OnInit {
   residentesFromList: Residente[] = [];
   residenteId!: number;
   estaciviResi!: number;
-  // agendaId!: number;
   habiId!: number;
   centroOriginal!: number;
+  encargados!: Encargado[];
 
   @ViewChild('personalizarAgenda', { static: true }) personalizarAgenda: any;
   @ViewChild('personalizarDieta', { static: true }) personalizarDieta: any;
@@ -171,6 +171,12 @@ export class EditComponent implements OnInit {
         this.expediente.expe_Enfermedades = this.residente.resi_EnfermedadesIds?.split(',').map(Number);
         this.expediente.expe_FechaApertura = new Date(this.expediente.expe_FechaApertura || '').toISOString().substring(0, 10);
         this.selectedImage = this.expediente.expe_Fotografia || '';
+      });
+
+      this.resiService.findResidentesEnca(this.residenteId).subscribe((response: any) => {
+        this.encargados = response.data;
+        console.log(response.data);
+        console.log(typeof this.encargados);
       });
 
       if (this.residente.empe_Id === undefined || this.residente.empe_Id === null) {

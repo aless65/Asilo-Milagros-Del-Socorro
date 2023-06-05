@@ -35,6 +35,13 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("FindEncargado")]
+        public IActionResult FindEnca(int id)
+        {
+            var list = _asiloServivce.FindResidentesEnca(id);
+            return Ok(list);
+        }
+
         [HttpGet("IdentidadExiste")]
         public IActionResult IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
         {

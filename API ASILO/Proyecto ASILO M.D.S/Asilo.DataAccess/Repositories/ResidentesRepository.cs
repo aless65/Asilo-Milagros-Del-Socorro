@@ -37,6 +37,16 @@ namespace Asilo.DataAccess.Repositories
             return db.QueryFirst<VW_tbResidentes>(ScriptsDataBase.ResidentesFind, parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public IEnumerable<VW_tbEncargados> FindEnca(int? id)
+        {
+            using var db = new SqlConnection(AsiloContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@resi_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.Query<VW_tbEncargados>(ScriptsDataBase.ResidentesFindEnca, parameters, commandType: CommandType.StoredProcedure);
+        }
+
         public RequestStatus Insert(tbResidentes item)
         {
             var parameters = new DynamicParameters();

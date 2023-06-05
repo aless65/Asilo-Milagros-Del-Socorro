@@ -114,5 +114,9 @@ export class ServiceService {
   getCategoria(){
     return this.http.get<Categoria[]>(`${this.variableGlobal}CategoriasHabitaciones/Listado`);
   }
+
+  getGrafica(){
+    return this.http.get<any>(`https://localhost:44371/api/Centros/Grafica`);
+  }
   
 }

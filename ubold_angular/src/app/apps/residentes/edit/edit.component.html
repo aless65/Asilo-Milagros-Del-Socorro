@@ -95,8 +95,9 @@
                                     <div class="mb-4">
                                         <label class="col-form-label" for="estacivi_Id">
                                             Estado Civil</label>
-                                        <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id" 
-                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0" name="estacivi_Id"
+                                        <select2 id="estacivi_Id" [data]="estadoCivil" formControlName="estacivi_Id"
+                                            [(ngModel)]="residente.estacivi_IdResi" [minCountForSearch]="0"
+                                            name="estacivi_Id"
                                             [ngClass]="{ 'is-valid': accountWizard.submitted && form1.estacivi_Id.valid , 'is-invalid': accountWizard.submitted && form1.estacivi_Id.invalid }">
                                         </select2>
 
@@ -158,13 +159,46 @@
 
                     </ng-template>
                 </li>
+
+
+                <li [ngbNavItem]="5">
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
+                        <i class="mdi mdi-account-supervisor-circle me-1"></i>
+                        <span class="d-none d-sm-inline">Encargado(s)</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-8">
+                                    <div class="card" *ngFor="let encargado of encargados">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h4 class="mt-0 mb-2"> {{ encargado.nombreCompleto }}</h4>
+                                                <p class="mb-0"><i class="mdi mdi-family-tree"></i> {{ encargado.pare_Nombre }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-cellphone-android"></i> {{ encargado.enca_Telefono }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-gender-male-female"></i> {{ encargado.enca_SexoDesc }}</p>
+                                                <p class="mb-0"><i class="mdi mdi-sign-direction"></i> {{ encargado.enca_Direccion }}, {{ encargado.muni_Nombre }}</p>
+                                            </div>
+                                            <a href="javascript: void(0);" class="btn btn-info">Editar</a>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-template>
+                </li>
+
                 <li [ngbNavItem]="3">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2" >
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
                         <i class="mdi mdi-face-profile me-1"></i>
                         <span class="d-none d-sm-inline">Expediente</span>
                     </a>
                     <ng-template ngbNavContent>
-                        <form class="form-horizontal needs-validation" [formGroup]="profileForm" #profileWizard="ngForm">
+                        <form class="form-horizontal needs-validation" [formGroup]="profileForm"
+                            #profileWizard="ngForm">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="row mb-3">
@@ -255,8 +289,9 @@
                         </form>
                     </ng-template>
                 </li>
+
                 <li [ngbNavItem]="4">
-                    <a ngbNavLink class="rounded-0 pt-2 pb-2" >
+                    <a ngbNavLink class="rounded-0 pt-2 pb-2">
                         <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
                         <span class="d-none d-sm-inline">Administración</span>
                     </a>
@@ -279,14 +314,13 @@
                                         <div *ngIf="validationWizard.submitted && form4.cent_Id.invalid"
                                             class="invalid-feedback">
                                             Centro requerido.
-                                        </div>  
+                                        </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="diet_Id">Dieta</label>
                                         <select2 id="diet_Id" [data]="dieta" formControlName="diet_Id"
-                                            [class.col-md-12]="form4.diet_Id.value !== 2"
-                                            name="diet_Id"
+                                            [class.col-md-12]="form4.diet_Id.value !== 2" name="diet_Id"
                                             [class.col-md-10]="form4.diet_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.diet_Id.invalid, 'is-valid': validationWizard.submitted && form4.diet_Id.valid }">
 
@@ -331,8 +365,7 @@
                                     <div class="row mb-3">
                                         <label class="col-md-5 col-form-label" for="agen_Id">Agenda</label>
                                         <select2 id="agen_Id" [data]="agenda" formControlName="agen_Id"
-                                            [class.col-md-12]="form4.agen_Id.value !== 2" name="agen_Id"
-                                            name="agen_Id"
+                                            [class.col-md-12]="form4.agen_Id.value !== 2" name="agen_Id" name="agen_Id"
                                             [class.col-md-10]="form4.agen_Id.value === 2" [minCountForSearch]="0"
                                             [ngClass]="{ 'is-invalid': validationWizard.submitted && form4.agen_Id.invalid, 'is-valid': validationWizard.submitted && form4.agen_Id.valid }">
 
@@ -379,8 +412,8 @@
 
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
-                            
-                            
+
+
                             <div class="row">
                                 <div class="col-5"></div>
                                 <div class="col-5">

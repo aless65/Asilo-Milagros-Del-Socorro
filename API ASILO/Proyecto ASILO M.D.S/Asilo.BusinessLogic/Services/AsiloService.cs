@@ -346,6 +346,20 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult Grafica()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _centrosRepository.Grafica();
+                return result.Ok(list);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         public ServiceResult FindCentros(int id)
         {
             var result = new ServiceResult();
@@ -1636,6 +1650,20 @@ namespace Asilo.BusinessLogic.Services
             }
         }
 
+        public ServiceResult FindResidentesEnca(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var enfermedad = _residentesRepository.FindEnca(id);
+                return result.Ok(enfermedad);
+            }
+            catch (Exception e)
+            {
+                return result.Error(e.Message);
+            }
+        }
+
         public ServiceResult IdentidadExisteResi(string resi_Identidad, bool isEdit, int resi_Id)
         {
             var result = new ServiceResult();
@@ -1805,10 +1833,6 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
-        #endregion
-
-        #region Tipos de sangre
-
         #endregion
     }
 }

@@ -119,7 +119,6 @@ export class ListComponent implements OnInit {
           this._fetchData();
         },
         (error) => {
-          console.log("no se pudo:", error);
         }
       )
     this._fetchData();

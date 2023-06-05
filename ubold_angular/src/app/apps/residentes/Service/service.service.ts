@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import {
   Residente, AgendaDetalle,
   HistorialExpediente, Expediente,
-  ResidenteEdit
+  ResidenteEdit, Encargado
 } from '../../Models';
 import { environment } from 'src/environments/environment';
 import { forkJoin } from 'rxjs';
@@ -31,6 +31,10 @@ export class ServiceService {
 
   findResidentes(id: number) {
     return this.http.get<Residente[]>(`${this.variableGlobal}Residentes/Find?id=${id}`);
+  }
+
+  findResidentesEnca(id: number) {
+    return this.http.get<Encargado[]>(`${this.variableGlobal}Residentes/FindEncargado?id=${id}`);
   }
 
   findExpedientes(id: number) {

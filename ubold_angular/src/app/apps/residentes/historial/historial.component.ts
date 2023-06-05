@@ -159,11 +159,11 @@ export class HistorialComponent implements OnInit {
                                 }
                             ]
                         },
-                        {
-                            width: 75,
-                            qr: this.value,
-                            margin: [0, 7, 0, 0],
-                        }
+                        // {
+                        //     width: 75,
+                        //     qr: this.value,
+                        //     margin: [0, 7, 0, 0],
+                        // }
                     ] as Column[],
                     columnGap: 20,
                 },
@@ -238,15 +238,15 @@ export class HistorialComponent implements OnInit {
             const dataUrl = URL.createObjectURL(blob);
 
              /*IMPORTANTE */
-             this.service.getPDFUpload(blob).subscribe(
-                (response: any) => {
-                  this.value = response.url;
-                  this.expediente.expe_QRCode = response.url;
-                },
-                (error: any) => {
-                  console.error(error);
-                }
-              );
+            //  this.service.getPDFUpload(blob).subscribe(
+            //     (response: any) => {
+            //       this.value = response.url;
+            //       this.expediente.expe_QRCode = response.url;
+            //     },
+            //     (error: any) => {
+            //       console.error(error);
+            //     }
+            //   );
 
             // console.log(savedFileURL);
 

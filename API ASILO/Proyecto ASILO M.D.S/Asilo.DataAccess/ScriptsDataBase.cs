@@ -82,6 +82,8 @@ namespace Asilo.DataAccess
         public static string AgregarCentro= "asil.UDP_asil_tbCentros_Insert";
         public static string ActualizarCentro = "asil.UDP_asil_tbCentros_Update";
         public static string EliminarCentro = "asil.UDP_asil_tbCentros_Delete";
+
+        public static string GraficaEnfemedadXCentros = "asil.UDP_GraficaEnfermedadesXCentro";
         #endregion
 
         #region Dietas
@@ -204,6 +206,7 @@ namespace Asilo.DataAccess
         public static string ResidentesForm = "asil.UDP_tbResidentes_InsertPrincipal";
         public static string ResidentesFormEdit = "asil.UDP_tbResidentes_EditarPrincipal";
         public static string IdentidadExisteResi = "asil.confirmarIdentidadRepetidaResi";
+        public static string ResidentesFindEnca = "asil.UDP_asil_tbResidentes_FindEncargados";
 
         #endregion
 

@@ -67,7 +67,6 @@ import { Select2Data } from 'ng-select2-component';
         options: optionsProveedores
         },
       ];
-      console.log(this.proveedores,"cargar categorias");
     });
 
     
@@ -83,7 +82,6 @@ import { Select2Data } from 'ng-select2-component';
         options: optionsCentros
         },
       ];
-      console.log(this.centros,"cargar centros");
     });
 
   }

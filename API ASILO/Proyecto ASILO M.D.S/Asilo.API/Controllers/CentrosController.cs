@@ -36,6 +36,14 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+
+        [HttpGet("Grafica")]
+        public IActionResult Grafica()
+        {
+            var list = _asiloServivce.Grafica();
+            return Ok(list);
+        }
+
         [HttpPut("Editar")]
         public IActionResult Edit(CentrosViewModel centro)
         {

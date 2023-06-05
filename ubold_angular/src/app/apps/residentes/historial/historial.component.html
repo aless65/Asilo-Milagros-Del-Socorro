@@ -1,5 +1,10 @@
 <app-page-title [breadcrumbItems]="pageTitle" title="Historial Médico"></app-page-title>
 
-
-<!-- <ngx-qrcode [value]="value" cssClass="aclass"></ngx-qrcode> -->
-<div id="historialContainer"></div>
+<div class="row">
+    <div class="col-2 mt-3">
+        <ngx-qrcode [value]="value" cssClass="aclass"></ngx-qrcode>
+    </div>
+    <div class="col-10">
+        <div id="historialContainer"></div>
+    </div>
+</div>
