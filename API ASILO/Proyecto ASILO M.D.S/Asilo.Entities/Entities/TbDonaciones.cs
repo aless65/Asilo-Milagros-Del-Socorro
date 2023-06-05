@@ -15,9 +15,9 @@ namespace Asilo.Entities.Entities
         }
 
         public int dona_Id { get; set; }
-        public int[] cent_Id { get; set; }
-        
         public DateTime dona_Fecha { get; set; }
+        public int[] cent_Id { get; set; }
+
         public string dona_QueEs { get; set; }
         public string dona_NombreDonante { get; set; }
         public int dona_UsuCreacion { get; set; }

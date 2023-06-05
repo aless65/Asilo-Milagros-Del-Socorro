@@ -18,7 +18,6 @@ namespace Asilo.Entities.Entities
         public int medi_Id { get; set; }
         public string medi_Nombre { get; set; }
         public int prov_Id { get; set; }
-
         [NotMapped]
         public int cent_Id { get; set; }
 

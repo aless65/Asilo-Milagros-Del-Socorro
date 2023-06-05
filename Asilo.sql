@@ -64,9 +64,7 @@ VALUES	('inicio', 'Inicio', 1,NULL,NULL,NULL, 1),
 		('apps-empleados', 'Empleados', 0,'/apps/empleados/list','Asilo','users', 1),
 		('apps-encargados', 'Encargados', 0,'/apps/encargados/list','Asilo','user-check', 1),
 		('apps-proveedores', 'Proveedores', 0,'/apps/proveedores/list','Asilo','truck', 1),
-		('apps-donaciones', 'Donaciones', 0,'/apps/donaciones/list','Asilo','user-check', 1)
-
-
+		('apps-donaciones', 'Donaciones', 0,'/apps/donaciones/list','Asilo','user-check', 1);
 GO
 
 

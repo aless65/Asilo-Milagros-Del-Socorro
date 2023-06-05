@@ -104,7 +104,7 @@ namespace Asilo.DataAccess.Repositories
             result.CodeStatus = resultado;
             return result;
         }
-
+        /*
 
         public RequestStatus IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
         {
@@ -121,7 +121,7 @@ namespace Asilo.DataAccess.Repositories
 
             return result;
         }
-
+        
         public RequestStatus InsertPrincipal(VW_tbResidentes_Form item)
         {
             RequestStatus result = new RequestStatus();
@@ -309,6 +309,6 @@ namespace Asilo.DataAccess.Repositories
             //};
 
             return result;
-        }
+        }*/
     }
 }

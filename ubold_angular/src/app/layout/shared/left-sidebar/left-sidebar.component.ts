@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router, NavigationError, NavigationEnd } from '@angular/router';
+
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from 'src/app/core/service/event.service';
 import { AuthenticationService } from '../../../core/service/auth.service';
@@ -28,10 +29,11 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
   menuItems: MenuItem[] = [];
 
   constructor (
-    router: Router,
+    private router: Router,
     private authService: AuthenticationService,
     private eventService: EventService,
-    private menuService: ServiceService) {
+    private menuService: ServiceService,
+    ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenu(); //actiavtes menu
@@ -88,6 +90,16 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
         document.body.removeAttribute("data-sidebar-icon");
       }
     });
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationError) {
+        this.router.navigate(['./pages/extra-pages/error404']); // Redireccionar a la página de error
+      }
+    });
+
+
+
+  
   }
 
   ngOnChanges(): void {

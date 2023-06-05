@@ -23,6 +23,8 @@ export class AuthenticationService {
    public currentUser(): Usuario | null {
         if (!this.user) {
             this.user = JSON.parse(localStorage.getItem('currentUser')!);
+            console.log(this.user, "SESION");
+
         }
         return this.user;
     }

@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
     if (this.loginForm.valid) {
-      this.loading = true;
       this.authenticationService.LoginPrueba(this.formValues.email?.value, this.formValues.password?.value)
       .pipe(first())
         .subscribe((data:any) => {

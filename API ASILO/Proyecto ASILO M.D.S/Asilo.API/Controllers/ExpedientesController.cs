@@ -69,7 +69,7 @@ namespace Asilo.API.Controllers
 
             return Ok(insert);
         }
-
+        /*
         [HttpPut("Editar")]
         public IActionResult Update(ExpedientesViewModel expediente)
         {
@@ -78,7 +78,7 @@ namespace Asilo.API.Controllers
 
             return Ok(update);
         }
-
+        */
         [HttpPut("EditarHistorial")]
         public IActionResult UpdateHistorial(HistorialExpedientesViewModel expediente)
         {

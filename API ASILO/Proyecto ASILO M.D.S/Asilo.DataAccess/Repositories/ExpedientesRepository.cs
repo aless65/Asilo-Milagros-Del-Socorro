@@ -107,6 +107,7 @@ namespace Asilo.DataAccess.Repositories
             return db.Query<VW_tbHistorialExpedientes>(ScriptsDataBase.UDP_Lista_HistorialExpedientes, parametros, commandType: CommandType.StoredProcedure);
         }
 
+        /*
         public RequestStatus Update(tbExpedientes item)
         {
             RequestStatus result = new RequestStatus();
@@ -161,7 +162,7 @@ namespace Asilo.DataAccess.Repositories
 
 
             return result;
-        }
+        }  */
 
         public RequestStatus UpdateHistorial(tbHistorialExpedientes item)
         {
@@ -180,6 +181,11 @@ namespace Asilo.DataAccess.Repositories
 
 
             return result;
+        }
+
+        public RequestStatus Update(tbExpedientes item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

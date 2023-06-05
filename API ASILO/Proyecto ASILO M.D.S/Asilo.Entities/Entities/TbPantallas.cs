@@ -20,7 +20,11 @@ namespace Asilo.Entities.Entities
         public string pant_Menu { get; set; }
         public string pant_Icon { get; set; }
         public bool? pant_isTitle { get; set; }
-        public int pant_UsuCreacion { get; set; }
+        public bool? collapsed { get; set; }
+        public string badgeVariant { get; set; }
+        public string badgeText { get; set; }
+        public string parentKey { get; set; }
+        public int? pant_UsuCreacion { get; set; }
         public DateTime pant_FechaCreacion { get; set; }
         public int? pant_UsuModificacion { get; set; }
         public DateTime? pant_FechaModificacion { get; set; }

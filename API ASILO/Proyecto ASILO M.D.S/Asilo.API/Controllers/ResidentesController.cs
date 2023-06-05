@@ -42,12 +42,14 @@ namespace Asilo.API.Controllers
             return Ok(list);
         }
 
+        /*
+
         [HttpGet("IdentidadExiste")]
         public IActionResult IdentidadExiste(string resi_Identidad, bool isEdit, int resi_Id)
         {
             var list = _asiloServivce.IdentidadExisteResi(resi_Identidad, isEdit, resi_Id);
             return Ok(list);
-        }
+        }  */
 
         [HttpGet("Listado")]
         public IActionResult Index()
@@ -79,7 +81,7 @@ namespace Asilo.API.Controllers
             return Ok(result);
         }
 
-
+        /*
         [HttpPost("InsertarPrincipal")]
         public IActionResult InsertarPrincipal(VW_tbResidentes_Form resi)
         {
@@ -95,5 +97,6 @@ namespace Asilo.API.Controllers
             var response = _asiloServivce.EditarResidentesForm(resi);
             return Ok(response);
         }
+        */
     }
 }

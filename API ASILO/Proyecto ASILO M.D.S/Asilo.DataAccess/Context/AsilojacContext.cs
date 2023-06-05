@@ -46,6 +46,7 @@ namespace Asilo.DataAccess.Context
         public virtual DbSet<VW_tbParentescos> VW_tbParentescos { get; set; }
         public virtual DbSet<VW_tbProveedores> VW_tbProveedores { get; set; }
         public virtual DbSet<VW_tbResidentes> VW_tbResidentes { get; set; }
+        public virtual DbSet<VW_tbResidentes_Form> VW_tbResidentes_Form { get; set; }
         public virtual DbSet<VW_tbRoles> VW_tbRoles { get; set; }
         public virtual DbSet<VW_tbTiposSangre> VW_tbTiposSangre { get; set; }
         public virtual DbSet<VW_tbUsuarios> VW_tbUsuarios { get; set; }
@@ -153,11 +154,14 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.agendeta_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.agendeta_HoraEnd).HasMaxLength(500);
+                entity.Property(e => e.agendeta_HoraEnd)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.agendeta_HoraStart)
                     .IsRequired()
-                    .HasMaxLength(500);
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.agendeta_Observaciones).HasMaxLength(500);
 
@@ -276,25 +280,17 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToView("VW_tbDietas", "asil");
 
-                entity.Property(e => e.diet_Almuerzo)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Almuerzo).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Cena)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Cena).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Desayuno)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Desayuno).HasMaxLength(500);
 
                 entity.Property(e => e.diet_FechaCreacion).HasColumnType("datetime");
 
                 entity.Property(e => e.diet_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.diet_Merienda)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Merienda).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
 
@@ -713,17 +709,11 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.pant_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.pant_Icon)
-                    .IsRequired()
-                    .HasMaxLength(80);
+                entity.Property(e => e.pant_Icon).HasMaxLength(80);
 
-                entity.Property(e => e.pant_Menu)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.pant_Menu).HasMaxLength(300);
 
-                entity.Property(e => e.pant_Nombre)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.pant_Nombre).HasMaxLength(100);
 
                 entity.Property(e => e.pant_NombreUsuarioCreacion)
                     .IsRequired()
@@ -731,9 +721,7 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.pant_NombreUsuarioModificacio).HasMaxLength(100);
 
-                entity.Property(e => e.pant_Url)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.pant_Url).HasMaxLength(300);
             });
 
             modelBuilder.Entity<VW_tbPantallasPorRoles>(entity =>
@@ -746,13 +734,9 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.pantrole_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.pantrole_NombreMenu)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.pantrole_NombreMenu).HasMaxLength(300);
 
-                entity.Property(e => e.pantrole_NombrePantalla)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.pantrole_NombrePantalla).HasMaxLength(100);
 
                 entity.Property(e => e.pantrole_NombreRol)
                     .IsRequired()
@@ -905,6 +889,78 @@ namespace Asilo.DataAccess.Context
                 entity.Property(e => e.usuModif).HasMaxLength(100);
             });
 
+            modelBuilder.Entity<VW_tbResidentes_Form>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_tbResidentes_Form", "asil");
+
+                entity.Property(e => e.diet_Almuerzo).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Cena).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Desayuno).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Merienda).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
+
+                entity.Property(e => e.diet_Restricciones).HasMaxLength(500);
+
+                entity.Property(e => e.enca_Apellidos).HasMaxLength(200);
+
+                entity.Property(e => e.enca_Direccion).HasMaxLength(500);
+
+                entity.Property(e => e.enca_Identidad)
+                    .HasMaxLength(13)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.enca_Nacimiento).HasColumnType("date");
+
+                entity.Property(e => e.enca_Nombres).HasMaxLength(200);
+
+                entity.Property(e => e.enca_Sexo)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.enca_Telefono).HasMaxLength(20);
+
+                entity.Property(e => e.expe_FechaApertura).HasColumnType("date");
+
+                entity.Property(e => e.expe_Fotografia).HasMaxLength(500);
+
+                entity.Property(e => e.muni_Id)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.pago_Fecha).HasColumnType("date");
+
+                entity.Property(e => e.resi_Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.resi_FechaIngreso).HasColumnType("date");
+
+                entity.Property(e => e.resi_Identidad)
+                    .IsRequired()
+                    .HasMaxLength(13)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.resi_Nacimiento).HasColumnType("date");
+
+                entity.Property(e => e.resi_Nombres)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.resi_Sexo)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+            });
+
             modelBuilder.Entity<VW_tbRoles>(entity =>
             {
                 entity.HasNoKey();
@@ -1028,11 +1084,14 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.agendeta_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.agendeta_HoraEnd).HasMaxLength(500);
+                entity.Property(e => e.agendeta_HoraEnd)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.agendeta_HoraStart)
                     .IsRequired()
-                    .HasMaxLength(500);
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.agendeta_Observaciones).HasMaxLength(500);
 
@@ -1133,7 +1192,7 @@ namespace Asilo.DataAccess.Context
             modelBuilder.Entity<tbCategoriaDonaciones>(entity =>
             {
                 entity.HasKey(e => e.cado_Id)
-                    .HasName("PK__tbCatego__DC16FB2E9D15C697");
+                    .HasName("PK__tbCatego__DC16FB2EF4FE8251");
 
                 entity.ToTable("tbCategoriaDonaciones", "asil");
 
@@ -1275,17 +1334,11 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToTable("tbDietas", "asil");
 
-                entity.Property(e => e.diet_Almuerzo)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Almuerzo).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Cena)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Cena).HasMaxLength(500);
 
-                entity.Property(e => e.diet_Desayuno)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Desayuno).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Estado)
                     .IsRequired()
@@ -1297,9 +1350,7 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.diet_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.diet_Merienda)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.diet_Merienda).HasMaxLength(500);
 
                 entity.Property(e => e.diet_Observaciones).HasMaxLength(500);
 
@@ -1360,7 +1411,7 @@ namespace Asilo.DataAccess.Context
             modelBuilder.Entity<tbDonacionesComunes>(entity =>
             {
                 entity.HasKey(e => e.doco_Id)
-                    .HasName("PK__tbDonaci__077655FBC3CC5D15");
+                    .HasName("PK__tbDonaci__077655FBBD785A2F");
 
                 entity.ToTable("tbDonacionesComunes", "asil");
 
@@ -1378,7 +1429,7 @@ namespace Asilo.DataAccess.Context
             modelBuilder.Entity<tbDonacionesDetalles>(entity =>
             {
                 entity.HasKey(e => e.deto_Id)
-                    .HasName("PK__tbDonaci__FEAE3F5462532762");
+                    .HasName("PK__tbDonaci__FEAE3F54B3171DC9");
 
                 entity.ToTable("tbDonacionesDetalles", "asil");
 
@@ -2136,6 +2187,10 @@ namespace Asilo.DataAccess.Context
 
                 entity.ToTable("tbPantallas", "acce");
 
+                entity.Property(e => e.badgeText).HasMaxLength(255);
+
+                entity.Property(e => e.badgeVariant).HasMaxLength(255);
+
                 entity.Property(e => e.pant_Estado)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -2146,21 +2201,17 @@ namespace Asilo.DataAccess.Context
 
                 entity.Property(e => e.pant_FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.pant_Icon)
-                    .IsRequired()
-                    .HasMaxLength(80);
+                entity.Property(e => e.pant_Icon).HasMaxLength(80);
 
-                entity.Property(e => e.pant_Menu)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.pant_Menu).HasMaxLength(300);
 
-                entity.Property(e => e.pant_Nombre)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.pant_Nombre).HasMaxLength(100);
 
-                entity.Property(e => e.pant_Url)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.pant_Url).HasMaxLength(300);
+
+                entity.Property(e => e.pant_key).HasMaxLength(100);
+
+                entity.Property(e => e.parentKey).HasMaxLength(255);
             });
 
             modelBuilder.Entity<tbPantallasPorRoles>(entity =>
@@ -2456,6 +2507,9 @@ namespace Asilo.DataAccess.Context
                     .HasName("PK_acce_tbUsuarios_usua_Id");
 
                 entity.ToTable("tbUsuarios", "acce");
+
+                entity.HasIndex(e => e.usua_NombreUsuario, "UQ__tbUsuari__B60336C618D55D47")
+                    .IsUnique();
 
                 entity.Property(e => e.usua_Contrasena).IsRequired();
 

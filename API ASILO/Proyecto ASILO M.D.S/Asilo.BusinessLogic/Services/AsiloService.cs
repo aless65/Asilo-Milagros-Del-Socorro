@@ -1074,7 +1074,7 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
-
+        /*
         public ServiceResult UpdateExpedientes(tbExpedientes item)
         {
             var result = new ServiceResult();
@@ -1092,7 +1092,7 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(e.Message);
             }
         }
-
+        */
         public ServiceResult UpdateHistorialExpedientes(tbHistorialExpedientes item)
         {
             var result = new ServiceResult();
@@ -1761,7 +1761,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 return result.Error(e.Message);
             }
-        }
+        }/*
 
         public ServiceResult IdentidadExisteResi(string resi_Identidad, bool isEdit, int resi_Id)
         {
@@ -1782,7 +1782,7 @@ namespace Asilo.BusinessLogic.Services
             {
                 return result.Error(e.Message);
             }
-        }
+        }*/
 
         public ServiceResult InsertarResidentes(tbResidentes item)
         {
@@ -1872,7 +1872,7 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(ex.Message);
             }
         }
-
+        /*
         public ServiceResult InsertarResidentesForm(VW_tbResidentes_Form item)
         {
             ServiceResult result = new ServiceResult();
@@ -1894,7 +1894,7 @@ namespace Asilo.BusinessLogic.Services
                 return result.Error(xe.Message);
             }
         }
-
+        
         public ServiceResult EditarResidentesForm(VW_tbResidentes_Form item)
         {
             ServiceResult result = new ServiceResult();
@@ -1915,7 +1915,7 @@ namespace Asilo.BusinessLogic.Services
 
                 return result.Error(xe.Message);
             }
-        }
+        }*/
         #endregion
 
         #region Tipos de sangre

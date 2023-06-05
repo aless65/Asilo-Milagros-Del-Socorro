@@ -12,7 +12,6 @@ namespace Asilo.Entities.Entities
         public int habi_Numero { get; set; }
         public int cate_Id { get; set; }
         public string cate_Nombre { get; set; }
-        public int cate_Capacidad { get; set; }
         public int cent_Id { get; set; }
         public string cent_Nombre { get; set; }
         public int habi_UsuCreacion { get; set; }
@@ -22,5 +21,6 @@ namespace Asilo.Entities.Entities
         public string usuModif { get; set; }
         public bool habi_Estado { get; set; }
         public DateTime? habi_FechaModificacion { get; set; }
+        public int cate_Capacidad { get; set; }
     }
 }
