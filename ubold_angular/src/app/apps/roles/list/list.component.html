@@ -17,7 +17,7 @@
             <!-- customer table -->
             <app-advanced-table #advancedTable (handleTableLoad)="handleTableLoad($event)" [tableData]="roles"
                 [columns]="columns" [pagination]="true" [isSearchable]="true" [hasRowSelection]="false"
-                (search)="searchData($event)" [isSortable]="false"
+                (search)="searchData($event)" [isSortable]="false" [pageSizeOptions]="pageSizeOptions"
                 tableClasses="table-centered table-nowrap table-hover">
             </app-advanced-table>
 
@@ -35,7 +35,6 @@
     <div class="modal-body p-4">
         <form [formGroup]="newRol" #addRol="ngForm" (ngSubmit)="submitForm()">
             <div class="row">
-              <div class="col-sm-8 mx-auto text-center"> <!-- Agregando las clases mx-auto y text-center -->
                 <div class="mb-3">
                   <label for="name" class="form-label">Nombre</label>
                   <input type="text" class="form-control" id="name" placeholder="Nombre" required formControlName="name"
@@ -43,18 +42,19 @@
                   <div *ngIf="addRol.submitted && form1.name.invalid" class="invalid-feedback">
                     Nombre requerido
                   </div>
+                  <br>
+                  <label class="col-form-label " for="pant_Id">Pantallas</label>
+                  <select2 [data]="pantalla" [value]="pant_Id" formControlName="pant_Id" id="pant_Id" name="pant_Id"
+                    placeholder="Pantalla.." multiple="true" #selectRef (update)="pant_Id = selectRef.value">
+                  </select2>
                 </div>
-              </div>
+                <!-- <div class="row mb-3">
+                </div> -->
             </div>
           
-            <div class="col-sm-12 mx-auto text-center">
-              <div class="row mb-3">
-                <label class="col-md-3 col-form-label mx-auto text-center" for="pant_Id">Pantallas</label>
-                <select2 [data]="pantalla" [value]="pant_Id" formControlName="pant_Id" id="pant_Id" name="pant_Id"
-                  placeholder="Pantalla.." multiple="true" #selectRef (update)="pant_Id = selectRef.value">
-                </select2>
-              </div>
-            </div>
+            <!-- <div class="col-sm-12 mx-auto text-center">
+              
+            </div> -->
           
             <div class="text-end">
               <button type="submit" class="btn btn-success waves-effect waves-light me-1"
@@ -73,7 +73,7 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('')"></button>
     </div>
     <div class="modal-body p-4">
-        <p>¿Realmente desea eliminar esta rol?</p>
+        <p>¿Realmente desea eliminar este rol?</p>
         <div class="text-end">
             <button type="button" (click)="deleteRol()" class="btn btn-success waves-effect waves-light me-1">Eliminar</button>
             <button type="button" class="btn btn-danger waves-effect waves-light"

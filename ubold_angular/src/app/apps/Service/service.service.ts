@@ -116,7 +116,7 @@ export class ServiceService {
   }
 
   getGrafica(){
-    return this.http.get<any>(`https://localhost:44371/api/Centros/Grafica`);
+    return this.http.get<any>(`${this.variableGlobal}Centros/Grafica`);
   }
   
 }

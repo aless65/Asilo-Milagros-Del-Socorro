@@ -26,6 +26,7 @@ export class ListComponent implements OnInit {
   pantalla: Select2Data = [];
   selectedPantallas: any[] = [];
   selectedRoleId: number | undefined = 0;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
 
   @ViewChild('pant_Id', { static: true }) pant_Id: any;
@@ -57,35 +58,36 @@ export class ListComponent implements OnInit {
     });
 
     this.service.getPantallas().subscribe((response: any) => {
-      let esquemaLabels: string[] = [];
+      let esquemaLabels: Set<string> = new Set();
       let options: { [key: string]: any[] } = {};
+    
       response.data.forEach((item: any) => {
-        if(item.pant_Menu != null){
-          const esqueNombre: string = item.pant_Menu;
-          const pantaId: string = item.pant_Id;
-          const pantaNombre: string = item.pant_Nombre;
-  
-          if (!esquemaLabels.includes(esqueNombre)) {
-            esquemaLabels.push(esqueNombre);
+        const esqueNombre: string = item.pant_Menu || item.pant_Nombre;
+        const pantaId: string = item.pant_Id;
+        const pantaNombre: string = item.pant_Nombre;
+    
+        if (item.pant_Menu != null) {
+          if (!options[esqueNombre]) {
             options[esqueNombre] = [];
           }
-  
+    
           options[esqueNombre].push({
             value: pantaId,
             label: pantaNombre
           });
+        } else {
+          esquemaLabels.add(esqueNombre); // Add the label to the set
         }
-        }
-      );
-
-      this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
+      });
+    
+      this.pantalla = Array.from(esquemaLabels).map((esqueNombre: string) => ({
         label: esqueNombre,
         options: options[esqueNombre]
       }));
+    
       console.log(this.pantalla);
     });
-
-
+    
 
     this.selectedPantallas = this.newRol.value.pant_Id;
 
@@ -132,6 +134,19 @@ export class ListComponent implements OnInit {
             titleText: 'El rol no puede ser eliminado ya que está siendo usado',
             icon: 'warning',
             background: '#f6f6baf2'
+          }).then(() => {
+            // Acción luego de cerrarse el toast
+          });
+        } else {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1700,
+            timerProgressBar: true,
+            title: '¡Perfecto!',
+            text: '¡El registro se eliminó con éxito!',
+            icon: 'success',
           }).then(() => {
             // Acción luego de cerrarse el toast
           });
@@ -296,32 +311,35 @@ export class ListComponent implements OnInit {
     this.service.getPantallas().subscribe((response: any) => {
       let esquemaLabels: string[] = [];
       let options: { [key: string]: any[] } = {};
-
+    
       response.data.forEach((item: any) => {
         const esqueNombre: string = item.pant_Menu;
         const pantaId: string = item.pant_Id;
         const pantaNombre: string = item.pant_Nombre;
-
-        if (!esquemaLabels.includes(esqueNombre)) {
+    
+        if (esqueNombre && !esquemaLabels.includes(esqueNombre)) {
           esquemaLabels.push(esqueNombre);
           options[esqueNombre] = [];
         }
-
-        options[esqueNombre].push({
-          value: pantaId,
-          label: pantaNombre,
-          selected: this.selectedPantallas.includes(pantaId) // Establecer la propiedad selected según si está en selectedPantallas
-        });
+    
+        if (esqueNombre) {
+          options[esqueNombre].push({
+            value: pantaId,
+            label: pantaNombre,
+            selected: this.selectedPantallas.includes(pantaId) // Set the selected property based on whether it's in selectedPantallas
+          });
+        }
       });
-
+    
       this.pantalla = esquemaLabels.map((esqueNombre: string) => ({
         label: esqueNombre,
         options: options[esqueNombre]
       }));
-
-      // Establecer los valores seleccionados en el dropdown múltiple
+    
+      // Set the selected values in the multiple dropdown
       this.setSelectedPantallas();
     });
+    
   }
 
   setSelectedPantallas(): void {
